@@ -18,7 +18,7 @@ Everything the Play Console asks for, in order. Texts are in
 ## 2. Create the app
 - App name: `PO Sorting – PIN Sort Helper` · Default language: English (India)
 - App or game: App · Free · Category: **Productivity** (or Tools)
-- Package name (fixed forever): `com.sortingsahayak.sorting_sahayak`
+- Package name (fixed forever): `com.posorting.app`
 
 ## 3. Store listing
 - Short and full description: `listing-en.txt` (add Kannada and Hindi

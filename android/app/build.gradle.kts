@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.sortingsahayak.sorting_sahayak"
+    namespace = "com.posorting.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -17,7 +17,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.sortingsahayak.sorting_sahayak"
+        applicationId = "com.posorting.app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         // ML Kit text recognition v2 and camera need API 21+; Flutter needs 24+.

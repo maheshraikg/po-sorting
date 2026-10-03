@@ -1,4 +1,4 @@
-package com.sortingsahayak.sorting_sahayak
+package com.posorting.app
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
