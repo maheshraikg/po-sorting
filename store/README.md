@@ -29,8 +29,8 @@ Everything the Play Console asks for, in order. Texts are in
   with a result, Non-TD line with air code, Lines, Scan address, Find PIN.
 - Contact email: required (shown publicly).
 - Privacy policy URL:
-  https://github.com/maheshraikg/Pdf_Tools/blob/master/sorting_sahayak/PRIVACY.md
-  (after the PR is merged; until then use the branch link).
+  https://github.com/maheshraikg/po-sorting/blob/main/PRIVACY.md
+
 
 ## 4. App content (policy forms)
 - **Privacy policy**: the URL above.

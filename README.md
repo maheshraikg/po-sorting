@@ -86,7 +86,7 @@ Source: **"All India Pincode Directory"** open dataset, data.gov.in
 1. Download the CSV from
    <https://www.data.gov.in/resource/all-india-pincode-directory-till-last-month>
    (also on the catalogue page <https://www.data.gov.in/catalog/all-india-pincode-directory>).
-2. Save it as `sorting_sahayak/data/pincode_directory.csv` (git-ignored).
+2. Save it as `data/pincode_directory.csv` (git-ignored).
 3. Build the database:
 
    ```bash
@@ -332,3 +332,8 @@ test/
 
 PIN data: data.gov.in, Government of India, Open Government Data Licence.
 Airport codes: public IATA codes.
+
+## Licence
+
+Copyright (c) 2026 KAVYA (github.com/maheshraikg). All rights reserved – see
+[LICENSE](LICENSE). Third-party components: [NOTICE](NOTICE).

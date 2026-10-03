@@ -1,0 +1,15 @@
+PO Sorting includes or uses the following third-party components and data,
+each under its own licence:
+
+- Flutter and Dart packages listed in pubspec.yaml / pubspec.lock – each
+  under its own licence (mostly BSD-3-Clause, MIT or Apache-2.0); the app's
+  "Licences" page lists them.
+- Google ML Kit text recognition (Latin, Devanagari) – Google APIs Terms of
+  Service / ML Kit Terms.
+- Tesseract OCR and the tessdata_fast Kannada model (kan.traineddata) –
+  Apache License 2.0, https://github.com/tesseract-ocr
+- Tesseract4Android – Apache License 2.0,
+  https://github.com/adaptech-cz/Tesseract4Android
+- PIN code directory – data.gov.in, Government of India, Open Government
+  Data Licence – India (OGDL-India).
+- Airport (IATA) codes – public reference data.
