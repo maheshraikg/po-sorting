@@ -47,8 +47,9 @@ Future<bool> addDefaultAirCodes(SchemeRepo repo, Future<Uint8List> Function(Stri
   return added;
 }
 
-/// Version of the bundled default data. 2 = Karnataka revised L1 PH sheet.
-const int kDefaultDataVersion = 2;
+/// Version of the bundled default data. 2 = Karnataka revised L1 PH sheet,
+/// 3 = series listed under two PHs go to the first one listed.
+const int kDefaultDataVersion = 3;
 
 /// Brings an installed default scheme up to the bundled sorting data: its
 /// Non-TD bags and air codes are replaced from the revised L1 PH sheet. TD

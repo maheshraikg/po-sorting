@@ -27,9 +27,9 @@ void main() {
     expect(code(110001), 'DEL');
     expect(code(733101), 'CCU'); // 7331 Kolkata
     expect(code(733201), 'IXB'); // 7332 Siliguri
-    expect(code(416001), 'PNQ'); // Pune 410-416
+    expect(code(416001), 'BOM'); // 415-416 listed first under Mumbai
     expect(code(416501), 'BOM'); // 4165 Mumbai
-    expect(code(246001), 'DED'); // Dehradun 246
+    expect(code(246001), 'DEL'); // 246 listed first under Ghaziabad
     expect(code(411001), 'PNQ');
     expect(code(416515), 'BOM'); // Margaon merged into Mumbai (revised L1 PH)
     expect(code(900099), 'CCU'); // 2 CBPO (revised sheet)
@@ -76,11 +76,16 @@ void main() {
     await installDefaultScheme(repo, _asset);
     final s = (await repo.loadActive())!;
     String? line(int pin) => s.bagResolver.resolve(ResolveQuery(pin: pin, category: kCatNonTD))?.rule.bagCode;
-    expect(line(415001), 'PUNE');
-    expect(line(416001), 'PUNE');
+    expect(line(415001), 'MUMBAI'); // sheet lists 415-416 first under Mumbai
+    expect(line(416001), 'MUMBAI');
+    expect(line(411001), 'PUNE');
+    expect(line(262001), 'BAREILLY');
+    expect(line(262701), 'LUCKNOW'); // 2627
+    expect(line(174001), 'AMBALA');
     expect(line(415601), 'MUMBAI'); // 4156
     expect(line(416515), 'MUMBAI'); // Margaon merged (revised L1 PH)
-    expect(line(246001), 'DEHRADUN');
+    expect(line(246001), 'GHAZIABAD');
+    expect(line(247601), 'DEHRADUN'); // 2476
     expect(line(841101), 'PATNA');
     expect(line(842001), 'PATNA'); // Muzaffarpur merged
     expect(line(620001), 'CHENNAI'); // Trichy merged
