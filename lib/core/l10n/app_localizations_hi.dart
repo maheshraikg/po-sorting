@@ -1389,6 +1389,51 @@ class AppLocalizationsHi extends AppLocalizations {
   String get qWhichPinOffice => 'इस कार्यालय का पिन कौन-सा है';
 
   @override
+  String get learnAskOffice => 'कार्यालय नाम';
+
+  @override
+  String get learnAskParent => 'उसका SO';
+
+  @override
+  String get learnAskOfficeHint =>
+      'पिन → उसका डाकघर; उत्तर में उस पिन के BO भी दिखते हैं।';
+
+  @override
+  String get learnAskParentHint => 'BO → वह किस SO / HO के अंतर्गत है।';
+
+  @override
+  String get qWhichParentBo => 'यह BO किस कार्यालय के अंतर्गत है';
+
+  @override
+  String get pinBook => 'पिन बुक';
+
+  @override
+  String get pinBookSub => 'हर TD पिन, उसका कार्यालय और BO – पढ़ें, फिर क्विज़';
+
+  @override
+  String get pinBookQuiz => 'क्विज़ करें';
+
+  @override
+  String get pinBookEmpty =>
+      'TD पिन के लिए कार्यालय नहीं मिले। जाँचें कि पिन डायरेक्टरी इंस्टॉल है।';
+
+  @override
+  String get pinBookSearch => 'पिन, कार्यालय या BO खोजें';
+
+  @override
+  String pinBookCount(int count, int n) {
+    return '$count पिन · $n BO';
+  }
+
+  @override
+  String pinBookBos(int count) {
+    return '$count BO';
+  }
+
+  @override
+  String get pinBookNoHead => 'केवल BO';
+
+  @override
   String get noSchemes =>
       'अभी कोई स्कीम नहीं। अपने कार्यालय की सॉर्टिंग स्कीम (Excel/CSV) आयात करें, नई बनाएं, या नमूना आज़माएं।';
 

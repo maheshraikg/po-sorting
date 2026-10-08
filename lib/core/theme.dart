@@ -12,6 +12,25 @@ const Color kMailYellow = Color(0xFFF2B300);
 const Color kSky = Color(0xFF0EA5E9);
 const Color kSkyDeep = Color(0xFF0369A1);
 
+/// Accent colours that sit well next to post-box red (icons, chips, tiles),
+/// so screens are not all one colour.
+const Color kAccentTeal = Color(0xFF0F766E);
+const Color kAccentIndigo = Color(0xFF4338CA);
+const Color kAccentOrange = Color(0xFFEA580C);
+const Color kAccentPurple = Color(0xFF7E22CE);
+const Color kAccentPink = Color(0xFFDB2777);
+const Color kAccentBrown = Color(0xFF92400E);
+const Color kAccentAmber = Color(0xFFD97706);
+
+/// Accents in a fixed order, for lists of tiles.
+const List<Color> kAccentCycle = [
+  kPostRed, kAccentAmber, kPostGreen, kSkyDeep, kAccentPurple, kAccentTeal, kAccentOrange, kAccentIndigo, kAccentPink, kAccentBrown,
+];
+
+/// [c] lightened for dark mode so it stays readable on dark surfaces.
+Color accentFor(BuildContext context, Color c) =>
+    Theme.of(context).brightness == Brightness.dark ? Color.lerp(c, Colors.white, 0.45)! : c;
+
 /// Vertical gradient under the app bar (seamless with its colour).
 LinearGradient headerGradient(BuildContext context) {
   final dark = Theme.of(context).brightness == Brightness.dark;
@@ -24,7 +43,6 @@ LinearGradient headerGradient(BuildContext context) {
 
 // Kept for older call sites.
 const Color kSeedRed = kPostRed;
-const Color kAccentAmber = kMailYellow;
 
 /// Label badge colours for the parcel bag pattern.
 const Color kAirYellow = Color(0xFFFFD600);

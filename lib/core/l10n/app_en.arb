@@ -870,6 +870,36 @@
   "learnAskSortHint": "PIN or office → which line or bag.",
   "learnAskPinHint": "Office → its PIN code (Mangalore side, Udupi side, BOs and Non-TD offices).",
   "qWhichPinOffice": "Which PIN for this office",
+  "learnAskOffice": "Office name",
+  "learnAskParent": "Its SO",
+  "learnAskOfficeHint": "PIN → its post office; the answer also shows the BOs at that PIN.",
+  "learnAskParentHint": "BO → the SO / HO it comes under.",
+  "qWhichParentBo": "This BO comes under which office",
+  "pinBook": "PIN book",
+  "pinBookSub": "Every TD PIN with its office and BOs – read, then quiz",
+  "pinBookQuiz": "Quiz me",
+  "pinBookEmpty": "No offices found for the TD PINs. Check that the PIN directory is installed.",
+  "pinBookSearch": "Search PIN, office or BO",
+  "pinBookCount": "{count} PINs · {n} BOs",
+  "@pinBookCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "pinBookBos": "{count} BOs",
+  "@pinBookBos": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "pinBookNoHead": "BOs only",
   "noSchemes": "No schemes yet. Import your office's sorting scheme (Excel/CSV), create one, or try the SAMPLE.",
   "schemesPrivacy": "Schemes are department documents: they stay on this phone. Share only with your team.",
   "importScheme": "Import scheme",

@@ -2506,6 +2506,84 @@ abstract class AppLocalizations {
   /// **'Which PIN for this office'**
   String get qWhichPinOffice;
 
+  /// No description provided for @learnAskOffice.
+  ///
+  /// In en, this message translates to:
+  /// **'Office name'**
+  String get learnAskOffice;
+
+  /// No description provided for @learnAskParent.
+  ///
+  /// In en, this message translates to:
+  /// **'Its SO'**
+  String get learnAskParent;
+
+  /// No description provided for @learnAskOfficeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN → its post office; the answer also shows the BOs at that PIN.'**
+  String get learnAskOfficeHint;
+
+  /// No description provided for @learnAskParentHint.
+  ///
+  /// In en, this message translates to:
+  /// **'BO → the SO / HO it comes under.'**
+  String get learnAskParentHint;
+
+  /// No description provided for @qWhichParentBo.
+  ///
+  /// In en, this message translates to:
+  /// **'This BO comes under which office'**
+  String get qWhichParentBo;
+
+  /// No description provided for @pinBook.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN book'**
+  String get pinBook;
+
+  /// No description provided for @pinBookSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Every TD PIN with its office and BOs – read, then quiz'**
+  String get pinBookSub;
+
+  /// No description provided for @pinBookQuiz.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz me'**
+  String get pinBookQuiz;
+
+  /// No description provided for @pinBookEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No offices found for the TD PINs. Check that the PIN directory is installed.'**
+  String get pinBookEmpty;
+
+  /// No description provided for @pinBookSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search PIN, office or BO'**
+  String get pinBookSearch;
+
+  /// No description provided for @pinBookCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} PINs · {n} BOs'**
+  String pinBookCount(int count, int n);
+
+  /// No description provided for @pinBookBos.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} BOs'**
+  String pinBookBos(int count);
+
+  /// No description provided for @pinBookNoHead.
+  ///
+  /// In en, this message translates to:
+  /// **'BOs only'**
+  String get pinBookNoHead;
+
   /// No description provided for @noSchemes.
   ///
   /// In en, this message translates to:

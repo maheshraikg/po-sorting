@@ -43,7 +43,7 @@ class _SpeedSortScreenState extends State<SpeedSortScreen> {
   int _leftMs = _gameMs, _score = 0, _combo = 0, _bestCombo = 0, _correct = 0, _wrong = 0;
   Timer? _timer;
 
-  String get _bestKey => widget.ask == LearnAsk.pin ? '${widget.section.name}-pin' : widget.section.name;
+  String get _bestKey => widget.ask == LearnAsk.sort ? widget.section.name : '${widget.section.name}-${widget.ask.name}';
 
   @override
   void didChangeDependencies() {
@@ -206,7 +206,7 @@ class _SpeedSortScreenState extends State<SpeedSortScreen> {
     final c = _card!;
     final secs = (max(0, _leftMs) / 1000).ceil();
     final mult = comboMultiplier(_combo);
-    final question = c.asksPin ? l.qWhichPinOffice : c.asksOffice ? l.qWhichOfficePin : c.isPin ? l.qWhichBagPin : l.qWhichBagPlace;
+    final question = c.asksParent ? l.qWhichParentBo : c.asksPin ? l.qWhichPinOffice : c.asksOffice ? l.qWhichOfficePin : c.isPin ? l.qWhichBagPin : l.qWhichBagPlace;
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: Padding(

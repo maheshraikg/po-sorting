@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/app_scope.dart';
 import '../../core/l10n/app_localizations.dart';
+import '../../core/theme.dart';
 import '../../core/widgets.dart';
 import '../../data/nsh.dart';
 import '../lines/lines_screen.dart';
@@ -22,10 +23,11 @@ class EditDataScreen extends StatelessWidget {
     final l = AppLocalizations.of(context);
     final scheme = context.services.active;
     void open(Widget w) => Navigator.push(context, MaterialPageRoute(builder: (_) => w));
+    var n = 0;
     Widget tile(String key, IconData icon, String title, String sub, Widget? page) => Card(
       child: ListTile(
         key: ValueKey('edit_$key'),
-        leading: Icon(icon, size: 34, color: Theme.of(context).colorScheme.primary),
+        leading: IconBadge(icon, kAccentCycle[n++ % kAccentCycle.length]),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 18)),
         subtitle: Text(sub),
         trailing: const Icon(Icons.chevron_right),

@@ -1394,6 +1394,52 @@ class AppLocalizationsKn extends AppLocalizations {
   String get qWhichPinOffice => 'ಈ ಕಚೇರಿಯ ಪಿನ್ ಯಾವುದು';
 
   @override
+  String get learnAskOffice => 'ಕಚೇರಿ ಹೆಸರು';
+
+  @override
+  String get learnAskParent => 'ಅದರ SO';
+
+  @override
+  String get learnAskOfficeHint =>
+      'ಪಿನ್ → ಅದರ ಅಂಚೆ ಕಚೇರಿ; ಉತ್ತರದಲ್ಲಿ ಆ ಪಿನ್‌ನ BOಗಳೂ ಕಾಣುತ್ತವೆ.';
+
+  @override
+  String get learnAskParentHint => 'BO → ಅದು ಸೇರುವ SO / HO.';
+
+  @override
+  String get qWhichParentBo => 'ಈ BO ಯಾವ ಕಚೇರಿಯ ಅಡಿಯಲ್ಲಿದೆ';
+
+  @override
+  String get pinBook => 'ಪಿನ್ ಪುಸ್ತಕ';
+
+  @override
+  String get pinBookSub =>
+      'ಪ್ರತಿ TD ಪಿನ್, ಅದರ ಕಚೇರಿ ಮತ್ತು BOಗಳು – ಓದಿ, ನಂತರ ಕ್ವಿಜ್';
+
+  @override
+  String get pinBookQuiz => 'ಕ್ವಿಜ್ ಮಾಡಿ';
+
+  @override
+  String get pinBookEmpty =>
+      'TD ಪಿನ್‌ಗಳಿಗೆ ಕಚೇರಿಗಳು ಸಿಗಲಿಲ್ಲ. ಪಿನ್ ಡೈರೆಕ್ಟರಿ ಇದೆಯೇ ನೋಡಿ.';
+
+  @override
+  String get pinBookSearch => 'ಪಿನ್, ಕಚೇರಿ ಅಥವಾ BO ಹುಡುಕಿ';
+
+  @override
+  String pinBookCount(int count, int n) {
+    return '$count ಪಿನ್ · $n BO';
+  }
+
+  @override
+  String pinBookBos(int count) {
+    return '$count BO';
+  }
+
+  @override
+  String get pinBookNoHead => 'ಕೇವಲ BOಗಳು';
+
+  @override
   String get noSchemes =>
       'ಇನ್ನೂ ಸ್ಕೀಮ್‌ಗಳಿಲ್ಲ. ನಿಮ್ಮ ಕಚೇರಿಯ ಸಾರ್ಟಿಂಗ್ ಸ್ಕೀಮ್ (Excel/CSV) ಆಮದು ಮಾಡಿ, ಹೊಸದು ರಚಿಸಿ ಅಥವಾ ಮಾದರಿ ಪ್ರಯತ್ನಿಸಿ.';
 

@@ -12,6 +12,7 @@ import '../../core/files.dart';
 import 'flashcards_screen.dart';
 import 'learn_engine.dart';
 import 'line_study_screen.dart';
+import 'pin_book_screen.dart';
 import 'progress.dart';
 import 'speed_sort_screen.dart';
 import 'pin_basics_screen.dart';
@@ -26,12 +27,42 @@ String learnSectionLabel(AppLocalizations l, LearnSection s) => switch (s) {
   LearnSection.nonTd => l.learnSectionNonTd,
 };
 
+Color _sectionColour(LearnSection s) => switch (s) {
+  LearnSection.all => kAccentIndigo,
+  LearnSection.mangaloreTd => kPostRed,
+  LearnSection.udupiTd => kAccentTeal,
+  LearnSection.bo => kPostGreen,
+  LearnSection.nonTd => kAccentAmber,
+};
+
+IconData _sectionIcon(LearnSection s) => switch (s) {
+  LearnSection.all => Icons.apps,
+  LearnSection.mangaloreTd => Icons.location_city,
+  LearnSection.udupiTd => Icons.waves,
+  LearnSection.bo => Icons.home_work_outlined,
+  LearnSection.nonTd => Icons.public,
+};
+
 String _sectionHint(AppLocalizations l, LearnSection s) => switch (s) {
   LearnSection.all => l.learnSectionAllHint,
   LearnSection.mangaloreTd => l.learnSectionMangaloreTdHint,
   LearnSection.udupiTd => l.learnSectionUdupiTdHint,
   LearnSection.bo => l.learnSectionBoHint,
   LearnSection.nonTd => l.learnSectionNonTdHint,
+};
+
+String _askLabel(AppLocalizations l, LearnAsk a) => switch (a) {
+  LearnAsk.sort => l.learnAskSort,
+  LearnAsk.pin => l.learnAskPin,
+  LearnAsk.office => l.learnAskOffice,
+  LearnAsk.parent => l.learnAskParent,
+};
+
+String _askHint(AppLocalizations l, LearnAsk a) => switch (a) {
+  LearnAsk.sort => l.learnAskSortHint,
+  LearnAsk.pin => l.learnAskPinHint,
+  LearnAsk.office => l.learnAskOfficeHint,
+  LearnAsk.parent => l.learnAskParentHint,
 };
 
 class LearnScreen extends StatefulWidget {
@@ -52,11 +83,12 @@ class _LearnScreenState extends State<LearnScreen> {
     final scheme = services.active;
     final sections = scheme == null ? const <LearnSection>[] : LearnEngine(scheme).sections();
     final section = sections.contains(_section) ? _section : LearnSection.all;
-    final ask = section == LearnSection.bo ? LearnAsk.pin : _ask;
+    final asks = section == LearnSection.bo ? const [LearnAsk.pin, LearnAsk.parent] : const [LearnAsk.sort, LearnAsk.pin, LearnAsk.office];
+    final ask = asks.contains(_ask) ? _ask : asks.first;
     void open(Widget w) => Navigator.push(context, MaterialPageRoute(builder: (_) => w));
-    Widget tile(IconData icon, String title, String sub, VoidCallback? onTap) => Card(
+    Widget tile(IconData icon, String title, String sub, VoidCallback? onTap, Color colour) => Card(
       child: ListTile(
-        leading: Icon(icon, size: 36, color: Theme.of(context).colorScheme.primary),
+        leading: IconBadge(icon, onTap == null ? Theme.of(context).colorScheme.outline : colour),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w700)),
         subtitle: Text(sub),
         trailing: const Icon(Icons.chevron_right),
@@ -105,6 +137,9 @@ class _LearnScreenState extends State<LearnScreen> {
                       key: ValueKey('learn_section_${s.name}'),
                       label: Text(learnSectionLabel(l, s)),
                       selected: s == section,
+                      selectedColor: accentFor(context, _sectionColour(s)).withValues(alpha: 0.22),
+                      avatar: Icon(_sectionIcon(s), size: 18, color: accentFor(context, _sectionColour(s))),
+                      showCheckmark: false,
                       onSelected: (_) => setState(() => _section = s),
                     ),
                 ],
@@ -114,7 +149,7 @@ class _LearnScreenState extends State<LearnScreen> {
               padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
               child: Text(_sectionHint(l, section), style: Theme.of(context).textTheme.bodySmall),
             ),
-            if (section != LearnSection.bo) ...[
+            ...[
               Padding(
                 padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
                 child: Text(l.learnAsk, style: Theme.of(context).textTheme.titleSmall),
@@ -123,29 +158,36 @@ class _LearnScreenState extends State<LearnScreen> {
                 padding: const EdgeInsets.fromLTRB(4, 6, 4, 4),
                 child: SegmentedButton<LearnAsk>(
                   key: const ValueKey('learn_ask'),
+                  showSelectedIcon: false,
                   segments: [
-                    ButtonSegment(value: LearnAsk.sort, icon: const Icon(Icons.inventory_2_outlined), label: Text(l.learnAskSort)),
-                    ButtonSegment(value: LearnAsk.pin, icon: const Icon(Icons.pin_outlined), label: Text(l.learnAskPin)),
+                    for (final a in asks) ButtonSegment(value: a, label: Text(_askLabel(l, a), textAlign: TextAlign.center)),
                   ],
-                  selected: {_ask},
+                  style: SegmentedButton.styleFrom(
+                    selectedBackgroundColor: Theme.of(context).colorScheme.secondaryContainer,
+                    selectedForegroundColor: Theme.of(context).colorScheme.onSecondaryContainer,
+                    textStyle: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  selected: {ask},
                   onSelectionChanged: (v) => setState(() => _ask = v.first),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
-                child: Text(_ask == LearnAsk.pin ? l.learnAskPinHint : l.learnAskSortHint, style: Theme.of(context).textTheme.bodySmall),
+                child: Text(_askHint(l, ask), style: Theme.of(context).textTheme.bodySmall),
               ),
             ],
           ],
-          tile(Icons.style_outlined, l.flashcards, l.flashcardsSub, scheme == null ? null : () => open(FlashcardsScreen(mode: FlashMode.bag, section: section, ask: ask))),
-          tile(Icons.timer_outlined, l.timedQuiz, l.timedQuizSub, scheme == null ? null : () => open(QuizScreen(mode: FlashMode.bag, section: section, ask: ask))),
-          tile(Icons.bolt, l.speedSort, l.speedSortSub, scheme == null ? null : () => open(SpeedSortScreen(section: section, ask: ask))),
-          tile(Icons.format_list_numbered, l.learnByLine, l.learnByLineSub, scheme == null ? null : () => open(const LinePickerScreen())),
-          tile(Icons.flight_takeoff, l.airFlashcards, l.airFlashcardsSub, hasAir ? () => open(const FlashcardsScreen(mode: FlashMode.air)) : null),
-          tile(Icons.quiz_outlined, l.airQuiz, l.airQuizSub, hasAir ? () => open(const QuizScreen(mode: FlashMode.air)) : null),
-          tile(Icons.hub_outlined, l.hubFlashcards, l.hubFlashcardsSub, scheme != null && !scheme.hubResolver.isEmpty ? () => open(const FlashcardsScreen(mode: FlashMode.hub)) : null),
-          tile(Icons.trending_down, l.weakAreas, l.weakAreasSub, () => open(const WeakAreasScreen())),
-          tile(Icons.menu_book_outlined, l.pinBasics, l.pinBasicsSub, () => open(const PinBasicsScreen())),
+          tile(Icons.auto_stories_outlined, l.pinBook, l.pinBookSub,
+              scheme == null || section == LearnSection.nonTd ? null : () => open(PinBookScreen(section: section)), kAccentTeal),
+          tile(Icons.style_outlined, l.flashcards, l.flashcardsSub, scheme == null ? null : () => open(FlashcardsScreen(mode: FlashMode.bag, section: section, ask: ask)), kAccentPurple),
+          tile(Icons.timer_outlined, l.timedQuiz, l.timedQuizSub, scheme == null ? null : () => open(QuizScreen(mode: FlashMode.bag, section: section, ask: ask)), kSkyDeep),
+          tile(Icons.bolt, l.speedSort, l.speedSortSub, scheme == null ? null : () => open(SpeedSortScreen(section: section, ask: ask)), kAccentOrange),
+          tile(Icons.format_list_numbered, l.learnByLine, l.learnByLineSub, scheme == null ? null : () => open(const LinePickerScreen()), kPostRed),
+          tile(Icons.flight_takeoff, l.airFlashcards, l.airFlashcardsSub, hasAir ? () => open(const FlashcardsScreen(mode: FlashMode.air)) : null, kSky),
+          tile(Icons.quiz_outlined, l.airQuiz, l.airQuizSub, hasAir ? () => open(const QuizScreen(mode: FlashMode.air)) : null, kAccentIndigo),
+          tile(Icons.hub_outlined, l.hubFlashcards, l.hubFlashcardsSub, scheme != null && !scheme.hubResolver.isEmpty ? () => open(const FlashcardsScreen(mode: FlashMode.hub)) : null, kAccentBrown),
+          tile(Icons.trending_down, l.weakAreas, l.weakAreasSub, () => open(const WeakAreasScreen()), kAccentPink),
+          tile(Icons.menu_book_outlined, l.pinBasics, l.pinBasicsSub, () => open(const PinBasicsScreen()), kPostGreen),
         ],
       ),
     );
@@ -179,7 +221,16 @@ class _ProgressCard extends StatelessWidget {
     return Card(
       key: const ValueKey('learn_progress'),
       color: cs.primaryContainer,
-      child: Padding(
+      clipBehavior: Clip.antiAlias,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [cs.primaryContainer, cs.secondaryContainer],
+          ),
+        ),
+        child: Padding(
         padding: const EdgeInsets.all(14),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -211,7 +262,13 @@ class _ProgressCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 10),
-            LinearProgressIndicator(value: lv.progress(xp), minHeight: 8, borderRadius: BorderRadius.circular(4)),
+            LinearProgressIndicator(
+              value: lv.progress(xp),
+              minHeight: 10,
+              borderRadius: BorderRadius.circular(5),
+              color: accentFor(context, kPostGreen),
+              backgroundColor: cs.surface.withValues(alpha: 0.7),
+            ),
             const SizedBox(height: 10),
             Row(
               children: [
@@ -222,6 +279,7 @@ class _ProgressCard extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }

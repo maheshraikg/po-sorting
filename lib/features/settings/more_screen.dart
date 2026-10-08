@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../core/contact.dart';
+import '../../core/theme.dart';
+import '../../core/widgets.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../learn/learn_screen.dart';
 import '../schemes/schemes_screen.dart';
@@ -20,8 +22,9 @@ class MoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
+    var n = 0;
     Widget item(IconData i, String t, String s, Widget page) => ListTile(
-      leading: Icon(i, size: 30),
+      leading: IconBadge(i, kAccentCycle[n++ % kAccentCycle.length], size: 42),
       title: Text(t, style: const TextStyle(fontWeight: FontWeight.w700)),
       subtitle: Text(s),
       trailing: const Icon(Icons.chevron_right),
@@ -43,7 +46,7 @@ class MoreScreen extends StatelessWidget {
           item(Icons.groups_outlined, l.contributors, l.contributorsSub, const ContributorsScreen()),
           ListTile(
             key: const ValueKey('more_share_app'),
-            leading: const Icon(Icons.share, size: 30),
+            leading: const IconBadge(Icons.share, kPostGreen, size: 42),
             title: Text(l.shareApp, style: const TextStyle(fontWeight: FontWeight.w700)),
             subtitle: Text(l.shareAppSub),
             onTap: () => shareApp(l),

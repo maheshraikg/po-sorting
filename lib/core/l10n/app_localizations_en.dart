@@ -1390,6 +1390,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String get qWhichPinOffice => 'Which PIN for this office';
 
   @override
+  String get learnAskOffice => 'Office name';
+
+  @override
+  String get learnAskParent => 'Its SO';
+
+  @override
+  String get learnAskOfficeHint =>
+      'PIN → its post office; the answer also shows the BOs at that PIN.';
+
+  @override
+  String get learnAskParentHint => 'BO → the SO / HO it comes under.';
+
+  @override
+  String get qWhichParentBo => 'This BO comes under which office';
+
+  @override
+  String get pinBook => 'PIN book';
+
+  @override
+  String get pinBookSub =>
+      'Every TD PIN with its office and BOs – read, then quiz';
+
+  @override
+  String get pinBookQuiz => 'Quiz me';
+
+  @override
+  String get pinBookEmpty =>
+      'No offices found for the TD PINs. Check that the PIN directory is installed.';
+
+  @override
+  String get pinBookSearch => 'Search PIN, office or BO';
+
+  @override
+  String pinBookCount(int count, int n) {
+    return '$count PINs · $n BOs';
+  }
+
+  @override
+  String pinBookBos(int count) {
+    return '$count BOs';
+  }
+
+  @override
+  String get pinBookNoHead => 'BOs only';
+
+  @override
   String get noSchemes =>
       'No schemes yet. Import your office\'s sorting scheme (Excel/CSV), create one, or try the SAMPLE.';
 

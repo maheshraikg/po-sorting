@@ -530,3 +530,27 @@ Future<bool> confirm(BuildContext context, String message) async {
 void toast(BuildContext context, String text) => ScaffoldMessenger.of(context)
   ..hideCurrentSnackBar()
   ..showSnackBar(SnackBar(content: Text(text)));
+
+/// Icon on a soft rounded square of [colour] (tile leading).
+class IconBadge extends StatelessWidget {
+  const IconBadge(this.icon, this.colour, {super.key, this.size = 46});
+
+  final IconData icon;
+  final Color colour;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = accentFor(context, colour);
+    return Container(
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: c.withValues(alpha: 0.14),
+        borderRadius: BorderRadius.circular(size * 0.3),
+        border: Border.all(color: c.withValues(alpha: 0.35)),
+      ),
+      child: Icon(icon, color: c, size: size * 0.58),
+    );
+  }
+}

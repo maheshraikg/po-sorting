@@ -131,7 +131,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     final box = _boxes[c.key]?.box ?? 1;
     final t = Theme.of(context).textTheme;
     final question = switch (widget.mode) {
-      FlashMode.bag => c.asksPin ? l.qWhichPinOffice : c.asksOffice ? l.qWhichOfficePin : c.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
+      FlashMode.bag => c.asksParent ? l.qWhichParentBo : c.asksPin ? l.qWhichPinOffice : c.asksOffice ? l.qWhichOfficePin : c.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
       FlashMode.air => l.qWhichAirCode,
       FlashMode.hub => l.qWhichHub,
     };
@@ -154,7 +154,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                   transitionBuilder: (w, a) => ScaleTransition(scale: a, child: w),
                   child: Card(
                     key: ValueKey('${c.key}$_flipped'),
-                    color: _flipped ? Theme.of(context).colorScheme.primaryContainer : null,
+                    color: _flipped ? Theme.of(context).colorScheme.secondaryContainer : null,
                     child: Center(
                       child: Padding(
                         padding: const EdgeInsets.all(16),
@@ -167,7 +167,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
                               child: Text(_flipped ? c.answer : c.prompt,
                                   style: t.displayMedium?.copyWith(fontWeight: FontWeight.w900, letterSpacing: c.isPin && !_flipped ? 4 : 0)),
                             ),
-                            if (_flipped && c.answerDetail.isNotEmpty) Text(c.answerDetail, style: t.titleLarge, textAlign: TextAlign.center),
+                            if (_flipped && c.answerDetail.isNotEmpty) Text(c.answerDetail, style: c.answerDetail.length > 40 ? t.titleMedium : t.titleLarge, textAlign: TextAlign.center),
                             if (!_flipped) ...[const SizedBox(height: 16), Text(l.tapToFlip, style: t.bodySmall)],
                           ],
                         ),

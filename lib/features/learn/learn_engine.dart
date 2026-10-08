@@ -30,8 +30,21 @@ enum LearnSection {
   nonTd,
 }
 
-/// What the questions ask: the line / bag, or the office's PIN code.
-enum LearnAsk { sort, pin }
+/// What the questions ask: the line / bag, the office's PIN code, the
+/// office at a PIN (with its BOs), or the office a BO comes under.
+enum LearnAsk { sort, pin, office, parent }
+
+/// One PIN of the PIN book: its head office, its branch offices and line.
+class PinBookEntry {
+  const PinBookEntry({required this.pin, this.head, this.bos = const [], this.line = ''});
+
+  final int pin;
+
+  /// "Puttur SO" (null when the directory has only BOs at this PIN).
+  final String? head;
+  final List<String> bos;
+  final String line;
+}
 
 /// The Udupi-side TD line(s): any bag whose code or name says "Udupi".
 bool isUdupiSideBag(Bag b) => '${b.code} ${b.name}'.toLowerCase().contains('udupi');
@@ -53,13 +66,22 @@ class LearnCard {
     this.asksOffice = false,
     this.asksPosition = false,
     this.asksPin = false,
+    this.asksParent = false,
+    this.near,
   });
+
+  /// The answer is the SO / HO this branch office comes under.
+  final bool asksParent;
+
+  /// PIN the card is about: quiz choices come from nearby PINs, so the
+  /// answer is not given away by a far-off district.
+  final int? near;
 
   /// The answer is the PIN of this branch office.
   final bool asksPin;
 
   /// Cards with the same kind share answer options (bag / office / PIN / position).
-  int get answerKind => asksOffice ? 1 : asksPin ? 2 : asksPosition ? 3 : 0;
+  int get answerKind => asksParent ? 4 : asksOffice ? 1 : asksPin ? 2 : asksPosition ? 3 : 0;
 
   /// The answer is the office's position on its line.
   final bool asksPosition;
@@ -202,7 +224,11 @@ class LearnEngine {
   }
 
   List<LearnCard> cards(FlashMode mode, {Set<int>? onlyPins, LearnSection section = LearnSection.all, LearnAsk ask = LearnAsk.sort}) {
-    if (mode == FlashMode.bag && ask == LearnAsk.pin && onlyPins == null) return pinCards(section);
+    if (mode == FlashMode.bag && onlyPins == null) {
+      if (ask == LearnAsk.pin || (section == LearnSection.bo && ask != LearnAsk.parent)) return pinCards(section);
+      if (ask == LearnAsk.office) return officeCards(section);
+      if (ask == LearnAsk.parent) return parentCards();
+    }
     if (mode == FlashMode.bag && onlyPins == null && section != LearnSection.all) {
       if (section == LearnSection.udupiTd) return _udupiCards();
       if (section == LearnSection.bo) return _boCards();
@@ -317,6 +343,100 @@ class LearnEngine {
           isPin: false,
           category: kCatTD,
           asksPin: true,
+          near: e.key,
+        );
+      }
+    }
+    return out.values.toList();
+  }
+
+  /// Offices at the TD PINs grouped by PIN, in PIN order, for the PIN book.
+  List<PinBookEntry> pinBook(LearnSection section) {
+    final lines = _tdPinLines();
+    final udupi = {for (final b in scheme.bags.values) if (isUdupiSideBag(b)) b.code};
+    final byPin = <int, List<Office>>{};
+    for (final o in branchOffices) {
+      final line = lines[o.pincode];
+      if (line == null) continue;
+      if (section == LearnSection.udupiTd && !udupi.contains(line)) continue;
+      if (section == LearnSection.mangaloreTd && udupi.contains(line)) continue;
+      (byPin[o.pincode] ??= []).add(o);
+    }
+    final pins = byPin.keys.toList()..sort();
+    return [
+      for (final p in pins)
+        () {
+          final os = byPin[p]!;
+          final head = os.where((o) => o.officeType != 'BO').toList()
+            ..sort((a, b) => _headRank(a.officeType).compareTo(_headRank(b.officeType)));
+          final bos = [for (final o in os) if (o.officeType == 'BO') o.officeName]..sort();
+          return PinBookEntry(pin: p, head: head.isEmpty ? null : '${head.first.officeName} ${head.first.officeType}'.trim(), bos: bos, line: lines[p]!);
+        }(),
+    ];
+  }
+
+  static int _headRank(String type) => switch (type) { 'HO' => 0, 'SO' => 1, 'PO' => 2, _ => 3 };
+
+  /// "Which office has this PIN?": PIN → head office; the answer also lists
+  /// the branch offices at that PIN, so they are learnt together.
+  List<LearnCard> officeCards(LearnSection section) {
+    final out = <String, LearnCard>{};
+    if (section != LearnSection.nonTd) {
+      for (final e in pinBook(section == LearnSection.bo ? LearnSection.all : section)) {
+        if (e.head == null) continue;
+        final key = 'office:${e.pin}';
+        out[key] = LearnCard(
+          key: key,
+          prompt: '${e.pin}',
+          answer: e.head!,
+          answerDetail: e.bos.isEmpty ? e.line : '${e.line} · BO: ${e.bos.join(', ')}',
+          prefix: '${e.pin}'.substring(0, 3),
+          category: kCatTD,
+          asksOffice: true,
+          near: e.pin,
+        );
+      }
+    }
+    if (section == LearnSection.all || section == LearnSection.nonTd) {
+      final lines = _tdPinLines();
+      final seen = <int>{};
+      final sorted = otherOffices.where((o) => o.officeType != 'BO' && !lines.containsKey(o.pincode)).toList()
+        ..sort((a, b) => _headRank(a.officeType).compareTo(_headRank(b.officeType)));
+      for (final o in sorted) {
+        if (!seen.add(o.pincode)) continue;
+        final key = 'office:${o.pincode}';
+        out[key] = LearnCard(
+          key: key,
+          prompt: '${o.pincode}',
+          answer: '${o.officeName} ${o.officeType}'.trim(),
+          answerDetail: '${o.district}, ${o.state}',
+          prefix: '${o.pincode}'.substring(0, 3),
+          category: kCatNonTD,
+          asksOffice: true,
+          near: o.pincode,
+        );
+      }
+    }
+    return out.values.toList();
+  }
+
+  /// "This BO comes under which office?": BO → SO / HO at its PIN.
+  List<LearnCard> parentCards() {
+    final out = <String, LearnCard>{};
+    for (final e in pinBook(LearnSection.all)) {
+      if (e.head == null) continue;
+      for (final bo in e.bos) {
+        final key = 'parent:${e.pin}:$bo';
+        out[key] = LearnCard(
+          key: key,
+          prompt: '$bo BO',
+          answer: e.head!,
+          answerDetail: '${e.pin} · ${e.line}',
+          prefix: '${e.pin}'.substring(0, 3),
+          isPin: false,
+          category: kCatTD,
+          asksParent: true,
+          near: e.pin,
         );
       }
     }
@@ -343,6 +463,7 @@ class LearnEngine {
         isPin: false,
         category: category,
         asksPin: true,
+        near: o.pincode,
       );
     }
 
@@ -397,9 +518,11 @@ class LearnEngine {
     final answers = all.map((c) => c.answer).toSet().toList();
     if (answers.length < 2) return const [];
     final byKind = <int, List<String>>{};
+    final nearOf = <int, Map<String, int>>{};
     for (final c in all) {
       final l = byKind[c.answerKind] ??= [];
       if (!l.contains(c.answer)) l.add(c.answer);
+      if (c.near != null) (nearOf[c.answerKind] ??= {}).putIfAbsent(c.answer, () => c.near!);
     }
     final picked = <LearnCard>[];
     while (picked.length < count && all.isNotEmpty) {
@@ -410,10 +533,11 @@ class LearnEngine {
       for (final c in picked)
         () {
           var others = byKind[c.answerKind]!.where((a) => a != c.answer).toList()..shuffle(_rnd);
-          // BO → PIN: choices from nearby PINs, so the answer is not obvious.
-          if (c.asksPin) {
-            final pin = int.parse(c.answer);
-            others = (others..sort((a, b) => (int.parse(a) - pin).abs().compareTo((int.parse(b) - pin).abs()))).take(6).toList()..shuffle(_rnd);
+          // Choices from nearby PINs, so the answer is not obvious.
+          final near = nearOf[c.answerKind];
+          if (c.near != null && near != null) {
+            int dist(String a) => ((near[a] ?? 0) - c.near!).abs();
+            others = (others..sort((a, b) => dist(a).compareTo(dist(b)))).take(6).toList()..shuffle(_rnd);
           }
           final opts = [c.answer, ...others.take(3)]..shuffle(_rnd);
           return QuizQuestion(c, opts);
@@ -511,8 +635,9 @@ class LearnEngine {
     LearnAsk ask = LearnAsk.sort,
     Random? random,
   }) async {
-    final needTd = section == LearnSection.bo || (ask == LearnAsk.pin && section != LearnSection.nonTd);
-    final needOther = ask == LearnAsk.pin && (section == LearnSection.nonTd || section == LearnSection.all);
+    final asksOffices = ask != LearnAsk.sort;
+    final needTd = section == LearnSection.bo || (asksOffices && section != LearnSection.nonTd);
+    final needOther = (ask == LearnAsk.pin || ask == LearnAsk.office) && (section == LearnSection.nonTd || section == LearnSection.all);
     final td = needTd ? await loadBranchOffices(dir, scheme) : const <Office>[];
     final other = needOther ? await dir.randomOffices(600) : const <Office>[];
     return LearnEngine(scheme, directoryPins: regions.keys, regions: regions, branchOffices: td, otherOffices: other, random: random);

@@ -45,7 +45,7 @@ class _QuizScreenState extends State<QuizScreen> {
   List<QuizRecord> _history = [];
   bool _done = false;
 
-  String get _kind => widget.lineCode != null ? 'line-${widget.lineCode}' : 'quiz-${widget.mode.name}${widget.section == LearnSection.all ? '' : '-${widget.section.name}'}${widget.ask == LearnAsk.pin ? '-pin' : ''}';
+  String get _kind => widget.lineCode != null ? 'line-${widget.lineCode}' : 'quiz-${widget.mode.name}${widget.section == LearnSection.all ? '' : '-${widget.section.name}'}${widget.ask == LearnAsk.sort ? '' : '-${widget.ask.name}'}';
 
   @override
   void didChangeDependencies() {
@@ -102,7 +102,10 @@ class _QuizScreenState extends State<QuizScreen> {
       AppFeedback.warning(context.settings);
       await s.user.addMistake(s.active?.scheme.id, _kind, q.card.prompt, q.card.isPin ? q.card.prefix : null, q.card.answer, o);
     }
-    await Future<void>.delayed(Duration(milliseconds: right ? 350 : 1100));
+    // Office questions show the office's BOs / line after a wrong answer: a
+    // little longer to read them.
+    final readMore = !right && q.card.near != null && q.card.answerDetail.isNotEmpty;
+    await Future<void>.delayed(Duration(milliseconds: right ? 350 : readMore ? 2200 : 1100));
     if (!mounted) return;
     if (_i + 1 >= _qs!.length) {
       _sw.stop();
@@ -152,7 +155,7 @@ class _QuizScreenState extends State<QuizScreen> {
     }
     final q = qs[_i];
     final question = switch (widget.mode) {
-      FlashMode.bag => q.card.asksPin ? l.qWhichPinOffice : q.card.asksPosition ? l.qWhichPosition : q.card.asksOffice ? l.qWhichOfficePin : q.card.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
+      FlashMode.bag => q.card.asksParent ? l.qWhichParentBo : q.card.asksPin ? l.qWhichPinOffice : q.card.asksPosition ? l.qWhichPosition : q.card.asksOffice ? l.qWhichOfficePin : q.card.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
       FlashMode.air => l.qWhichAirCode,
       FlashMode.hub => l.qWhichHub,
     };
@@ -189,6 +192,11 @@ class _QuizScreenState extends State<QuizScreen> {
                   onPressed: () => _choose(o),
                   child: Text(q.card.asksPosition ? l.positionN(o) : o, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800), textAlign: TextAlign.center),
                 ),
+              ),
+            if (_chosen != null && q.card.near != null && q.card.answerDetail.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text('${q.card.answer} · ${q.card.answerDetail}', style: t.bodyLarge?.copyWith(fontWeight: FontWeight.w600), textAlign: TextAlign.center),
               ),
           ],
         ),
