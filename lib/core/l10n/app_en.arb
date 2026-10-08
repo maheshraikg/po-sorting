@@ -788,6 +788,17 @@
       }
     }
   },
+  "learnSectionBo": "BO practice",
+  "learnSectionBoHint": "Branch offices on your TD lines: BO name → PIN. The answer also shows its SO and line.",
+  "qWhichPinBo": "Which PIN for this branch office",
+  "boList": "BO: {names}",
+  "@boList": {
+    "placeholders": {
+      "names": {
+        "type": "String"
+      }
+    }
+  },
   "noSchemes": "No schemes yet. Import your office's sorting scheme (Excel/CSV), create one, or try the SAMPLE.",
   "schemesPrivacy": "Schemes are department documents: they stay on this phone. Share only with your team.",
   "importScheme": "Import scheme",

@@ -105,6 +105,27 @@ class SchemeRepo {
     await b.commit(noResult: true);
   });
 
+  /// Replaces every rule of [category] in a scheme. Bags of the old rules
+  /// left without any rule are removed; new bags are added (existing ones
+  /// keep their colour).
+  Future<void> replaceCategoryRules(int schemeId, String category, List<BagRule> rules, List<Bag> bags) => db.transaction((t) async {
+    final old = await t.rawQuery('SELECT DISTINCT bag_code FROM rules WHERE scheme_id = ? AND category = ?', [schemeId, category]);
+    await t.delete('rules', where: 'scheme_id = ? AND category = ?', whereArgs: [schemeId, category]);
+    final b = t.batch();
+    for (final r in rules) {
+      b.insert('rules', r.toRow(schemeId));
+    }
+    for (final bag in bags) {
+      b.insert('bags', _bagRow(schemeId, bag), conflictAlgorithm: ConflictAlgorithm.ignore);
+    }
+    await b.commit(noResult: true);
+    for (final row in old) {
+      final code = row['bag_code'] as String;
+      final left = await t.rawQuery('SELECT 1 FROM rules WHERE scheme_id = ? AND bag_code = ? LIMIT 1', [schemeId, code]);
+      if (left.isEmpty) await t.delete('bags', where: 'scheme_id = ? AND bag_code = ?', whereArgs: [schemeId, code]);
+    }
+  });
+
   // ------------------------------------------------------------------- bags
 
   Map<String, Object?> _bagRow(int schemeId, Bag b) => {

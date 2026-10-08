@@ -26,11 +26,17 @@ Future<AppServices> _openServices(Settings settings) async {
     if ((await s.schemes.schemes()).isEmpty) {
       await installDefaultScheme(s.schemes, loadAssetBytes);
       await s.reloadActive();
+      settings.defaultDataVersion = kDefaultDataVersion;
     }
     settings.defaultSchemeDone = true;
   }
   // Default scheme installed before its air codes were bundled.
   if (await addDefaultAirCodes(s.schemes, loadAssetBytes)) await s.reloadActive();
+  // Default scheme installed with older Non-TD data (once per data version).
+  if (settings.defaultDataVersion < kDefaultDataVersion) {
+    if (await updateDefaultNonTd(s.schemes, loadAssetBytes)) await s.reloadActive();
+    settings.defaultDataVersion = kDefaultDataVersion;
+  }
   return s;
 }
 

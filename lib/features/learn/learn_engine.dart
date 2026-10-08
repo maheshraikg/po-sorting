@@ -5,6 +5,8 @@ import 'dart:math';
 
 import '../../core/constants.dart';
 import '../../core/fuzzy.dart';
+import '../../data/directory_repo.dart';
+import '../../data/models/office.dart';
 import '../../data/models/scheme.dart';
 import '../../data/resolver.dart';
 import '../../data/scheme_repo.dart';
@@ -20,6 +22,9 @@ enum LearnSection {
 
   /// TD articles for the Udupi side: PIN → post office.
   udupiTd,
+
+  /// Branch offices on TD lines: BO name → PIN.
+  bo,
 
   /// Non-TD bags.
   nonTd,
@@ -44,7 +49,14 @@ class LearnCard {
     this.category,
     this.asksOffice = false,
     this.asksPosition = false,
+    this.asksPin = false,
   });
+
+  /// The answer is the PIN of this branch office.
+  final bool asksPin;
+
+  /// Cards with the same kind share answer options (bag / office / PIN / position).
+  int get answerKind => asksOffice ? 1 : asksPin ? 2 : asksPosition ? 3 : 0;
 
   /// The answer is the office's position on its line.
   final bool asksPosition;
@@ -101,11 +113,15 @@ int nextBox(int box, bool correct) => correct ? min(box + 1, 5) : 1;
 int dueAfter(int box, DateTime now) => now.add(kLeitnerIntervals[box]).millisecondsSinceEpoch;
 
 class LearnEngine {
-  LearnEngine(this.scheme, {Iterable<int> directoryPins = const [], this._regions = const {}, Random? random})
+  LearnEngine(this.scheme, {Iterable<int> directoryPins = const [], this._regions = const {}, this.branchOffices = const [], Random? random})
     : _pins = directoryPins.toList()..sort(),
       _rnd = random ?? Random();
 
   final ActiveScheme scheme;
+
+  /// Offices (all types) at the TD PINs of the scheme, for BO practice; see
+  /// [loadBranchOffices].
+  final List<Office> branchOffices;
   final List<int> _pins;
   final Map<int, ({List<String> districts, List<String> states})> _regions;
   final Random _rnd;
@@ -162,7 +178,10 @@ class LearnEngine {
     for (final r in scheme.bagResolver.rules) {
       final cat = r.category;
       final udupi = isUdupiSideBag(scheme.bagFor(r));
-      if (cat == null || cat.isEmpty || cat == kCatTD) has.add(udupi ? LearnSection.udupiTd : LearnSection.mangaloreTd);
+      if (cat == null || cat.isEmpty || cat == kCatTD) {
+        has.add(udupi ? LearnSection.udupiTd : LearnSection.mangaloreTd);
+        if (r.match.type == RuleType.exact) has.add(LearnSection.bo);
+      }
       if (cat == null || cat.isEmpty || cat == kCatNonTD) has.add(LearnSection.nonTd);
     }
     if (has.length < 2) return const [];
@@ -172,6 +191,7 @@ class LearnEngine {
   List<LearnCard> cards(FlashMode mode, {Set<int>? onlyPins, LearnSection section = LearnSection.all}) {
     if (mode == FlashMode.bag && onlyPins == null && section != LearnSection.all) {
       if (section == LearnSection.udupiTd) return _udupiCards();
+      if (section == LearnSection.bo) return _boCards();
       final udupiCodes = {for (final b in scheme.bags.values) if (isUdupiSideBag(b)) b.code};
       bool td(String? c) => c == null || c == kCatTD;
       bool nonTd(String? c) => c == null || c == kCatNonTD;
@@ -241,6 +261,54 @@ class LearnEngine {
     return out.values.toList();
   }
 
+  /// PINs of the TD lines (exact PIN rules) → line.
+  Map<int, String> _tdPinLines() => {
+    for (final r in scheme.bagResolver.rules)
+      if (_isTdRule(r) && r.match.type == RuleType.exact && r.match.pin != null) r.match.pin!: r.bagCode,
+  };
+
+  /// Offices at the TD PINs of [scheme] (branch offices and their SO / HO).
+  static Future<List<Office>> loadBranchOffices(DirectorySource dir, ActiveScheme scheme) async {
+    final pins = LearnEngine(scheme)._tdPinLines().keys.toSet();
+    final prefixes = {for (final p in pins) p ~/ 1000};
+    final out = <Office>[];
+    for (final p in prefixes) {
+      for (final o in await dir.officesInRange(p * 1000, p * 1000 + 999)) {
+        if (pins.contains(o.pincode)) out.add(o);
+      }
+    }
+    return out;
+  }
+
+  /// Branch offices on TD lines: BO name → PIN (answer shows SO and line).
+  List<LearnCard> _boCards() {
+    final lines = _tdPinLines();
+    final byPin = <int, List<Office>>{};
+    for (final o in branchOffices) {
+      (byPin[o.pincode] ??= []).add(o);
+    }
+    final out = <String, LearnCard>{};
+    for (final e in byPin.entries) {
+      final line = lines[e.key];
+      if (line == null) continue;
+      final so = e.value.where((o) => o.officeType != 'BO').map((o) => o.officeName).firstOrNull;
+      for (final o in e.value.where((o) => o.officeType == 'BO')) {
+        final key = 'bo:${e.key}:${o.officeName}';
+        out[key] = LearnCard(
+          key: key,
+          prompt: '${o.officeName} BO',
+          answer: '${e.key}',
+          answerDetail: so == null ? line : '$so · $line',
+          prefix: '${e.key}'.substring(0, 3),
+          isPin: false,
+          category: kCatTD,
+          asksPin: true,
+        );
+      }
+    }
+    return out.values.toList();
+  }
+
   /// Udupi-side TD: every PIN on the Udupi line → its post office.
   List<LearnCard> _udupiCards() {
     final out = <String, LearnCard>{};
@@ -265,6 +333,11 @@ class LearnEngine {
     final all = cards(mode, section: section)..shuffle(_rnd);
     final answers = all.map((c) => c.answer).toSet().toList();
     if (answers.length < 2) return const [];
+    final byKind = <int, List<String>>{};
+    for (final c in all) {
+      final l = byKind[c.answerKind] ??= [];
+      if (!l.contains(c.answer)) l.add(c.answer);
+    }
     final picked = <LearnCard>[];
     while (picked.length < count && all.isNotEmpty) {
       picked.addAll(all.take(count - picked.length));
@@ -273,7 +346,12 @@ class LearnEngine {
     return [
       for (final c in picked)
         () {
-          final others = answers.where((a) => a != c.answer).toList()..shuffle(_rnd);
+          var others = byKind[c.answerKind]!.where((a) => a != c.answer).toList()..shuffle(_rnd);
+          // BO → PIN: choices from nearby PINs, so the answer is not obvious.
+          if (c.asksPin) {
+            final pin = int.parse(c.answer);
+            others = (others..sort((a, b) => (int.parse(a) - pin).abs().compareTo((int.parse(b) - pin).abs()))).take(6).toList()..shuffle(_rnd);
+          }
           final opts = [c.answer, ...others.take(3)]..shuffle(_rnd);
           return QuizQuestion(c, opts);
         }(),

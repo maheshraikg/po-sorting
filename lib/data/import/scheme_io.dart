@@ -47,6 +47,29 @@ Future<bool> addDefaultAirCodes(SchemeRepo repo, Future<Uint8List> Function(Stri
   return added;
 }
 
+/// Version of the bundled default data. 2 = Karnataka revised L1 PH sheet.
+const int kDefaultDataVersion = 2;
+
+/// Brings an installed default scheme up to the bundled sorting data: its
+/// Non-TD bags and air codes are replaced from the revised L1 PH sheet. TD
+/// lines (which users edit for their office) are left as they are.
+/// Returns true if a scheme was updated.
+Future<bool> updateDefaultNonTd(SchemeRepo repo, Future<Uint8List> Function(String path) loadAsset) async {
+  var updated = false;
+  for (final s in await repo.schemes()) {
+    if (s.name != kDefaultSchemeName || s.id == null) continue;
+    final t = readTable(await loadAsset(kDefaultSchemeAsset), 'x.csv');
+    final res = autoImport<BagRule>(t.sheets[t.defaultSheet]!, ImportKind.bagRules);
+    final nonTd = res.rules.where((r) => r.category == kCatNonTD).toList();
+    final codes = {for (final r in nonTd) r.bagCode};
+    final bags = completeBags(res.rules, res.bags, _palette).where((b) => codes.contains(b.code)).toList();
+    await repo.replaceCategoryRules(s.id!, kCatNonTD, nonTd, bags);
+    await repo.replaceAirCodes(s.id!, await _defaultAirCodes(loadAsset));
+    updated = true;
+  }
+  return updated;
+}
+
 /// Installs the bundled default scheme and makes it active. Returns its id.
 Future<int> installDefaultScheme(SchemeRepo repo, Future<Uint8List> Function(String path) loadAsset) async {
   final t = readTable(await loadAsset(kDefaultSchemeAsset), 'x.csv');

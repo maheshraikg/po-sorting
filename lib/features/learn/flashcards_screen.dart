@@ -10,6 +10,7 @@ import '../../core/feedback.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../../core/labels.dart';
 import '../../core/widgets.dart';
+import '../../data/models/office.dart';
 import 'learn_engine.dart';
 import 'learn_screen.dart' show learnSectionLabel;
 import 'progress.dart';
@@ -53,7 +54,8 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       return;
     }
     final regions = await s.pinRegions();
-    final engine = LearnEngine(scheme, directoryPins: regions.keys, regions: regions);
+    final bos = widget.section == LearnSection.bo ? await LearnEngine.loadBranchOffices(s.directory, scheme) : const <Office>[];
+    final engine = LearnEngine(scheme, directoryPins: regions.keys, regions: regions, branchOffices: bos);
     final cards = engine.cards(widget.mode, onlyPins: widget.onlyPins, section: widget.section);
     final boxes = await s.user.leitner(scheme.scheme.id!);
     final now = DateTime.now().millisecondsSinceEpoch;
@@ -128,7 +130,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     final box = _boxes[c.key]?.box ?? 1;
     final t = Theme.of(context).textTheme;
     final question = switch (widget.mode) {
-      FlashMode.bag => c.asksOffice ? l.qWhichOfficePin : c.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
+      FlashMode.bag => c.asksPin ? l.qWhichPinBo : c.asksOffice ? l.qWhichOfficePin : c.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
       FlashMode.air => l.qWhichAirCode,
       FlashMode.hub => l.qWhichHub,
     };

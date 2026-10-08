@@ -1286,6 +1286,21 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String get learnSectionBo => 'BO ಅಭ್ಯಾಸ';
+
+  @override
+  String get learnSectionBoHint =>
+      'ನಿಮ್ಮ TD ಲೈನ್‌ಗಳ ಶಾಖಾ ಅಂಚೆ ಕಚೇರಿಗಳು: BO ಹೆಸರು → ಪಿನ್. ಉತ್ತರದಲ್ಲಿ SO ಮತ್ತು ಲೈನ್ ಸಹ ಕಾಣುತ್ತದೆ.';
+
+  @override
+  String get qWhichPinBo => 'ಈ ಶಾಖಾ ಕಚೇರಿಯ ಪಿನ್ ಯಾವುದು';
+
+  @override
+  String boList(String names) {
+    return 'BO: $names';
+  }
+
+  @override
   String get noSchemes =>
       'ಇನ್ನೂ ಸ್ಕೀಮ್‌ಗಳಿಲ್ಲ. ನಿಮ್ಮ ಕಚೇರಿಯ ಸಾರ್ಟಿಂಗ್ ಸ್ಕೀಮ್ (Excel/CSV) ಆಮದು ಮಾಡಿ, ಹೊಸದು ರಚಿಸಿ ಅಥವಾ ಮಾದರಿ ಪ್ರಯತ್ನಿಸಿ.';
 

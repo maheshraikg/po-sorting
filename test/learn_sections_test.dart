@@ -19,11 +19,27 @@ void main() {
     await installDefaultScheme(repo, (p) async => File(p).readAsBytesSync());
     final dir = await fixtureRepo();
     final regions = await dir.pinRegions();
-    engine = LearnEngine((await repo.loadActive())!, directoryPins: regions.keys, regions: regions, random: Random(3));
+    final scheme = (await repo.loadActive())!;
+    final bos = await LearnEngine.loadBranchOffices(dir, scheme);
+    engine = LearnEngine(scheme, directoryPins: regions.keys, regions: regions, branchOffices: bos, random: Random(3));
   });
 
-  test('the default scheme has Mangalore TD, Udupi TD and Non-TD sections', () {
-    expect(engine.sections(), [LearnSection.all, LearnSection.mangaloreTd, LearnSection.udupiTd, LearnSection.nonTd]);
+  test('BO practice: branch office → PIN, with its SO and line', () {
+    final cards = engine.cards(FlashMode.bag, section: LearnSection.bo);
+    final darbe = cards.firstWhere((c) => c.prompt == 'Darbe BO');
+    expect(darbe.answer, '574202');
+    expect(darbe.asksPin, isTrue);
+    expect(darbe.answerDetail, contains('Puttur Line'));
+    expect(cards.any((c) => c.prompt == 'Kabaka BO' && c.answer == '574220'), isTrue);
+    // Kerala's Puttur BO is not on a TD line.
+    expect(cards.any((c) => c.answer == '671543'), isFalse);
+    final quiz = engine.quiz(FlashMode.bag, section: LearnSection.bo);
+    expect(quiz, isNotEmpty);
+    expect(quiz.every((q) => q.options.contains(q.card.answer) && q.options.every((o) => RegExp(r'^\d{6}$').hasMatch(o))), isTrue);
+  });
+
+  test('the default scheme has Mangalore TD, Udupi TD, BO and Non-TD sections', () {
+    expect(engine.sections(), [LearnSection.all, LearnSection.mangaloreTd, LearnSection.udupiTd, LearnSection.bo, LearnSection.nonTd]);
   });
 
   test('Mangalore side: TD lines only, never the Udupi line', () {

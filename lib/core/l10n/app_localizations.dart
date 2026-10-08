@@ -2326,6 +2326,30 @@ abstract class AppLocalizations {
   /// **'Position {pos}'**
   String positionN(String pos);
 
+  /// No description provided for @learnSectionBo.
+  ///
+  /// In en, this message translates to:
+  /// **'BO practice'**
+  String get learnSectionBo;
+
+  /// No description provided for @learnSectionBoHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch offices on your TD lines: BO name → PIN. The answer also shows its SO and line.'**
+  String get learnSectionBoHint;
+
+  /// No description provided for @qWhichPinBo.
+  ///
+  /// In en, this message translates to:
+  /// **'Which PIN for this branch office'**
+  String get qWhichPinBo;
+
+  /// No description provided for @boList.
+  ///
+  /// In en, this message translates to:
+  /// **'BO: {names}'**
+  String boList(String names);
+
   /// No description provided for @noSchemes.
   ///
   /// In en, this message translates to:

@@ -1283,6 +1283,21 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String get learnSectionBo => 'BO अभ्यास';
+
+  @override
+  String get learnSectionBoHint =>
+      'आपकी TD लाइनों के शाखा डाकघर: BO नाम → पिन। उत्तर में SO और लाइन भी दिखती है।';
+
+  @override
+  String get qWhichPinBo => 'इस शाखा डाकघर का पिन कौन-सा है';
+
+  @override
+  String boList(String names) {
+    return 'BO: $names';
+  }
+
+  @override
   String get noSchemes =>
       'अभी कोई स्कीम नहीं। अपने कार्यालय की सॉर्टिंग स्कीम (Excel/CSV) आयात करें, नई बनाएं, या नमूना आज़माएं।';
 

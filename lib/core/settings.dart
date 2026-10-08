@@ -79,6 +79,11 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Bundled default data version already applied (see kDefaultDataVersion).
+  int get defaultDataVersion => _prefs.getInt('defaultDataVersion') ?? 1;
+
+  set defaultDataVersion(int v) => _prefs.setInt('defaultDataVersion', v);
+
   // ---- Learning progress (XP, level, daily streak, game records) ----
 
   int get learnXp => _prefs.getInt('learnXp') ?? 0;

@@ -31,8 +31,10 @@ void main() {
     expect(code(416501), 'BOM'); // 4165 Mumbai
     expect(code(246001), 'DED'); // Dehradun 246
     expect(code(411001), 'PNQ');
-    expect(code(416515), 'NIL'); // Margaon, no air code
-    expect(hasAirCode(code(416515)!), isFalse);
+    expect(code(416515), 'BOM'); // Margaon merged into Mumbai (revised L1 PH)
+    expect(code(900099), 'CCU'); // 2 CBPO (revised sheet)
+    expect(code(670001), 'NIL'); // Kozhikode, no air code
+    expect(hasAirCode(code(670001)!), isFalse);
     expect(code(561202), 'NIL'); // Tumakuru
     expect(code(561201), 'BLR');
     expect(code(574201), isNull); // Mangaluru PH: no air code
@@ -69,7 +71,7 @@ void main() {
     expect(find.byKey(const ValueKey('air_IXE')), findsNothing);
   });
 
-  test('Non-TD lines follow the MR PH sheet', () async {
+  test('Non-TD lines follow the revised Karnataka L1 PH sheet', () async {
     final repo = SchemeRepo(await memoryUserDb());
     await installDefaultScheme(repo, _asset);
     final s = (await repo.loadActive())!;
@@ -77,10 +79,21 @@ void main() {
     expect(line(415001), 'PUNE');
     expect(line(416001), 'PUNE');
     expect(line(415601), 'MUMBAI'); // 4156
-    expect(line(416515), 'MARGAON');
+    expect(line(416515), 'MUMBAI'); // Margaon merged (revised L1 PH)
     expect(line(246001), 'DEHRADUN');
     expect(line(841101), 'PATNA');
-    expect(line(842001), 'MUZAFFARPUR');
+    expect(line(842001), 'PATNA'); // Muzaffarpur merged
+    expect(line(620001), 'CHENNAI'); // Trichy merged
+    expect(line(305001), 'JAIPUR'); // Ajmer merged
+    expect(line(390001), 'AHMEDABAD'); // Vadodara merged
+    expect(line(793001), 'GUWAHATI'); // Shillong merged
+    expect(line(796001), 'SILCHAR'); // Aizawl
+    expect(line(763001), 'VISAKHAPATNAM'); // listed under VTZ
+    expect(line(533001), 'VIJAYAWADA');
+    expect(line(171001), 'SHIMLA');
+    expect(line(194101), 'DELHI'); // Leh
+    expect(line(410101), 'MUMBAI'); // 4101
+    expect(line(670001), 'KOZHIKODE'); // Kannur merged
     expect(line(470113), 'BHOPAL');
     expect(line(679102), 'COIMBATORE');
     expect(line(679001), 'THRISSUR');

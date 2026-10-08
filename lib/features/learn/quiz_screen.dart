@@ -12,6 +12,7 @@ import '../../core/l10n/app_localizations.dart';
 import '../../core/labels.dart';
 import '../../core/theme.dart';
 import '../../core/widgets.dart';
+import '../../data/models/office.dart';
 import '../../data/user_repo.dart';
 import 'learn_engine.dart';
 import 'learn_screen.dart' show learnSectionLabel;
@@ -64,7 +65,8 @@ class _QuizScreenState extends State<QuizScreen> {
       return;
     }
     final regions = await s.pinRegions();
-    final engine = LearnEngine(scheme, directoryPins: regions.keys, regions: regions);
+    final bos = widget.section == LearnSection.bo ? await LearnEngine.loadBranchOffices(s.directory, scheme) : const <Office>[];
+    final engine = LearnEngine(scheme, directoryPins: regions.keys, regions: regions, branchOffices: bos);
     final qs = widget.lineCode != null ? engine.lineQuiz(widget.lineCode!) : engine.quiz(widget.mode, section: widget.section);
     if (!mounted) return;
     setState(() {
@@ -149,7 +151,7 @@ class _QuizScreenState extends State<QuizScreen> {
     }
     final q = qs[_i];
     final question = switch (widget.mode) {
-      FlashMode.bag => q.card.asksPosition ? l.qWhichPosition : q.card.asksOffice ? l.qWhichOfficePin : q.card.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
+      FlashMode.bag => q.card.asksPin ? l.qWhichPinBo : q.card.asksPosition ? l.qWhichPosition : q.card.asksOffice ? l.qWhichOfficePin : q.card.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
       FlashMode.air => l.qWhichAirCode,
       FlashMode.hub => l.qWhichHub,
     };

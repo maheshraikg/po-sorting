@@ -45,13 +45,44 @@ class LinePickerScreen extends StatelessWidget {
   }
 }
 
-class LineStudyScreen extends StatelessWidget {
+class LineStudyScreen extends StatefulWidget {
   const LineStudyScreen({super.key, required this.bag});
 
   final Bag bag;
 
   @override
+  State<LineStudyScreen> createState() => _LineStudyScreenState();
+}
+
+class _LineStudyScreenState extends State<LineStudyScreen> {
+  /// Branch office names per PIN of this line.
+  Map<int, List<String>> _bos = const {};
+  bool _loaded = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_loaded) {
+      _loaded = true;
+      _loadBos();
+    }
+  }
+
+  Future<void> _loadBos() async {
+    final s = context.services;
+    final scheme = s.active;
+    if (scheme == null) return;
+    final offices = await LearnEngine.loadBranchOffices(s.directory, scheme);
+    final out = <int, List<String>>{};
+    for (final o in offices) {
+      if (o.officeType == 'BO') (out[o.pincode] ??= []).add(o.officeName);
+    }
+    if (mounted) setState(() => _bos = out);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final bag = widget.bag;
     final l = AppLocalizations.of(context);
     final scheme = context.services.active;
     final stops = scheme == null ? const <LineStop>[] : LearnEngine(scheme).lineStops(bag.code);
@@ -80,6 +111,7 @@ class LineStudyScreen extends StatelessWidget {
                   child: Text(s.position.isEmpty ? '•' : s.position, style: const TextStyle(fontWeight: FontWeight.w900)),
                 ),
                 title: Text(s.office, style: const TextStyle(fontWeight: FontWeight.w700)),
+                subtitle: s.pin == null || _bos[s.pin] == null ? null : Text(l.boList(_bos[s.pin]!.join(', ')), style: t.bodySmall),
                 trailing: s.pin == null || s.office == '${s.pin}' ? null : Text('${s.pin}', style: t.titleMedium?.copyWith(fontWeight: FontWeight.w700, letterSpacing: 1)),
               ),
             ),

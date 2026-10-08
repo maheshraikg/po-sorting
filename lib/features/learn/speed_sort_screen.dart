@@ -13,6 +13,7 @@ import '../../core/l10n/app_localizations.dart';
 import '../../core/labels.dart';
 import '../../core/theme.dart';
 import '../../core/widgets.dart';
+import '../../data/models/office.dart';
 import 'learn_engine.dart';
 import 'learn_screen.dart' show learnSectionLabel;
 import 'progress.dart';
@@ -64,7 +65,8 @@ class _SpeedSortScreenState extends State<SpeedSortScreen> {
       return;
     }
     final regions = await s.pinRegions();
-    final cards = LearnEngine(scheme, directoryPins: regions.keys, regions: regions, random: _rnd).cards(FlashMode.bag, section: widget.section);
+    final bos = widget.section == LearnSection.bo ? await LearnEngine.loadBranchOffices(s.directory, scheme) : const <Office>[];
+    final cards = LearnEngine(scheme, directoryPins: regions.keys, regions: regions, branchOffices: bos, random: _rnd).cards(FlashMode.bag, section: widget.section);
     if (mounted) setState(() => _deck = cards);
   }
 
@@ -94,7 +96,7 @@ class _SpeedSortScreenState extends State<SpeedSortScreen> {
       _next = 0;
     }
     final c = deck[_next++];
-    final answers = {for (final o in deck) if (o.asksOffice == c.asksOffice) o.answer}..remove(c.answer);
+    final answers = {for (final o in deck) if (o.answerKind == c.answerKind) o.answer}..remove(c.answer);
     final others = answers.toList()..shuffle(_rnd);
     setState(() {
       _card = c;
@@ -204,7 +206,7 @@ class _SpeedSortScreenState extends State<SpeedSortScreen> {
     final c = _card!;
     final secs = (max(0, _leftMs) / 1000).ceil();
     final mult = comboMultiplier(_combo);
-    final question = c.asksOffice ? l.qWhichOfficePin : c.isPin ? l.qWhichBagPin : l.qWhichBagPlace;
+    final question = c.asksPin ? l.qWhichPinBo : c.asksOffice ? l.qWhichOfficePin : c.isPin ? l.qWhichBagPin : l.qWhichBagPlace;
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: Padding(

@@ -1283,6 +1283,21 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get learnSectionBo => 'BO practice';
+
+  @override
+  String get learnSectionBoHint =>
+      'Branch offices on your TD lines: BO name → PIN. The answer also shows its SO and line.';
+
+  @override
+  String get qWhichPinBo => 'Which PIN for this branch office';
+
+  @override
+  String boList(String names) {
+    return 'BO: $names';
+  }
+
+  @override
   String get noSchemes =>
       'No schemes yet. Import your office\'s sorting scheme (Excel/CSV), create one, or try the SAMPLE.';
 

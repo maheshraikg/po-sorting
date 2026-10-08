@@ -22,6 +22,7 @@ String learnSectionLabel(AppLocalizations l, LearnSection s) => switch (s) {
   LearnSection.all => l.learnSectionAll,
   LearnSection.mangaloreTd => l.learnSectionMangaloreTd,
   LearnSection.udupiTd => l.learnSectionUdupiTd,
+  LearnSection.bo => l.learnSectionBo,
   LearnSection.nonTd => l.learnSectionNonTd,
 };
 
@@ -29,6 +30,7 @@ String _sectionHint(AppLocalizations l, LearnSection s) => switch (s) {
   LearnSection.all => l.learnSectionAllHint,
   LearnSection.mangaloreTd => l.learnSectionMangaloreTdHint,
   LearnSection.udupiTd => l.learnSectionUdupiTdHint,
+  LearnSection.bo => l.learnSectionBoHint,
   LearnSection.nonTd => l.learnSectionNonTdHint,
 };
 
