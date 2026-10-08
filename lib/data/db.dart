@@ -15,7 +15,7 @@ import 'user_db.dart';
 
 /// Bump when a newer bundled directory DB ships, so it replaces the copy in
 /// app storage (unless the user imported their own CSV).
-const int kBundledDirectoryVersion = 1;
+const int kBundledDirectoryVersion = 2;
 const String kDirectoryAsset = 'assets/db/pincode_directory.db';
 const String kDirectoryFile = 'pincode_directory.db';
 const String kUserDbFile = 'sorting_sahayak.db';

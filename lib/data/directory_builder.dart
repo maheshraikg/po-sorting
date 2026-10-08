@@ -327,3 +327,48 @@ Future<bool> writeDirectoryDb(
   onProgress?.call(1);
   return fts;
 }
+
+
+/// A local fix to an office name in the data.gov.in directory.
+class NameCorrection {
+  const NameCorrection({required this.pincode, required this.officeType, required this.oldName, required this.newName});
+
+  final int pincode;
+  final String officeType;
+  final String oldName;
+  final String newName;
+}
+
+/// Reads `pincode,office_type,old_name,new_name[,note]` lines (header first).
+List<NameCorrection> parseNameCorrections(String csv) => [
+  for (final line in csv.split(RegExp(r'\r?\n')).skip(1))
+    if (line.trim().isNotEmpty)
+      () {
+        final f = line.split(',');
+        return NameCorrection(pincode: int.parse(f[0].trim()), officeType: f[1].trim(), oldName: f[2].trim(), newName: f[3].trim());
+      }(),
+];
+
+/// Renames offices in a built directory DB. The old spelling stays
+/// searchable. Returns the number of offices renamed.
+Future<int> applyNameCorrections(Database db, List<NameCorrection> fixes) async {
+  var n = 0;
+  for (final c in fixes) {
+    final bare = c.newName.replaceAll(RegExp(r'\(.*?\)'), ' ').trim();
+    final norm = normalizePlace(bare.isEmpty ? c.newName : bare);
+    final words = {...placeWords(c.newName), ...placeWords(c.oldName)}.join(' ');
+    n += await db.rawUpdate(
+      'UPDATE offices SET office_name = ?, office_name_norm = ?, office_words = ?, name_key = ? '
+      'WHERE pincode = ? AND office_type = ? AND office_name = ?',
+      [c.newName, norm, words, phoneticKey(norm), c.pincode, c.officeType, c.oldName],
+    );
+  }
+  if (n > 0) {
+    try {
+      await db.execute("INSERT INTO offices_fts(offices_fts) VALUES('rebuild')");
+    } catch (_) {
+      // No FTS5 index in this DB.
+    }
+  }
+  return n;
+}

@@ -59,6 +59,11 @@ Future<void> main(List<String> args) async {
     onProgress: (p) => stdout.write('\r  writing ${(p * 100).toStringAsFixed(0)}%   '),
   );
   await db.execute('VACUUM');
+  final fixes = File('data/directory_corrections.csv');
+  if (fixes.existsSync()) {
+    final n = await applyNameCorrections(db, parseNameCorrections(fixes.readAsStringSync()));
+    stdout.writeln('\n  $n office names corrected (data/directory_corrections.csv)');
+  }
   await db.close();
   final size = out.lengthSync() / (1024 * 1024);
   stdout.writeln('\nWrote $output (${size.toStringAsFixed(1)} MB, FTS5: ${hasFts ? 'yes' : 'no'})');
