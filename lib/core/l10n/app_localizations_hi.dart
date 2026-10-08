@@ -803,6 +803,17 @@ class AppLocalizationsHi extends AppLocalizations {
   String get showAll => 'सभी दिखाएं';
 
   @override
+  String nshRmsDiffers(String hub) {
+    return 'RMS डेटा के अनुसार: $hub';
+  }
+
+  @override
+  String get rmsNshHubs => 'RMS डेटा के अनुसार NSH';
+
+  @override
+  String get rmsNshHubsSub => 'NSH शीट से अलग होने पर NSH कार्ड पर दिखता है';
+
+  @override
   String get findPinHint => 'डाकघर, गाँव, शहर, तहसील या ज़िला';
 
   @override

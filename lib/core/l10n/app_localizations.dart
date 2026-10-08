@@ -1510,6 +1510,24 @@ abstract class AppLocalizations {
   /// **'Show all'**
   String get showAll;
 
+  /// No description provided for @nshRmsDiffers.
+  ///
+  /// In en, this message translates to:
+  /// **'RMS data says: {hub}'**
+  String nshRmsDiffers(String hub);
+
+  /// No description provided for @rmsNshHubs.
+  ///
+  /// In en, this message translates to:
+  /// **'NSH as per RMS data'**
+  String get rmsNshHubs;
+
+  /// No description provided for @rmsNshHubsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown on the NSH card when it differs from the NSH sheet'**
+  String get rmsNshHubsSub;
+
   /// No description provided for @findPinHint.
   ///
   /// In en, this message translates to:

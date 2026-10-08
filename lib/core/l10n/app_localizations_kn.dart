@@ -801,6 +801,18 @@ class AppLocalizationsKn extends AppLocalizations {
   String get showAll => 'ಎಲ್ಲಾ ತೋರಿಸಿ';
 
   @override
+  String nshRmsDiffers(String hub) {
+    return 'RMS ಮಾಹಿತಿ ಪ್ರಕಾರ: $hub';
+  }
+
+  @override
+  String get rmsNshHubs => 'RMS ಮಾಹಿತಿಯ NSH';
+
+  @override
+  String get rmsNshHubsSub =>
+      'NSH ಹಾಳೆಗಿಂತ ಬೇರೆ ಇದ್ದಾಗ NSH ಕಾರ್ಡ್‌ನಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತದೆ';
+
+  @override
   String get findPinHint => 'ಕಚೇರಿ, ಗ್ರಾಮ, ನಗರ, ತಾಲ್ಲೂಕು ಅಥವಾ ಜಿಲ್ಲೆ';
 
   @override

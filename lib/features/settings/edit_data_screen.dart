@@ -46,6 +46,7 @@ class EditDataScreen extends StatelessWidget {
           tile('nsh', Icons.local_shipping_outlined, l.nshHubs, l.nshHubsSub, const NshEditorScreen()),
           tile('l1', Icons.alt_route, l.rmsL1Hubs, l.rmsL1HubsSub, const NshEditorScreen(kind: HubTableKind.l1)),
           tile('nph', Icons.inventory_2_outlined, l.nphHubs, l.nphHubsSub, const NshEditorScreen(kind: HubTableKind.nph)),
+          tile('rmsnsh', Icons.compare_arrows, l.rmsNshHubs, l.rmsNshHubsSub, const NshEditorScreen(kind: HubTableKind.rmsNsh)),
           tile('offices', Icons.edit_location_alt_outlined, l.officeFixes, l.officeFixesSub, const OfficeFixesScreen()),
           tile('schemes', Icons.file_open_outlined, l.editFiles, l.editFilesSub, const SchemesScreen()),
         ],

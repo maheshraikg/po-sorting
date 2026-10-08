@@ -36,12 +36,16 @@ class AppServices extends ChangeNotifier {
   NshTable? l1;
   NshTable? nph;
 
+  /// NSH per PIN from the RMS data (compared with the NSH extract).
+  NshTable? rmsNsh;
+
   void setNsh(NshTable t) => setTable(HubTableKind.nsh, t);
 
   NshTable? table(HubTableKind k) => switch (k) {
     HubTableKind.nsh => nsh,
     HubTableKind.l1 => l1,
     HubTableKind.nph => nph,
+    HubTableKind.rmsNsh => rmsNsh,
   };
 
   void setTable(HubTableKind k, NshTable t) {
@@ -52,6 +56,8 @@ class AppServices extends ChangeNotifier {
         l1 = t;
       case HubTableKind.nph:
         nph = t;
+      case HubTableKind.rmsNsh:
+        rmsNsh = t;
     }
     notifyListeners();
   }

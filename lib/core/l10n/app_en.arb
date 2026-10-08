@@ -453,6 +453,16 @@
   "nphHubs": "Parcel hubs (NPH)",
   "nphHubsSub": "Parcel hub for each PIN range",
   "showAll": "Show all",
+  "nshRmsDiffers": "RMS data says: {hub}",
+  "@nshRmsDiffers": {
+    "placeholders": {
+      "hub": {
+        "type": "String"
+      }
+    }
+  },
+  "rmsNshHubs": "NSH as per RMS data",
+  "rmsNshHubsSub": "Shown on the NSH card when it differs from the NSH sheet",
   "findPinHint": "Office, village, city, taluk or district",
   "findPinTip": "Type in English, ಕನ್ನಡ or हिन्दी. Spelling mistakes are fine: \"Puttoor\", \"Putur\" and \"ಪುತ್ತೂರು\" all find Puttur.",
   "allStates": "All states",

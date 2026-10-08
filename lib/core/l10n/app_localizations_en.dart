@@ -800,6 +800,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get showAll => 'Show all';
 
   @override
+  String nshRmsDiffers(String hub) {
+    return 'RMS data says: $hub';
+  }
+
+  @override
+  String get rmsNshHubs => 'NSH as per RMS data';
+
+  @override
+  String get rmsNshHubsSub =>
+      'Shown on the NSH card when it differs from the NSH sheet';
+
+  @override
   String get findPinHint => 'Office, village, city, taluk or district';
 
   @override

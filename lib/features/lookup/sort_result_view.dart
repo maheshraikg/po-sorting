@@ -141,8 +141,9 @@ class SortResultView extends StatelessWidget {
         children.add(gap);
       }
       final nsh = r.category == kCatNonTD ? services.nsh?.resolve(r.digits) : null;
+      final rmsNsh = r.category == kCatNonTD && r.complete ? services.rmsNsh?.resolve(r.digits)?.hub.name : null;
       if (nsh != null) {
-        children.add(NshCard(match: nsh));
+        children.add(NshCard(match: nsh, rmsNsh: rmsNsh));
         children.add(gap);
       }
       final l1 = r.category == kCatNonTD ? services.l1?.resolve(r.digits) : null;
@@ -347,10 +348,13 @@ class _OfficeListState extends State<_OfficeList> {
 /// NSH / ICH for speed post, shown under the PH bag: hub, circle and the PIN
 /// series the hub takes (from the NSH sorting extract).
 class NshCard extends StatelessWidget {
-  const NshCard({super.key, required this.match, this.compact = false});
+  const NshCard({super.key, required this.match, this.compact = false, this.rmsNsh});
 
   final NshMatch match;
   final bool compact;
+
+  /// NSH for this PIN in the RMS data; shown when it differs from the sheet.
+  final String? rmsNsh;
 
   @override
   Widget build(BuildContext context) {
@@ -402,6 +406,26 @@ class NshCard extends StatelessWidget {
                 const SizedBox(width: 4),
                 Expanded(child: Text(l.ichMappedTo(h.mappedTo), style: t.titleSmall?.copyWith(fontWeight: FontWeight.w800, color: accent))),
               ]),
+            ),
+          if (rmsNsh != null && !sameHub(rmsNsh!, h.name) && !(h.mappedTo.isNotEmpty && sameHub(rmsNsh!, h.mappedTo)))
+            Container(
+              key: const ValueKey('nsh_rms'),
+              margin: const EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(color: cs.tertiaryContainer, borderRadius: BorderRadius.circular(12)),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.compare_arrows, color: cs.onTertiaryContainer),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      l.nshRmsDiffers(rmsNsh!),
+                      style: t.bodyMedium?.copyWith(fontWeight: FontWeight.w800, color: cs.onTertiaryContainer),
+                    ),
+                  ),
+                ],
+              ),
             ),
           if (match.alsoListed.isNotEmpty)
             Container(

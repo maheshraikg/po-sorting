@@ -55,3 +55,4 @@ def build(col, kind, fname):
     return val
 l1 = build(6, 'L1', 'rms_l1.csv')
 nph = build(4, 'NPH', 'rms_nph.csv')
+nsh = build(5, 'NSH', 'rms_nsh.csv')

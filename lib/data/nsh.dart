@@ -13,12 +13,16 @@ const String kNshAsset = 'assets/schemes/nsh_mangalore.csv';
 /// (same columns as the NSH table; Kind = L1 / NPH).
 const String kRmsL1Asset = 'assets/schemes/rms_l1.csv';
 const String kRmsNphAsset = 'assets/schemes/rms_nph.csv';
+const String kRmsNshAsset = 'assets/schemes/rms_nsh.csv';
 
 /// The editable hub tables: bundled asset, and where the user's copy is kept.
 enum HubTableKind {
   nsh(kNshAsset, 'nshCsv'),
   l1(kRmsL1Asset, 'l1Csv'),
-  nph(kRmsNphAsset, 'nphCsv');
+  nph(kRmsNphAsset, 'nphCsv'),
+
+  /// NSH per PIN as the RMS data gives it (shown next to the NSH extract).
+  rmsNsh(kRmsNshAsset, 'rmsNshCsv');
 
   const HubTableKind(this.asset, this.prefsKey);
 
@@ -161,4 +165,27 @@ List<(String, String?)> seriesTokens(String series) {
     }
   }
   return out;
+}
+
+/// True when two hub names mean the same hub ("Bengaluru NSH" /
+/// "BENGALURU NSH", "Trivandrum NSH" / "THIRUVANANTHAPURAM NSH").
+bool sameHub(String a, String b) => _hubKey(a) == _hubKey(b);
+
+String _hubKey(String s) {
+  var k = s.toLowerCase().replaceAll(RegExp(r'\b(nsh|ich|l1u?|l2u?|rms|ph)\b'), ' ').replaceAll(RegExp(r'[^a-z]'), '');
+  const aliases = {
+    'bengalore': 'bengaluru',
+    'bangalore': 'bengaluru',
+    'kolkatta': 'kolkata',
+    'trivandrum': 'thiruvananthapuram',
+    'thrivandrum': 'thiruvananthapuram',
+    'hublidharwad': 'hubballidharwad',
+    'mangalore': 'mangaluru',
+    'vishakapatnam': 'visakhapatnam',
+    'vijayawda': 'vijayawada',
+    'hyderbad': 'hyderabad',
+    'ahmedbad': 'ahmedabad',
+    'nashikroad': 'nashik',
+  };
+  return aliases[k] ?? k;
 }

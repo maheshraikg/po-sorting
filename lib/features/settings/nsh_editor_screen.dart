@@ -123,6 +123,7 @@ String hubTableTitle(AppLocalizations l, HubTableKind k) => switch (k) {
   HubTableKind.nsh => l.nshHubs,
   HubTableKind.l1 => l.rmsL1Hubs,
   HubTableKind.nph => l.nphHubs,
+  HubTableKind.rmsNsh => l.rmsNshHubs,
 };
 
 class NshHubDialog extends StatefulWidget {
@@ -141,6 +142,7 @@ class _NshHubDialogState extends State<NshHubDialog> {
     HubTableKind.nsh => widget.hub?.kind == 'ICH' ? 'ICH' : 'NSH',
     HubTableKind.l1 => 'L1',
     HubTableKind.nph => 'NPH',
+    HubTableKind.rmsNsh => 'NSH',
   };
   late final _circle = TextEditingController(text: widget.hub?.circle ?? '');
   late final _series = TextEditingController(text: widget.hub?.series ?? '');
