@@ -28,7 +28,8 @@ void main() {
     final h = await _setUp(tester);
     await tester.pumpWidget(h.wrap(const EditDataScreen()));
     await settle(tester);
-    for (final k in ['lines', 'rules', 'air', 'nsh', 'offices']) {
+    for (final k in ['lines', 'rules', 'air', 'nsh', 'l1', 'nph', 'offices', 'schemes']) {
+      await tester.scrollUntilVisible(find.byKey(ValueKey('edit_$k')), 100, scrollable: find.byType(Scrollable).first);
       expect(find.byKey(ValueKey('edit_$k')), findsOneWidget);
     }
   });
