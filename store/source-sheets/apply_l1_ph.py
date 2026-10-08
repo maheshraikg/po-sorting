@@ -57,7 +57,8 @@ kept, dropped, decided, also = [], [], {}, {}
 for k, v in conflicts.items():
     names = list(dict.fromkeys(x[0] for x in v))
     decided[k] = names[0]  # first hub listed on the sheet
-    also[k] = names[1:]
+    codes = {x[0]: x[1] for x in v}
+    also[k] = [f"{n} ({codes[n] or 'no air code'})" for n in names[1:]]
 for r in old:
     k = key(r)
     if k[0] == 'prefix' or k[1] is None or (k[0] == 'P' and len(k[1]) < 3):
@@ -151,7 +152,8 @@ if write:
         n[A['Air Code']] = air or 'NIL'
         st = bag
         if bag == 'ARMY POST (APS)': st = '1 CBPO (APS)' if a == '900056' else '2 CBPO (APS)'
-        n[A['Station']] = st; n[A['Remarks']] = REM
+        n[A['Station']] = st
+        n[A['Remarks']] = f"Sheet also lists {a} under: {', '.join(also[k])}" if k in also else REM
         arows.append(n)
     o = io.StringIO(); csv.writer(o, lineterminator='\n').writerows(arows)
     open(D + 'mangaluru_air_codes.csv', 'w', encoding='utf-8').write(o.getvalue())

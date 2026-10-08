@@ -28,6 +28,7 @@ void main() {
     expect(code(733101), 'CCU'); // 7331 Kolkata
     expect(code(733201), 'IXB'); // 7332 Siliguri
     expect(code(416001), 'BOM'); // 415-416 listed first under Mumbai
+    expect(s.airResolver.resolve(const ResolveQuery(pin: 416001))!.rule.remarks, 'Sheet also lists 416 under: PUNE (PNQ)');
     expect(code(416501), 'BOM'); // 4165 Mumbai
     expect(code(246001), 'DEL'); // 246 listed first under Ghaziabad
     expect(code(411001), 'PNQ');

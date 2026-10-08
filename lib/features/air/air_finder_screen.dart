@@ -181,6 +181,22 @@ class _AirFinderScreenState extends State<AirFinderScreen> {
           ),
         );
       }
+      if (sheetRule != null && sheetRule.remarks.isNotEmpty) {
+        out.add(
+          Padding(
+            key: const ValueKey('air_remarks'),
+            padding: const EdgeInsets.only(top: 8),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(Icons.info_outline, color: Theme.of(context).colorScheme.primary),
+                const SizedBox(width: 8),
+                Expanded(child: Text(sheetRule.remarks, style: t.titleSmall?.copyWith(fontWeight: FontWeight.w700))),
+              ],
+            ),
+          ),
+        );
+      }
       // The office's sheet decides: no guessing from the nearest airport.
       if (schemeAir.isNotEmpty) {
         if (rule == null) {
