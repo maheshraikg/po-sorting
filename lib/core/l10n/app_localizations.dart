@@ -3237,6 +3237,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Thank you to everyone who shared data and feedback!'**
   String get contributorsThanks;
+
+  /// No description provided for @contactDeveloper.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact the developer'**
+  String get contactDeveloper;
+
+  /// No description provided for @contactDeveloperHint.
+  ///
+  /// In en, this message translates to:
+  /// **'For corrections, new sorting data or help.'**
+  String get contactDeveloperHint;
+
+  /// No description provided for @call.
+  ///
+  /// In en, this message translates to:
+  /// **'Call'**
+  String get call;
+
+  /// No description provided for @cannotOpenApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the app on this phone.'**
+  String get cannotOpenApp;
 }
 
 class _AppLocalizationsDelegate

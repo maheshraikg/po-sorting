@@ -1800,4 +1800,17 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get contributorsThanks =>
       'ಮಾಹಿತಿ ಮತ್ತು ಸಲಹೆ ನೀಡಿದ ಎಲ್ಲರಿಗೂ ಧನ್ಯವಾದಗಳು!';
+
+  @override
+  String get contactDeveloper => 'ಡೆವಲಪರ್ ಅವರನ್ನು ಸಂಪರ್ಕಿಸಿ';
+
+  @override
+  String get contactDeveloperHint =>
+      'ತಿದ್ದುಪಡಿಗಳು, ಹೊಸ ಸಾರ್ಟಿಂಗ್ ಮಾಹಿತಿ ಅಥವಾ ಸಹಾಯಕ್ಕಾಗಿ.';
+
+  @override
+  String get call => 'ಕರೆ ಮಾಡಿ';
+
+  @override
+  String get cannotOpenApp => 'ಈ ಫೋನ್‌ನಲ್ಲಿ ಆ್ಯಪ್ ತೆರೆಯಲು ಆಗಲಿಲ್ಲ.';
 }

@@ -1796,4 +1796,16 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get contributorsThanks => 'डेटा और सुझाव देने वाले सभी का धन्यवाद!';
+
+  @override
+  String get contactDeveloper => 'डेवलपर से संपर्क करें';
+
+  @override
+  String get contactDeveloperHint => 'सुधार, नया सॉर्टिंग डेटा या मदद के लिए।';
+
+  @override
+  String get call => 'कॉल करें';
+
+  @override
+  String get cannotOpenApp => 'इस फ़ोन पर ऐप नहीं खुल सका।';
 }

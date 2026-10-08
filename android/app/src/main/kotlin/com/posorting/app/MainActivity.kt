@@ -1,5 +1,7 @@
 package com.posorting.app
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageFormat
@@ -7,6 +9,7 @@ import android.graphics.Matrix
 import android.graphics.Rect
 import android.graphics.YuvImage
 import android.media.ExifInterface
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import com.googlecode.tesseract.android.TessBaseAPI
@@ -29,6 +32,25 @@ class MainActivity : FlutterActivity() {
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
+        // Contact the developer: opens the dialer / WhatsApp; the app itself
+        // needs no phone or internet permission.
+        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "po_sorting/contact").setMethodCallHandler { call, result ->
+            val uri = when (call.method) {
+                "dial" -> Uri.parse("tel:" + call.argument<String>("number")!!)
+                "whatsapp" -> Uri.parse("https://wa.me/" + call.argument<String>("number")!!)
+                else -> null
+            }
+            if (uri == null) {
+                result.notImplemented()
+            } else {
+                try {
+                    startActivity(Intent(if (call.method == "dial") Intent.ACTION_DIAL else Intent.ACTION_VIEW, uri))
+                    result.success(true)
+                } catch (e: ActivityNotFoundException) {
+                    result.success(false)
+                }
+            }
+        }
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "po_sorting/kannada_ocr").setMethodCallHandler { call, result ->
             when (call.method) {
                 "readFile" -> {

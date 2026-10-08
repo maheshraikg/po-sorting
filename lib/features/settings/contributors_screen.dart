@@ -2,13 +2,19 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../core/constants.dart';
 import '../../core/l10n/app_localizations.dart';
 
-/// Contributors: (name, role) per group. Edit here to add people.
-const kDeveloper = 'KAVYA';
+/// Contributors. Edit here to add people.
+const kDeveloper = 'Mahesh Rai';
+
+/// Developer's contact number (shown in the app, so it is public).
+const kDeveloperPhone = '8105693721';
 const kDataContributors = ['Ganesh Sir', 'Ranjith'];
+
+const _contact = MethodChannel('po_sorting/contact');
 
 class ContributorsScreen extends StatelessWidget {
   const ContributorsScreen({super.key});
@@ -42,6 +48,53 @@ class ContributorsScreen extends StatelessWidget {
           Text(l.contributorsIntro, textAlign: TextAlign.center, style: t.bodyMedium),
           heading(l.developedBy),
           person(kDeveloper, l.roleDeveloper, Icons.code, key: const ValueKey('contributor_developer')),
+          Card(
+            key: const ValueKey('contact_card'),
+            child: Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(l.contactDeveloper, style: t.titleSmall?.copyWith(fontWeight: FontWeight.w800)),
+                  const SizedBox(height: 4),
+                  Row(children: [
+                    Icon(Icons.phone, color: cs.primary),
+                    const SizedBox(width: 8),
+                    SelectableText(_spaced(kDeveloperPhone), style: t.titleLarge?.copyWith(fontWeight: FontWeight.w900, letterSpacing: 1)),
+                  ]),
+                  Text(l.contactDeveloperHint, style: t.bodySmall),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
+                      FilledButton.icon(
+                        key: const ValueKey('contact_call'),
+                        onPressed: () => _open(context, 'dial', kDeveloperPhone),
+                        icon: const Icon(Icons.call),
+                        label: Text(l.call),
+                      ),
+                      FilledButton.tonalIcon(
+                        key: const ValueKey('contact_whatsapp'),
+                        onPressed: () => _open(context, 'whatsapp', '91$kDeveloperPhone'),
+                        icon: const Icon(Icons.chat_outlined),
+                        label: const Text('WhatsApp'),
+                      ),
+                      OutlinedButton.icon(
+                        key: const ValueKey('contact_copy'),
+                        onPressed: () {
+                          Clipboard.setData(const ClipboardData(text: kDeveloperPhone));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.copied)));
+                        },
+                        icon: const Icon(Icons.copy),
+                        label: Text(l.copy),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
           heading(l.dataProvidedBy),
           for (final n in kDataContributors) person(n, l.roleData, Icons.local_shipping_outlined, key: ValueKey('contributor_$n')),
           heading(l.creditsTitle),
@@ -52,4 +105,20 @@ class ContributorsScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+String _spaced(String n) => n.length == 10 ? '${n.substring(0, 5)} ${n.substring(5)}' : n;
+
+Future<void> _open(BuildContext context, String method, String number) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final l = AppLocalizations.of(context);
+  bool ok;
+  try {
+    ok = await _contact.invokeMethod<bool>(method, {'number': number}) ?? false;
+  } on MissingPluginException {
+    ok = false;
+  } on PlatformException {
+    ok = false;
+  }
+  if (!ok) messenger.showSnackBar(SnackBar(content: Text(l.cannotOpenApp)));
 }

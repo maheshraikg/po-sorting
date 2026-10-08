@@ -522,5 +522,9 @@
   "roleData": "सॉर्टिंग लाइनें, बैग और PH शीट",
   "creditsTitle": "इनसे बना",
   "creditsText": "• पिन कोड निर्देशिका: data.gov.in (ओपन गवर्नमेंट डेटा लाइसेंस – भारत)\n• कन्नड़ पाठ पढ़ना: Tesseract OCR (Apache 2.0)\n• अंग्रेज़ी और हिंदी पाठ पढ़ना: Google ML Kit\n• ऐप फ्रेमवर्क: Flutter (ओपन सोर्स)",
-  "contributorsThanks": "डेटा और सुझाव देने वाले सभी का धन्यवाद!"
+  "contributorsThanks": "डेटा और सुझाव देने वाले सभी का धन्यवाद!",
+  "contactDeveloper": "डेवलपर से संपर्क करें",
+  "contactDeveloperHint": "सुधार, नया सॉर्टिंग डेटा या मदद के लिए।",
+  "call": "कॉल करें",
+  "cannotOpenApp": "इस फ़ोन पर ऐप नहीं खुल सका।"
 }

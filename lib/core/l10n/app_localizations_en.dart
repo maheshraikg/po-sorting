@@ -1796,4 +1796,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get contributorsThanks =>
       'Thank you to everyone who shared data and feedback!';
+
+  @override
+  String get contactDeveloper => 'Contact the developer';
+
+  @override
+  String get contactDeveloperHint =>
+      'For corrections, new sorting data or help.';
+
+  @override
+  String get call => 'Call';
+
+  @override
+  String get cannotOpenApp => 'Could not open the app on this phone.';
 }

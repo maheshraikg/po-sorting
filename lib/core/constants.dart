@@ -3,7 +3,7 @@ library;
 
 const String kAppNameEn = 'PO Sorting';
 const String kAppNameKn = 'ಪಿಒ ಸಾರ್ಟಿಂಗ್';
-const String kAppVersion = '1.0.6';
+const String kAppVersion = '1.0.7';
 
 /// Shown verbatim on the About screen (plus translations).
 const String kDisclaimerEn =

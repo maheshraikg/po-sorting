@@ -1073,5 +1073,9 @@
   "roleData": "Sorting lines, bags and PH sheets",
   "creditsTitle": "Built with",
   "creditsText": "• PIN code directory: data.gov.in (Open Government Data Licence – India)\n• Kannada text reading: Tesseract OCR (Apache 2.0)\n• English and Hindi text reading: Google ML Kit\n• App framework: Flutter (open source)",
-  "contributorsThanks": "Thank you to everyone who shared data and feedback!"
+  "contributorsThanks": "Thank you to everyone who shared data and feedback!",
+  "contactDeveloper": "Contact the developer",
+  "contactDeveloperHint": "For corrections, new sorting data or help.",
+  "call": "Call",
+  "cannotOpenApp": "Could not open the app on this phone."
 }
