@@ -78,4 +78,56 @@ class Settings extends ChangeNotifier {
     _prefs.setBool('mismatchField', v);
     notifyListeners();
   }
+
+  // ---- Learning progress (XP, level, daily streak, game records) ----
+
+  int get learnXp => _prefs.getInt('learnXp') ?? 0;
+
+  /// Day ("yyyy-mm-dd") XP was last earned.
+  String get learnLastDay => _prefs.getString('learnLastDay') ?? '';
+
+  int get _storedStreak => _prefs.getInt('learnStreak') ?? 0;
+
+  int get _storedTodayXp => _prefs.getInt('learnTodayXp') ?? 0;
+
+  /// Days in a row with practice; 0 once a day is missed.
+  int learnStreak([DateTime? now]) {
+    final d = _day(now ?? DateTime.now());
+    return learnLastDay == d || learnLastDay == _day((now ?? DateTime.now()).subtract(const Duration(days: 1))) ? _storedStreak : 0;
+  }
+
+  int learnTodayXp([DateTime? now]) => learnLastDay == _day(now ?? DateTime.now()) ? _storedTodayXp : 0;
+
+  /// Adds [xp] and updates the daily streak.
+  void addLearnXp(int xp, {DateTime? now}) {
+    if (xp <= 0) return;
+    final t = now ?? DateTime.now();
+    final today = _day(t);
+    final yesterday = _day(t.subtract(const Duration(days: 1)));
+    if (learnLastDay == today) {
+      _prefs.setInt('learnTodayXp', _storedTodayXp + xp);
+    } else {
+      _prefs.setInt('learnStreak', learnLastDay == yesterday ? _storedStreak + 1 : 1);
+      _prefs.setInt('learnTodayXp', xp);
+      _prefs.setString('learnLastDay', today);
+    }
+    _prefs.setInt('learnXp', learnXp + xp);
+    notifyListeners();
+  }
+
+  int speedBest(String key) => _prefs.getInt('speedBest_$key') ?? 0;
+
+  void setSpeedBest(String key, int score) {
+    _prefs.setInt('speedBest_$key', score);
+    notifyListeners();
+  }
+
+  void resetLearnProgress() {
+    for (final k in _prefs.getKeys().where((k) => k.startsWith('learn') || k.startsWith('speedBest_')).toList()) {
+      _prefs.remove(k);
+    }
+    notifyListeners();
+  }
+
+  static String _day(DateTime t) => '${t.year}-${t.month.toString().padLeft(2, '0')}-${t.day.toString().padLeft(2, '0')}';
 }

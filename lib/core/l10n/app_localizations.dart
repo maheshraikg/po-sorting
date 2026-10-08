@@ -2158,6 +2158,174 @@ abstract class AppLocalizations {
   /// **'Which post office has PIN'**
   String get qWhichOfficePin;
 
+  /// No description provided for @levelN.
+  ///
+  /// In en, this message translates to:
+  /// **'Level {n}'**
+  String levelN(int n);
+
+  /// No description provided for @levelBeginner.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner'**
+  String get levelBeginner;
+
+  /// No description provided for @levelLearner.
+  ///
+  /// In en, this message translates to:
+  /// **'Learner'**
+  String get levelLearner;
+
+  /// No description provided for @levelSorter.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorter'**
+  String get levelSorter;
+
+  /// No description provided for @levelSkilled.
+  ///
+  /// In en, this message translates to:
+  /// **'Skilled sorter'**
+  String get levelSkilled;
+
+  /// No description provided for @levelExpert.
+  ///
+  /// In en, this message translates to:
+  /// **'Expert'**
+  String get levelExpert;
+
+  /// No description provided for @levelMaster.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorting master'**
+  String get levelMaster;
+
+  /// No description provided for @xpToNext.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} XP to the next level'**
+  String xpToNext(int n);
+
+  /// No description provided for @xpTotal.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} XP – top level reached!'**
+  String xpTotal(int n);
+
+  /// No description provided for @xpGained.
+  ///
+  /// In en, this message translates to:
+  /// **'+{n} XP'**
+  String xpGained(int n);
+
+  /// No description provided for @streakDays.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} days'**
+  String streakDays(int n);
+
+  /// No description provided for @dailyGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s goal: {n} / {total} XP'**
+  String dailyGoal(int n, int total);
+
+  /// No description provided for @dailyGoalDone.
+  ///
+  /// In en, this message translates to:
+  /// **'Today\'s goal reached – great work! Keep the streak going tomorrow.'**
+  String get dailyGoalDone;
+
+  /// No description provided for @speedSort.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed sort game'**
+  String get speedSort;
+
+  /// No description provided for @speedSortSub.
+  ///
+  /// In en, this message translates to:
+  /// **'60 seconds – sort as many as you can, build combos'**
+  String get speedSortSub;
+
+  /// No description provided for @speedRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the right bag before time runs out. 3 right in a row = ×2 points, up to ×5. A wrong bag costs 3 seconds.'**
+  String get speedRules;
+
+  /// No description provided for @comboX.
+  ///
+  /// In en, this message translates to:
+  /// **'Combo ×{n}'**
+  String comboX(int n);
+
+  /// No description provided for @timeUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Time\'s up!'**
+  String get timeUp;
+
+  /// No description provided for @newRecord.
+  ///
+  /// In en, this message translates to:
+  /// **'New record!'**
+  String get newRecord;
+
+  /// No description provided for @bestScoreN.
+  ///
+  /// In en, this message translates to:
+  /// **'Best: {score}'**
+  String bestScoreN(int score);
+
+  /// No description provided for @speedSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'{n} right · {errors} wrong · best combo {count}'**
+  String speedSummary(int n, int errors, int count);
+
+  /// No description provided for @learnByLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn line by line'**
+  String get learnByLine;
+
+  /// No description provided for @learnByLineSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Study one line\'s offices in order, then practise it'**
+  String get learnByLineSub;
+
+  /// No description provided for @lineOfficesN.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} offices'**
+  String lineOfficesN(int count);
+
+  /// No description provided for @studyLineHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Read the offices in order. When you are ready, tap Practise this line.'**
+  String get studyLineHint;
+
+  /// No description provided for @practiseLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Practise this line'**
+  String get practiseLine;
+
+  /// No description provided for @qWhichPosition.
+  ///
+  /// In en, this message translates to:
+  /// **'Which position on the line'**
+  String get qWhichPosition;
+
+  /// No description provided for @positionN.
+  ///
+  /// In en, this message translates to:
+  /// **'Position {pos}'**
+  String positionN(String pos);
+
   /// No description provided for @noSchemes.
   ///
   /// In en, this message translates to:

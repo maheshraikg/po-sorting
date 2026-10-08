@@ -1172,6 +1172,117 @@ class AppLocalizationsEn extends AppLocalizations {
   String get qWhichOfficePin => 'Which post office has PIN';
 
   @override
+  String levelN(int n) {
+    return 'Level $n';
+  }
+
+  @override
+  String get levelBeginner => 'Beginner';
+
+  @override
+  String get levelLearner => 'Learner';
+
+  @override
+  String get levelSorter => 'Sorter';
+
+  @override
+  String get levelSkilled => 'Skilled sorter';
+
+  @override
+  String get levelExpert => 'Expert';
+
+  @override
+  String get levelMaster => 'Sorting master';
+
+  @override
+  String xpToNext(int n) {
+    return '$n XP to the next level';
+  }
+
+  @override
+  String xpTotal(int n) {
+    return '$n XP – top level reached!';
+  }
+
+  @override
+  String xpGained(int n) {
+    return '+$n XP';
+  }
+
+  @override
+  String streakDays(int n) {
+    return '$n days';
+  }
+
+  @override
+  String dailyGoal(int n, int total) {
+    return 'Today\'s goal: $n / $total XP';
+  }
+
+  @override
+  String get dailyGoalDone =>
+      'Today\'s goal reached – great work! Keep the streak going tomorrow.';
+
+  @override
+  String get speedSort => 'Speed sort game';
+
+  @override
+  String get speedSortSub =>
+      '60 seconds – sort as many as you can, build combos';
+
+  @override
+  String get speedRules =>
+      'Pick the right bag before time runs out. 3 right in a row = ×2 points, up to ×5. A wrong bag costs 3 seconds.';
+
+  @override
+  String comboX(int n) {
+    return 'Combo ×$n';
+  }
+
+  @override
+  String get timeUp => 'Time\'s up!';
+
+  @override
+  String get newRecord => 'New record!';
+
+  @override
+  String bestScoreN(int score) {
+    return 'Best: $score';
+  }
+
+  @override
+  String speedSummary(int n, int errors, int count) {
+    return '$n right · $errors wrong · best combo $count';
+  }
+
+  @override
+  String get learnByLine => 'Learn line by line';
+
+  @override
+  String get learnByLineSub =>
+      'Study one line\'s offices in order, then practise it';
+
+  @override
+  String lineOfficesN(int count) {
+    return '$count offices';
+  }
+
+  @override
+  String get studyLineHint =>
+      'Read the offices in order. When you are ready, tap Practise this line.';
+
+  @override
+  String get practiseLine => 'Practise this line';
+
+  @override
+  String get qWhichPosition => 'Which position on the line';
+
+  @override
+  String positionN(String pos) {
+    return 'Position $pos';
+  }
+
+  @override
   String get noSchemes =>
       'No schemes yet. Import your office\'s sorting scheme (Excel/CSV), create one, or try the SAMPLE.';
 

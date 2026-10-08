@@ -1175,6 +1175,117 @@ class AppLocalizationsKn extends AppLocalizations {
   String get qWhichOfficePin => 'ಈ ಪಿನ್ ಯಾವ ಅಂಚೆ ಕಚೇರಿಯದು';
 
   @override
+  String levelN(int n) {
+    return 'ಹಂತ $n';
+  }
+
+  @override
+  String get levelBeginner => 'ಆರಂಭಿಕ';
+
+  @override
+  String get levelLearner => 'ಕಲಿಯುವವರು';
+
+  @override
+  String get levelSorter => 'ಸಾರ್ಟರ್';
+
+  @override
+  String get levelSkilled => 'ನುರಿತ ಸಾರ್ಟರ್';
+
+  @override
+  String get levelExpert => 'ಪರಿಣತ';
+
+  @override
+  String get levelMaster => 'ಸಾರ್ಟಿಂಗ್ ಮಾಸ್ಟರ್';
+
+  @override
+  String xpToNext(int n) {
+    return 'ಮುಂದಿನ ಹಂತಕ್ಕೆ $n XP';
+  }
+
+  @override
+  String xpTotal(int n) {
+    return '$n XP – ಅತ್ಯುನ್ನತ ಹಂತ ತಲುಪಿದ್ದೀರಿ!';
+  }
+
+  @override
+  String xpGained(int n) {
+    return '+$n XP';
+  }
+
+  @override
+  String streakDays(int n) {
+    return '$n ದಿನ';
+  }
+
+  @override
+  String dailyGoal(int n, int total) {
+    return 'ಇಂದಿನ ಗುರಿ: $n / $total XP';
+  }
+
+  @override
+  String get dailyGoalDone =>
+      'ಇಂದಿನ ಗುರಿ ತಲುಪಿದ್ದೀರಿ – ಉತ್ತಮ ಕೆಲಸ! ನಾಳೆಯೂ ಮುಂದುವರಿಸಿ.';
+
+  @override
+  String get speedSort => 'ವೇಗದ ಸಾರ್ಟಿಂಗ್ ಆಟ';
+
+  @override
+  String get speedSortSub =>
+      '60 ಸೆಕೆಂಡ್ – ಸಾಧ್ಯವಾದಷ್ಟು ಸಾರ್ಟ್ ಮಾಡಿ, ಕಾಂಬೊ ಮಾಡಿ';
+
+  @override
+  String get speedRules =>
+      'ಸಮಯ ಮುಗಿಯುವ ಮೊದಲು ಸರಿಯಾದ ಚೀಲ ಆರಿಸಿ. ಸತತ 3 ಸರಿ = ×2 ಅಂಕ, ×5 ವರೆಗೆ. ತಪ್ಪು ಚೀಲಕ್ಕೆ 3 ಸೆಕೆಂಡ್ ಕಡಿತ.';
+
+  @override
+  String comboX(int n) {
+    return 'ಕಾಂಬೊ ×$n';
+  }
+
+  @override
+  String get timeUp => 'ಸಮಯ ಮುಗಿಯಿತು!';
+
+  @override
+  String get newRecord => 'ಹೊಸ ದಾಖಲೆ!';
+
+  @override
+  String bestScoreN(int score) {
+    return 'ಅತ್ಯುತ್ತಮ: $score';
+  }
+
+  @override
+  String speedSummary(int n, int errors, int count) {
+    return '$n ಸರಿ · $errors ತಪ್ಪು · ಉತ್ತಮ ಕಾಂಬೊ $count';
+  }
+
+  @override
+  String get learnByLine => 'ಲೈನ್‌ವಾರು ಕಲಿಯಿರಿ';
+
+  @override
+  String get learnByLineSub =>
+      'ಒಂದು ಲೈನ್‌ನ ಕಚೇರಿಗಳನ್ನು ಕ್ರಮವಾಗಿ ಓದಿ, ನಂತರ ಅಭ್ಯಾಸ ಮಾಡಿ';
+
+  @override
+  String lineOfficesN(int count) {
+    return '$count ಕಚೇರಿಗಳು';
+  }
+
+  @override
+  String get studyLineHint =>
+      'ಕಚೇರಿಗಳನ್ನು ಕ್ರಮವಾಗಿ ಓದಿ. ಸಿದ್ಧವಾದಾಗ \"ಈ ಲೈನ್ ಅಭ್ಯಾಸ\" ಒತ್ತಿ.';
+
+  @override
+  String get practiseLine => 'ಈ ಲೈನ್ ಅಭ್ಯಾಸ';
+
+  @override
+  String get qWhichPosition => 'ಲೈನ್‌ನಲ್ಲಿ ಯಾವ ಸ್ಥಾನ';
+
+  @override
+  String positionN(String pos) {
+    return 'ಸ್ಥಾನ $pos';
+  }
+
+  @override
   String get noSchemes =>
       'ಇನ್ನೂ ಸ್ಕೀಮ್‌ಗಳಿಲ್ಲ. ನಿಮ್ಮ ಕಚೇರಿಯ ಸಾರ್ಟಿಂಗ್ ಸ್ಕೀಮ್ (Excel/CSV) ಆಮದು ಮಾಡಿ, ಹೊಸದು ರಚಿಸಿ ಅಥವಾ ಮಾದರಿ ಪ್ರಯತ್ನಿಸಿ.';
 

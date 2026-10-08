@@ -15,11 +15,15 @@ import '../../core/widgets.dart';
 import '../../data/user_repo.dart';
 import 'learn_engine.dart';
 import 'learn_screen.dart' show learnSectionLabel;
+import 'progress.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key, required this.mode, this.section = LearnSection.all});
+  const QuizScreen({super.key, required this.mode, this.section = LearnSection.all, this.lineCode});
 
   final FlashMode mode;
+
+  /// Practise one line only (office → position).
+  final String? lineCode;
 
   /// Part of the scheme to practise (bag mode).
   final LearnSection section;
@@ -38,7 +42,7 @@ class _QuizScreenState extends State<QuizScreen> {
   List<QuizRecord> _history = [];
   bool _done = false;
 
-  String get _kind => widget.section == LearnSection.all ? 'quiz-${widget.mode.name}' : 'quiz-${widget.mode.name}-${widget.section.name}';
+  String get _kind => widget.lineCode != null ? 'line-${widget.lineCode}' : widget.section == LearnSection.all ? 'quiz-${widget.mode.name}' : 'quiz-${widget.mode.name}-${widget.section.name}';
 
   @override
   void didChangeDependencies() {
@@ -60,7 +64,8 @@ class _QuizScreenState extends State<QuizScreen> {
       return;
     }
     final regions = await s.pinRegions();
-    final qs = LearnEngine(scheme, directoryPins: regions.keys, regions: regions).quiz(widget.mode, section: widget.section);
+    final engine = LearnEngine(scheme, directoryPins: regions.keys, regions: regions);
+    final qs = widget.lineCode != null ? engine.lineQuiz(widget.lineCode!) : engine.quiz(widget.mode, section: widget.section);
     if (!mounted) return;
     setState(() {
       _qs = qs;
@@ -88,6 +93,7 @@ class _QuizScreenState extends State<QuizScreen> {
       if (right) _score++;
     });
     if (right) {
+      context.settings.addLearnXp(kXpCorrect);
       AppFeedback.success(context.settings);
     } else {
       AppFeedback.warning(context.settings);
@@ -118,7 +124,7 @@ class _QuizScreenState extends State<QuizScreen> {
     final l = AppLocalizations.of(context);
     final qs = _qs;
     final baseTitle = widget.mode == FlashMode.air ? l.airQuiz : l.timedQuiz;
-    final title = widget.section == LearnSection.all ? baseTitle : learnSectionLabel(l, widget.section);
+    final title = widget.lineCode ?? (widget.section == LearnSection.all ? baseTitle : learnSectionLabel(l, widget.section));
     if (qs == null) return Scaffold(appBar: AppBar(title: Text(title)), body: const Center(child: CircularProgressIndicator()));
     if (qs.isEmpty) return Scaffold(appBar: AppBar(title: Text(title)), body: EmptyState(icon: Icons.quiz_outlined, text: l.noCards));
     final t = Theme.of(context).textTheme;
@@ -143,7 +149,7 @@ class _QuizScreenState extends State<QuizScreen> {
     }
     final q = qs[_i];
     final question = switch (widget.mode) {
-      FlashMode.bag => q.card.asksOffice ? l.qWhichOfficePin : q.card.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
+      FlashMode.bag => q.card.asksPosition ? l.qWhichPosition : q.card.asksOffice ? l.qWhichOfficePin : q.card.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
       FlashMode.air => l.qWhichAirCode,
       FlashMode.hub => l.qWhichHub,
     };
@@ -178,7 +184,7 @@ class _QuizScreenState extends State<QuizScreen> {
                         : null,
                   ),
                   onPressed: () => _choose(o),
-                  child: Text(o, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800), textAlign: TextAlign.center),
+                  child: Text(q.card.asksPosition ? l.positionN(o) : o, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800), textAlign: TextAlign.center),
                 ),
               ),
           ],

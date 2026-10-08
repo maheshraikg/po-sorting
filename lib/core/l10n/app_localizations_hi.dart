@@ -1173,6 +1173,116 @@ class AppLocalizationsHi extends AppLocalizations {
   String get qWhichOfficePin => 'यह पिन किस डाकघर का है';
 
   @override
+  String levelN(int n) {
+    return 'स्तर $n';
+  }
+
+  @override
+  String get levelBeginner => 'शुरुआती';
+
+  @override
+  String get levelLearner => 'सीखने वाला';
+
+  @override
+  String get levelSorter => 'सॉर्टर';
+
+  @override
+  String get levelSkilled => 'कुशल सॉर्टर';
+
+  @override
+  String get levelExpert => 'विशेषज्ञ';
+
+  @override
+  String get levelMaster => 'सॉर्टिंग मास्टर';
+
+  @override
+  String xpToNext(int n) {
+    return 'अगले स्तर तक $n XP';
+  }
+
+  @override
+  String xpTotal(int n) {
+    return '$n XP – सबसे ऊँचा स्तर!';
+  }
+
+  @override
+  String xpGained(int n) {
+    return '+$n XP';
+  }
+
+  @override
+  String streakDays(int n) {
+    return '$n दिन';
+  }
+
+  @override
+  String dailyGoal(int n, int total) {
+    return 'आज का लक्ष्य: $n / $total XP';
+  }
+
+  @override
+  String get dailyGoalDone =>
+      'आज का लक्ष्य पूरा – बहुत बढ़िया! कल भी जारी रखें।';
+
+  @override
+  String get speedSort => 'स्पीड सॉर्ट गेम';
+
+  @override
+  String get speedSortSub => '60 सेकंड – जितना हो सके सॉर्ट करें, कॉम्बो बनाएं';
+
+  @override
+  String get speedRules =>
+      'समय खत्म होने से पहले सही बैग चुनें। लगातार 3 सही = ×2 अंक, ×5 तक। गलत बैग पर 3 सेकंड कटते हैं।';
+
+  @override
+  String comboX(int n) {
+    return 'कॉम्बो ×$n';
+  }
+
+  @override
+  String get timeUp => 'समय समाप्त!';
+
+  @override
+  String get newRecord => 'नया रिकॉर्ड!';
+
+  @override
+  String bestScoreN(int score) {
+    return 'सर्वश्रेष्ठ: $score';
+  }
+
+  @override
+  String speedSummary(int n, int errors, int count) {
+    return '$n सही · $errors गलत · सर्वश्रेष्ठ कॉम्बो $count';
+  }
+
+  @override
+  String get learnByLine => 'लाइन-दर-लाइन सीखें';
+
+  @override
+  String get learnByLineSub =>
+      'एक लाइन के कार्यालय क्रम से पढ़ें, फिर अभ्यास करें';
+
+  @override
+  String lineOfficesN(int count) {
+    return '$count कार्यालय';
+  }
+
+  @override
+  String get studyLineHint =>
+      'कार्यालयों को क्रम से पढ़ें। तैयार होने पर \"इस लाइन का अभ्यास\" दबाएं।';
+
+  @override
+  String get practiseLine => 'इस लाइन का अभ्यास';
+
+  @override
+  String get qWhichPosition => 'लाइन पर कौन-सा क्रम';
+
+  @override
+  String positionN(String pos) {
+    return 'क्रम $pos';
+  }
+
+  @override
   String get noSchemes =>
       'अभी कोई स्कीम नहीं। अपने कार्यालय की सॉर्टिंग स्कीम (Excel/CSV) आयात करें, नई बनाएं, या नमूना आज़माएं।';
 

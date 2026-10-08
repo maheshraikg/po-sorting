@@ -674,6 +674,120 @@
   "learnSectionUdupiTdHint": "Udupi side TD: PIN → which post office.",
   "learnSectionNonTdHint": "Non-TD bags: PIN → which bag.",
   "qWhichOfficePin": "Which post office has PIN",
+  "levelN": "Level {n}",
+  "@levelN": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "levelBeginner": "Beginner",
+  "levelLearner": "Learner",
+  "levelSorter": "Sorter",
+  "levelSkilled": "Skilled sorter",
+  "levelExpert": "Expert",
+  "levelMaster": "Sorting master",
+  "xpToNext": "{n} XP to the next level",
+  "@xpToNext": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "xpTotal": "{n} XP – top level reached!",
+  "@xpTotal": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "xpGained": "+{n} XP",
+  "@xpGained": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "streakDays": "{n} days",
+  "@streakDays": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "dailyGoal": "Today's goal: {n} / {total} XP",
+  "@dailyGoal": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "dailyGoalDone": "Today's goal reached – great work! Keep the streak going tomorrow.",
+  "speedSort": "Speed sort game",
+  "speedSortSub": "60 seconds – sort as many as you can, build combos",
+  "speedRules": "Pick the right bag before time runs out. 3 right in a row = ×2 points, up to ×5. A wrong bag costs 3 seconds.",
+  "comboX": "Combo ×{n}",
+  "@comboX": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "timeUp": "Time's up!",
+  "newRecord": "New record!",
+  "bestScoreN": "Best: {score}",
+  "@bestScoreN": {
+    "placeholders": {
+      "score": {
+        "type": "int"
+      }
+    }
+  },
+  "speedSummary": "{n} right · {errors} wrong · best combo {count}",
+  "@speedSummary": {
+    "placeholders": {
+      "n": {
+        "type": "int"
+      },
+      "errors": {
+        "type": "int"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "learnByLine": "Learn line by line",
+  "learnByLineSub": "Study one line's offices in order, then practise it",
+  "lineOfficesN": "{count} offices",
+  "@lineOfficesN": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "studyLineHint": "Read the offices in order. When you are ready, tap Practise this line.",
+  "practiseLine": "Practise this line",
+  "qWhichPosition": "Which position on the line",
+  "positionN": "Position {pos}",
+  "@positionN": {
+    "placeholders": {
+      "pos": {
+        "type": "String"
+      }
+    }
+  },
   "noSchemes": "No schemes yet. Import your office's sorting scheme (Excel/CSV), create one, or try the SAMPLE.",
   "schemesPrivacy": "Schemes are department documents: they stay on this phone. Share only with your team.",
   "importScheme": "Import scheme",

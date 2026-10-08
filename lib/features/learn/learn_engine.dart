@@ -4,6 +4,7 @@ library;
 import 'dart:math';
 
 import '../../core/constants.dart';
+import '../../core/fuzzy.dart';
 import '../../data/models/scheme.dart';
 import '../../data/resolver.dart';
 import '../../data/scheme_repo.dart';
@@ -42,7 +43,11 @@ class LearnCard {
     this.isPin = true,
     this.category,
     this.asksOffice = false,
+    this.asksPosition = false,
   });
+
+  /// The answer is the office's position on its line.
+  final bool asksPosition;
 
   /// The answer is the post office with this PIN (Udupi side), not a bag.
   final bool asksOffice;
@@ -63,6 +68,15 @@ class LearnCard {
   /// First three digits (for weak-area stats).
   final String? prefix;
   final bool isPin;
+}
+
+/// One stop of a line, for study mode.
+class LineStop {
+  const LineStop({required this.office, this.position = '', this.pin});
+
+  final String office;
+  final String position;
+  final int? pin;
 }
 
 class QuizQuestion {
@@ -264,5 +278,86 @@ class LearnEngine {
           return QuizQuestion(c, opts);
         }(),
     ];
+  }
+
+  bool _isTdRule(BagRule r) => r.category == null || r.category!.isEmpty || r.category == kCatTD;
+
+  /// TD lines that have offices or PINs to study, in line order.
+  List<Bag> studyLines() {
+    final codes = {for (final r in scheme.bagResolver.rules) if (_isTdRule(r)) r.bagCode}..removeWhere((c) => lineStops(c).isEmpty);
+    return [for (final c in scheme.bagOrder) if (codes.contains(c)) scheme.bags[c]!, for (final c in codes) if (!scheme.bags.containsKey(c)) Bag(code: c)];
+  }
+
+  /// Offices / PINs of a TD line, in position order (stops without a
+  /// position last, by PIN).
+  List<LineStop> lineStops(String bagCode) {
+    final offices = <({String office, String position})>[];
+    final pins = <({String office, String position, int pin})>[];
+    final seen = <String>{};
+    for (final r in scheme.bagResolver.rules) {
+      if (r.bagCode != bagCode || !_isTdRule(r)) continue;
+      final m = r.match;
+      final office = _officeLabel(r);
+      final position = r.section.trim();
+      if (m.type == RuleType.office && office.isNotEmpty) {
+        if (seen.add('o|${office.toLowerCase()}|$position')) offices.add((office: office, position: position));
+      } else if (m.type == RuleType.exact && m.pin != null) {
+        if (seen.add('p|${m.pin}')) pins.add((office: office, position: position, pin: m.pin!));
+      }
+    }
+    // The same office often has both a name rule and a PIN rule, spelt a
+    // little differently ("Guthigare" / "Guthigar"): show it once, with its PIN.
+    final pinOf = <int, int>{};
+    final used = <int>{};
+    for (var i = 0; i < offices.length; i++) {
+      var best = -1;
+      var bestScore = 0.0;
+      for (var j = 0; j < pins.length; j++) {
+        if (used.contains(j) || pins[j].office.isEmpty) continue;
+        if (pins[j].position.isNotEmpty && offices[i].position.isNotEmpty && pins[j].position != offices[i].position) continue;
+        final score = placeSimilarity(normalizePlace(offices[i].office), normalizePlace(pins[j].office));
+        if (score > bestScore) {
+          bestScore = score;
+          best = j;
+        }
+      }
+      if (best >= 0 && bestScore >= 0.75) {
+        pinOf[i] = pins[best].pin;
+        used.add(best);
+      }
+    }
+    final out = <LineStop>[
+      for (var i = 0; i < offices.length; i++) LineStop(office: offices[i].office, position: offices[i].position, pin: pinOf[i]),
+      for (var j = 0; j < pins.length; j++)
+        if (!used.contains(j)) LineStop(office: pins[j].office.isEmpty ? '${pins[j].pin}' : pins[j].office, position: pins[j].position, pin: pins[j].pin),
+    ];
+    int pos(LineStop s) => int.tryParse(s.position) ?? 1 << 30;
+    out.sort((a, b) {
+      final c = pos(a).compareTo(pos(b));
+      if (c != 0) return c;
+      return (a.pin ?? 0).compareTo(b.pin ?? 0);
+    });
+    return out;
+  }
+
+  /// Practice for one line: office → position, or PIN → office for stops
+  /// without a position.
+  List<QuizQuestion> lineQuiz(String bagCode, {int count = 15}) {
+    final stops = lineStops(bagCode);
+    final cards = <LearnCard>[
+      for (final s in stops)
+        if (s.position.isNotEmpty)
+          LearnCard(key: 'line:$bagCode:${s.office}', prompt: s.office, answer: s.position, answerDetail: bagCode, isPin: false, category: kCatTD, asksPosition: true)
+        else if (s.pin != null && s.office != '${s.pin}')
+          LearnCard(key: 'line:$bagCode:${s.pin}', prompt: '${s.pin}', answer: s.office, answerDetail: bagCode, prefix: '${s.pin}'.substring(0, 3), category: kCatTD, asksOffice: true),
+    ]..shuffle(_rnd);
+    final out = <QuizQuestion>[];
+    for (final c in cards.take(count)) {
+      final answers = {for (final o in cards) if (o.asksPosition == c.asksPosition) o.answer}..remove(c.answer);
+      if (answers.isEmpty) continue;
+      final others = answers.toList()..shuffle(_rnd);
+      out.add(QuizQuestion(c, [c.answer, ...others.take(3)]..shuffle(_rnd)));
+    }
+    return out;
   }
 }

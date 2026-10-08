@@ -12,6 +12,7 @@ import '../../core/labels.dart';
 import '../../core/widgets.dart';
 import 'learn_engine.dart';
 import 'learn_screen.dart' show learnSectionLabel;
+import 'progress.dart';
 
 export 'learn_engine.dart' show FlashMode, LearnSection;
 
@@ -83,6 +84,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       await s.user.addMistake(s.active!.scheme.id, 'flash-${widget.mode.name}', card.prompt, card.isPin ? card.prefix : null, card.answer, null);
     }
     if (!mounted) return;
+    context.settings.addLearnXp(knew ? kXpFlashKnew : kXpFlashTried);
     AppFeedback.tap(context.settings);
     setState(() {
       if (knew) {
