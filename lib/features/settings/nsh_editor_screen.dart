@@ -11,7 +11,9 @@ import '../../core/widgets.dart';
 import '../../data/nsh.dart';
 
 class NshEditorScreen extends StatefulWidget {
-  const NshEditorScreen({super.key});
+  const NshEditorScreen({super.key, this.kind = HubTableKind.nsh});
+
+  final HubTableKind kind;
 
   @override
   State<NshEditorScreen> createState() => _NshEditorScreenState();
@@ -22,13 +24,13 @@ class _NshEditorScreenState extends State<NshEditorScreen> {
 
   Future<void> _save(List<NshHub> hubs) async {
     final t = NshTable(hubs);
-    context.settings.nshCsv = t.toCsv();
-    context.services.setNsh(t);
+    context.settings.setTableCsv(widget.kind.prefsKey, t.toCsv());
+    context.services.setTable(widget.kind, t);
     setState(() {});
   }
 
   Future<void> _edit(List<NshHub> hubs, [int? index]) async {
-    final h = await showDialog<NshHub>(context: context, builder: (_) => NshHubDialog(hub: index == null ? null : hubs[index]));
+    final h = await showDialog<NshHub>(context: context, builder: (_) => NshHubDialog(hub: index == null ? null : hubs[index], kind: widget.kind));
     if (h == null || !mounted) return;
     final next = [...hubs];
     if (index == null) {
@@ -44,16 +46,16 @@ class _NshEditorScreenState extends State<NshEditorScreen> {
     if (!await confirm(context, l.nshResetConfirm)) return;
     if (!mounted) return;
     final services = context.services;
-    context.settings.nshCsv = null;
-    services.setNsh(NshTable.parse(await loadAssetBytes(kNshAsset)));
+    context.settings.setTableCsv(widget.kind.prefsKey, null);
+    services.setTable(widget.kind, NshTable.parse(await loadAssetBytes(widget.kind.asset)));
     if (mounted) setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
-    final hubs = context.services.nsh?.hubs ?? const <NshHub>[];
-    final edited = context.settings.nshCsv != null;
+    final hubs = context.services.table(widget.kind)?.hubs ?? const <NshHub>[];
+    final edited = context.settings.tableCsv(widget.kind.prefsKey) != null;
     final f = _filter.trim().toLowerCase();
     final shown = [
       for (var i = 0; i < hubs.length; i++)
@@ -61,7 +63,7 @@ class _NshEditorScreenState extends State<NshEditorScreen> {
     ];
     return Scaffold(
       appBar: AppBar(
-        title: Text(l.nshHubs),
+        title: Text(hubTableTitle(l, widget.kind)),
         actions: [
           IconButton(tooltip: l.nshReset, onPressed: _reset, icon: const Icon(Icons.restart_alt)),
         ],
@@ -117,10 +119,17 @@ class _NshEditorScreenState extends State<NshEditorScreen> {
   }
 }
 
+String hubTableTitle(AppLocalizations l, HubTableKind k) => switch (k) {
+  HubTableKind.nsh => l.nshHubs,
+  HubTableKind.l1 => l.rmsL1Hubs,
+  HubTableKind.nph => l.nphHubs,
+};
+
 class NshHubDialog extends StatefulWidget {
-  const NshHubDialog({super.key, this.hub});
+  const NshHubDialog({super.key, this.hub, this.kind = HubTableKind.nsh});
 
   final NshHub? hub;
+  final HubTableKind kind;
 
   @override
   State<NshHubDialog> createState() => _NshHubDialogState();
@@ -128,7 +137,11 @@ class NshHubDialog extends StatefulWidget {
 
 class _NshHubDialogState extends State<NshHubDialog> {
   late final _name = TextEditingController(text: widget.hub?.name ?? '');
-  late String _kind = widget.hub?.kind == 'ICH' ? 'ICH' : 'NSH';
+  late String _kind = switch (widget.kind) {
+    HubTableKind.nsh => widget.hub?.kind == 'ICH' ? 'ICH' : 'NSH',
+    HubTableKind.l1 => 'L1',
+    HubTableKind.nph => 'NPH',
+  };
   late final _circle = TextEditingController(text: widget.hub?.circle ?? '');
   late final _series = TextEditingController(text: widget.hub?.series ?? '');
   late final _mapped = TextEditingController(text: widget.hub?.mappedTo ?? '');
@@ -136,7 +149,7 @@ class _NshHubDialogState extends State<NshHubDialog> {
 
   void _submit() {
     final l = AppLocalizations.of(context);
-    final name = _name.text.trim().toUpperCase();
+    final name = widget.kind == HubTableKind.nsh ? _name.text.trim().toUpperCase() : _name.text.trim();
     final series = _series.text.trim();
     if (name.isEmpty || seriesTokens(series).isEmpty) {
       setState(() => _error = l.nshInvalid);
@@ -159,7 +172,8 @@ class _NshHubDialogState extends State<NshHubDialog> {
           children: [
             TextField(key: const ValueKey('nsh_dialog_name'), controller: _name, textCapitalization: TextCapitalization.characters, decoration: InputDecoration(labelText: l.nshHubName)),
             const SizedBox(height: 8),
-            SegmentedButton<String>(
+            if (widget.kind == HubTableKind.nsh)
+              SegmentedButton<String>(
               segments: const [ButtonSegment(value: 'NSH', label: Text('NSH')), ButtonSegment(value: 'ICH', label: Text('ICH'))],
               selected: {_kind},
               onSelectionChanged: (v) => setState(() => _kind = v.first),

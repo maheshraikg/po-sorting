@@ -1462,6 +1462,54 @@ abstract class AppLocalizations {
   /// **'The sheet lists {series} under: {hubs}'**
   String nshAlsoListed(String series, String hubs);
 
+  /// No description provided for @rmsL1Label.
+  ///
+  /// In en, this message translates to:
+  /// **'RMS L1 / L2'**
+  String get rmsL1Label;
+
+  /// No description provided for @rmsL1None.
+  ///
+  /// In en, this message translates to:
+  /// **'No L1 in the RMS data for this PIN'**
+  String get rmsL1None;
+
+  /// No description provided for @nphLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Parcel hub (NPH): {hub}'**
+  String nphLine(String hub);
+
+  /// No description provided for @rmsL1Hubs.
+  ///
+  /// In en, this message translates to:
+  /// **'RMS L1 / L2'**
+  String get rmsL1Hubs;
+
+  /// No description provided for @rmsL1HubsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'L1 sorting offices and their PIN ranges'**
+  String get rmsL1HubsSub;
+
+  /// No description provided for @nphHubs.
+  ///
+  /// In en, this message translates to:
+  /// **'Parcel hubs (NPH)'**
+  String get nphHubs;
+
+  /// No description provided for @nphHubsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Parcel hub for each PIN range'**
+  String get nphHubsSub;
+
+  /// No description provided for @showAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Show all'**
+  String get showAll;
+
   /// No description provided for @findPinHint.
   ///
   /// In en, this message translates to:

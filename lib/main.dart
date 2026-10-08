@@ -35,11 +35,13 @@ Future<AppServices> _openServices(Settings settings) async {
     }
     settings.defaultSchemeDone = true;
   }
-  try {
-    final own = settings.nshCsv;
-    s.nsh = own != null ? NshTable.parse(Uint8List.fromList(utf8.encode(own))) : NshTable.parse(await loadAssetBytes(kNshAsset));
-  } catch (_) {
-    // Missing or unreadable sheet: the NSH card is simply not shown.
+  for (final k in HubTableKind.values) {
+    try {
+      final own = settings.tableCsv(k.prefsKey);
+      s.setTable(k, NshTable.parse(own != null ? Uint8List.fromList(utf8.encode(own)) : await loadAssetBytes(k.asset)));
+    } catch (_) {
+      // Missing or unreadable table: its card is simply not shown.
+    }
   }
   // The user's own office name fixes (kept across directory updates).
   await applyOfficeFixes(settings, s);

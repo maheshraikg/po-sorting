@@ -775,6 +775,32 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String get rmsL1Label => 'RMS L1 / L2';
+
+  @override
+  String get rmsL1None => 'ಈ ಪಿನ್‌ಗೆ RMS ಮಾಹಿತಿಯಲ್ಲಿ L1 ಇಲ್ಲ';
+
+  @override
+  String nphLine(String hub) {
+    return 'ಪಾರ್ಸೆಲ್ ಹಬ್ (NPH): $hub';
+  }
+
+  @override
+  String get rmsL1Hubs => 'RMS L1 / L2';
+
+  @override
+  String get rmsL1HubsSub => 'L1 ಸಾರ್ಟಿಂಗ್ ಕಚೇರಿಗಳು ಮತ್ತು ಪಿನ್ ವ್ಯಾಪ್ತಿ';
+
+  @override
+  String get nphHubs => 'ಪಾರ್ಸೆಲ್ ಹಬ್‌ಗಳು (NPH)';
+
+  @override
+  String get nphHubsSub => 'ಪ್ರತಿ ಪಿನ್ ವ್ಯಾಪ್ತಿಯ ಪಾರ್ಸೆಲ್ ಹಬ್';
+
+  @override
+  String get showAll => 'ಎಲ್ಲಾ ತೋರಿಸಿ';
+
+  @override
   String get findPinHint => 'ಕಚೇರಿ, ಗ್ರಾಮ, ನಗರ, ತಾಲ್ಲೂಕು ಅಥವಾ ಜಿಲ್ಲೆ';
 
   @override

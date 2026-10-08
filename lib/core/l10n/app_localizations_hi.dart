@@ -777,6 +777,32 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String get rmsL1Label => 'RMS L1 / L2';
+
+  @override
+  String get rmsL1None => 'इस पिन के लिए RMS डेटा में L1 नहीं';
+
+  @override
+  String nphLine(String hub) {
+    return 'पार्सल हब (NPH): $hub';
+  }
+
+  @override
+  String get rmsL1Hubs => 'RMS L1 / L2';
+
+  @override
+  String get rmsL1HubsSub => 'L1 सॉर्टिंग कार्यालय और उनकी पिन रेंज';
+
+  @override
+  String get nphHubs => 'पार्सल हब (NPH)';
+
+  @override
+  String get nphHubsSub => 'हर पिन रेंज का पार्सल हब';
+
+  @override
+  String get showAll => 'सभी दिखाएं';
+
+  @override
   String get findPinHint => 'डाकघर, गाँव, शहर, तहसील या ज़िला';
 
   @override

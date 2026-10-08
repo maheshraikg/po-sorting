@@ -32,8 +32,27 @@ class AppServices extends ChangeNotifier {
   /// user's edited copy).
   NshTable? nsh;
 
-  void setNsh(NshTable t) {
-    nsh = t;
+  /// RMS L1 and NPH per PIN (MR RMS sorting data, or the user's copies).
+  NshTable? l1;
+  NshTable? nph;
+
+  void setNsh(NshTable t) => setTable(HubTableKind.nsh, t);
+
+  NshTable? table(HubTableKind k) => switch (k) {
+    HubTableKind.nsh => nsh,
+    HubTableKind.l1 => l1,
+    HubTableKind.nph => nph,
+  };
+
+  void setTable(HubTableKind k, NshTable t) {
+    switch (k) {
+      case HubTableKind.nsh:
+        nsh = t;
+      case HubTableKind.l1:
+        l1 = t;
+      case HubTableKind.nph:
+        nph = t;
+    }
     notifyListeners();
   }
 

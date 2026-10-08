@@ -774,6 +774,32 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get rmsL1Label => 'RMS L1 / L2';
+
+  @override
+  String get rmsL1None => 'No L1 in the RMS data for this PIN';
+
+  @override
+  String nphLine(String hub) {
+    return 'Parcel hub (NPH): $hub';
+  }
+
+  @override
+  String get rmsL1Hubs => 'RMS L1 / L2';
+
+  @override
+  String get rmsL1HubsSub => 'L1 sorting offices and their PIN ranges';
+
+  @override
+  String get nphHubs => 'Parcel hubs (NPH)';
+
+  @override
+  String get nphHubsSub => 'Parcel hub for each PIN range';
+
+  @override
+  String get showAll => 'Show all';
+
+  @override
   String get findPinHint => 'Office, village, city, taluk or district';
 
   @override

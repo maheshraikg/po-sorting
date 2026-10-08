@@ -86,16 +86,22 @@ class Settings extends ChangeNotifier {
 
   set defaultDataVersion(int v) => _prefs.setInt('defaultDataVersion', v);
 
-  /// The user's edited NSH / ICH table (CSV), or null for the bundled sheet.
-  String? get nshCsv => _prefs.getString('nshCsv');
+  /// The user's edited copy of a hub table (CSV), or null for the bundled
+  /// sheet. [key] is the table's prefs key (nshCsv, l1Csv, nphCsv).
+  String? tableCsv(String key) => _prefs.getString(key);
 
-  set nshCsv(String? v) {
+  void setTableCsv(String key, String? v) {
     if (v == null) {
-      _prefs.remove('nshCsv');
+      _prefs.remove(key);
     } else {
-      _prefs.setString('nshCsv', v);
+      _prefs.setString(key, v);
     }
+    notifyListeners();
   }
+
+  String? get nshCsv => tableCsv('nshCsv');
+
+  set nshCsv(String? v) => setTableCsv('nshCsv', v);
 
   /// The user's own office name fixes: [{pin, type, old, new}], applied to
   /// the directory on every start (so they survive directory updates).

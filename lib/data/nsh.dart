@@ -9,6 +9,23 @@ import 'import/table_reader.dart';
 
 const String kNshAsset = 'assets/schemes/nsh_mangalore.csv';
 
+/// RMS L1 and NPH (parcel hub) per PIN, from the MR RMS sorting data
+/// (same columns as the NSH table; Kind = L1 / NPH).
+const String kRmsL1Asset = 'assets/schemes/rms_l1.csv';
+const String kRmsNphAsset = 'assets/schemes/rms_nph.csv';
+
+/// The editable hub tables: bundled asset, and where the user's copy is kept.
+enum HubTableKind {
+  nsh(kNshAsset, 'nshCsv'),
+  l1(kRmsL1Asset, 'l1Csv'),
+  nph(kRmsNphAsset, 'nphCsv');
+
+  const HubTableKind(this.asset, this.prefsKey);
+
+  final String asset;
+  final String prefsKey;
+}
+
 class NshHub {
   const NshHub({required this.name, required this.kind, required this.circle, required this.series, this.mappedTo = '', this.exclude = const {}});
 

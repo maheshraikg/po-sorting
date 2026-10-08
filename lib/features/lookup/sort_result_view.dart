@@ -71,6 +71,11 @@ class SortResultView extends StatelessWidget {
         children.add(NshCard(match: nshPart, compact: true));
         children.add(gap);
       }
+      final l1Part = r.category == kCatNonTD && r.digits.length >= 3 ? services.l1?.resolve(r.digits) : null;
+      if (l1Part != null) {
+        children.add(RmsL1Card(l1: l1Part, compact: true));
+        children.add(gap);
+      }
       if (r.likelyBag != null) {
         children.add(Text(l.likelyBag, style: Theme.of(context).textTheme.labelLarge));
         children.add(BagCard(bag: r.likelyBag!, compact: true));
@@ -138,6 +143,12 @@ class SortResultView extends StatelessWidget {
       final nsh = r.category == kCatNonTD ? services.nsh?.resolve(r.digits) : null;
       if (nsh != null) {
         children.add(NshCard(match: nsh));
+        children.add(gap);
+      }
+      final l1 = r.category == kCatNonTD ? services.l1?.resolve(r.digits) : null;
+      final nph = r.category == kCatNonTD ? services.nph?.resolve(r.digits) : null;
+      if (l1 != null || nph != null) {
+        children.add(RmsL1Card(l1: l1, nph: nph));
         children.add(gap);
       }
       if (scheme != null && r.otherBag != null) {
@@ -416,6 +427,96 @@ class NshCard extends StatelessWidget {
           Text(l.nshPinRange, style: t.labelMedium?.copyWith(fontWeight: FontWeight.w800, color: cs.onSurfaceVariant)),
           Text(h.series, key: const ValueKey('nsh_series'), style: t.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
           Text(l.nshMatched(match.matched), style: t.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
+        ],
+      ),
+    );
+  }
+}
+
+/// RMS L1 (and the NPH parcel hub) for the PIN, from the MR RMS sorting data.
+class RmsL1Card extends StatefulWidget {
+  const RmsL1Card({super.key, this.l1, this.nph, this.compact = false});
+
+  final NshMatch? l1;
+  final NshMatch? nph;
+  final bool compact;
+
+  @override
+  State<RmsL1Card> createState() => _RmsL1CardState();
+}
+
+class _RmsL1CardState extends State<RmsL1Card> {
+  static const _short = 140;
+  bool _all = false;
+
+  /// End of the last whole series before [_short] characters.
+  static int _cut(String s) {
+    final i = s.lastIndexOf(',', _short);
+    return i > 0 ? i : _short;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final t = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
+    const accent = Color(0xFF6D28D9);
+    final h = widget.l1?.hub;
+    final series = h?.series ?? '';
+    final long = series.length > _short && !_all;
+    return Container(
+      key: const ValueKey('l1_card'),
+      decoration: BoxDecoration(
+        color: cs.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(widget.compact ? 16 : 20),
+        border: Border.all(color: accent, width: 2),
+      ),
+      padding: EdgeInsets.fromLTRB(16, widget.compact ? 10 : 14, 16, widget.compact ? 10 : 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.alt_route, color: accent),
+              const SizedBox(width: 8),
+              Expanded(child: Text(l.rmsL1Label, style: t.labelMedium?.copyWith(color: accent, letterSpacing: 1.2, fontWeight: FontWeight.w900))),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(color: accent, borderRadius: BorderRadius.circular(8)),
+                child: Text('L1', style: t.labelMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w900)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          if (h == null)
+            Text(l.rmsL1None, style: t.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: cs.onSurfaceVariant))
+          else ...[
+            Text(h.name, key: const ValueKey('l1_name'), style: (widget.compact ? t.titleLarge : t.headlineSmall)?.copyWith(fontWeight: FontWeight.w900, height: 1.15)),
+            if (h.circle.isNotEmpty) Text(h.circle, style: t.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: cs.onSurfaceVariant)),
+          ],
+          if (widget.nph != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 6),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.inventory_2_outlined, size: 20, color: cs.onSurfaceVariant),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(l.nphLine(widget.nph!.hub.name), key: const ValueKey('nph_name'), style: t.titleSmall?.copyWith(fontWeight: FontWeight.w800)),
+                  ),
+                ],
+              ),
+            ),
+          if (h != null) ...[
+            const SizedBox(height: 6),
+            Text(l.nshPinRange, style: t.labelMedium?.copyWith(fontWeight: FontWeight.w800, color: cs.onSurfaceVariant)),
+            Text(long ? '${series.substring(0, _cut(series))}, …' : series,
+                key: const ValueKey('l1_series'), style: t.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+            if (long)
+              TextButton(key: const ValueKey('l1_more'), onPressed: () => setState(() => _all = true), child: Text(l.showAll)),
+            Text(l.nshMatched(widget.l1!.matched), style: t.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
+          ],
         ],
       ),
     );
