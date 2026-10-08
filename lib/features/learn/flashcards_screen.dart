@@ -10,20 +10,22 @@ import '../../core/feedback.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../../core/labels.dart';
 import '../../core/widgets.dart';
-import '../../data/models/office.dart';
 import 'learn_engine.dart';
 import 'learn_screen.dart' show learnSectionLabel;
 import 'progress.dart';
 
-export 'learn_engine.dart' show FlashMode, LearnSection;
+export 'learn_engine.dart' show FlashMode, LearnAsk, LearnSection;
 
 class FlashcardsScreen extends StatefulWidget {
-  const FlashcardsScreen({super.key, required this.mode, this.onlyPins, this.section = LearnSection.all});
+  const FlashcardsScreen({super.key, required this.mode, this.onlyPins, this.section = LearnSection.all, this.ask = LearnAsk.sort});
 
   final FlashMode mode;
 
   /// Part of the scheme to practise (bag mode).
   final LearnSection section;
+
+  /// Line / bag, or the office's PIN.
+  final LearnAsk ask;
 
   /// Practise only these PINs (e.g. PINs whose hub changed in a new DMSL).
   final Set<int>? onlyPins;
@@ -54,9 +56,8 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
       return;
     }
     final regions = await s.pinRegions();
-    final bos = widget.section == LearnSection.bo ? await LearnEngine.loadBranchOffices(s.directory, scheme) : const <Office>[];
-    final engine = LearnEngine(scheme, directoryPins: regions.keys, regions: regions, branchOffices: bos);
-    final cards = engine.cards(widget.mode, onlyPins: widget.onlyPins, section: widget.section);
+    final engine = await LearnEngine.load(s.directory, scheme, regions: regions, section: widget.section, ask: widget.ask);
+    final cards = engine.cards(widget.mode, onlyPins: widget.onlyPins, section: widget.section, ask: widget.ask);
     final boxes = await s.user.leitner(scheme.scheme.id!);
     final now = DateTime.now().millisecondsSinceEpoch;
     // Due cards first (lowest box first), then the rest; new cards count as box 1.
@@ -130,7 +131,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     final box = _boxes[c.key]?.box ?? 1;
     final t = Theme.of(context).textTheme;
     final question = switch (widget.mode) {
-      FlashMode.bag => c.asksPin ? l.qWhichPinBo : c.asksOffice ? l.qWhichOfficePin : c.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
+      FlashMode.bag => c.asksPin ? l.qWhichPinOffice : c.asksOffice ? l.qWhichOfficePin : c.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
       FlashMode.air => l.qWhichAirCode,
       FlashMode.hub => l.qWhichHub,
     };

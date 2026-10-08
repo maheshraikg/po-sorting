@@ -30,6 +30,9 @@ enum LearnSection {
   nonTd,
 }
 
+/// What the questions ask: the line / bag, or the office's PIN code.
+enum LearnAsk { sort, pin }
+
 /// The Udupi-side TD line(s): any bag whose code or name says "Udupi".
 bool isUdupiSideBag(Bag b) => '${b.code} ${b.name}'.toLowerCase().contains('udupi');
 
@@ -113,7 +116,14 @@ int nextBox(int box, bool correct) => correct ? min(box + 1, 5) : 1;
 int dueAfter(int box, DateTime now) => now.add(kLeitnerIntervals[box]).millisecondsSinceEpoch;
 
 class LearnEngine {
-  LearnEngine(this.scheme, {Iterable<int> directoryPins = const [], this._regions = const {}, this.branchOffices = const [], Random? random})
+  LearnEngine(
+    this.scheme, {
+    Iterable<int> directoryPins = const [],
+    this._regions = const {},
+    this.branchOffices = const [],
+    this.otherOffices = const [],
+    Random? random,
+  })
     : _pins = directoryPins.toList()..sort(),
       _rnd = random ?? Random();
 
@@ -122,6 +132,9 @@ class LearnEngine {
   /// Offices (all types) at the TD PINs of the scheme, for BO practice; see
   /// [loadBranchOffices].
   final List<Office> branchOffices;
+
+  /// Offices outside the TD area, for "office → PIN" in Non-TD.
+  final List<Office> otherOffices;
   final List<int> _pins;
   final Map<int, ({List<String> districts, List<String> states})> _regions;
   final Random _rnd;
@@ -188,7 +201,8 @@ class LearnEngine {
     return [LearnSection.all, ...LearnSection.values.where(has.contains)];
   }
 
-  List<LearnCard> cards(FlashMode mode, {Set<int>? onlyPins, LearnSection section = LearnSection.all}) {
+  List<LearnCard> cards(FlashMode mode, {Set<int>? onlyPins, LearnSection section = LearnSection.all, LearnAsk ask = LearnAsk.sort}) {
+    if (mode == FlashMode.bag && ask == LearnAsk.pin && onlyPins == null) return pinCards(section);
     if (mode == FlashMode.bag && onlyPins == null && section != LearnSection.all) {
       if (section == LearnSection.udupiTd) return _udupiCards();
       if (section == LearnSection.bo) return _boCards();
@@ -309,6 +323,55 @@ class LearnEngine {
     return out.values.toList();
   }
 
+  /// "Which PIN for this office?" for a section: head / sub offices of the
+  /// Mangalore-side or Udupi-side TD lines, branch offices, or Non-TD
+  /// offices elsewhere (shown with district and state).
+  List<LearnCard> pinCards(LearnSection section) {
+    if (section == LearnSection.bo) return _boCards();
+    final lines = _tdPinLines();
+    final udupi = {for (final b in scheme.bags.values) if (isUdupiSideBag(b)) b.code};
+    const heads = {'HO', 'SO', 'PO'};
+    final out = <String, LearnCard>{};
+    void add(Office o, String detail, String category) {
+      final key = 'pin:${o.pincode}:${o.officeName}:${o.officeType}';
+      out[key] = LearnCard(
+        key: key,
+        prompt: '${o.officeName} ${o.officeType}',
+        answer: '${o.pincode}',
+        answerDetail: detail,
+        prefix: '${o.pincode}'.substring(0, 3),
+        isPin: false,
+        category: category,
+        asksPin: true,
+      );
+    }
+
+    final tdWanted = section == LearnSection.all || section == LearnSection.mangaloreTd || section == LearnSection.udupiTd;
+    if (tdWanted) {
+      for (final o in branchOffices) {
+        if (!heads.contains(o.officeType)) continue;
+        final line = lines[o.pincode];
+        if (line == null) continue;
+        final isUdupi = udupi.contains(line);
+        if (section == LearnSection.udupiTd && !isUdupi) continue;
+        if (section == LearnSection.mangaloreTd && isUdupi) continue;
+        add(o, line, kCatTD);
+      }
+    }
+    if (section == LearnSection.all || section == LearnSection.nonTd) {
+      for (final o in otherOffices) {
+        if (!heads.contains(o.officeType) || lines.containsKey(o.pincode)) continue;
+        add(o, '${o.district}, ${o.state}', kCatNonTD);
+      }
+    }
+    if (section == LearnSection.all) {
+      for (final c in _boCards()) {
+        out[c.key] = c;
+      }
+    }
+    return out.values.toList();
+  }
+
   /// Udupi-side TD: every PIN on the Udupi line → its post office.
   List<LearnCard> _udupiCards() {
     final out = <String, LearnCard>{};
@@ -329,8 +392,8 @@ class LearnEngine {
 
   /// [count] questions with 4 options each (fewer when the scheme has fewer
   /// distinct answers).
-  List<QuizQuestion> quiz(FlashMode mode, {int count = 20, LearnSection section = LearnSection.all}) {
-    final all = cards(mode, section: section)..shuffle(_rnd);
+  List<QuizQuestion> quiz(FlashMode mode, {int count = 20, LearnSection section = LearnSection.all, LearnAsk ask = LearnAsk.sort}) {
+    final all = cards(mode, section: section, ask: ask)..shuffle(_rnd);
     final answers = all.map((c) => c.answer).toSet().toList();
     if (answers.length < 2) return const [];
     final byKind = <int, List<String>>{};
@@ -437,5 +500,21 @@ class LearnEngine {
       out.add(QuizQuestion(c, [c.answer, ...others.take(3)]..shuffle(_rnd)));
     }
     return out;
+  }
+
+  /// Builds an engine with the directory data the [section] / [ask] needs.
+  static Future<LearnEngine> load(
+    DirectorySource dir,
+    ActiveScheme scheme, {
+    required Map<int, ({List<String> districts, List<String> states})> regions,
+    LearnSection section = LearnSection.all,
+    LearnAsk ask = LearnAsk.sort,
+    Random? random,
+  }) async {
+    final needTd = section == LearnSection.bo || (ask == LearnAsk.pin && section != LearnSection.nonTd);
+    final needOther = ask == LearnAsk.pin && (section == LearnSection.nonTd || section == LearnSection.all);
+    final td = needTd ? await loadBranchOffices(dir, scheme) : const <Office>[];
+    final other = needOther ? await dir.randomOffices(600) : const <Office>[];
+    return LearnEngine(scheme, directoryPins: regions.keys, regions: regions, branchOffices: td, otherOffices: other, random: random);
   }
 }

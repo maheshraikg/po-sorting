@@ -2470,6 +2470,42 @@ abstract class AppLocalizations {
   /// **'BO: {names}'**
   String boList(String names);
 
+  /// No description provided for @learnAsk.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask'**
+  String get learnAsk;
+
+  /// No description provided for @learnAskSort.
+  ///
+  /// In en, this message translates to:
+  /// **'Line / bag'**
+  String get learnAskSort;
+
+  /// No description provided for @learnAskPin.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN code'**
+  String get learnAskPin;
+
+  /// No description provided for @learnAskSortHint.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN or office → which line or bag.'**
+  String get learnAskSortHint;
+
+  /// No description provided for @learnAskPinHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Office → its PIN code (Mangalore side, Udupi side, BOs and Non-TD offices).'**
+  String get learnAskPinHint;
+
+  /// No description provided for @qWhichPinOffice.
+  ///
+  /// In en, this message translates to:
+  /// **'Which PIN for this office'**
+  String get qWhichPinOffice;
+
   /// No description provided for @noSchemes.
   ///
   /// In en, this message translates to:

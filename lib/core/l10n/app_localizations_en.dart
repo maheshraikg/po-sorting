@@ -1371,6 +1371,25 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get learnAsk => 'Ask';
+
+  @override
+  String get learnAskSort => 'Line / bag';
+
+  @override
+  String get learnAskPin => 'PIN code';
+
+  @override
+  String get learnAskSortHint => 'PIN or office → which line or bag.';
+
+  @override
+  String get learnAskPinHint =>
+      'Office → its PIN code (Mangalore side, Udupi side, BOs and Non-TD offices).';
+
+  @override
+  String get qWhichPinOffice => 'Which PIN for this office';
+
+  @override
   String get noSchemes =>
       'No schemes yet. Import your office\'s sorting scheme (Excel/CSV), create one, or try the SAMPLE.';
 

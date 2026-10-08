@@ -12,19 +12,21 @@ import '../../core/l10n/app_localizations.dart';
 import '../../core/labels.dart';
 import '../../core/theme.dart';
 import '../../core/widgets.dart';
-import '../../data/models/office.dart';
 import '../../data/user_repo.dart';
 import 'learn_engine.dart';
 import 'learn_screen.dart' show learnSectionLabel;
 import 'progress.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key, required this.mode, this.section = LearnSection.all, this.lineCode});
+  const QuizScreen({super.key, required this.mode, this.section = LearnSection.all, this.lineCode, this.ask = LearnAsk.sort});
 
   final FlashMode mode;
 
   /// Practise one line only (office → position).
   final String? lineCode;
+
+  /// Line / bag, or the office's PIN.
+  final LearnAsk ask;
 
   /// Part of the scheme to practise (bag mode).
   final LearnSection section;
@@ -43,7 +45,7 @@ class _QuizScreenState extends State<QuizScreen> {
   List<QuizRecord> _history = [];
   bool _done = false;
 
-  String get _kind => widget.lineCode != null ? 'line-${widget.lineCode}' : widget.section == LearnSection.all ? 'quiz-${widget.mode.name}' : 'quiz-${widget.mode.name}-${widget.section.name}';
+  String get _kind => widget.lineCode != null ? 'line-${widget.lineCode}' : 'quiz-${widget.mode.name}${widget.section == LearnSection.all ? '' : '-${widget.section.name}'}${widget.ask == LearnAsk.pin ? '-pin' : ''}';
 
   @override
   void didChangeDependencies() {
@@ -65,9 +67,8 @@ class _QuizScreenState extends State<QuizScreen> {
       return;
     }
     final regions = await s.pinRegions();
-    final bos = widget.section == LearnSection.bo ? await LearnEngine.loadBranchOffices(s.directory, scheme) : const <Office>[];
-    final engine = LearnEngine(scheme, directoryPins: regions.keys, regions: regions, branchOffices: bos);
-    final qs = widget.lineCode != null ? engine.lineQuiz(widget.lineCode!) : engine.quiz(widget.mode, section: widget.section);
+    final engine = await LearnEngine.load(s.directory, scheme, regions: regions, section: widget.section, ask: widget.ask);
+    final qs = widget.lineCode != null ? engine.lineQuiz(widget.lineCode!) : engine.quiz(widget.mode, section: widget.section, ask: widget.ask);
     if (!mounted) return;
     setState(() {
       _qs = qs;
@@ -151,7 +152,7 @@ class _QuizScreenState extends State<QuizScreen> {
     }
     final q = qs[_i];
     final question = switch (widget.mode) {
-      FlashMode.bag => q.card.asksPin ? l.qWhichPinBo : q.card.asksPosition ? l.qWhichPosition : q.card.asksOffice ? l.qWhichOfficePin : q.card.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
+      FlashMode.bag => q.card.asksPin ? l.qWhichPinOffice : q.card.asksPosition ? l.qWhichPosition : q.card.asksOffice ? l.qWhichOfficePin : q.card.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
       FlashMode.air => l.qWhichAirCode,
       FlashMode.hub => l.qWhichHub,
     };

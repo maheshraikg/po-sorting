@@ -1370,6 +1370,25 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String get learnAsk => 'प्रश्न';
+
+  @override
+  String get learnAskSort => 'लाइन / बैग';
+
+  @override
+  String get learnAskPin => 'पिन कोड';
+
+  @override
+  String get learnAskSortHint => 'पिन या कार्यालय → कौन-सी लाइन या बैग।';
+
+  @override
+  String get learnAskPinHint =>
+      'कार्यालय → उसका पिन कोड (मंगलूरु साइड, उडुपी साइड, BO और Non-TD कार्यालय)।';
+
+  @override
+  String get qWhichPinOffice => 'इस कार्यालय का पिन कौन-सा है';
+
+  @override
   String get noSchemes =>
       'अभी कोई स्कीम नहीं। अपने कार्यालय की सॉर्टिंग स्कीम (Excel/CSV) आयात करें, नई बनाएं, या नमूना आज़माएं।';
 

@@ -13,7 +13,6 @@ import '../../core/l10n/app_localizations.dart';
 import '../../core/labels.dart';
 import '../../core/theme.dart';
 import '../../core/widgets.dart';
-import '../../data/models/office.dart';
 import 'learn_engine.dart';
 import 'learn_screen.dart' show learnSectionLabel;
 import 'progress.dart';
@@ -23,10 +22,11 @@ const _penaltyMs = 3000;
 const _tickMs = 100;
 
 class SpeedSortScreen extends StatefulWidget {
-  const SpeedSortScreen({super.key, this.section = LearnSection.all, this.random});
+  const SpeedSortScreen({super.key, this.section = LearnSection.all, this.random, this.ask = LearnAsk.sort});
 
   final LearnSection section;
   final Random? random;
+  final LearnAsk ask;
 
   @override
   State<SpeedSortScreen> createState() => _SpeedSortScreenState();
@@ -43,7 +43,7 @@ class _SpeedSortScreenState extends State<SpeedSortScreen> {
   int _leftMs = _gameMs, _score = 0, _combo = 0, _bestCombo = 0, _correct = 0, _wrong = 0;
   Timer? _timer;
 
-  String get _bestKey => widget.section.name;
+  String get _bestKey => widget.ask == LearnAsk.pin ? '${widget.section.name}-pin' : widget.section.name;
 
   @override
   void didChangeDependencies() {
@@ -65,8 +65,8 @@ class _SpeedSortScreenState extends State<SpeedSortScreen> {
       return;
     }
     final regions = await s.pinRegions();
-    final bos = widget.section == LearnSection.bo ? await LearnEngine.loadBranchOffices(s.directory, scheme) : const <Office>[];
-    final cards = LearnEngine(scheme, directoryPins: regions.keys, regions: regions, branchOffices: bos, random: _rnd).cards(FlashMode.bag, section: widget.section);
+    final engine = await LearnEngine.load(s.directory, scheme, regions: regions, section: widget.section, ask: widget.ask, random: _rnd);
+    final cards = engine.cards(FlashMode.bag, section: widget.section, ask: widget.ask);
     if (mounted) setState(() => _deck = cards);
   }
 
@@ -206,7 +206,7 @@ class _SpeedSortScreenState extends State<SpeedSortScreen> {
     final c = _card!;
     final secs = (max(0, _leftMs) / 1000).ceil();
     final mult = comboMultiplier(_combo);
-    final question = c.asksPin ? l.qWhichPinBo : c.asksOffice ? l.qWhichOfficePin : c.isPin ? l.qWhichBagPin : l.qWhichBagPlace;
+    final question = c.asksPin ? l.qWhichPinOffice : c.asksOffice ? l.qWhichOfficePin : c.isPin ? l.qWhichBagPin : l.qWhichBagPlace;
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: Padding(

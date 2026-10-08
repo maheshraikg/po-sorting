@@ -43,6 +43,7 @@ class LearnScreen extends StatefulWidget {
 
 class _LearnScreenState extends State<LearnScreen> {
   LearnSection _section = LearnSection.all;
+  LearnAsk _ask = LearnAsk.sort;
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +52,7 @@ class _LearnScreenState extends State<LearnScreen> {
     final scheme = services.active;
     final sections = scheme == null ? const <LearnSection>[] : LearnEngine(scheme).sections();
     final section = sections.contains(_section) ? _section : LearnSection.all;
+    final ask = section == LearnSection.bo ? LearnAsk.pin : _ask;
     void open(Widget w) => Navigator.push(context, MaterialPageRoute(builder: (_) => w));
     Widget tile(IconData icon, String title, String sub, VoidCallback? onTap) => Card(
       child: ListTile(
@@ -112,10 +114,32 @@ class _LearnScreenState extends State<LearnScreen> {
               padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
               child: Text(_sectionHint(l, section), style: Theme.of(context).textTheme.bodySmall),
             ),
+            if (section != LearnSection.bo) ...[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+                child: Text(l.learnAsk, style: Theme.of(context).textTheme.titleSmall),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(4, 6, 4, 4),
+                child: SegmentedButton<LearnAsk>(
+                  key: const ValueKey('learn_ask'),
+                  segments: [
+                    ButtonSegment(value: LearnAsk.sort, icon: const Icon(Icons.inventory_2_outlined), label: Text(l.learnAskSort)),
+                    ButtonSegment(value: LearnAsk.pin, icon: const Icon(Icons.pin_outlined), label: Text(l.learnAskPin)),
+                  ],
+                  selected: {_ask},
+                  onSelectionChanged: (v) => setState(() => _ask = v.first),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
+                child: Text(_ask == LearnAsk.pin ? l.learnAskPinHint : l.learnAskSortHint, style: Theme.of(context).textTheme.bodySmall),
+              ),
+            ],
           ],
-          tile(Icons.style_outlined, l.flashcards, l.flashcardsSub, scheme == null ? null : () => open(FlashcardsScreen(mode: FlashMode.bag, section: section))),
-          tile(Icons.timer_outlined, l.timedQuiz, l.timedQuizSub, scheme == null ? null : () => open(QuizScreen(mode: FlashMode.bag, section: section))),
-          tile(Icons.bolt, l.speedSort, l.speedSortSub, scheme == null ? null : () => open(SpeedSortScreen(section: section))),
+          tile(Icons.style_outlined, l.flashcards, l.flashcardsSub, scheme == null ? null : () => open(FlashcardsScreen(mode: FlashMode.bag, section: section, ask: ask))),
+          tile(Icons.timer_outlined, l.timedQuiz, l.timedQuizSub, scheme == null ? null : () => open(QuizScreen(mode: FlashMode.bag, section: section, ask: ask))),
+          tile(Icons.bolt, l.speedSort, l.speedSortSub, scheme == null ? null : () => open(SpeedSortScreen(section: section, ask: ask))),
           tile(Icons.format_list_numbered, l.learnByLine, l.learnByLineSub, scheme == null ? null : () => open(const LinePickerScreen())),
           tile(Icons.flight_takeoff, l.airFlashcards, l.airFlashcardsSub, hasAir ? () => open(const FlashcardsScreen(mode: FlashMode.air)) : null),
           tile(Icons.quiz_outlined, l.airQuiz, l.airQuizSub, hasAir ? () => open(const QuizScreen(mode: FlashMode.air)) : null),

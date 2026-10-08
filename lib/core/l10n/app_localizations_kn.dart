@@ -1375,6 +1375,25 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String get learnAsk => 'ಪ್ರಶ್ನೆ';
+
+  @override
+  String get learnAskSort => 'ಲೈನ್ / ಚೀಲ';
+
+  @override
+  String get learnAskPin => 'ಪಿನ್ ಕೋಡ್';
+
+  @override
+  String get learnAskSortHint => 'ಪಿನ್ ಅಥವಾ ಕಚೇರಿ → ಯಾವ ಲೈನ್ ಅಥವಾ ಚೀಲ.';
+
+  @override
+  String get learnAskPinHint =>
+      'ಕಚೇರಿ → ಅದರ ಪಿನ್ ಕೋಡ್ (ಮಂಗಳೂರು ಕಡೆ, ಉಡುಪಿ ಕಡೆ, BO ಮತ್ತು Non-TD ಕಚೇರಿಗಳು).';
+
+  @override
+  String get qWhichPinOffice => 'ಈ ಕಚೇರಿಯ ಪಿನ್ ಯಾವುದು';
+
+  @override
   String get noSchemes =>
       'ಇನ್ನೂ ಸ್ಕೀಮ್‌ಗಳಿಲ್ಲ. ನಿಮ್ಮ ಕಚೇರಿಯ ಸಾರ್ಟಿಂಗ್ ಸ್ಕೀಮ್ (Excel/CSV) ಆಮದು ಮಾಡಿ, ಹೊಸದು ರಚಿಸಿ ಅಥವಾ ಮಾದರಿ ಪ್ರಯತ್ನಿಸಿ.';
 
