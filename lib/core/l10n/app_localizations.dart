@@ -3205,7 +3205,7 @@ abstract class AppLocalizations {
   /// No description provided for @roleDeveloper.
   ///
   /// In en, this message translates to:
-  /// **'Idea, design and development'**
+  /// **'Design and development'**
   String get roleDeveloper;
 
   /// No description provided for @dataProvidedBy.
@@ -3247,7 +3247,7 @@ abstract class AppLocalizations {
   /// No description provided for @contactDeveloperHint.
   ///
   /// In en, this message translates to:
-  /// **'For corrections, new sorting data or help.'**
+  /// **'For corrections, sorting changes, new data or help, send a WhatsApp message or e-mail.'**
   String get contactDeveloperHint;
 
   /// No description provided for @call.
@@ -3261,6 +3261,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not open the app on this phone.'**
   String get cannotOpenApp;
+
+  /// No description provided for @roleIdeaData.
+  ///
+  /// In en, this message translates to:
+  /// **'App idea and sorting data'**
+  String get roleIdeaData;
+
+  /// No description provided for @rolePinData.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN code data'**
+  String get rolePinData;
+
+  /// No description provided for @contributorsTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'Team'**
+  String get contributorsTeam;
+
+  /// No description provided for @shareApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Share the app'**
+  String get shareApp;
+
+  /// No description provided for @shareAppSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Send the Play Store link to your colleagues'**
+  String get shareAppSub;
+
+  /// No description provided for @shareAppText.
+  ///
+  /// In en, this message translates to:
+  /// **'PO Sorting – offline PIN sorting helper for postal sorting assistants: TD / Non-TD line, position and air code, address scan, practice games. Download: {url}'**
+  String shareAppText(String url);
+
+  /// No description provided for @updateMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'PO Sorting {version} – correction / update:\n'**
+  String updateMessage(String version);
+
+  /// No description provided for @updateSubject.
+  ///
+  /// In en, this message translates to:
+  /// **'correction / update'**
+  String get updateSubject;
+
+  /// No description provided for @emailLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'E-mail'**
+  String get emailLabel;
 }
 
 class _AppLocalizationsDelegate

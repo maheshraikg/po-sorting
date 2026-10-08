@@ -1068,14 +1068,37 @@
   "contributorsSub": "People who made PO Sorting",
   "contributorsIntro": "Made for postal sorting assistants – fast, offline sorting help.",
   "developedBy": "Developed by",
-  "roleDeveloper": "Idea, design and development",
+  "roleDeveloper": "Design and development",
   "dataProvidedBy": "Sorting data provided by",
   "roleData": "Sorting lines, bags and PH sheets",
   "creditsTitle": "Built with",
   "creditsText": "• PIN code directory: data.gov.in (Open Government Data Licence – India)\n• Kannada text reading: Tesseract OCR (Apache 2.0)\n• English and Hindi text reading: Google ML Kit\n• App framework: Flutter (open source)",
   "contributorsThanks": "Thank you to everyone who shared data and feedback!",
   "contactDeveloper": "Contact the developer",
-  "contactDeveloperHint": "For corrections, new sorting data or help.",
+  "contactDeveloperHint": "For corrections, sorting changes, new data or help, send a WhatsApp message or e-mail.",
   "call": "Call",
-  "cannotOpenApp": "Could not open the app on this phone."
+  "cannotOpenApp": "Could not open the app on this phone.",
+  "roleIdeaData": "App idea and sorting data",
+  "rolePinData": "PIN code data",
+  "contributorsTeam": "Team",
+  "shareApp": "Share the app",
+  "shareAppSub": "Send the Play Store link to your colleagues",
+  "shareAppText": "PO Sorting – offline PIN sorting helper for postal sorting assistants: TD / Non-TD line, position and air code, address scan, practice games. Download: {url}",
+  "@shareAppText": {
+    "placeholders": {
+      "url": {
+        "type": "String"
+      }
+    }
+  },
+  "updateMessage": "PO Sorting {version} – correction / update:\n",
+  "@updateMessage": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "updateSubject": "correction / update",
+  "emailLabel": "E-mail"
 }

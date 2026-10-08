@@ -52,8 +52,11 @@ your department's rules on sharing internal documents.
 - Microphone: only for voice search, when you tap the microphone.
 
 ## Contact
-For questions about this policy, use the developer contact email shown on the
-app's Google Play page.
+Developer: Mahesh Rai – maheshraikg@gmail.com
+
+The app's Contributors page can open WhatsApp, the phone dialer or your
+e-mail app so you can contact the developer. Nothing is sent unless you send
+the message yourself from that app.
 
 ## Changes
 This policy may be updated with new versions of the app. By using the app you

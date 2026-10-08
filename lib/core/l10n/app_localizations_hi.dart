@@ -1779,7 +1779,7 @@ class AppLocalizationsHi extends AppLocalizations {
   String get developedBy => 'विकसितकर्ता';
 
   @override
-  String get roleDeveloper => 'विचार, डिज़ाइन और विकास';
+  String get roleDeveloper => 'डिज़ाइन और विकास';
 
   @override
   String get dataProvidedBy => 'सॉर्टिंग डेटा प्रदाता';
@@ -1801,11 +1801,43 @@ class AppLocalizationsHi extends AppLocalizations {
   String get contactDeveloper => 'डेवलपर से संपर्क करें';
 
   @override
-  String get contactDeveloperHint => 'सुधार, नया सॉर्टिंग डेटा या मदद के लिए।';
+  String get contactDeveloperHint =>
+      'सुधार, सॉर्टिंग बदलाव, नया डेटा या मदद के लिए WhatsApp संदेश या ई-मेल भेजें।';
 
   @override
   String get call => 'कॉल करें';
 
   @override
   String get cannotOpenApp => 'इस फ़ोन पर ऐप नहीं खुल सका।';
+
+  @override
+  String get roleIdeaData => 'ऐप का विचार और सॉर्टिंग डेटा';
+
+  @override
+  String get rolePinData => 'पिन कोड डेटा';
+
+  @override
+  String get contributorsTeam => 'टीम';
+
+  @override
+  String get shareApp => 'ऐप शेयर करें';
+
+  @override
+  String get shareAppSub => 'Play Store लिंक सहकर्मियों को भेजें';
+
+  @override
+  String shareAppText(String url) {
+    return 'पीओ सॉर्टिंग – डाक सॉर्टिंग सहायकों के लिए ऑफ़लाइन पिन सॉर्टिंग मदद: TD / Non-TD लाइन, क्रम और एयर कोड, पता स्कैन, अभ्यास गेम। डाउनलोड: $url';
+  }
+
+  @override
+  String updateMessage(String version) {
+    return 'पीओ सॉर्टिंग $version – सुधार / बदलाव:\n';
+  }
+
+  @override
+  String get updateSubject => 'सुधार / बदलाव';
+
+  @override
+  String get emailLabel => 'ई-मेल';
 }

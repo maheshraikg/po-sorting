@@ -1778,7 +1778,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get developedBy => 'Developed by';
 
   @override
-  String get roleDeveloper => 'Idea, design and development';
+  String get roleDeveloper => 'Design and development';
 
   @override
   String get dataProvidedBy => 'Sorting data provided by';
@@ -1802,11 +1802,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contactDeveloperHint =>
-      'For corrections, new sorting data or help.';
+      'For corrections, sorting changes, new data or help, send a WhatsApp message or e-mail.';
 
   @override
   String get call => 'Call';
 
   @override
   String get cannotOpenApp => 'Could not open the app on this phone.';
+
+  @override
+  String get roleIdeaData => 'App idea and sorting data';
+
+  @override
+  String get rolePinData => 'PIN code data';
+
+  @override
+  String get contributorsTeam => 'Team';
+
+  @override
+  String get shareApp => 'Share the app';
+
+  @override
+  String get shareAppSub => 'Send the Play Store link to your colleagues';
+
+  @override
+  String shareAppText(String url) {
+    return 'PO Sorting – offline PIN sorting helper for postal sorting assistants: TD / Non-TD line, position and air code, address scan, practice games. Download: $url';
+  }
+
+  @override
+  String updateMessage(String version) {
+    return 'PO Sorting $version – correction / update:\n';
+  }
+
+  @override
+  String get updateSubject => 'correction / update';
+
+  @override
+  String get emailLabel => 'E-mail';
 }

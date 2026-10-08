@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../core/contact.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../learn/learn_screen.dart';
 import '../schemes/schemes_screen.dart';
@@ -38,6 +39,13 @@ class MoreScreen extends StatelessWidget {
           item(Icons.help_outline, l.help, l.helpSub, const HelpScreen()),
           item(Icons.verified_user_outlined, l.legalTitle, l.legalSub, const LegalScreen()),
           item(Icons.groups_outlined, l.contributors, l.contributorsSub, const ContributorsScreen()),
+          ListTile(
+            key: const ValueKey('more_share_app'),
+            leading: const Icon(Icons.share, size: 30),
+            title: Text(l.shareApp, style: const TextStyle(fontWeight: FontWeight.w700)),
+            subtitle: Text(l.shareAppSub),
+            onTap: () => shareApp(l),
+          ),
           item(Icons.info_outline, l.about, l.aboutSub, const AboutScreen()),
         ],
       ),

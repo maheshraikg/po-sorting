@@ -35,16 +35,24 @@ class MainActivity : FlutterActivity() {
         // Contact the developer: opens the dialer / WhatsApp; the app itself
         // needs no phone or internet permission.
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, "po_sorting/contact").setMethodCallHandler { call, result ->
-            val uri = when (call.method) {
-                "dial" -> Uri.parse("tel:" + call.argument<String>("number")!!)
-                "whatsapp" -> Uri.parse("https://wa.me/" + call.argument<String>("number")!!)
+            val intent = when (call.method) {
+                "dial" -> Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + call.argument<String>("number")!!))
+                "whatsapp" -> Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://wa.me/" + call.argument<String>("number")!! + "?text=" + Uri.encode(call.argument<String>("text") ?: "")),
+                )
+                "email" -> Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")).apply {
+                    putExtra(Intent.EXTRA_EMAIL, arrayOf(call.argument<String>("to")!!))
+                    putExtra(Intent.EXTRA_SUBJECT, call.argument<String>("subject") ?: "")
+                    putExtra(Intent.EXTRA_TEXT, call.argument<String>("body") ?: "")
+                }
                 else -> null
             }
-            if (uri == null) {
+            if (intent == null) {
                 result.notImplemented()
             } else {
                 try {
-                    startActivity(Intent(if (call.method == "dial") Intent.ACTION_DIAL else Intent.ACTION_VIEW, uri))
+                    startActivity(intent)
                     result.success(true)
                 } catch (e: ActivityNotFoundException) {
                     result.success(false)

@@ -1782,7 +1782,7 @@ class AppLocalizationsKn extends AppLocalizations {
   String get developedBy => 'ಅಭಿವೃದ್ಧಿಪಡಿಸಿದವರು';
 
   @override
-  String get roleDeveloper => 'ಕಲ್ಪನೆ, ವಿನ್ಯಾಸ ಮತ್ತು ಅಭಿವೃದ್ಧಿ';
+  String get roleDeveloper => 'ವಿನ್ಯಾಸ ಮತ್ತು ಅಭಿವೃದ್ಧಿ';
 
   @override
   String get dataProvidedBy => 'ಸಾರ್ಟಿಂಗ್ ಮಾಹಿತಿ ಒದಗಿಸಿದವರು';
@@ -1806,11 +1806,42 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get contactDeveloperHint =>
-      'ತಿದ್ದುಪಡಿಗಳು, ಹೊಸ ಸಾರ್ಟಿಂಗ್ ಮಾಹಿತಿ ಅಥವಾ ಸಹಾಯಕ್ಕಾಗಿ.';
+      'ತಿದ್ದುಪಡಿಗಳು, ಸಾರ್ಟಿಂಗ್ ಬದಲಾವಣೆಗಳು, ಹೊಸ ಮಾಹಿತಿ ಅಥವಾ ಸಹಾಯಕ್ಕಾಗಿ WhatsApp ಸಂದೇಶ ಅಥವಾ ಇ-ಮೇಲ್ ಕಳುಹಿಸಿ.';
 
   @override
   String get call => 'ಕರೆ ಮಾಡಿ';
 
   @override
   String get cannotOpenApp => 'ಈ ಫೋನ್‌ನಲ್ಲಿ ಆ್ಯಪ್ ತೆರೆಯಲು ಆಗಲಿಲ್ಲ.';
+
+  @override
+  String get roleIdeaData => 'ಆ್ಯಪ್ ಕಲ್ಪನೆ ಮತ್ತು ಸಾರ್ಟಿಂಗ್ ಮಾಹಿತಿ';
+
+  @override
+  String get rolePinData => 'ಪಿನ್ ಕೋಡ್ ಮಾಹಿತಿ';
+
+  @override
+  String get contributorsTeam => 'ತಂಡ';
+
+  @override
+  String get shareApp => 'ಆ್ಯಪ್ ಹಂಚಿಕೊಳ್ಳಿ';
+
+  @override
+  String get shareAppSub => 'ಪ್ಲೇ ಸ್ಟೋರ್ ಲಿಂಕ್ ಸಹೋದ್ಯೋಗಿಗಳಿಗೆ ಕಳುಹಿಸಿ';
+
+  @override
+  String shareAppText(String url) {
+    return 'ಪಿಒ ಸಾರ್ಟಿಂಗ್ – ಅಂಚೆ ಸಾರ್ಟಿಂಗ್ ಸಹಾಯಕರಿಗೆ ಆಫ್‌ಲೈನ್ ಪಿನ್ ಸಾರ್ಟಿಂಗ್ ನೆರವು: TD / Non-TD ಲೈನ್, ಸ್ಥಾನ ಮತ್ತು ಏರ್ ಕೋಡ್, ವಿಳಾಸ ಸ್ಕ್ಯಾನ್, ಅಭ್ಯಾಸ ಆಟಗಳು. ಡೌನ್‌ಲೋಡ್: $url';
+  }
+
+  @override
+  String updateMessage(String version) {
+    return 'ಪಿಒ ಸಾರ್ಟಿಂಗ್ $version – ತಿದ್ದುಪಡಿ / ಬದಲಾವಣೆ:\n';
+  }
+
+  @override
+  String get updateSubject => 'ತಿದ್ದುಪಡಿ / ಬದಲಾವಣೆ';
+
+  @override
+  String get emailLabel => 'ಇ-ಮೇಲ್';
 }
