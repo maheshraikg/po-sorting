@@ -96,6 +96,12 @@ class NshTable {
     return null;
   }
 
+  /// The table as a CSV file (same columns as the bundled sheet).
+  String toCsv() => writeCsv([
+    ['Hub', 'Kind', 'Circle', 'Series', 'Mapped To', 'Exclude'],
+    for (final h in hubs) [h.name, h.kind, h.circle, h.series, h.mappedTo, h.exclude.join(', ')],
+  ]);
+
   static NshTable parse(Uint8List bytes) {
     final t = readTable(bytes, 'nsh.csv');
     final rows = t.sheets[t.defaultSheet]!;

@@ -13,6 +13,7 @@ import '../../core/theme.dart';
 import '../../core/widgets.dart';
 import '../../data/import/scheme_import.dart';
 import '../../data/models/scheme.dart';
+import 'air_code_dialog.dart';
 import 'dmsl_diff_screen.dart';
 import 'import_wizard.dart';
 
@@ -105,6 +106,13 @@ class _SchemeEditorState extends State<SchemeEditor> {
 
   Future<void> _editRule([BagRule? rule]) async {
     if (await editRuleFor(context, schemeId: widget.schemeId, rule: rule)) await _changed();
+  }
+
+  Future<void> _editAir([AirCodeRule? rule]) async {
+    final r = await showDialog<AirCodeRule>(context: context, builder: (_) => AirCodeDialog(rule: rule));
+    if (r == null || !mounted) return;
+    await context.services.schemes.upsertAirCode(widget.schemeId, r);
+    await _changed();
   }
 
   Future<void> _moveRules(Bag from) async {
@@ -301,13 +309,34 @@ class _SchemeEditorState extends State<SchemeEditor> {
                     },
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: OutlinedButton.icon(
+                    key: const ValueKey('add_air_code'),
+                    icon: const Icon(Icons.add),
+                    label: Text(l.addAirCode),
+                    onPressed: () => _editAir(),
+                  ),
+                ),
                 if (_air.isEmpty) Padding(padding: const EdgeInsets.all(16), child: Text(l.noAirCodes)),
                 for (final a in _air)
                   ListTile(
+                    key: ValueKey('air_rule_${a.id}'),
                     leading: Text(a.airCode, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 20)),
                     title: Text('${ruleTypeLabel(l, a.match.type)}: ${a.describe}'),
                     subtitle: Text(
                       [a.stationName, if (a.viaHub.isNotEmpty) '${l.via} ${a.viaHub}', a.remarks].where((x) => x.isNotEmpty).join(' · '),
+                    ),
+                    onTap: () => _editAir(a),
+                    trailing: IconButton(
+                      tooltip: l.delete,
+                      icon: const Icon(Icons.delete_outline),
+                      onPressed: () async {
+                        if (!await confirm(context, l.deleteAirCodeConfirm(a.airCode, a.describe))) return;
+                        if (!context.mounted) return;
+                        await context.services.schemes.deleteAirCode(a.id!);
+                        await _changed();
+                      },
                     ),
                   ),
               ],

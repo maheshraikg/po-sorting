@@ -1687,6 +1687,23 @@ class AppLocalizationsHi extends AppLocalizations {
   String get move => 'ले जाएँ';
 
   @override
+  String get addAirCode => 'एयर कोड जोड़ें';
+
+  @override
+  String get editAirCode => 'एयर कोड बदलें';
+
+  @override
+  String get airCodeRequired => 'एयर कोड लिखें (न हो तो NIL)';
+
+  @override
+  String get airCodeNilHint => 'NIL = एयर कोड नहीं';
+
+  @override
+  String deleteAirCodeConfirm(String code, String series) {
+    return '$series का एयर कोड $code हटाएं?';
+  }
+
+  @override
   String get dirSource => 'स्रोत';
 
   @override
@@ -1867,4 +1884,117 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get emailLabel => 'ई-मेल';
+
+  @override
+  String get nshHubs => 'NSH / ICH हब';
+
+  @override
+  String get nshHubsSub => 'स्पीड पोस्ट हब और उनकी पिन रेंज';
+
+  @override
+  String get nshAddHub => 'हब जोड़ें';
+
+  @override
+  String get nshEditHub => 'हब बदलें';
+
+  @override
+  String get nshHubName => 'हब का नाम (जैसे MUMBAI NSH)';
+
+  @override
+  String get nshCircle => 'सर्कल / राज्य';
+
+  @override
+  String get nshSeriesHint => 'कॉमा से अलग करें: 400-403, 4152, 416510-416525';
+
+  @override
+  String get nshMappedField => 'जुड़ा NSH (वैकल्पिक)';
+
+  @override
+  String get nshInvalid => 'हब का नाम और कम से कम एक पिन सीरीज़ लिखें';
+
+  @override
+  String get nshSearch => 'हब, राज्य या पिन खोजें';
+
+  @override
+  String get nshReset => 'शीट पर वापस करें';
+
+  @override
+  String get nshResetConfirm =>
+      'अपने सभी बदलाव हटाकर NSH सॉर्टिंग शीट फिर से इस्तेमाल करें?';
+
+  @override
+  String get nshEditedNote =>
+      'आपने यह तालिका बदली है। \"शीट पर वापस करें\" मूल वापस लाता है।';
+
+  @override
+  String nshDeleteConfirm(String hub) {
+    return '$hub हटाएं?';
+  }
+
+  @override
+  String get editOfficeName => 'कार्यालय का नाम सुधारें';
+
+  @override
+  String get editOfficeNameHint =>
+      'नया नाम इस फ़ोन के ऐप में हर जगह दिखेगा और अपडेट के बाद भी रहेगा।';
+
+  @override
+  String get officeFixes => 'कार्यालय नाम सुधार';
+
+  @override
+  String get officeFixesSub => 'पिन निर्देशिका में आपके सुधारे नाम';
+
+  @override
+  String get officeFixesHint =>
+      'नाम सुधारने के लिए, सॉर्ट परिणाम में कार्यालय के पास पेंसिल दबाएं।';
+
+  @override
+  String get officeFixesNone => 'अभी कोई सुधार नहीं';
+
+  @override
+  String wasName(String name) {
+    return 'पहले \"$name\"';
+  }
+
+  @override
+  String get restore => 'वापस करें';
+
+  @override
+  String get editData => 'मेरा डेटा बदलें';
+
+  @override
+  String get editDataSub => 'लाइन, बैग, एयर कोड, NSH हब और कार्यालय नाम बदलें';
+
+  @override
+  String get editDataIntro =>
+      'ऐप में दिखने वाली हर चीज़ अपने कार्यालय के अनुसार बदल सकते हैं। बदलाव इसी फ़ोन पर रहते हैं।';
+
+  @override
+  String get editLines => 'लाइनें और कार्यालय';
+
+  @override
+  String get editLinesSub =>
+      'TD / Non-TD लाइन, कार्यालय और पिन जोड़ें, हटाएं या क्रम बदलें';
+
+  @override
+  String get editRules => 'बैग और सॉर्टिंग नियम';
+
+  @override
+  String get editRulesSub =>
+      'हर पिन, रेंज और प्रीफ़िक्स नियम, बैग के नाम और रंग';
+
+  @override
+  String get editAirSub => 'एयर कोड जोड़ें, बदलें या हटाएं (एयर कोड टैब)';
+
+  @override
+  String get editFiles => 'आयात, निर्यात या पुनर्स्थापन';
+
+  @override
+  String get editFilesSub =>
+      'अपने कार्यालय की Excel / CSV लोड करें, बैकअप सहेजें या मूल डेटा वापस लाएं';
+
+  @override
+  String officeRenamed(String name) {
+    return 'सहेजा गया: $name';
+  }
 }

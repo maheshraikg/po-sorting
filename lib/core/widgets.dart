@@ -329,10 +329,13 @@ class HubRouteCard extends StatelessWidget {
 }
 
 class OfficeTile extends StatelessWidget {
-  const OfficeTile({super.key, required this.office, this.trailing, this.onTap, this.subtitleExtra});
+  const OfficeTile({super.key, required this.office, this.trailing, this.onTap, this.subtitleExtra, this.onEdit});
 
   final Office office;
   final Widget? trailing;
+
+  /// Shows an edit button (rename the office) when set.
+  final VoidCallback? onEdit;
   final VoidCallback? onTap;
   final String? subtitleExtra;
 
@@ -365,7 +368,15 @@ class OfficeTile extends StatelessWidget {
         ),
       ),
       isThreeLine: true,
-      trailing: trailing,
+      trailing: trailing ??
+          (onEdit == null
+              ? null
+              : IconButton(
+                  key: ValueKey('edit_office_${office.pin}_${office.officeName}'),
+                  tooltip: l.editOfficeName,
+                  icon: const Icon(Icons.edit_outlined),
+                  onPressed: onEdit,
+                )),
     );
   }
 }

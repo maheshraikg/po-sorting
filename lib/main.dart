@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -11,6 +14,7 @@ import 'data/db.dart';
 import 'data/import/scheme_io.dart';
 import 'data/nsh.dart';
 import 'features/home_shell.dart';
+import 'features/settings/office_fixes.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,10 +36,13 @@ Future<AppServices> _openServices(Settings settings) async {
     settings.defaultSchemeDone = true;
   }
   try {
-    s.nsh = NshTable.parse(await loadAssetBytes(kNshAsset));
+    final own = settings.nshCsv;
+    s.nsh = own != null ? NshTable.parse(Uint8List.fromList(utf8.encode(own))) : NshTable.parse(await loadAssetBytes(kNshAsset));
   } catch (_) {
     // Missing or unreadable sheet: the NSH card is simply not shown.
   }
+  // The user's own office name fixes (kept across directory updates).
+  await applyOfficeFixes(settings, s);
   // Default scheme installed before its air codes were bundled.
   if (await addDefaultAirCodes(s.schemes, loadAssetBytes)) await s.reloadActive();
   // Default scheme installed with older Non-TD data (once per data version).

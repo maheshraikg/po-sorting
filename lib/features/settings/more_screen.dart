@@ -8,6 +8,7 @@ import 'about_screen.dart';
 import 'contributors_screen.dart';
 import 'airports_screen.dart';
 import 'directory_screen.dart';
+import 'edit_data_screen.dart';
 import 'favourites_screen.dart';
 import 'help_screen.dart';
 import 'legal_screen.dart';
@@ -30,6 +31,7 @@ class MoreScreen extends StatelessWidget {
       appBar: AppBar(title: Text(l.navMore)),
       body: ListView(
         children: [
+          item(Icons.edit_note, l.editData, l.editDataSub, const EditDataScreen()),
           item(Icons.school_outlined, l.navLearn, l.learnSub, const LearnScreen()),
           item(Icons.rule_folder_outlined, l.schemes, l.schemesSub, const SchemesScreen()),
           item(Icons.storage_outlined, l.pinDirectory, l.pinDirectorySub, const DirectoryScreen()),

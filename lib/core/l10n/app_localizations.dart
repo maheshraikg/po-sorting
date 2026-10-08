@@ -3034,6 +3034,36 @@ abstract class AppLocalizations {
   /// **'Move'**
   String get move;
 
+  /// No description provided for @addAirCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Add air code'**
+  String get addAirCode;
+
+  /// No description provided for @editAirCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit air code'**
+  String get editAirCode;
+
+  /// No description provided for @airCodeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the air code (or NIL for none)'**
+  String get airCodeRequired;
+
+  /// No description provided for @airCodeNilHint.
+  ///
+  /// In en, this message translates to:
+  /// **'NIL = no air code'**
+  String get airCodeNilHint;
+
+  /// No description provided for @deleteAirCodeConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete air code {code} for {series}?'**
+  String deleteAirCodeConfirm(String code, String series);
+
   /// No description provided for @dirSource.
   ///
   /// In en, this message translates to:
@@ -3357,6 +3387,204 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'E-mail'**
   String get emailLabel;
+
+  /// No description provided for @nshHubs.
+  ///
+  /// In en, this message translates to:
+  /// **'NSH / ICH hubs'**
+  String get nshHubs;
+
+  /// No description provided for @nshHubsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed post hubs and their PIN ranges'**
+  String get nshHubsSub;
+
+  /// No description provided for @nshAddHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Add hub'**
+  String get nshAddHub;
+
+  /// No description provided for @nshEditHub.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit hub'**
+  String get nshEditHub;
+
+  /// No description provided for @nshHubName.
+  ///
+  /// In en, this message translates to:
+  /// **'Hub name (e.g. MUMBAI NSH)'**
+  String get nshHubName;
+
+  /// No description provided for @nshCircle.
+  ///
+  /// In en, this message translates to:
+  /// **'Circle / state'**
+  String get nshCircle;
+
+  /// No description provided for @nshSeriesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Separate with commas: 400-403, 4152, 416510-416525'**
+  String get nshSeriesHint;
+
+  /// No description provided for @nshMappedField.
+  ///
+  /// In en, this message translates to:
+  /// **'Mapped to NSH (optional)'**
+  String get nshMappedField;
+
+  /// No description provided for @nshInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a hub name and at least one PIN series'**
+  String get nshInvalid;
+
+  /// No description provided for @nshSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search hub, state or PIN'**
+  String get nshSearch;
+
+  /// No description provided for @nshReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset to sheet'**
+  String get nshReset;
+
+  /// No description provided for @nshResetConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo all your changes and use the NSH sorting sheet again?'**
+  String get nshResetConfirm;
+
+  /// No description provided for @nshEditedNote.
+  ///
+  /// In en, this message translates to:
+  /// **'You have edited this table. Reset to sheet brings back the original.'**
+  String get nshEditedNote;
+
+  /// No description provided for @nshDeleteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {hub}?'**
+  String nshDeleteConfirm(String hub);
+
+  /// No description provided for @editOfficeName.
+  ///
+  /// In en, this message translates to:
+  /// **'Correct office name'**
+  String get editOfficeName;
+
+  /// No description provided for @editOfficeNameHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The new name is used everywhere in the app on this phone and stays after updates.'**
+  String get editOfficeNameHint;
+
+  /// No description provided for @officeFixes.
+  ///
+  /// In en, this message translates to:
+  /// **'Office name corrections'**
+  String get officeFixes;
+
+  /// No description provided for @officeFixesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Names you corrected in the PIN directory'**
+  String get officeFixesSub;
+
+  /// No description provided for @officeFixesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'To correct a name, tap the pencil next to an office in a Sort result.'**
+  String get officeFixesHint;
+
+  /// No description provided for @officeFixesNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No corrections yet'**
+  String get officeFixesNone;
+
+  /// No description provided for @wasName.
+  ///
+  /// In en, this message translates to:
+  /// **'was \"{name}\"'**
+  String wasName(String name);
+
+  /// No description provided for @restore.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore'**
+  String get restore;
+
+  /// No description provided for @editData.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit my data'**
+  String get editData;
+
+  /// No description provided for @editDataSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Change lines, bags, air codes, NSH hubs and office names'**
+  String get editDataSub;
+
+  /// No description provided for @editDataIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Everything the app shows can be changed to match your office. Changes stay on this phone.'**
+  String get editDataIntro;
+
+  /// No description provided for @editLines.
+  ///
+  /// In en, this message translates to:
+  /// **'Lines and offices'**
+  String get editLines;
+
+  /// No description provided for @editLinesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Add, remove or reorder TD / Non-TD lines, offices and PINs'**
+  String get editLinesSub;
+
+  /// No description provided for @editRules.
+  ///
+  /// In en, this message translates to:
+  /// **'Bags and sorting rules'**
+  String get editRules;
+
+  /// No description provided for @editRulesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Every PIN, range and prefix rule, bag names and colours'**
+  String get editRulesSub;
+
+  /// No description provided for @editAirSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Add, edit or delete air codes (Air codes tab)'**
+  String get editAirSub;
+
+  /// No description provided for @editFiles.
+  ///
+  /// In en, this message translates to:
+  /// **'Import, export or restore'**
+  String get editFiles;
+
+  /// No description provided for @editFilesSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Load your office\'s Excel / CSV, save a backup, or restore the built-in data'**
+  String get editFilesSub;
+
+  /// No description provided for @officeRenamed.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved: {name}'**
+  String officeRenamed(String name);
 }
 
 class _AppLocalizationsDelegate

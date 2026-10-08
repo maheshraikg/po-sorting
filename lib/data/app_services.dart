@@ -4,6 +4,7 @@ library;
 import 'package:flutter/foundation.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
+import 'directory_builder.dart' show NameCorrection, applyNameCorrections;
 import 'directory_repo.dart';
 import 'mismatch.dart';
 import 'nsh.dart';
@@ -27,8 +28,14 @@ class AppServices extends ChangeNotifier {
   List<String> _categories = const [];
   int _recentsVersion = 0;
 
-  /// NSH / ICH table for speed post (bundled NSH sorting extract).
+  /// NSH / ICH table for speed post (bundled NSH sorting extract, or the
+  /// user's edited copy).
   NshTable? nsh;
+
+  void setNsh(NshTable t) {
+    nsh = t;
+    notifyListeners();
+  }
 
   ActiveScheme? get active => _active;
   List<String> get categories => _categories;
@@ -60,6 +67,18 @@ class AppServices extends ChangeNotifier {
   void touchRecents() {
     _recentsVersion++;
     notifyListeners();
+  }
+
+  /// Renames offices in the directory (the user's own fixes) and refreshes
+  /// search. Returns the number renamed.
+  Future<int> renameOffices(List<NameCorrection> fixes) async {
+    final n = await applyNameCorrections(_directoryDb, fixes);
+    if (n > 0) {
+      directory = DirectoryRepo(_directoryDb);
+      _regions = null;
+      notifyListeners();
+    }
+    return n;
   }
 
   /// Swaps in a rebuilt directory database.

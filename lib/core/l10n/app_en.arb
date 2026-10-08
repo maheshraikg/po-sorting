@@ -1057,6 +1057,21 @@
     }
   },
   "move": "Move",
+  "addAirCode": "Add air code",
+  "editAirCode": "Edit air code",
+  "airCodeRequired": "Enter the air code (or NIL for none)",
+  "airCodeNilHint": "NIL = no air code",
+  "deleteAirCodeConfirm": "Delete air code {code} for {series}?",
+  "@deleteAirCodeConfirm": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      },
+      "series": {
+        "type": "String"
+      }
+    }
+  },
   "dirSource": "Source",
   "dirRows": "Offices",
   "dirFileDate": "Data file date",
@@ -1131,5 +1146,59 @@
     }
   },
   "updateSubject": "correction / update",
-  "emailLabel": "E-mail"
+  "emailLabel": "E-mail",
+  "nshHubs": "NSH / ICH hubs",
+  "nshHubsSub": "Speed post hubs and their PIN ranges",
+  "nshAddHub": "Add hub",
+  "nshEditHub": "Edit hub",
+  "nshHubName": "Hub name (e.g. MUMBAI NSH)",
+  "nshCircle": "Circle / state",
+  "nshSeriesHint": "Separate with commas: 400-403, 4152, 416510-416525",
+  "nshMappedField": "Mapped to NSH (optional)",
+  "nshInvalid": "Enter a hub name and at least one PIN series",
+  "nshSearch": "Search hub, state or PIN",
+  "nshReset": "Reset to sheet",
+  "nshResetConfirm": "Undo all your changes and use the NSH sorting sheet again?",
+  "nshEditedNote": "You have edited this table. Reset to sheet brings back the original.",
+  "nshDeleteConfirm": "Delete {hub}?",
+  "@nshDeleteConfirm": {
+    "placeholders": {
+      "hub": {
+        "type": "String"
+      }
+    }
+  },
+  "editOfficeName": "Correct office name",
+  "editOfficeNameHint": "The new name is used everywhere in the app on this phone and stays after updates.",
+  "officeFixes": "Office name corrections",
+  "officeFixesSub": "Names you corrected in the PIN directory",
+  "officeFixesHint": "To correct a name, tap the pencil next to an office in a Sort result.",
+  "officeFixesNone": "No corrections yet",
+  "wasName": "was \"{name}\"",
+  "@wasName": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "restore": "Restore",
+  "editData": "Edit my data",
+  "editDataSub": "Change lines, bags, air codes, NSH hubs and office names",
+  "editDataIntro": "Everything the app shows can be changed to match your office. Changes stay on this phone.",
+  "editLines": "Lines and offices",
+  "editLinesSub": "Add, remove or reorder TD / Non-TD lines, offices and PINs",
+  "editRules": "Bags and sorting rules",
+  "editRulesSub": "Every PIN, range and prefix rule, bag names and colours",
+  "editAirSub": "Add, edit or delete air codes (Air codes tab)",
+  "editFiles": "Import, export or restore",
+  "editFilesSub": "Load your office's Excel / CSV, save a backup, or restore the built-in data",
+  "officeRenamed": "Saved: {name}",
+  "@officeRenamed": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  }
 }

@@ -1686,6 +1686,23 @@ class AppLocalizationsEn extends AppLocalizations {
   String get move => 'Move';
 
   @override
+  String get addAirCode => 'Add air code';
+
+  @override
+  String get editAirCode => 'Edit air code';
+
+  @override
+  String get airCodeRequired => 'Enter the air code (or NIL for none)';
+
+  @override
+  String get airCodeNilHint => 'NIL = no air code';
+
+  @override
+  String deleteAirCodeConfirm(String code, String series) {
+    return 'Delete air code $code for $series?';
+  }
+
+  @override
   String get dirSource => 'Source';
 
   @override
@@ -1867,4 +1884,119 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get emailLabel => 'E-mail';
+
+  @override
+  String get nshHubs => 'NSH / ICH hubs';
+
+  @override
+  String get nshHubsSub => 'Speed post hubs and their PIN ranges';
+
+  @override
+  String get nshAddHub => 'Add hub';
+
+  @override
+  String get nshEditHub => 'Edit hub';
+
+  @override
+  String get nshHubName => 'Hub name (e.g. MUMBAI NSH)';
+
+  @override
+  String get nshCircle => 'Circle / state';
+
+  @override
+  String get nshSeriesHint =>
+      'Separate with commas: 400-403, 4152, 416510-416525';
+
+  @override
+  String get nshMappedField => 'Mapped to NSH (optional)';
+
+  @override
+  String get nshInvalid => 'Enter a hub name and at least one PIN series';
+
+  @override
+  String get nshSearch => 'Search hub, state or PIN';
+
+  @override
+  String get nshReset => 'Reset to sheet';
+
+  @override
+  String get nshResetConfirm =>
+      'Undo all your changes and use the NSH sorting sheet again?';
+
+  @override
+  String get nshEditedNote =>
+      'You have edited this table. Reset to sheet brings back the original.';
+
+  @override
+  String nshDeleteConfirm(String hub) {
+    return 'Delete $hub?';
+  }
+
+  @override
+  String get editOfficeName => 'Correct office name';
+
+  @override
+  String get editOfficeNameHint =>
+      'The new name is used everywhere in the app on this phone and stays after updates.';
+
+  @override
+  String get officeFixes => 'Office name corrections';
+
+  @override
+  String get officeFixesSub => 'Names you corrected in the PIN directory';
+
+  @override
+  String get officeFixesHint =>
+      'To correct a name, tap the pencil next to an office in a Sort result.';
+
+  @override
+  String get officeFixesNone => 'No corrections yet';
+
+  @override
+  String wasName(String name) {
+    return 'was \"$name\"';
+  }
+
+  @override
+  String get restore => 'Restore';
+
+  @override
+  String get editData => 'Edit my data';
+
+  @override
+  String get editDataSub =>
+      'Change lines, bags, air codes, NSH hubs and office names';
+
+  @override
+  String get editDataIntro =>
+      'Everything the app shows can be changed to match your office. Changes stay on this phone.';
+
+  @override
+  String get editLines => 'Lines and offices';
+
+  @override
+  String get editLinesSub =>
+      'Add, remove or reorder TD / Non-TD lines, offices and PINs';
+
+  @override
+  String get editRules => 'Bags and sorting rules';
+
+  @override
+  String get editRulesSub =>
+      'Every PIN, range and prefix rule, bag names and colours';
+
+  @override
+  String get editAirSub => 'Add, edit or delete air codes (Air codes tab)';
+
+  @override
+  String get editFiles => 'Import, export or restore';
+
+  @override
+  String get editFilesSub =>
+      'Load your office\'s Excel / CSV, save a backup, or restore the built-in data';
+
+  @override
+  String officeRenamed(String name) {
+    return 'Saved: $name';
+  }
 }

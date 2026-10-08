@@ -21,6 +21,7 @@ import '../../data/models/scheme.dart';
 import '../../data/nsh.dart';
 import '../../data/sort_engine.dart';
 import '../schemes/import_wizard.dart';
+import '../settings/office_fixes.dart';
 import '../schemes/scheme_editor.dart';
 import 'air_badge.dart';
 
@@ -315,7 +316,7 @@ class _OfficeListState extends State<_OfficeList> {
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
             child: Text(l.deliveryOfficesN(offices.length), style: Theme.of(context).textTheme.labelLarge),
           ),
-          for (final o in shown) OfficeTile(office: o),
+          for (final o in shown) OfficeTile(office: o, onEdit: () => editOfficeName(context, o)),
           if (!_all && offices.length > _first)
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),

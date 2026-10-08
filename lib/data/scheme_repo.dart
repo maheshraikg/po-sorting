@@ -208,6 +208,16 @@ class SchemeRepo {
   Future<List<AirCodeRule>> airCodes(int schemeId) async =>
       (await db.query('air_codes', where: 'scheme_id = ?', whereArgs: [schemeId], orderBy: 'id')).map(AirCodeRule.fromRow).toList();
 
+  /// Adds or updates one air code rule. Returns its id.
+  Future<int> upsertAirCode(int schemeId, AirCodeRule r) async {
+    final row = r.toRow(schemeId);
+    if (r.id == null) return db.insert('air_codes', row);
+    await db.update('air_codes', row, where: 'id = ?', whereArgs: [r.id]);
+    return r.id!;
+  }
+
+  Future<void> deleteAirCode(int id) => db.delete('air_codes', where: 'id = ?', whereArgs: [id]);
+
   /// Replaces the air code table of a scheme.
   Future<void> replaceAirCodes(int schemeId, List<AirCodeRule> rules) => db.transaction((t) async {
     await t.delete('air_codes', where: 'scheme_id = ?', whereArgs: [schemeId]);

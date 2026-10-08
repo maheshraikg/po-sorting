@@ -493,18 +493,33 @@ class _SearchField extends StatelessWidget {
                 IconButton(
                   key: const ValueKey('clear_field'),
                   tooltip: l.clear,
-                  visualDensity: VisualDensity.compact,
                   onPressed: onClear,
-                  icon: const Icon(Icons.close),
+                  icon: const Icon(Icons.close, size: 30),
                 ),
-              IconButton(
-                key: const ValueKey('kb_toggle'),
-                tooltip: l.switchKeyboard,
-                visualDensity: VisualDensity.compact,
-                onPressed: onToggleKeyboard,
-                icon: Icon(letters ? Icons.dialpad : Icons.abc),
+              // Big, labelled switch between the number pad and letters
+              // (to type a place name instead of a PIN).
+              Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: FilledButton.tonal(
+                  key: const ValueKey('kb_toggle'),
+                  onPressed: onToggleKeyboard,
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size(64, 52),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  ),
+                  child: Tooltip(
+                    message: l.switchKeyboard,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(letters ? Icons.dialpad : Icons.keyboard_alt_outlined, size: 24),
+                        Text(letters ? '123' : 'ABC', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-              const SizedBox(width: 4),
             ],
           ),
         ),

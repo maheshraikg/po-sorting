@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -83,6 +85,34 @@ class Settings extends ChangeNotifier {
   int get defaultDataVersion => _prefs.getInt('defaultDataVersion') ?? 1;
 
   set defaultDataVersion(int v) => _prefs.setInt('defaultDataVersion', v);
+
+  /// The user's edited NSH / ICH table (CSV), or null for the bundled sheet.
+  String? get nshCsv => _prefs.getString('nshCsv');
+
+  set nshCsv(String? v) {
+    if (v == null) {
+      _prefs.remove('nshCsv');
+    } else {
+      _prefs.setString('nshCsv', v);
+    }
+  }
+
+  /// The user's own office name fixes: [{pin, type, old, new}], applied to
+  /// the directory on every start (so they survive directory updates).
+  List<Map<String, Object?>> get officeFixes {
+    final raw = _prefs.getString('officeFixes');
+    if (raw == null || raw.isEmpty) return const [];
+    try {
+      return [for (final e in jsonDecode(raw) as List) Map<String, Object?>.from(e as Map)];
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  set officeFixes(List<Map<String, Object?>> v) {
+    _prefs.setString('officeFixes', jsonEncode(v));
+    notifyListeners();
+  }
 
   // ---- Learning progress (XP, level, daily streak, game records) ----
 
