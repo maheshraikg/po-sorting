@@ -139,15 +139,19 @@ class SortScreenState extends State<SortScreen> {
     }
     final services = context.services;
     final category = context.settings.category;
-    final hits = await services.directory.search(q, limit: 10);
+    // Look wider than we show, then put offices that have a line / bag in
+    // the selected mode (TD / Non-TD) first: "manglore" in TD should give
+    // Mangaluru, not a "Manglore BO" in Haryana.
+    final hits = await services.directory.search(q, limit: 40);
     final engine = services.engine;
+    final all = [for (final h in hits) _PlaceHit(h.office, null, engine.resolveOffice(h.office, category: category))];
     final out = <_PlaceHit>[];
-    for (final h in hits) {
-      final o = h.office;
+    for (final p in inModeFirst(all, (p) => p.result.bag != null).take(10)) {
+      final o = p.office;
       final same = await services.directory.officesForPin(o.pincode);
       const heads = {'SO', 'PO', 'HO'};
       final so = heads.contains(o.officeType) ? null : same.where((x) => heads.contains(x.officeType)).firstOrNull;
-      out.add(_PlaceHit(o, so, engine.resolveOffice(o, category: category)));
+      out.add(_PlaceHit(o, so, p.result));
     }
     if (!mounted || seq != _placeSeq || q != _query) return;
     setState(() => _places = out);
@@ -757,6 +761,10 @@ class _KeyChip extends StatelessWidget {
     );
   }
 }
+
+/// [items] with those [inMode] first; otherwise the order is kept (best
+/// spelling match first).
+List<T> inModeFirst<T>(List<T> items, bool Function(T) inMode) => [...items.where(inMode), ...items.where((x) => !inMode(x))];
 
 class _PlaceHit {
   const _PlaceHit(this.office, this.accountOffice, this.result);
