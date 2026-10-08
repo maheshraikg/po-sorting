@@ -48,3 +48,4 @@ app.*.map.json
 .widget_preview/
 # The raw data.gov.in CSV is large; the built DB in assets/db is what ships.
 data/*.csv
+!data/directory_corrections.csv
