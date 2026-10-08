@@ -6,6 +6,7 @@ import 'package:sqflite_common/sqlite_api.dart';
 
 import 'directory_repo.dart';
 import 'mismatch.dart';
+import 'nsh.dart';
 import 'scheme_repo.dart';
 import 'sort_engine.dart';
 import 'user_repo.dart';
@@ -25,6 +26,9 @@ class AppServices extends ChangeNotifier {
   ActiveScheme? _active;
   List<String> _categories = const [];
   int _recentsVersion = 0;
+
+  /// NSH / ICH table for speed post (bundled NSH sorting extract).
+  NshTable? nsh;
 
   ActiveScheme? get active => _active;
   List<String> get categories => _categories;

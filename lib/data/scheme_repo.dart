@@ -32,6 +32,46 @@ class ActiveScheme {
   final DmslVersion? dmsl;
   final RuleResolver<HubRule> hubResolver;
 
+  /// PIN series of a bag in [category] as one line, like a sorting sheet:
+  /// "560-563, 515, 561202, 416510-416525". Null when the bag has no PIN
+  /// rules (office / district rules only).
+  String? pinSeries(String bagCode, {String? category}) {
+    final byLen = <int, List<int>>{};
+    final exact = <int>[];
+    final ranges = <String>[];
+    for (final r in rules) {
+      if (r.bagCode != bagCode) continue;
+      if (category != null && r.category != null && r.category!.isNotEmpty && r.category != category) continue;
+      final m = r.match;
+      switch (m.type) {
+        case RuleType.prefix:
+          (byLen[m.prefix!.length] ??= []).add(int.parse(m.prefix!));
+        case RuleType.exact:
+          exact.add(m.pin!);
+        case RuleType.range:
+          ranges.add('${m.pinFrom}-${m.pinTo}');
+        default:
+      }
+    }
+    final parts = <String>[];
+    for (final len in byLen.keys.toList()..sort()) {
+      final v = byLen[len]!.toSet().toList()..sort();
+      String f(int x) => x.toString().padLeft(len, '0');
+      var a = 0;
+      while (a < v.length) {
+        var b = a;
+        while (b + 1 < v.length && v[b + 1] == v[b] + 1) {
+          b++;
+        }
+        parts.add(a == b ? f(v[a]) : '${f(v[a])}-${f(v[b])}');
+        a = b + 1;
+      }
+    }
+    parts.addAll((exact.toSet().toList()..sort()).map((e) => '$e'));
+    parts.addAll(ranges);
+    return parts.isEmpty ? null : parts.join(', ');
+  }
+
   Bag bagFor(BagRule r) => bags[r.bagCode] ?? Bag(code: r.bagCode, name: r.bagName);
 }
 

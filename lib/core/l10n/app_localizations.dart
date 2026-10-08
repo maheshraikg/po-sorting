@@ -1420,6 +1420,42 @@ abstract class AppLocalizations {
   /// **'No air code in your sheet for this PIN – surface mail'**
   String get noAirCodeSheet;
 
+  /// No description provided for @phBag.
+  ///
+  /// In en, this message translates to:
+  /// **'PH / Bag'**
+  String get phBag;
+
+  /// No description provided for @nshLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'NSH – Speed Post hub'**
+  String get nshLabel;
+
+  /// No description provided for @ichLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'ICH – Intra-circle hub'**
+  String get ichLabel;
+
+  /// No description provided for @ichMappedTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Mapped to {hub}'**
+  String ichMappedTo(String hub);
+
+  /// No description provided for @nshPinRange.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN code range'**
+  String get nshPinRange;
+
+  /// No description provided for @nshMatched.
+  ///
+  /// In en, this message translates to:
+  /// **'Matched by {series}'**
+  String nshMatched(String series);
+
   /// No description provided for @findPinHint.
   ///
   /// In en, this message translates to:

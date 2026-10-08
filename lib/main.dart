@@ -9,6 +9,7 @@ import 'core/theme.dart';
 import 'data/app_services.dart';
 import 'data/db.dart';
 import 'data/import/scheme_io.dart';
+import 'data/nsh.dart';
 import 'features/home_shell.dart';
 
 Future<void> main() async {
@@ -29,6 +30,11 @@ Future<AppServices> _openServices(Settings settings) async {
       settings.defaultDataVersion = kDefaultDataVersion;
     }
     settings.defaultSchemeDone = true;
+  }
+  try {
+    s.nsh = NshTable.parse(await loadAssetBytes(kNshAsset));
+  } catch (_) {
+    // Missing or unreadable sheet: the NSH card is simply not shown.
   }
   // Default scheme installed before its air codes were bundled.
   if (await addDefaultAirCodes(s.schemes, loadAssetBytes)) await s.reloadActive();

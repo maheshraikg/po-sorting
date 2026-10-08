@@ -747,6 +747,28 @@ class AppLocalizationsEn extends AppLocalizations {
       'No air code in your sheet for this PIN – surface mail';
 
   @override
+  String get phBag => 'PH / Bag';
+
+  @override
+  String get nshLabel => 'NSH – Speed Post hub';
+
+  @override
+  String get ichLabel => 'ICH – Intra-circle hub';
+
+  @override
+  String ichMappedTo(String hub) {
+    return 'Mapped to $hub';
+  }
+
+  @override
+  String get nshPinRange => 'PIN code range';
+
+  @override
+  String nshMatched(String series) {
+    return 'Matched by $series';
+  }
+
+  @override
   String get findPinHint => 'Office, village, city, taluk or district';
 
   @override

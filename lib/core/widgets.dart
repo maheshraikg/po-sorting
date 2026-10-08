@@ -18,9 +18,15 @@ Color bagColour(BuildContext context, Bag? bag) => parseColour(bag?.colour) ?? T
 /// The final bag in huge bold text on the bag colour, with the position
 /// (section) in a round badge – the main answer of the app.
 class BagCard extends StatelessWidget {
-  const BagCard({super.key, required this.bag, this.rule, this.level, this.compact = false, this.trailing});
+  const BagCard({super.key, required this.bag, this.rule, this.level, this.compact = false, this.trailing, this.label, this.series});
 
   final Bag bag;
+
+  /// Small heading above the bag (default "LINE / BAG").
+  final String? label;
+
+  /// PIN code range of the bag (Non-TD PH bags), shown under the name.
+  final String? series;
   final BagRule? rule;
   final RuleType? level;
   final bool compact;
@@ -58,7 +64,7 @@ class BagCard extends StatelessWidget {
                     children: [
                       if (!compact)
                         Text(
-                          l.bag.toUpperCase(),
+                          (label ?? l.bag).toUpperCase(),
                           style: t.labelMedium?.copyWith(color: fg.withValues(alpha: 0.8), letterSpacing: 1.5, fontWeight: FontWeight.w800),
                         ),
                       FittedBox(
@@ -131,6 +137,11 @@ class BagCard extends StatelessWidget {
                   ),
                 ],
               ),
+            ],
+            if (series != null) ...[
+              const SizedBox(height: 8),
+              Text(l.nshPinRange, style: t.labelMedium?.copyWith(color: fg.withValues(alpha: 0.85), fontWeight: FontWeight.w800)),
+              Text(series!, key: const ValueKey('ph_series'), style: t.titleSmall?.copyWith(color: fg, fontWeight: FontWeight.w700)),
             ],
             if (rule != null && level != null) ...[
               const SizedBox(height: 6),

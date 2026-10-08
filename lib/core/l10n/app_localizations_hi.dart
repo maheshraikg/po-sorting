@@ -750,6 +750,28 @@ class AppLocalizationsHi extends AppLocalizations {
       'इस पिन के लिए आपकी सूची में एयर कोड नहीं – सरफेस';
 
   @override
+  String get phBag => 'PH / बैग';
+
+  @override
+  String get nshLabel => 'NSH – स्पीड पोस्ट हब';
+
+  @override
+  String get ichLabel => 'ICH – सर्कल के भीतर हब';
+
+  @override
+  String ichMappedTo(String hub) {
+    return '$hub से जुड़ा';
+  }
+
+  @override
+  String get nshPinRange => 'पिन कोड रेंज';
+
+  @override
+  String nshMatched(String series) {
+    return '$series से मिला';
+  }
+
+  @override
   String get findPinHint => 'डाकघर, गाँव, शहर, तहसील या ज़िला';
 
   @override

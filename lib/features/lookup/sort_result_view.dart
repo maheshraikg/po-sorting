@@ -4,6 +4,7 @@ library;
 
 import 'package:flutter/material.dart';
 
+
 import '../../core/app_scope.dart';
 import '../../core/constants.dart';
 import '../../core/feedback.dart';
@@ -17,6 +18,7 @@ import '../../data/import/scheme_import.dart';
 import '../../data/import/scheme_io.dart';
 import '../../data/models/office.dart';
 import '../../data/models/scheme.dart';
+import '../../data/nsh.dart';
 import '../../data/sort_engine.dart';
 import '../schemes/import_wizard.dart';
 import '../schemes/scheme_editor.dart';
@@ -61,6 +63,11 @@ class SortResultView extends StatelessWidget {
             ),
           ),
         );
+        children.add(gap);
+      }
+      final nshPart = r.category == kCatNonTD && r.digits.length >= 3 ? services.nsh?.resolve(r.digits) : null;
+      if (nshPart != null) {
+        children.add(NshCard(match: nshPart, compact: true));
         children.add(gap);
       }
       if (r.likelyBag != null) {
@@ -118,11 +125,18 @@ class SortResultView extends StatelessWidget {
           bag: r.bag!,
           rule: r.bagRule,
           level: r.bagLevel,
+          label: r.category == kCatNonTD ? l.phBag : null,
+          series: r.category == kCatNonTD ? scheme.pinSeries(r.bag!.code, category: kCatNonTD) : null,
           trailing: pin == null || !r.complete ? null : AirBadge(lo: pin, hi: pin, foreground: onColour(bagColour(context, r.bag!))),
         ));
         children.add(gap);
       } else if (r.otherBag == null) {
         children.add(WarningBanner(text: l.noBagRule));
+        children.add(gap);
+      }
+      final nsh = r.category == kCatNonTD ? services.nsh?.resolve(r.digits) : null;
+      if (nsh != null) {
+        children.add(NshCard(match: nsh));
         children.add(gap);
       }
       if (scheme != null && r.otherBag != null) {
@@ -312,6 +326,75 @@ class _OfficeListState extends State<_OfficeList> {
                 label: Text(l.showAllN(offices.length)),
               ),
             ),
+        ],
+      ),
+    );
+  }
+}
+
+/// NSH / ICH for speed post, shown under the PH bag: hub, circle and the PIN
+/// series the hub takes (from the NSH sorting extract).
+class NshCard extends StatelessWidget {
+  const NshCard({super.key, required this.match, this.compact = false});
+
+  final NshMatch match;
+  final bool compact;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final t = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
+    final h = match.hub;
+    final accent = h.isIch ? kSkyDeep : cs.primary;
+    return Container(
+      key: const ValueKey('nsh_card'),
+      decoration: BoxDecoration(
+        color: cs.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(compact ? 16 : 20),
+        border: Border.all(color: accent, width: 2),
+      ),
+      padding: EdgeInsets.fromLTRB(16, compact ? 10 : 14, 16, compact ? 10 : 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(Icons.local_shipping_outlined, color: accent),
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  h.isIch ? l.ichLabel : l.nshLabel,
+                  style: t.labelMedium?.copyWith(color: accent, letterSpacing: 1.2, fontWeight: FontWeight.w900),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                decoration: BoxDecoration(color: accent, borderRadius: BorderRadius.circular(8)),
+                child: Text(h.kind, style: t.labelMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w900)),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(h.name, style: (compact ? t.headlineSmall : t.headlineMedium)?.copyWith(fontWeight: FontWeight.w900, height: 1.1)),
+          ),
+          Text(h.circle, style: t.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: cs.onSurfaceVariant)),
+          if (h.mappedTo.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Row(children: [
+                Icon(Icons.arrow_forward, size: 18, color: accent),
+                const SizedBox(width: 4),
+                Expanded(child: Text(l.ichMappedTo(h.mappedTo), style: t.titleSmall?.copyWith(fontWeight: FontWeight.w800, color: accent))),
+              ]),
+            ),
+          const SizedBox(height: 6),
+          Text(l.nshPinRange, style: t.labelMedium?.copyWith(fontWeight: FontWeight.w800, color: cs.onSurfaceVariant)),
+          Text(h.series, key: const ValueKey('nsh_series'), style: t.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+          Text(l.nshMatched(match.matched), style: t.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
         ],
       ),
     );
