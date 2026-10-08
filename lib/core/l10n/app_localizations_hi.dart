@@ -1142,6 +1142,37 @@ class AppLocalizationsHi extends AppLocalizations {
       'सर्किल सीमाएँ अनुमानित हैं; कुछ छोटे सर्किल पड़ोसियों के अंक साझा करते हैं (ऊपर सूची देखें)। हमेशा अपने कार्यालय की सॉर्टिंग स्कीम का पालन करें।';
 
   @override
+  String get learnSection => 'अभ्यास भाग';
+
+  @override
+  String get learnSectionAll => 'सभी';
+
+  @override
+  String get learnSectionMangaloreTd => 'मंगलूरु साइड TD';
+
+  @override
+  String get learnSectionUdupiTd => 'उडुपी साइड TD';
+
+  @override
+  String get learnSectionNonTd => 'Non-TD';
+
+  @override
+  String get learnSectionAllHint => 'स्कीम की हर लाइन और बैग से प्रश्न।';
+
+  @override
+  String get learnSectionMangaloreTdHint =>
+      'मंगलूरु साइड की TD लाइनें: पिन या कार्यालय → कौन-सी लाइन।';
+
+  @override
+  String get learnSectionUdupiTdHint => 'उडुपी साइड TD: पिन → कौन-सा डाकघर।';
+
+  @override
+  String get learnSectionNonTdHint => 'Non-TD बैग: पिन → कौन-सा बैग।';
+
+  @override
+  String get qWhichOfficePin => 'यह पिन किस डाकघर का है';
+
+  @override
   String get noSchemes =>
       'अभी कोई स्कीम नहीं। अपने कार्यालय की सॉर्टिंग स्कीम (Excel/CSV) आयात करें, नई बनाएं, या नमूना आज़माएं।';
 

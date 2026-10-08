@@ -2098,6 +2098,66 @@ abstract class AppLocalizations {
   /// **'Circle boundaries are approximate; some small circles share digits with neighbours (see the list above). Always follow your office\'s sorting scheme.'**
   String get pinBasicsNote;
 
+  /// No description provided for @learnSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Practise'**
+  String get learnSection;
+
+  /// No description provided for @learnSectionAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get learnSectionAll;
+
+  /// No description provided for @learnSectionMangaloreTd.
+  ///
+  /// In en, this message translates to:
+  /// **'Mangalore side TD'**
+  String get learnSectionMangaloreTd;
+
+  /// No description provided for @learnSectionUdupiTd.
+  ///
+  /// In en, this message translates to:
+  /// **'Udupi side TD'**
+  String get learnSectionUdupiTd;
+
+  /// No description provided for @learnSectionNonTd.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-TD'**
+  String get learnSectionNonTd;
+
+  /// No description provided for @learnSectionAllHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions from every line and bag of the scheme.'**
+  String get learnSectionAllHint;
+
+  /// No description provided for @learnSectionMangaloreTdHint.
+  ///
+  /// In en, this message translates to:
+  /// **'TD lines on the Mangalore side: PIN or office → which line.'**
+  String get learnSectionMangaloreTdHint;
+
+  /// No description provided for @learnSectionUdupiTdHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Udupi side TD: PIN → which post office.'**
+  String get learnSectionUdupiTdHint;
+
+  /// No description provided for @learnSectionNonTdHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-TD bags: PIN → which bag.'**
+  String get learnSectionNonTdHint;
+
+  /// No description provided for @qWhichOfficePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Which post office has PIN'**
+  String get qWhichOfficePin;
+
   /// No description provided for @noSchemes.
   ///
   /// In en, this message translates to:

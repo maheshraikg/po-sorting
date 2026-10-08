@@ -1143,6 +1143,38 @@ class AppLocalizationsKn extends AppLocalizations {
       'ವೃತ್ತದ ಗಡಿಗಳು ಅಂದಾಜು; ಕೆಲವು ಸಣ್ಣ ವೃತ್ತಗಳು ನೆರೆಯವರೊಂದಿಗೆ ಅಂಕಿ ಹಂಚಿಕೊಳ್ಳುತ್ತವೆ (ಮೇಲಿನ ಪಟ್ಟಿ ನೋಡಿ). ಯಾವಾಗಲೂ ನಿಮ್ಮ ಕಚೇರಿಯ ಸಾರ್ಟಿಂಗ್ ಸ್ಕೀಮ್ ಅನುಸರಿಸಿ.';
 
   @override
+  String get learnSection => 'ಅಭ್ಯಾಸ ವಿಭಾಗ';
+
+  @override
+  String get learnSectionAll => 'ಎಲ್ಲಾ';
+
+  @override
+  String get learnSectionMangaloreTd => 'ಮಂಗಳೂರು ಕಡೆ TD';
+
+  @override
+  String get learnSectionUdupiTd => 'ಉಡುಪಿ ಕಡೆ TD';
+
+  @override
+  String get learnSectionNonTd => 'Non-TD';
+
+  @override
+  String get learnSectionAllHint =>
+      'ಸ್ಕೀಮ್‌ನ ಎಲ್ಲಾ ಲೈನ್ ಮತ್ತು ಚೀಲಗಳಿಂದ ಪ್ರಶ್ನೆಗಳು.';
+
+  @override
+  String get learnSectionMangaloreTdHint =>
+      'ಮಂಗಳೂರು ಕಡೆಯ TD ಲೈನ್‌ಗಳು: ಪಿನ್ ಅಥವಾ ಕಚೇರಿ → ಯಾವ ಲೈನ್.';
+
+  @override
+  String get learnSectionUdupiTdHint => 'ಉಡುಪಿ ಕಡೆ TD: ಪಿನ್ → ಯಾವ ಅಂಚೆ ಕಚೇರಿ.';
+
+  @override
+  String get learnSectionNonTdHint => 'Non-TD ಚೀಲಗಳು: ಪಿನ್ → ಯಾವ ಚೀಲ.';
+
+  @override
+  String get qWhichOfficePin => 'ಈ ಪಿನ್ ಯಾವ ಅಂಚೆ ಕಚೇರಿಯದು';
+
+  @override
   String get noSchemes =>
       'ಇನ್ನೂ ಸ್ಕೀಮ್‌ಗಳಿಲ್ಲ. ನಿಮ್ಮ ಕಚೇರಿಯ ಸಾರ್ಟಿಂಗ್ ಸ್ಕೀಮ್ (Excel/CSV) ಆಮದು ಮಾಡಿ, ಹೊಸದು ರಚಿಸಿ ಅಥವಾ ಮಾದರಿ ಪ್ರಯತ್ನಿಸಿ.';
 

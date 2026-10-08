@@ -11,13 +11,17 @@ import '../../core/l10n/app_localizations.dart';
 import '../../core/labels.dart';
 import '../../core/widgets.dart';
 import 'learn_engine.dart';
+import 'learn_screen.dart' show learnSectionLabel;
 
-export 'learn_engine.dart' show FlashMode;
+export 'learn_engine.dart' show FlashMode, LearnSection;
 
 class FlashcardsScreen extends StatefulWidget {
-  const FlashcardsScreen({super.key, required this.mode, this.onlyPins});
+  const FlashcardsScreen({super.key, required this.mode, this.onlyPins, this.section = LearnSection.all});
 
   final FlashMode mode;
+
+  /// Part of the scheme to practise (bag mode).
+  final LearnSection section;
 
   /// Practise only these PINs (e.g. PINs whose hub changed in a new DMSL).
   final Set<int>? onlyPins;
@@ -49,7 +53,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     }
     final regions = await s.pinRegions();
     final engine = LearnEngine(scheme, directoryPins: regions.keys, regions: regions);
-    final cards = engine.cards(widget.mode, onlyPins: widget.onlyPins);
+    final cards = engine.cards(widget.mode, onlyPins: widget.onlyPins, section: widget.section);
     final boxes = await s.user.leitner(scheme.scheme.id!);
     final now = DateTime.now().millisecondsSinceEpoch;
     // Due cards first (lowest box first), then the rest; new cards count as box 1.
@@ -95,11 +99,12 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final deck = _deck;
-    final title = switch (widget.mode) {
+    final baseTitle = switch (widget.mode) {
       FlashMode.bag => l.flashcards,
       FlashMode.air => l.airFlashcards,
       FlashMode.hub => l.hubFlashcards,
     };
+    final title = widget.section == LearnSection.all ? baseTitle : learnSectionLabel(l, widget.section);
     if (deck == null) return Scaffold(appBar: AppBar(title: Text(title)), body: const Center(child: CircularProgressIndicator()));
     if (deck.isEmpty) return Scaffold(appBar: AppBar(title: Text(title)), body: EmptyState(icon: Icons.style_outlined, text: l.noCards));
     if (_i >= deck.length) {
@@ -121,7 +126,7 @@ class _FlashcardsScreenState extends State<FlashcardsScreen> {
     final box = _boxes[c.key]?.box ?? 1;
     final t = Theme.of(context).textTheme;
     final question = switch (widget.mode) {
-      FlashMode.bag => c.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
+      FlashMode.bag => c.asksOffice ? l.qWhichOfficePin : c.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
       FlashMode.air => l.qWhichAirCode,
       FlashMode.hub => l.qWhichHub,
     };

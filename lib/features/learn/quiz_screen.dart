@@ -14,11 +14,15 @@ import '../../core/theme.dart';
 import '../../core/widgets.dart';
 import '../../data/user_repo.dart';
 import 'learn_engine.dart';
+import 'learn_screen.dart' show learnSectionLabel;
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key, required this.mode});
+  const QuizScreen({super.key, required this.mode, this.section = LearnSection.all});
 
   final FlashMode mode;
+
+  /// Part of the scheme to practise (bag mode).
+  final LearnSection section;
 
   @override
   State<QuizScreen> createState() => _QuizScreenState();
@@ -34,7 +38,7 @@ class _QuizScreenState extends State<QuizScreen> {
   List<QuizRecord> _history = [];
   bool _done = false;
 
-  String get _kind => 'quiz-${widget.mode.name}';
+  String get _kind => widget.section == LearnSection.all ? 'quiz-${widget.mode.name}' : 'quiz-${widget.mode.name}-${widget.section.name}';
 
   @override
   void didChangeDependencies() {
@@ -56,7 +60,7 @@ class _QuizScreenState extends State<QuizScreen> {
       return;
     }
     final regions = await s.pinRegions();
-    final qs = LearnEngine(scheme, directoryPins: regions.keys, regions: regions).quiz(widget.mode);
+    final qs = LearnEngine(scheme, directoryPins: regions.keys, regions: regions).quiz(widget.mode, section: widget.section);
     if (!mounted) return;
     setState(() {
       _qs = qs;
@@ -113,7 +117,8 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final qs = _qs;
-    final title = widget.mode == FlashMode.air ? l.airQuiz : l.timedQuiz;
+    final baseTitle = widget.mode == FlashMode.air ? l.airQuiz : l.timedQuiz;
+    final title = widget.section == LearnSection.all ? baseTitle : learnSectionLabel(l, widget.section);
     if (qs == null) return Scaffold(appBar: AppBar(title: Text(title)), body: const Center(child: CircularProgressIndicator()));
     if (qs.isEmpty) return Scaffold(appBar: AppBar(title: Text(title)), body: EmptyState(icon: Icons.quiz_outlined, text: l.noCards));
     final t = Theme.of(context).textTheme;
@@ -138,7 +143,7 @@ class _QuizScreenState extends State<QuizScreen> {
     }
     final q = qs[_i];
     final question = switch (widget.mode) {
-      FlashMode.bag => q.card.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
+      FlashMode.bag => q.card.asksOffice ? l.qWhichOfficePin : q.card.isPin ? l.qWhichBagPin : l.qWhichBagPlace,
       FlashMode.air => l.qWhichAirCode,
       FlashMode.hub => l.qWhichHub,
     };

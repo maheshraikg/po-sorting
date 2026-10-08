@@ -3,11 +3,34 @@ library;
 
 import 'dart:math';
 
+import '../../core/constants.dart';
 import '../../data/models/scheme.dart';
 import '../../data/resolver.dart';
 import '../../data/scheme_repo.dart';
 
 enum FlashMode { bag, air, hub }
+
+/// Part of the scheme practised with bag flashcards / quiz.
+enum LearnSection {
+  all,
+
+  /// TD lines on the Mangalore side (every TD line except the Udupi side).
+  mangaloreTd,
+
+  /// TD articles for the Udupi side: PIN → post office.
+  udupiTd,
+
+  /// Non-TD bags.
+  nonTd,
+}
+
+/// The Udupi-side TD line(s): any bag whose code or name says "Udupi".
+bool isUdupiSideBag(Bag b) => '${b.code} ${b.name}'.toLowerCase().contains('udupi');
+
+final _officeSuffix = RegExp(r'\s+(S\.?O|B\.?O|P\.?O)\.?$', caseSensitive: false);
+
+/// "Hejamadi SO" → "Hejamadi", "Udupi HO SO" → "Udupi HO".
+String _officeLabel(BagRule r) => (r.officeName ?? r.remarks).trim().replaceFirst(_officeSuffix, '').trim();
 
 class LearnCard {
   const LearnCard({
@@ -18,7 +41,11 @@ class LearnCard {
     this.prefix,
     this.isPin = true,
     this.category,
+    this.asksOffice = false,
   });
+
+  /// The answer is the post office with this PIN (Udupi side), not a bag.
+  final bool asksOffice;
 
   /// Mode the question is asked in (TD / Non-TD); null = any.
   final String? category;
@@ -115,7 +142,30 @@ class LearnEngine {
     return ResolveQuery(pin: pin, districtNorms: r?.districts ?? const [], stateNorms: r?.states ?? const [], category: category);
   }
 
-  List<LearnCard> cards(FlashMode mode, {Set<int>? onlyPins}) {
+  /// Sections of the scheme that have something to practise.
+  List<LearnSection> sections() {
+    final has = <LearnSection>{};
+    for (final r in scheme.bagResolver.rules) {
+      final cat = r.category;
+      final udupi = isUdupiSideBag(scheme.bagFor(r));
+      if (cat == null || cat.isEmpty || cat == kCatTD) has.add(udupi ? LearnSection.udupiTd : LearnSection.mangaloreTd);
+      if (cat == null || cat.isEmpty || cat == kCatNonTD) has.add(LearnSection.nonTd);
+    }
+    if (has.length < 2) return const [];
+    return [LearnSection.all, ...LearnSection.values.where(has.contains)];
+  }
+
+  List<LearnCard> cards(FlashMode mode, {Set<int>? onlyPins, LearnSection section = LearnSection.all}) {
+    if (mode == FlashMode.bag && onlyPins == null && section != LearnSection.all) {
+      if (section == LearnSection.udupiTd) return _udupiCards();
+      final udupiCodes = {for (final b in scheme.bags.values) if (isUdupiSideBag(b)) b.code};
+      bool td(String? c) => c == null || c == kCatTD;
+      bool nonTd(String? c) => c == null || c == kCatNonTD;
+      return [
+        for (final c in cards(mode))
+          if (section == LearnSection.nonTd ? nonTd(c.category) : td(c.category) && !udupiCodes.contains(c.answer)) c,
+      ];
+    }
     final out = <String, LearnCard>{};
     // A card is asked in the mode (TD / Non-TD / …) of the rule it came from.
     void addPin(int pin, [String? category]) {
@@ -177,10 +227,28 @@ class LearnEngine {
     return out.values.toList();
   }
 
+  /// Udupi-side TD: every PIN on the Udupi line → its post office.
+  List<LearnCard> _udupiCards() {
+    final out = <String, LearnCard>{};
+    for (final r in scheme.bagResolver.rules) {
+      final cat = r.category;
+      if (cat != null && cat.isNotEmpty && cat != kCatTD) continue;
+      final bag = scheme.bagFor(r);
+      if (!isUdupiSideBag(bag)) continue;
+      final office = _officeLabel(r);
+      if (office.isEmpty) continue;
+      for (final p in _samplePins(r.match, n: 1)) {
+        final key = 'udupi:$p';
+        out[key] = LearnCard(key: key, prompt: '$p', answer: office, answerDetail: bag.code, prefix: '$p'.substring(0, 3), category: kCatTD, asksOffice: true);
+      }
+    }
+    return out.values.toList();
+  }
+
   /// [count] questions with 4 options each (fewer when the scheme has fewer
   /// distinct answers).
-  List<QuizQuestion> quiz(FlashMode mode, {int count = 20}) {
-    final all = cards(mode)..shuffle(_rnd);
+  List<QuizQuestion> quiz(FlashMode mode, {int count = 20, LearnSection section = LearnSection.all}) {
+    final all = cards(mode, section: section)..shuffle(_rnd);
     final answers = all.map((c) => c.answer).toSet().toList();
     if (answers.length < 2) return const [];
     final picked = <LearnCard>[];

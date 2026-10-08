@@ -1139,6 +1139,39 @@ class AppLocalizationsEn extends AppLocalizations {
       'Circle boundaries are approximate; some small circles share digits with neighbours (see the list above). Always follow your office\'s sorting scheme.';
 
   @override
+  String get learnSection => 'Practise';
+
+  @override
+  String get learnSectionAll => 'All';
+
+  @override
+  String get learnSectionMangaloreTd => 'Mangalore side TD';
+
+  @override
+  String get learnSectionUdupiTd => 'Udupi side TD';
+
+  @override
+  String get learnSectionNonTd => 'Non-TD';
+
+  @override
+  String get learnSectionAllHint =>
+      'Questions from every line and bag of the scheme.';
+
+  @override
+  String get learnSectionMangaloreTdHint =>
+      'TD lines on the Mangalore side: PIN or office → which line.';
+
+  @override
+  String get learnSectionUdupiTdHint =>
+      'Udupi side TD: PIN → which post office.';
+
+  @override
+  String get learnSectionNonTdHint => 'Non-TD bags: PIN → which bag.';
+
+  @override
+  String get qWhichOfficePin => 'Which post office has PIN';
+
+  @override
   String get noSchemes =>
       'No schemes yet. Import your office\'s sorting scheme (Excel/CSV), create one, or try the SAMPLE.';
 
