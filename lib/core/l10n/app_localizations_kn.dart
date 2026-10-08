@@ -1767,4 +1767,37 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get help9 =>
       'ಒಂದು ಪಿನ್ ಸರಿಪಡಿಸಲು ಸಾರ್ಟ್ ಪರದೆಯಲ್ಲಿ “ಈ ಪಿನ್‌ನ ಚೀಲ ಬದಲಿಸಿ” ಒತ್ತಿ. ದೊಡ್ಡ ಬದಲಾವಣೆಗಳಿಗೆ ಇನ್ನಷ್ಟು → ಸ್ಕೀಮ್‌ಗಳು → ನಿಮ್ಮ ಸ್ಕೀಮ್ ತೆರೆಯಿರಿ: ನಿಯಮಗಳನ್ನು ಬದಲಿಸಿ, ಸೇರಿಸಿ ಅಥವಾ ಅಳಿಸಿ. ಕಚೇರಿ ಹೊಸ ಲೈನ್‌ಗೆ ಹೋದಾಗ ಚೀಲಗಳಲ್ಲಿ “ನಿಯಮಗಳನ್ನು ಬೇರೆ ಚೀಲಕ್ಕೆ ಸರಿಸಿ” ಬಳಸಿ. ಸಹೋದ್ಯೋಗಿಗಳೊಂದಿಗೆ ಹಂಚಲು ಸ್ಕೀಮ್ ರಫ್ತು ಮಾಡಿ.';
+
+  @override
+  String get contributors => 'ಕೊಡುಗೆದಾರರು';
+
+  @override
+  String get contributorsSub => 'ಪಿಒ ಸಾರ್ಟಿಂಗ್ ತಯಾರಿಸಿದವರು';
+
+  @override
+  String get contributorsIntro =>
+      'ಅಂಚೆ ಸಾರ್ಟಿಂಗ್ ಸಹಾಯಕರಿಗಾಗಿ – ವೇಗದ, ಆಫ್‌ಲೈನ್ ಸಾರ್ಟಿಂಗ್ ನೆರವು.';
+
+  @override
+  String get developedBy => 'ಅಭಿವೃದ್ಧಿಪಡಿಸಿದವರು';
+
+  @override
+  String get roleDeveloper => 'ಕಲ್ಪನೆ, ವಿನ್ಯಾಸ ಮತ್ತು ಅಭಿವೃದ್ಧಿ';
+
+  @override
+  String get dataProvidedBy => 'ಸಾರ್ಟಿಂಗ್ ಮಾಹಿತಿ ಒದಗಿಸಿದವರು';
+
+  @override
+  String get roleData => 'ಸಾರ್ಟಿಂಗ್ ಲೈನ್‌ಗಳು, ಚೀಲಗಳು ಮತ್ತು PH ಹಾಳೆಗಳು';
+
+  @override
+  String get creditsTitle => 'ಬಳಸಲಾದ ಸಾಧನಗಳು';
+
+  @override
+  String get creditsText =>
+      '• ಪಿನ್ ಕೋಡ್ ಡೈರೆಕ್ಟರಿ: data.gov.in (ಮುಕ್ತ ಸರ್ಕಾರಿ ದತ್ತಾಂಶ ಪರವಾನಗಿ – ಭಾರತ)\n• ಕನ್ನಡ ಪಠ್ಯ ಓದುವಿಕೆ: Tesseract OCR (Apache 2.0)\n• ಇಂಗ್ಲಿಷ್ ಮತ್ತು ಹಿಂದಿ ಪಠ್ಯ ಓದುವಿಕೆ: Google ML Kit\n• ಆ್ಯಪ್ ಚೌಕಟ್ಟು: Flutter (ಮುಕ್ತ ಮೂಲ)';
+
+  @override
+  String get contributorsThanks =>
+      'ಮಾಹಿತಿ ಮತ್ತು ಸಲಹೆ ನೀಡಿದ ಎಲ್ಲರಿಗೂ ಧನ್ಯವಾದಗಳು!';
 }

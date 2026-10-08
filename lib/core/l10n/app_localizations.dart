@@ -3177,6 +3177,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'On the Sort screen tap “Change bag for this PIN” to fix one PIN. For bigger changes open More → Schemes → your scheme: edit, add or delete rules, and in Bags use “Move rules to another bag” when an office moves to a new line. Export the scheme to share it with colleagues.'**
   String get help9;
+
+  /// No description provided for @contributors.
+  ///
+  /// In en, this message translates to:
+  /// **'Contributors'**
+  String get contributors;
+
+  /// No description provided for @contributorsSub.
+  ///
+  /// In en, this message translates to:
+  /// **'People who made PO Sorting'**
+  String get contributorsSub;
+
+  /// No description provided for @contributorsIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Made for postal sorting assistants – fast, offline sorting help.'**
+  String get contributorsIntro;
+
+  /// No description provided for @developedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Developed by'**
+  String get developedBy;
+
+  /// No description provided for @roleDeveloper.
+  ///
+  /// In en, this message translates to:
+  /// **'Idea, design and development'**
+  String get roleDeveloper;
+
+  /// No description provided for @dataProvidedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorting data provided by'**
+  String get dataProvidedBy;
+
+  /// No description provided for @roleData.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorting lines, bags and PH sheets'**
+  String get roleData;
+
+  /// No description provided for @creditsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Built with'**
+  String get creditsTitle;
+
+  /// No description provided for @creditsText.
+  ///
+  /// In en, this message translates to:
+  /// **'• PIN code directory: data.gov.in (Open Government Data Licence – India)\n• Kannada text reading: Tesseract OCR (Apache 2.0)\n• English and Hindi text reading: Google ML Kit\n• App framework: Flutter (open source)'**
+  String get creditsText;
+
+  /// No description provided for @contributorsThanks.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you to everyone who shared data and feedback!'**
+  String get contributorsThanks;
 }
 
 class _AppLocalizationsDelegate

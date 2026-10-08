@@ -1764,4 +1764,36 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get help9 =>
       'एक पिन ठीक करने के लिए सॉर्ट स्क्रीन पर “इस पिन का थैला बदलें” दबाएँ। बड़े बदलावों के लिए और → स्कीम → अपनी स्कीम खोलें: नियम बदलें, जोड़ें या हटाएँ। कोई डाकघर नई लाइन में जाए तो थैलों में “नियम दूसरे थैले में ले जाएँ” चुनें। सहकर्मियों से साझा करने के लिए स्कीम निर्यात करें।';
+
+  @override
+  String get contributors => 'योगदानकर्ता';
+
+  @override
+  String get contributorsSub => 'पीओ सॉर्टिंग बनाने वाले';
+
+  @override
+  String get contributorsIntro =>
+      'डाक सॉर्टिंग सहायकों के लिए – तेज़, ऑफ़लाइन सॉर्टिंग मदद।';
+
+  @override
+  String get developedBy => 'विकसितकर्ता';
+
+  @override
+  String get roleDeveloper => 'विचार, डिज़ाइन और विकास';
+
+  @override
+  String get dataProvidedBy => 'सॉर्टिंग डेटा प्रदाता';
+
+  @override
+  String get roleData => 'सॉर्टिंग लाइनें, बैग और PH शीट';
+
+  @override
+  String get creditsTitle => 'इनसे बना';
+
+  @override
+  String get creditsText =>
+      '• पिन कोड निर्देशिका: data.gov.in (ओपन गवर्नमेंट डेटा लाइसेंस – भारत)\n• कन्नड़ पाठ पढ़ना: Tesseract OCR (Apache 2.0)\n• अंग्रेज़ी और हिंदी पाठ पढ़ना: Google ML Kit\n• ऐप फ्रेमवर्क: Flutter (ओपन सोर्स)';
+
+  @override
+  String get contributorsThanks => 'डेटा और सुझाव देने वाले सभी का धन्यवाद!';
 }

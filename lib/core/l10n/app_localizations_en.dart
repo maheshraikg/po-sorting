@@ -1763,4 +1763,37 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get help9 =>
       'On the Sort screen tap “Change bag for this PIN” to fix one PIN. For bigger changes open More → Schemes → your scheme: edit, add or delete rules, and in Bags use “Move rules to another bag” when an office moves to a new line. Export the scheme to share it with colleagues.';
+
+  @override
+  String get contributors => 'Contributors';
+
+  @override
+  String get contributorsSub => 'People who made PO Sorting';
+
+  @override
+  String get contributorsIntro =>
+      'Made for postal sorting assistants – fast, offline sorting help.';
+
+  @override
+  String get developedBy => 'Developed by';
+
+  @override
+  String get roleDeveloper => 'Idea, design and development';
+
+  @override
+  String get dataProvidedBy => 'Sorting data provided by';
+
+  @override
+  String get roleData => 'Sorting lines, bags and PH sheets';
+
+  @override
+  String get creditsTitle => 'Built with';
+
+  @override
+  String get creditsText =>
+      '• PIN code directory: data.gov.in (Open Government Data Licence – India)\n• Kannada text reading: Tesseract OCR (Apache 2.0)\n• English and Hindi text reading: Google ML Kit\n• App framework: Flutter (open source)';
+
+  @override
+  String get contributorsThanks =>
+      'Thank you to everyone who shared data and feedback!';
 }

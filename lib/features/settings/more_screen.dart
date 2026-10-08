@@ -4,6 +4,7 @@ import '../../core/l10n/app_localizations.dart';
 import '../learn/learn_screen.dart';
 import '../schemes/schemes_screen.dart';
 import 'about_screen.dart';
+import 'contributors_screen.dart';
 import 'airports_screen.dart';
 import 'directory_screen.dart';
 import 'favourites_screen.dart';
@@ -36,6 +37,7 @@ class MoreScreen extends StatelessWidget {
           item(Icons.settings_outlined, l.settings, l.settingsSub, const SettingsScreen()),
           item(Icons.help_outline, l.help, l.helpSub, const HelpScreen()),
           item(Icons.verified_user_outlined, l.legalTitle, l.legalSub, const LegalScreen()),
+          item(Icons.groups_outlined, l.contributors, l.contributorsSub, const ContributorsScreen()),
           item(Icons.info_outline, l.about, l.aboutSub, const AboutScreen()),
         ],
       ),

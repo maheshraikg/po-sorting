@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../core/constants.dart';
 import '../../core/l10n/app_localizations.dart';
+import 'contributors_screen.dart';
 import 'legal_screen.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -42,6 +43,12 @@ class AboutScreen extends StatelessWidget {
           Text(l.licenceTitle, style: t.titleMedium),
           Text(l.licenceText),
           const SizedBox(height: 16),
+          FilledButton.tonalIcon(
+            icon: const Icon(Icons.groups_outlined),
+            label: Text(l.contributors),
+            onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const ContributorsScreen())),
+          ),
+          const SizedBox(height: 8),
           FilledButton.tonalIcon(
             icon: const Icon(Icons.verified_user_outlined),
             label: Text(l.legalTitle),

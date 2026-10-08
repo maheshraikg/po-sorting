@@ -1063,5 +1063,15 @@
   "help8Title": "Practise",
   "help8": "Learn: flashcards with spaced repetition, a timed 20-article quiz, weak areas, and a PIN basics lesson. After a new DMSL, practise only the PINs whose hub changed.",
   "help9Title": "Sorting changed? Edit it",
-  "help9": "On the Sort screen tap “Change bag for this PIN” to fix one PIN. For bigger changes open More → Schemes → your scheme: edit, add or delete rules, and in Bags use “Move rules to another bag” when an office moves to a new line. Export the scheme to share it with colleagues."
+  "help9": "On the Sort screen tap “Change bag for this PIN” to fix one PIN. For bigger changes open More → Schemes → your scheme: edit, add or delete rules, and in Bags use “Move rules to another bag” when an office moves to a new line. Export the scheme to share it with colleagues.",
+  "contributors": "Contributors",
+  "contributorsSub": "People who made PO Sorting",
+  "contributorsIntro": "Made for postal sorting assistants – fast, offline sorting help.",
+  "developedBy": "Developed by",
+  "roleDeveloper": "Idea, design and development",
+  "dataProvidedBy": "Sorting data provided by",
+  "roleData": "Sorting lines, bags and PH sheets",
+  "creditsTitle": "Built with",
+  "creditsText": "• PIN code directory: data.gov.in (Open Government Data Licence – India)\n• Kannada text reading: Tesseract OCR (Apache 2.0)\n• English and Hindi text reading: Google ML Kit\n• App framework: Flutter (open source)",
+  "contributorsThanks": "Thank you to everyone who shared data and feedback!"
 }
