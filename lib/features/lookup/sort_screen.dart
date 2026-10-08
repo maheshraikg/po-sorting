@@ -861,7 +861,7 @@ class _ModeSwitch extends StatelessWidget {
               child: Text(
                 categoryLabel(l, m),
                 maxLines: 1,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: on ? kNavy : Colors.white.withValues(alpha: 0.8)),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: on ? kPostRed : Colors.white.withValues(alpha: 0.8)),
               ),
             ),
           ),

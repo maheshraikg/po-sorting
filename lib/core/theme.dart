@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// Brand palette: deep indigo with saffron highlights, teal for actions and
-/// sky blue for air. High contrast in poor light and clear of any
-/// organisation's branding.
-const Color kNavy = Color(0xFF3730A3); // primary indigo
-const Color kIndigoDeep = Color(0xFF1E1B4B);
-const Color kIndigoTop = Color(0xFF2E2A85);
-const Color kIndigoBottom = Color(0xFF4338CA);
-const Color kTeal = Color(0xFF0D9488);
-const Color kAmber = Color(0xFFF59E0B);
+/// Brand palette: post-box red with mail-bag yellow, on a warm postcard
+/// background; green for "found / correct" and sky blue for air. Generic
+/// postal colours only, no organisation's logo or emblem.
+const Color kPostRed = Color(0xFFB3261E); // primary, letter-box red
+const Color kPostRedDeep = Color(0xFF3B0A08);
+const Color kHeaderTop = Color(0xFF9A1B16);
+const Color kHeaderBottom = Color(0xFFC62828);
+const Color kPostGreen = Color(0xFF15803D);
+const Color kMailYellow = Color(0xFFF2B300);
 const Color kSky = Color(0xFF0EA5E9);
 const Color kSkyDeep = Color(0xFF0369A1);
 
@@ -18,13 +18,13 @@ LinearGradient headerGradient(BuildContext context) {
   return LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
-    colors: dark ? const [kIndigoDeep, Color(0xFF2A2670)] : const [kIndigoTop, kIndigoBottom],
+    colors: dark ? const [Color(0xFF4A0E0B), Color(0xFF6B1712)] : const [kHeaderTop, kHeaderBottom],
   );
 }
 
 // Kept for older call sites.
-const Color kSeedRed = kNavy;
-const Color kAccentAmber = kAmber;
+const Color kSeedRed = kPostRed;
+const Color kAccentAmber = kMailYellow;
 
 /// Label badge colours for the parcel bag pattern.
 const Color kAirYellow = Color(0xFFFFD600);
@@ -38,26 +38,26 @@ Color okColor(BuildContext context) =>
 
 ThemeData buildTheme(Brightness brightness) {
   final dark = brightness == Brightness.dark;
-  final scheme = ColorScheme.fromSeed(seedColor: kNavy, brightness: brightness).copyWith(
-    primary: dark ? const Color(0xFFA5B4FC) : kNavy,
-    onPrimary: dark ? kIndigoDeep : Colors.white,
-    primaryContainer: dark ? const Color(0xFF312E81) : const Color(0xFFE0E7FF),
-    onPrimaryContainer: dark ? const Color(0xFFE0E7FF) : kIndigoDeep,
-    secondary: dark ? const Color(0xFF5EEAD4) : kTeal,
-    onSecondary: dark ? const Color(0xFF042F2E) : Colors.white,
-    secondaryContainer: dark ? const Color(0xFF134E4A) : const Color(0xFFCCFBF1),
-    onSecondaryContainer: dark ? const Color(0xFFCCFBF1) : const Color(0xFF042F2E),
-    tertiary: kAmber,
-    surface: dark ? const Color(0xFF0B1020) : const Color(0xFFF4F5FB),
-    onSurface: dark ? const Color(0xFFE2E8F0) : const Color(0xFF0F172A),
-    onSurfaceVariant: dark ? const Color(0xFF94A3B8) : const Color(0xFF475569),
-    surfaceContainerLowest: dark ? const Color(0xFF0B1220) : Colors.white,
-    surfaceContainerLow: dark ? const Color(0xFF131C31) : Colors.white,
-    surfaceContainer: dark ? const Color(0xFF172036) : Colors.white,
-    surfaceContainerHigh: dark ? const Color(0xFF1E293B) : const Color(0xFFE9EEF7),
-    surfaceContainerHighest: dark ? const Color(0xFF273449) : const Color(0xFFDFE6F2),
-    outline: dark ? const Color(0xFF475569) : const Color(0xFF94A3B8),
-    outlineVariant: dark ? const Color(0xFF334155) : const Color(0xFFD5DCE8),
+  final scheme = ColorScheme.fromSeed(seedColor: kPostRed, brightness: brightness).copyWith(
+    primary: dark ? const Color(0xFFFFB4AB) : kPostRed,
+    onPrimary: dark ? const Color(0xFF690005) : Colors.white,
+    primaryContainer: dark ? const Color(0xFF7A1A14) : const Color(0xFFFDE2DF),
+    onPrimaryContainer: dark ? const Color(0xFFFFDAD5) : kPostRedDeep,
+    secondary: dark ? const Color(0xFFFFD54F) : kMailYellow,
+    onSecondary: dark ? const Color(0xFF3A2A00) : const Color(0xFF2B1D00),
+    secondaryContainer: dark ? const Color(0xFF5A4300) : const Color(0xFFFFEFC2),
+    onSecondaryContainer: dark ? const Color(0xFFFFEFC2) : const Color(0xFF2B1D00),
+    tertiary: dark ? const Color(0xFF86EFAC) : kPostGreen,
+    surface: dark ? const Color(0xFF15100F) : const Color(0xFFFAF6EF),
+    onSurface: dark ? const Color(0xFFEDE0DD) : const Color(0xFF231917),
+    onSurfaceVariant: dark ? const Color(0xFFB9A9A5) : const Color(0xFF5B4A46),
+    surfaceContainerLowest: dark ? const Color(0xFF1C1513) : Colors.white,
+    surfaceContainerLow: dark ? const Color(0xFF231B19) : Colors.white,
+    surfaceContainer: dark ? const Color(0xFF2A211F) : Colors.white,
+    surfaceContainerHigh: dark ? const Color(0xFF352B28) : const Color(0xFFF3EBE1),
+    surfaceContainerHighest: dark ? const Color(0xFF403432) : const Color(0xFFEAE0D4),
+    outline: dark ? const Color(0xFF7A6662) : const Color(0xFFA08C86),
+    outlineVariant: dark ? const Color(0xFF4A3B38) : const Color(0xFFE2D6CC),
   );
   final base = ThemeData(
     useMaterial3: true,
@@ -85,7 +85,7 @@ ThemeData buildTheme(Brightness brightness) {
       centerTitle: false,
       elevation: 0,
       scrolledUnderElevation: 2,
-      backgroundColor: dark ? kIndigoDeep : kIndigoTop,
+      backgroundColor: dark ? const Color(0xFF4A0E0B) : kHeaderTop,
       foregroundColor: Colors.white,
       surfaceTintColor: Colors.transparent,
       titleTextStyle: text.titleLarge?.copyWith(color: Colors.white, fontSize: 21, fontWeight: FontWeight.w800),

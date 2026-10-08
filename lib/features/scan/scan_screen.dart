@@ -416,7 +416,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
               padding: const EdgeInsets.fromLTRB(28, 56, 28, 56),
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  border: Border.all(color: found ? kTeal : Colors.white70, width: 3),
+                  border: Border.all(color: found ? kPostGreen : Colors.white70, width: 3),
                   borderRadius: BorderRadius.circular(18),
                 ),
               ),
@@ -467,7 +467,7 @@ class _ScanScreenState extends State<ScanScreen> with WidgetsBindingObserver {
     final (Color bg, IconData icon, String text) = _paused
         ? (Colors.black87, Icons.pause_circle, l.scanPaused)
         : pin != null
-        ? (kTeal, Icons.check_circle, pin)
+        ? (kPostGreen, Icons.check_circle, pin)
         : (Colors.black87, Icons.center_focus_weak, l.scanLooking);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -591,7 +591,7 @@ class _ScanOfficeCard extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          if (hit.samePin) const Padding(padding: EdgeInsets.only(right: 4), child: Icon(Icons.check_circle, color: kTeal, size: 20)),
+                          if (hit.samePin) const Padding(padding: EdgeInsets.only(right: 4), child: Icon(Icons.check_circle, color: kPostGreen, size: 20)),
                           Flexible(child: Text('${o.officeName} ${o.officeType}', style: t.titleMedium?.copyWith(fontWeight: FontWeight.w900))),
                         ],
                       ),

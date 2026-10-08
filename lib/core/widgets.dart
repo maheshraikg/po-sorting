@@ -461,7 +461,7 @@ class SampleChip extends StatelessWidget {
       AppLocalizations.of(context).sampleBadge,
       style: const TextStyle(fontWeight: FontWeight.w800, color: Colors.black),
     ),
-    backgroundColor: kAmber,
+    backgroundColor: kMailYellow,
     visualDensity: VisualDensity.compact,
   );
 }
