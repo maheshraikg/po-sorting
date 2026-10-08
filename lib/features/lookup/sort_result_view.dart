@@ -47,7 +47,38 @@ class SortResultView extends StatelessWidget {
     if (r.breakdown == null && !r.valid) {
       children.add(WarningBanner(text: l.invalidPin, icon: Icons.error_outline));
     } else if (!r.complete) {
-      // Partial PIN: sorting district + likely bag.
+      // Partial PIN: the same cards as for a full PIN (PH bag, NSH, L1) as
+      // soon as the first digits decide them; otherwise the possible hubs.
+      final nonTd = r.category == kCatNonTD && r.digits.length >= 3;
+      if (r.likelyBag != null) {
+        if (nonTd) {
+          children.add(BagCard(bag: r.likelyBag!, label: l.phBag, series: scheme?.pinSeries(r.likelyBag!.code, category: kCatNonTD)));
+        } else {
+          children.add(Text(l.likelyBag, style: Theme.of(context).textTheme.labelLarge));
+          children.add(BagCard(bag: r.likelyBag!, compact: true));
+        }
+        children.add(gap);
+      }
+      if (nonTd) {
+        final nshPart = services.nsh?.resolve(r.digits);
+        if (nshPart != null) {
+          children.add(NshCard(match: nshPart));
+          children.add(gap);
+        } else {
+          final c = services.nsh?.candidates(r.digits) ?? const [];
+          if (c.isNotEmpty) {
+            children.add(PossibleHubsCard(title: l.nshLabel, hubs: c, key: const ValueKey('nsh_possible')));
+            children.add(gap);
+          }
+        }
+        final l1Part = services.l1?.resolve(r.digits);
+        final nphPart = services.nph?.resolve(r.digits);
+        final l1Possible = l1Part == null ? services.l1?.candidates(r.digits) ?? const <NshHub>[] : const <NshHub>[];
+        if (l1Part != null || nphPart != null || l1Possible.isNotEmpty) {
+          children.add(RmsL1Card(l1: l1Part, nph: nphPart, possible: l1Possible));
+          children.add(gap);
+        }
+      }
       final s = r.prefixSummary;
       if (s != null) {
         children.add(
@@ -64,21 +95,6 @@ class SortResultView extends StatelessWidget {
             ),
           ),
         );
-        children.add(gap);
-      }
-      final nshPart = r.category == kCatNonTD && r.digits.length >= 3 ? services.nsh?.resolve(r.digits) : null;
-      if (nshPart != null) {
-        children.add(NshCard(match: nshPart, compact: true));
-        children.add(gap);
-      }
-      final l1Part = r.category == kCatNonTD && r.digits.length >= 3 ? services.l1?.resolve(r.digits) : null;
-      if (l1Part != null) {
-        children.add(RmsL1Card(l1: l1Part, compact: true));
-        children.add(gap);
-      }
-      if (r.likelyBag != null) {
-        children.add(Text(l.likelyBag, style: Theme.of(context).textTheme.labelLarge));
-        children.add(BagCard(bag: r.likelyBag!, compact: true));
         children.add(gap);
       }
       if (r.possibleBags.length > 1) {
@@ -459,11 +475,14 @@ class NshCard extends StatelessWidget {
 
 /// RMS L1 (and the NPH parcel hub) for the PIN, from the MR RMS sorting data.
 class RmsL1Card extends StatefulWidget {
-  const RmsL1Card({super.key, this.l1, this.nph, this.compact = false});
+  const RmsL1Card({super.key, this.l1, this.nph, this.compact = false, this.possible = const []});
 
   final NshMatch? l1;
   final NshMatch? nph;
   final bool compact;
+
+  /// For a partial PIN with several L1s: the ones it can still be.
+  final List<NshHub> possible;
 
   @override
   State<RmsL1Card> createState() => _RmsL1CardState();
@@ -512,7 +531,18 @@ class _RmsL1CardState extends State<RmsL1Card> {
             ],
           ),
           const SizedBox(height: 4),
-          if (h == null)
+          if (h == null && widget.possible.isNotEmpty) ...[
+            Text(l.possibleHubsN(widget.possible.length), style: t.titleSmall?.copyWith(fontWeight: FontWeight.w800, color: cs.onSurfaceVariant)),
+            const SizedBox(height: 4),
+            for (final p in widget.possible.take(_all ? widget.possible.length : 6))
+              Padding(
+                padding: const EdgeInsets.only(bottom: 2),
+                child: Text('• ${p.name}', style: t.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+              ),
+            if (!_all && widget.possible.length > 6)
+              TextButton(onPressed: () => setState(() => _all = true), child: Text(l.showAllN(widget.possible.length))),
+            Text(l.typeMoreDigits, style: t.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
+          ] else if (h == null)
             Text(l.rmsL1None, style: t.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: cs.onSurfaceVariant))
           else ...[
             Text(h.name, key: const ValueKey('l1_name'), style: (widget.compact ? t.titleLarge : t.headlineSmall)?.copyWith(fontWeight: FontWeight.w900, height: 1.15)),
@@ -541,6 +571,39 @@ class _RmsL1CardState extends State<RmsL1Card> {
               TextButton(key: const ValueKey('l1_more'), onPressed: () => setState(() => _all = true), child: Text(l.showAll)),
             Text(l.nshMatched(widget.l1!.matched), style: t.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Partial PIN that more than one hub takes: list them.
+class PossibleHubsCard extends StatelessWidget {
+  const PossibleHubsCard({super.key, required this.title, required this.hubs});
+
+  final String title;
+  final List<NshHub> hubs;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final t = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
+    return Container(
+      decoration: BoxDecoration(color: cs.surfaceContainerLowest, borderRadius: BorderRadius.circular(20), border: Border.all(color: cs.primary, width: 2)),
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(children: [
+            Icon(Icons.local_shipping_outlined, color: cs.primary),
+            const SizedBox(width: 8),
+            Expanded(child: Text(title, style: t.labelMedium?.copyWith(color: cs.primary, letterSpacing: 1.2, fontWeight: FontWeight.w900))),
+          ]),
+          const SizedBox(height: 4),
+          Text(l.possibleHubsN(hubs.length), style: t.titleSmall?.copyWith(fontWeight: FontWeight.w800, color: cs.onSurfaceVariant)),
+          for (final h in hubs.take(8)) Text('• ${h.name}  (${h.circle})', style: t.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+          Text(l.typeMoreDigits, style: t.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
         ],
       ),
     );

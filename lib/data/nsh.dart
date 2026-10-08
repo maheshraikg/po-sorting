@@ -117,6 +117,27 @@ class NshTable {
     return null;
   }
 
+  /// Hubs that take some PIN starting with [digits] (for a partial PIN when
+  /// [resolve] finds no single hub), in table order.
+  List<NshHub> candidates(String digits) {
+    if (digits.isEmpty) return const [];
+    final lo = int.parse(digits.padRight(6, '0')), hi = int.parse(digits.padRight(6, '9'));
+    final out = <NshHub>[];
+    for (final h in hubs) {
+      for (final t in seriesTokens(h.series)) {
+        if (h.exclude.contains(t.$1)) continue;
+        final hit = t.$2 != null
+            ? int.parse(t.$1) <= hi && int.parse(t.$2!) >= lo
+            : t.$1.startsWith(digits) || digits.startsWith(t.$1);
+        if (hit) {
+          out.add(h);
+          break;
+        }
+      }
+    }
+    return out;
+  }
+
   /// The table as a CSV file (same columns as the bundled sheet).
   String toCsv() => writeCsv([
     ['Hub', 'Kind', 'Circle', 'Series', 'Mapped To', 'Exclude'],

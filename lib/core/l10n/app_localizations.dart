@@ -1528,6 +1528,18 @@ abstract class AppLocalizations {
   /// **'Shown on the NSH card when it differs from the NSH sheet'**
   String get rmsNshHubsSub;
 
+  /// No description provided for @possibleHubsN.
+  ///
+  /// In en, this message translates to:
+  /// **'Can be one of {count}:'**
+  String possibleHubsN(int count);
+
+  /// No description provided for @typeMoreDigits.
+  ///
+  /// In en, this message translates to:
+  /// **'Type more digits of the PIN to narrow it down.'**
+  String get typeMoreDigits;
+
   /// No description provided for @findPinHint.
   ///
   /// In en, this message translates to:

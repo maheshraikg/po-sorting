@@ -282,6 +282,7 @@ class SortScreenState extends State<SortScreen> {
     final scheme = services.active;
     final r = _result;
     final matches = scheme == null ? const <LiveMatch>[] : liveMatches(scheme.rules, _query, category: settings.category, limit: 400);
+    final partialCards = r != null && r.digits == _digits && !r.complete && _digits.length >= 3 && settings.category == kCatNonTD;
     return Scaffold(
       appBar: AppBar(
         title: FittedBox(
@@ -374,6 +375,8 @@ class SortScreenState extends State<SortScreen> {
                       for (final p in _places) _PlaceCard(hit: p, onTap: () => setPin(p.office.pin)),
                       const SizedBox(height: 8),
                     ],
+                    // Non-TD: from 3 digits on, the PH / NSH / L1 cards come first.
+                    if (partialCards) ...[SortResultView(result: r, showBreakdown: false), const SizedBox(height: 10)],
                     if (scheme != null && _query.isNotEmpty && (matches.isNotEmpty || _places.isEmpty))
                       _LiveList(
                         matches: matches,
@@ -383,7 +386,7 @@ class SortScreenState extends State<SortScreen> {
                         onAdd: (bag) => _addOffice(scheme, bag),
                       ),
                     // Partial PIN without list entries: sorting district / likely bag.
-                    if (r != null && r.digits == _digits && _digits.isNotEmpty && matches.isEmpty) SortResultView(result: r),
+                    if (!partialCards && r != null && r.digits == _digits && _digits.isNotEmpty && matches.isEmpty) SortResultView(result: r),
                   ],
                   if (_query.isEmpty && _recents.isNotEmpty) ...[
                     const SizedBox(height: 8),

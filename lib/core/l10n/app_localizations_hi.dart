@@ -814,6 +814,14 @@ class AppLocalizationsHi extends AppLocalizations {
   String get rmsNshHubsSub => 'NSH शीट से अलग होने पर NSH कार्ड पर दिखता है';
 
   @override
+  String possibleHubsN(int count) {
+    return '$count में से एक हो सकता है:';
+  }
+
+  @override
+  String get typeMoreDigits => 'सटीक जानने के लिए पिन के और अंक लिखें।';
+
+  @override
   String get findPinHint => 'डाकघर, गाँव, शहर, तहसील या ज़िला';
 
   @override

@@ -812,6 +812,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Shown on the NSH card when it differs from the NSH sheet';
 
   @override
+  String possibleHubsN(int count) {
+    return 'Can be one of $count:';
+  }
+
+  @override
+  String get typeMoreDigits => 'Type more digits of the PIN to narrow it down.';
+
+  @override
   String get findPinHint => 'Office, village, city, taluk or district';
 
   @override

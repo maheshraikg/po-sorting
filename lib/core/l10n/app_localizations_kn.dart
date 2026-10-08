@@ -813,6 +813,15 @@ class AppLocalizationsKn extends AppLocalizations {
       'NSH ಹಾಳೆಗಿಂತ ಬೇರೆ ಇದ್ದಾಗ NSH ಕಾರ್ಡ್‌ನಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತದೆ';
 
   @override
+  String possibleHubsN(int count) {
+    return '$count ರಲ್ಲಿ ಒಂದು ಆಗಿರಬಹುದು:';
+  }
+
+  @override
+  String get typeMoreDigits =>
+      'ಖಚಿತಪಡಿಸಲು ಪಿನ್‌ನ ಇನ್ನಷ್ಟು ಅಂಕಿಗಳನ್ನು ಟೈಪ್ ಮಾಡಿ.';
+
+  @override
   String get findPinHint => 'ಕಚೇರಿ, ಗ್ರಾಮ, ನಗರ, ತಾಲ್ಲೂಕು ಅಥವಾ ಜಿಲ್ಲೆ';
 
   @override
