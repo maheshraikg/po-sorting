@@ -391,6 +391,26 @@ class NshCard extends StatelessWidget {
                 Expanded(child: Text(l.ichMappedTo(h.mappedTo), style: t.titleSmall?.copyWith(fontWeight: FontWeight.w800, color: accent))),
               ]),
             ),
+          if (match.alsoListed.isNotEmpty)
+            Container(
+              key: const ValueKey('nsh_also'),
+              margin: const EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(color: cs.secondaryContainer, borderRadius: BorderRadius.circular(12)),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(Icons.info_outline, color: cs.onSecondaryContainer),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      l.nshAlsoListed(match.matched, [h.name, ...match.alsoListed.map((x) => x.name)].join(' / ')),
+                      style: t.bodyMedium?.copyWith(fontWeight: FontWeight.w700, color: cs.onSecondaryContainer),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           const SizedBox(height: 6),
           Text(l.nshPinRange, style: t.labelMedium?.copyWith(fontWeight: FontWeight.w800, color: cs.onSurfaceVariant)),
           Text(h.series, key: const ValueKey('nsh_series'), style: t.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),

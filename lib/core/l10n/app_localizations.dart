@@ -1456,6 +1456,12 @@ abstract class AppLocalizations {
   /// **'Matched by {series}'**
   String nshMatched(String series);
 
+  /// No description provided for @nshAlsoListed.
+  ///
+  /// In en, this message translates to:
+  /// **'The sheet lists {series} under: {hubs}'**
+  String nshAlsoListed(String series, String hubs);
+
   /// No description provided for @findPinHint.
   ///
   /// In en, this message translates to:

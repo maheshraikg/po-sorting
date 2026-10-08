@@ -769,6 +769,11 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String nshAlsoListed(String series, String hubs) {
+    return 'The sheet lists $series under: $hubs';
+  }
+
+  @override
   String get findPinHint => 'Office, village, city, taluk or district';
 
   @override

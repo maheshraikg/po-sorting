@@ -23,7 +23,6 @@ void main() {
     expect(hub('574239'), 'MANGALORE NSH');
     expect(hub('110001'), 'NEW DELHI NSH');
     expect(hub('194101'), 'NEW DELHI NSH');
-    expect(hub('402201'), 'THANE NSH');
     expect(hub('415213'), 'THANE NSH');
     expect(hub('415201'), 'MUMBAI NSH');
     expect(hub('416510'), 'MUMBAI NSH');
@@ -33,15 +32,30 @@ void main() {
     expect(hub('423101'), 'PUNE NSH'); // 4231 is listed under Pune
     expect(hub('678001'), 'COIMBATORE NSH');
     expect(hub('680001'), 'THRISSUR ICH');
-    expect(table.resolve('679101')!.hub.mappedTo, 'KOCHI NSH');
-    expect(hub('577201'), 'SHIVAMOGGA ICH');
+    expect(table.resolve('680001')!.hub.mappedTo, 'KOCHI NSH');
+    expect(hub('577301'), 'SHIVAMOGGA ICH');
     expect(hub('577228'), 'ARSIKERE ICH');
-    expect(hub('577501'), 'DAVANGERE ICH');
+    expect(hub('577601'), 'DAVANGERE ICH');
     expect(hub('577101'), 'ARSIKERE ICH');
     expect(hub('561202'), 'TUMKUR ICH');
     expect(hub('561201'), 'BENGALURU NSH');
     expect(hub('175001'), 'AMBALA NSH');
     expect(hub('176001'), 'PATHANKOT NSH');
+    // Series the sheet lists under two hubs: both are shown.
+    List<String> both(String pin) {
+      final m = table.resolve(pin)!;
+      return [m.hub.name, ...m.alsoListed.map((h) => h.name)];
+    }
+    expect(both('402201'), ['THANE NSH', 'MUMBAI NSH']);
+    expect(both('423401'), ['NASHIK NSH', 'MUMBAI NSH']);
+    expect(both('415201'), ['MUMBAI NSH']); // 415201-415212 is Mumbai's own range
+    expect(both('415250'), ['MUMBAI NSH']);
+    expect(both('415290'), ['MUMBAI NSH']);
+    expect(both('679101'), ['COIMBATORE NSH', 'THRISSUR ICH']);
+    expect(both('577201'), ['ARSIKERE ICH', 'SHIVAMOGGA ICH']);
+    expect(both('577501'), ['ARSIKERE ICH', 'DAVANGERE ICH']);
+    expect(both('175001'), ['AMBALA NSH', 'PATHANKOT NSH']);
+    expect(both('560001'), ['BENGALURU NSH']);
     expect(hub('900099'), '2 CBPO (APS)');
     expect(hub('305026'), 'JODHPUR NSH');
     expect(hub('305001'), 'JAIPUR NSH');

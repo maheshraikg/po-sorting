@@ -770,6 +770,11 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String nshAlsoListed(String series, String hubs) {
+    return 'ಹಾಳೆಯಲ್ಲಿ $series ಇವುಗಳ ಅಡಿಯಲ್ಲಿ ಇದೆ: $hubs';
+  }
+
+  @override
   String get findPinHint => 'ಕಚೇರಿ, ಗ್ರಾಮ, ನಗರ, ತಾಲ್ಲೂಕು ಅಥವಾ ಜಿಲ್ಲೆ';
 
   @override

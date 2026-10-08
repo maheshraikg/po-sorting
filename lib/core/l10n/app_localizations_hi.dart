@@ -772,6 +772,11 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String nshAlsoListed(String series, String hubs) {
+    return 'शीट में $series इनके अंतर्गत है: $hubs';
+  }
+
+  @override
   String get findPinHint => 'डाकघर, गाँव, शहर, तहसील या ज़िला';
 
   @override
