@@ -43,7 +43,7 @@ class SortResultView extends StatelessWidget {
     final r = result;
     final services = context.services;
     final scheme = services.active;
-    const gap = SizedBox(height: 10);
+    const gap = SizedBox(height: 8);
     final children = <Widget>[];
 
     if (r.digits.isEmpty) return const SizedBox.shrink();
@@ -55,7 +55,13 @@ class SortResultView extends StatelessWidget {
       final nonTd = r.category == kCatNonTD && r.digits.length >= 3;
       if (r.likelyBag != null) {
         if (nonTd) {
-          children.add(BagCard(bag: r.likelyBag!, label: l.phBag, series: scheme?.pinSeries(r.likelyBag!.code, category: kCatNonTD)));
+          final lo = int.parse(r.digits.padRight(6, '0')), hi = int.parse(r.digits.padRight(6, '9'));
+          children.add(PhCard(
+            bag: r.likelyBag!,
+            label: l.phBag,
+            series: scheme?.pinSeries(r.likelyBag!.code, category: kCatNonTD),
+            trailing: AirBadge(lo: lo, hi: hi, foreground: onColour(bagColour(context, r.likelyBag!))),
+          ));
         } else {
           children.add(Text(l.likelyBag, style: Theme.of(context).textTheme.labelLarge));
           children.add(BagCard(bag: r.likelyBag!, compact: true));
@@ -87,7 +93,7 @@ class SortResultView extends StatelessWidget {
           children.add(gap);
         }
       }
-      final s = r.prefixSummary;
+      final s = nonTd ? null : r.prefixSummary;
       if (s != null) {
         children.add(
           Card(
@@ -149,6 +155,15 @@ class SortResultView extends StatelessWidget {
           children.add(OfficeHeadline(office: o, more: r.offices.length - 1));
           children.add(gap);
         }
+      } else if (r.bag != null && r.category == kCatNonTD) {
+        final pin = int.tryParse(r.digits);
+        children.add(PhCard(
+          bag: r.bag!,
+          label: l.phBag,
+          series: scheme.pinSeries(r.bag!.code, category: kCatNonTD),
+          trailing: pin == null || !r.complete ? null : AirBadge(lo: pin, hi: pin, foreground: onColour(bagColour(context, r.bag!))),
+        ));
+        children.add(const SizedBox(height: 8));
       } else if (r.bag != null) {
         final pin = int.tryParse(r.digits);
         children.add(BagCard(

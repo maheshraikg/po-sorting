@@ -1,71 +1,73 @@
-/// Hub cards under the PH bag for Non-TD: NSH, NPH (parcel hub) and RMS L1,
-/// each a blue card with an arrow tag, the hub name and its air code.
+/// Non-TD result: a slim PH bag card and compact NSH / NPH / RMS L1 tiles,
+/// sized so the whole answer fits on one phone screen. Tap a tile for the
+/// full PIN range and notes.
 library;
 
 import 'package:flutter/material.dart';
 
 import '../../core/l10n/app_localizations.dart';
 import '../../core/theme.dart';
+import '../../core/widgets.dart' show bagColour;
+import '../../data/models/scheme.dart';
 import '../../data/nsh.dart';
 
-const Color kHubBlue = Color(0xFF2F5FC4);
-const Color kHubBlueDark = Color(0xFF213F86);
+const Color kNshAccent = Color(0xFF4F46E5);
+const Color kIchAccent = Color(0xFF0369A1);
+const Color kNphAccent = Color(0xFF0F766E);
+const Color kL1Accent = Color(0xFF9333EA);
 
-Color _blue(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? kHubBlueDark : kHubBlue;
+/// PH / bag for a Non-TD PIN: bag colour, name, state and PIN range in one
+/// short card; [trailing] holds the air code.
+class PhCard extends StatelessWidget {
+  const PhCard({super.key, required this.bag, required this.label, this.series, this.trailing});
 
-/// Arrow tag on the left of a hub card ("NSH L1 ➜").
-class _ArrowTag extends StatelessWidget {
-  const _ArrowTag(this.text);
-
-  final String text;
+  final Bag bag;
+  final String label;
+  final String? series;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 76,
-      height: 44,
-      child: ClipPath(
-        clipper: const _ArrowClipper(),
-        child: ColoredBox(
-          color: _blue(context),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 6, right: 18),
-            child: Center(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(text, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 13, height: 1.1)),
-              ),
+    final bg = bagColour(context, bag);
+    final fg = onColour(bg);
+    final t = Theme.of(context).textTheme;
+    final deep = Color.lerp(bg, Colors.black, 0.22)!;
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [bg, deep]),
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [BoxShadow(color: bg.withValues(alpha: 0.3), blurRadius: 10, offset: const Offset(0, 4))],
+      ),
+      padding: const EdgeInsets.fromLTRB(16, 10, 12, 10),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(label.toUpperCase(), style: t.labelSmall?.copyWith(color: fg.withValues(alpha: 0.8), letterSpacing: 1.4, fontWeight: FontWeight.w800)),
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(bag.code, style: t.headlineMedium?.copyWith(color: fg, fontWeight: FontWeight.w900, height: 1.05)),
+                ),
+                if (bag.name.isNotEmpty && bag.name != bag.code)
+                  Text(bag.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: t.titleSmall?.copyWith(color: fg, fontWeight: FontWeight.w700)),
+                if (series != null)
+                  Text(series!, key: const ValueKey('ph_series'), maxLines: 1, overflow: TextOverflow.ellipsis,
+                      style: t.bodySmall?.copyWith(color: fg.withValues(alpha: 0.9), fontWeight: FontWeight.w700)),
+              ],
             ),
           ),
-        ),
+          if (trailing != null) ...[const SizedBox(width: 8), trailing!],
+        ],
       ),
     );
   }
 }
 
-class _ArrowClipper extends CustomClipper<Path> {
-  const _ArrowClipper();
-
-  @override
-  Path getClip(Size s) {
-    final head = s.width * 0.26;
-    final body = s.height * 0.22;
-    return Path()
-      ..moveTo(0, body)
-      ..lineTo(s.width - head, body)
-      ..lineTo(s.width - head, 0)
-      ..lineTo(s.width, s.height / 2)
-      ..lineTo(s.width - head, s.height)
-      ..lineTo(s.width - head, s.height - body)
-      ..lineTo(0, s.height - body)
-      ..close();
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
-}
-
-/// Orange air-code chip ("✈ HYD").
+/// Soft air-code chip ("✈ HYD").
 class HubAirChip extends StatelessWidget {
   const HubAirChip(this.code, {super.key});
 
@@ -73,175 +75,169 @@ class HubAirChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final c = accentFor(context, kAccentOrange);
     return Container(
       key: ValueKey('hub_air_$code'),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: kAccentOrange,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.6)),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+      decoration: BoxDecoration(color: c.withValues(alpha: 0.14), borderRadius: BorderRadius.circular(10), border: Border.all(color: c.withValues(alpha: 0.45))),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.flight, size: 16, color: Colors.white),
-          const SizedBox(width: 4),
-          Text(code, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 1)),
+          Icon(Icons.flight, size: 15, color: c),
+          const SizedBox(width: 3),
+          Text(code, style: TextStyle(color: c, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 0.8)),
         ],
       ),
     );
   }
 }
 
-/// Tag + blue card: name on red, air code, then [children] (white text).
-class HubCardShell extends StatelessWidget {
-  const HubCardShell({super.key, required this.tag, this.name, this.nameKey, this.air = '', this.children = const [], this.compact = false});
+/// One compact hub row: accent stripe, tag + circle, hub name, PIN range on
+/// one line and the air code; tap to show [details].
+class HubTile extends StatefulWidget {
+  const HubTile({
+    super.key,
+    required this.tag,
+    required this.accent,
+    required this.icon,
+    this.name,
+    this.nameKey,
+    this.subtitle = '',
+    this.series = '',
+    this.seriesKey,
+    this.air = '',
+    this.notes = const [],
+    this.details = const [],
+  });
 
   final String tag;
+  final Color accent;
+  final IconData icon;
   final String? name;
   final Key? nameKey;
+
+  /// Circle, or "Can be one of 3" for a partial PIN.
+  final String subtitle;
+  final String series;
+  final Key? seriesKey;
   final String air;
-  final List<Widget> children;
-  final bool compact;
+
+  /// Always shown (sheet / RMS differences).
+  final List<Widget> notes;
+
+  /// Shown after a tap.
+  final List<Widget> details;
+
+  @override
+  State<HubTile> createState() => _HubTileState();
+}
+
+class _HubTileState extends State<HubTile> {
+  bool _open = false;
 
   @override
   Widget build(BuildContext context) {
     final t = Theme.of(context).textTheme;
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        _ArrowTag(tag),
-        const SizedBox(width: 6),
-        Expanded(
-          child: Container(
-            constraints: const BoxConstraints(minHeight: 76),
-            decoration: BoxDecoration(
-              color: _blue(context),
-              borderRadius: BorderRadius.circular(14),
-              boxShadow: [BoxShadow(color: kHubBlue.withValues(alpha: 0.25), blurRadius: 6, offset: const Offset(0, 2))],
-            ),
-            padding: EdgeInsets.all(compact ? 10 : 12),
-            child: DefaultTextStyle.merge(
-              style: const TextStyle(color: Colors.white),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
+    final cs = Theme.of(context).colorScheme;
+    final a = accentFor(context, widget.accent);
+    final canOpen = widget.details.isNotEmpty || widget.series.length > 40;
+    return Material(
+      color: cs.surfaceContainerLowest,
+      borderRadius: BorderRadius.circular(16),
+      clipBehavior: Clip.antiAlias,
+      elevation: 1,
+      shadowColor: a.withValues(alpha: 0.3),
+      child: InkWell(
+        onTap: canOpen ? () => setState(() => _open = !_open) : null,
+        child: Container(
+          decoration: BoxDecoration(border: Border(left: BorderSide(color: a, width: 6))),
+          padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 children: [
-                  if (name != null || air.isNotEmpty)
-                    Row(
+                  Container(
+                    width: 38,
+                    height: 38,
+                    decoration: BoxDecoration(color: a.withValues(alpha: 0.13), shape: BoxShape.circle),
+                    child: Icon(widget.icon, color: a, size: 21),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: name == null
-                              ? const SizedBox.shrink()
-                              : Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(color: kPostRed, borderRadius: BorderRadius.circular(6)),
-                                    child: Text(
-                                      name!,
-                                      key: nameKey,
-                                      style: (compact ? t.titleSmall : t.titleMedium)?.copyWith(color: Colors.white, fontWeight: FontWeight.w900, fontSize: compact ? 16 : 19, height: 1.15),
-                                    ),
-                                  ),
-                                ),
+                        Text.rich(
+                          TextSpan(children: [
+                            TextSpan(text: widget.tag, style: TextStyle(color: a, fontWeight: FontWeight.w900, letterSpacing: 1)),
+                            if (widget.subtitle.isNotEmpty) TextSpan(text: '  ·  ${widget.subtitle}', style: TextStyle(color: cs.onSurfaceVariant, fontWeight: FontWeight.w600)),
+                          ]),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: t.labelMedium,
                         ),
-                        if (air.isNotEmpty) ...[const SizedBox(width: 8), HubAirChip(air)],
+                        if (widget.name != null)
+                          Text(widget.name!, key: widget.nameKey, maxLines: 2, overflow: TextOverflow.ellipsis,
+                              style: t.titleMedium?.copyWith(fontWeight: FontWeight.w900, height: 1.15)),
+                        if (widget.series.isNotEmpty)
+                          Text(widget.series, key: widget.seriesKey, maxLines: _open ? null : 1, overflow: _open ? null : TextOverflow.ellipsis,
+                              style: t.bodySmall?.copyWith(fontWeight: FontWeight.w700, color: cs.onSurfaceVariant)),
                       ],
                     ),
-                  ...children,
+                  ),
+                  if (widget.air.isNotEmpty) ...[const SizedBox(width: 6), HubAirChip(widget.air)],
+                  if (canOpen) Icon(_open ? Icons.expand_less : Icons.expand_more, color: cs.outline, size: 20),
                 ],
               ),
-            ),
+              ...widget.notes,
+              if (_open) ...widget.details,
+            ],
           ),
-        ),
-      ],
-    );
-  }
-}
-
-TextStyle? _detail(BuildContext context, {bool bold = false}) =>
-    Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white.withValues(alpha: bold ? 1 : 0.85), fontWeight: bold ? FontWeight.w800 : FontWeight.w600);
-
-/// A note on a light band inside a hub card.
-Widget _note(BuildContext context, Key key, IconData icon, String text) => Container(
-  key: key,
-  margin: const EdgeInsets.only(top: 8),
-  padding: const EdgeInsets.all(8),
-  decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.16), borderRadius: BorderRadius.circular(10)),
-  child: Row(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Icon(icon, size: 18, color: Colors.white),
-      const SizedBox(width: 6),
-      Expanded(child: Text(text, style: _detail(context, bold: true))),
-    ],
-  ),
-);
-
-/// PIN range of a hub, shortened to the first whole series when long.
-class _Series extends StatefulWidget {
-  const _Series({required this.series, required this.matched, this.seriesKey, this.moreKey});
-
-  final String series;
-  final String matched;
-  final Key? seriesKey;
-  final Key? moreKey;
-
-  @override
-  State<_Series> createState() => _SeriesState();
-}
-
-class _SeriesState extends State<_Series> {
-  static const _short = 140;
-  bool _all = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context);
-    final s = widget.series;
-    final long = s.length > _short && !_all;
-    final cut = long ? (s.lastIndexOf(',', _short) > 0 ? s.lastIndexOf(',', _short) : _short) : s.length;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 8),
-        Text(l.nshPinRange, style: _detail(context)?.copyWith(fontSize: 12, letterSpacing: 0.5)),
-        Text(long ? '${s.substring(0, cut)}, …' : s, key: widget.seriesKey, style: _detail(context, bold: true)),
-        if (long)
-          TextButton(
-            key: widget.moreKey,
-            style: TextButton.styleFrom(foregroundColor: Colors.white, padding: EdgeInsets.zero, minimumSize: const Size(0, 36)),
-            onPressed: () => setState(() => _all = true),
-            child: Text(l.showAll, style: const TextStyle(decoration: TextDecoration.underline)),
-          ),
-        Text(l.nshMatched(widget.matched), style: _detail(context)?.copyWith(fontSize: 12)),
-      ],
-    );
-  }
-}
-
-/// Hubs a partial PIN can still go to.
-List<Widget> _possible(BuildContext context, List<NshHub> hubs, {int max = 6}) {
-  final l = AppLocalizations.of(context);
-  return [
-    Text(l.possibleHubsN(hubs.length), style: _detail(context)),
-    const SizedBox(height: 4),
-    for (final h in hubs.take(max))
-      Padding(
-        padding: const EdgeInsets.only(bottom: 4),
-        child: Row(
-          children: [
-            Expanded(child: Text('• ${h.name}', style: _detail(context, bold: true)?.copyWith(fontSize: 17))),
-            if (hubAirCode(h).isNotEmpty) Text(hubAirCode(h), style: _detail(context, bold: true)?.copyWith(color: const Color(0xFFFFC48A))),
-          ],
         ),
       ),
-    if (hubs.length > max) Text('+${hubs.length - max}', style: _detail(context)),
-    Text(l.typeMoreDigits, style: _detail(context)?.copyWith(fontSize: 12)),
-  ];
+    );
+  }
 }
+
+Widget _note(BuildContext context, Key key, IconData icon, String text, Color colour) {
+  final c = accentFor(context, colour);
+  return Container(
+    key: key,
+    margin: const EdgeInsets.only(top: 6),
+    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+    decoration: BoxDecoration(color: c.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8)),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 16, color: c),
+        const SizedBox(width: 6),
+        Expanded(child: Text(text, style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w800, color: c))),
+      ],
+    ),
+  );
+}
+
+Widget _matched(BuildContext context, String matched) => Padding(
+  padding: const EdgeInsets.only(top: 4, left: 48),
+  child: Text(AppLocalizations.of(context).nshMatched(matched), style: Theme.of(context).textTheme.bodySmall),
+);
+
+/// Names of the hubs a partial PIN can still go to, with air codes.
+List<Widget> _possibleDetails(BuildContext context, List<NshHub> hubs) => [
+  const SizedBox(height: 4),
+  for (final h in hubs)
+    Padding(
+      padding: const EdgeInsets.only(left: 48, bottom: 2),
+      child: Text('• ${h.name}${hubAirCode(h).isEmpty ? '' : '  ✈ ${hubAirCode(h)}'}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700)),
+    ),
+  Padding(
+    padding: const EdgeInsets.only(left: 48),
+    child: Text(AppLocalizations.of(context).typeMoreDigits, style: Theme.of(context).textTheme.bodySmall),
+  ),
+];
+
+String _possibleName(List<NshHub> hubs) => hubs.length <= 2 ? hubs.map((h) => h.name).join(' / ') : '${hubs.take(2).map((h) => h.name).join(' / ')} …';
 
 /// NSH / ICH for speed post.
 class NshCard extends StatelessWidget {
@@ -257,22 +253,26 @@ class NshCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final h = match.hub;
-    return HubCardShell(
+    final accent = h.isIch ? kIchAccent : kNshAccent;
+    return HubTile(
       key: const ValueKey('nsh_card'),
       tag: h.isIch ? 'ICH' : 'NSH L1',
+      accent: accent,
+      icon: Icons.local_shipping_outlined,
       name: h.name,
+      subtitle: h.circle,
+      series: h.series,
+      seriesKey: const ValueKey('nsh_series'),
       air: hubAirCode(h),
-      compact: compact,
-      children: [
-        if (h.circle.isNotEmpty) Padding(padding: const EdgeInsets.only(top: 6), child: Text(h.circle, style: _detail(context, bold: true))),
-        if (h.mappedTo.isNotEmpty) Text('➜ ${l.ichMappedTo(h.mappedTo)}', style: _detail(context, bold: true)),
+      notes: [
+        if (h.mappedTo.isNotEmpty) _note(context, const ValueKey('nsh_mapped'), Icons.arrow_forward, l.ichMappedTo(h.mappedTo), accent),
         if (rmsNsh != null && !sameHub(rmsNsh!, h.name) && !(h.mappedTo.isNotEmpty && sameHub(rmsNsh!, h.mappedTo)))
-          _note(context, const ValueKey('nsh_rms'), Icons.compare_arrows, l.nshRmsDiffers(rmsNsh!)),
+          _note(context, const ValueKey('nsh_rms'), Icons.compare_arrows, l.nshRmsDiffers(rmsNsh!), kAccentAmber),
         if (match.alsoListed.isNotEmpty)
           _note(context, const ValueKey('nsh_also'), Icons.info_outline,
-              l.nshAlsoListed(match.matched, [h.name, ...match.alsoListed.map((x) => x.name)].join(' / '))),
-        _Series(series: h.series, matched: match.matched, seriesKey: const ValueKey('nsh_series')),
+              l.nshAlsoListed(match.matched, [h.name, ...match.alsoListed.map((x) => x.name)].join(' / ')), kAccentAmber),
       ],
+      details: [_matched(context, match.matched)],
     );
   }
 }
@@ -287,19 +287,19 @@ class NphCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     final h = match?.hub;
-    return HubCardShell(
+    return HubTile(
       key: const ValueKey('nph_card'),
       tag: 'NPH L1',
-      name: h?.name,
-      nameKey: const ValueKey('nph_name'),
+      accent: kNphAccent,
+      icon: Icons.inventory_2_outlined,
+      name: h?.name ?? _possibleName(possible),
+      nameKey: h == null ? null : const ValueKey('nph_name'),
+      subtitle: h?.circle ?? l.possibleHubsN(possible.length).replaceAll(':', ''),
+      series: h?.series ?? '',
       air: h == null ? '' : hubAirCode(h),
-      compact: compact,
-      children: [
-        if (h == null && possible.isNotEmpty) ..._possible(context, possible),
-        if (h != null && h.circle.isNotEmpty) Padding(padding: const EdgeInsets.only(top: 6), child: Text(h.circle, style: _detail(context, bold: true))),
-        if (h != null) _Series(series: h.series, matched: match!.matched),
-      ],
+      details: h == null ? _possibleDetails(context, possible) : [_matched(context, match!.matched)],
     );
   }
 }
@@ -318,21 +318,19 @@ class RmsL1Card extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final h = l1?.hub;
-    return HubCardShell(
+    final none = h == null && possible.isEmpty;
+    return HubTile(
       key: const ValueKey('l1_card'),
       tag: 'RMS L1',
-      name: h?.name,
-      nameKey: const ValueKey('l1_name'),
+      accent: kL1Accent,
+      icon: Icons.alt_route,
+      name: h?.name ?? (none ? l.rmsL1None : _possibleName(possible)),
+      nameKey: h == null ? null : const ValueKey('l1_name'),
+      subtitle: h?.circle ?? (none ? '' : l.possibleHubsN(possible.length).replaceAll(':', '')),
+      series: h?.series ?? '',
+      seriesKey: const ValueKey('l1_series'),
       air: h == null ? '' : hubAirCode(h),
-      compact: compact,
-      children: [
-        if (h == null && possible.isNotEmpty)
-          ..._possible(context, possible)
-        else if (h == null)
-          Text(l.rmsL1None, style: _detail(context, bold: true)),
-        if (h != null && h.circle.isNotEmpty) Padding(padding: const EdgeInsets.only(top: 6), child: Text(h.circle, style: _detail(context, bold: true))),
-        if (h != null) _Series(series: h.series, matched: l1!.matched, seriesKey: const ValueKey('l1_series'), moreKey: const ValueKey('l1_more')),
-      ],
+      details: h != null ? [_matched(context, l1!.matched)] : none ? const [] : _possibleDetails(context, possible),
     );
   }
 }
@@ -346,12 +344,12 @@ class PossibleHubsCard extends StatelessWidget {
   final List<NshHub> hubs;
 
   @override
-  Widget build(BuildContext context) => HubCardShell(
+  Widget build(BuildContext context) => HubTile(
     tag: tag,
-    children: [
-      Text(title, style: _detail(context, bold: true)?.copyWith(fontSize: 12, letterSpacing: 1)),
-      const SizedBox(height: 4),
-      ..._possible(context, hubs, max: 8),
-    ],
+    accent: kNshAccent,
+    icon: Icons.local_shipping_outlined,
+    name: _possibleName(hubs),
+    subtitle: AppLocalizations.of(context).possibleHubsN(hubs.length).replaceAll(':', ''),
+    details: _possibleDetails(context, hubs),
   );
 }
