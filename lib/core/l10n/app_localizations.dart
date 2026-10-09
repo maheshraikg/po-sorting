@@ -2584,6 +2584,132 @@ abstract class AppLocalizations {
   /// **'BOs only'**
   String get pinBookNoHead;
 
+  /// No description provided for @pinQuiz.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN code quiz'**
+  String get pinQuiz;
+
+  /// No description provided for @pinQuizSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Office ↔ PIN for all, DK side, Udupi side, Non-TD, BOs and their SO'**
+  String get pinQuizSub;
+
+  /// No description provided for @pinQuizIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn which PIN each office has, which office each PIN belongs to, and which SO each BO comes under. Read the PIN book first, then quiz.'**
+  String get pinQuizIntro;
+
+  /// No description provided for @pinQuizOfficeToPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Office → PIN code'**
+  String get pinQuizOfficeToPin;
+
+  /// No description provided for @pinQuizPinToOffice.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN code → office'**
+  String get pinQuizPinToOffice;
+
+  /// No description provided for @pinQuizBos.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch offices (BO)'**
+  String get pinQuizBos;
+
+  /// No description provided for @pinQuizAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All (TD + Non-TD)'**
+  String get pinQuizAll;
+
+  /// No description provided for @pinQuizAllSub.
+  ///
+  /// In en, this message translates to:
+  /// **'TD offices on both sides, their BOs and Non-TD offices'**
+  String get pinQuizAllSub;
+
+  /// No description provided for @pinQuizDk.
+  ///
+  /// In en, this message translates to:
+  /// **'DK / Mangalore side TD'**
+  String get pinQuizDk;
+
+  /// No description provided for @pinQuizDkSub.
+  ///
+  /// In en, this message translates to:
+  /// **'HO / SO on the Mangalore-side lines'**
+  String get pinQuizDkSub;
+
+  /// No description provided for @pinQuizUdupi.
+  ///
+  /// In en, this message translates to:
+  /// **'Udupi side TD'**
+  String get pinQuizUdupi;
+
+  /// No description provided for @pinQuizUdupiSub.
+  ///
+  /// In en, this message translates to:
+  /// **'HO / SO on the Udupi-side lines'**
+  String get pinQuizUdupiSub;
+
+  /// No description provided for @pinQuizNonTd.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-TD'**
+  String get pinQuizNonTd;
+
+  /// No description provided for @pinQuizNonTdSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Offices outside the TD area, with district and state'**
+  String get pinQuizNonTdSub;
+
+  /// No description provided for @pinQuizOfficeAllSub.
+  ///
+  /// In en, this message translates to:
+  /// **'See a PIN, name its office (TD and Non-TD)'**
+  String get pinQuizOfficeAllSub;
+
+  /// No description provided for @pinQuizOfficeSideSub.
+  ///
+  /// In en, this message translates to:
+  /// **'See a PIN, name its office; the answer shows its BOs'**
+  String get pinQuizOfficeSideSub;
+
+  /// No description provided for @pinQuizOfficeNonTdSub.
+  ///
+  /// In en, this message translates to:
+  /// **'See a Non-TD PIN, name its office'**
+  String get pinQuizOfficeNonTdSub;
+
+  /// No description provided for @pinQuizBoPin.
+  ///
+  /// In en, this message translates to:
+  /// **'BO → PIN code'**
+  String get pinQuizBoPin;
+
+  /// No description provided for @pinQuizBoPinSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch office name → its PIN'**
+  String get pinQuizBoPinSub;
+
+  /// No description provided for @pinQuizBoSo.
+  ///
+  /// In en, this message translates to:
+  /// **'BO → its SO'**
+  String get pinQuizBoSo;
+
+  /// No description provided for @pinQuizBoSoSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Branch office → the SO / HO it comes under'**
+  String get pinQuizBoSoSub;
+
   /// No description provided for @noSchemes.
   ///
   /// In en, this message translates to:

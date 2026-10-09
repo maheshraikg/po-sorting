@@ -1436,6 +1436,75 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pinBookNoHead => 'BOs only';
 
   @override
+  String get pinQuiz => 'PIN code quiz';
+
+  @override
+  String get pinQuizSub =>
+      'Office ↔ PIN for all, DK side, Udupi side, Non-TD, BOs and their SO';
+
+  @override
+  String get pinQuizIntro =>
+      'Learn which PIN each office has, which office each PIN belongs to, and which SO each BO comes under. Read the PIN book first, then quiz.';
+
+  @override
+  String get pinQuizOfficeToPin => 'Office → PIN code';
+
+  @override
+  String get pinQuizPinToOffice => 'PIN code → office';
+
+  @override
+  String get pinQuizBos => 'Branch offices (BO)';
+
+  @override
+  String get pinQuizAll => 'All (TD + Non-TD)';
+
+  @override
+  String get pinQuizAllSub =>
+      'TD offices on both sides, their BOs and Non-TD offices';
+
+  @override
+  String get pinQuizDk => 'DK / Mangalore side TD';
+
+  @override
+  String get pinQuizDkSub => 'HO / SO on the Mangalore-side lines';
+
+  @override
+  String get pinQuizUdupi => 'Udupi side TD';
+
+  @override
+  String get pinQuizUdupiSub => 'HO / SO on the Udupi-side lines';
+
+  @override
+  String get pinQuizNonTd => 'Non-TD';
+
+  @override
+  String get pinQuizNonTdSub =>
+      'Offices outside the TD area, with district and state';
+
+  @override
+  String get pinQuizOfficeAllSub =>
+      'See a PIN, name its office (TD and Non-TD)';
+
+  @override
+  String get pinQuizOfficeSideSub =>
+      'See a PIN, name its office; the answer shows its BOs';
+
+  @override
+  String get pinQuizOfficeNonTdSub => 'See a Non-TD PIN, name its office';
+
+  @override
+  String get pinQuizBoPin => 'BO → PIN code';
+
+  @override
+  String get pinQuizBoPinSub => 'Branch office name → its PIN';
+
+  @override
+  String get pinQuizBoSo => 'BO → its SO';
+
+  @override
+  String get pinQuizBoSoSub => 'Branch office → the SO / HO it comes under';
+
+  @override
   String get noSchemes =>
       'No schemes yet. Import your office\'s sorting scheme (Excel/CSV), create one, or try the SAMPLE.';
 

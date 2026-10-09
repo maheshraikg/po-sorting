@@ -13,6 +13,7 @@ import 'flashcards_screen.dart';
 import 'learn_engine.dart';
 import 'line_study_screen.dart';
 import 'pin_book_screen.dart';
+import 'pin_quiz_screen.dart';
 import 'progress.dart';
 import 'speed_sort_screen.dart';
 import 'pin_basics_screen.dart';
@@ -121,6 +122,18 @@ class _LearnScreenState extends State<LearnScreen> {
               trailing: scheme.scheme.isSample ? const SampleChip() : null,
             ),
           const _ProgressCard(),
+          Card(
+            key: const ValueKey('learn_pin_quiz'),
+            color: Theme.of(context).colorScheme.secondaryContainer,
+            child: ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+              leading: const IconBadge(Icons.pin_outlined, kPostGreen, size: 52),
+              title: Text(l.pinQuiz, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 20)),
+              subtitle: Text(l.pinQuizSub),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => open(const PinQuizScreen()),
+            ),
+          ),
           if (sections.isNotEmpty) ...[
             Padding(
               padding: const EdgeInsets.fromLTRB(4, 4, 4, 0),

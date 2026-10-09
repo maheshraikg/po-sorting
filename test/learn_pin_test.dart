@@ -102,4 +102,25 @@ void main() {
     expect(find.text('Its SO'), findsOneWidget);
     expect(find.text('Office name'), findsNothing);
   });
+
+  testWidgets('PIN code quiz section: all, DK side, Udupi side, Non-TD, BO → PIN, BO → SO', (tester) async {
+    final h = await Harness.create(tester, sample: false);
+    await tester.runAsync(() async {
+      await installDefaultScheme(h.services.schemes, (p) async => File(p).readAsBytesSync());
+      await h.services.reloadActive();
+    });
+    await tester.pumpWidget(h.wrap(const LearnScreen()));
+    await settle(tester);
+    await tester.tap(find.byKey(const ValueKey('learn_pin_quiz')));
+    await settle(tester);
+    for (final k in ['all', 'dk', 'udupi', 'nontd', 'bo_pin', 'bo_so']) {
+      await tester.scrollUntilVisible(find.byKey(ValueKey('pinquiz_$k')), 200, scrollable: find.byType(Scrollable).last);
+      expect(find.byKey(ValueKey('pinquiz_$k')), findsOneWidget);
+    }
+    await tester.scrollUntilVisible(find.byKey(const ValueKey('pinquiz_dk_quiz')), -200, scrollable: find.byType(Scrollable).last);
+    await tester.tap(find.byKey(const ValueKey('pinquiz_dk_quiz')));
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 300)));
+    await settle(tester);
+    expect(find.text('Which PIN for this office · TD'), findsOneWidget);
+  });
 }

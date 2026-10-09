@@ -1434,6 +1434,75 @@ class AppLocalizationsHi extends AppLocalizations {
   String get pinBookNoHead => 'केवल BO';
 
   @override
+  String get pinQuiz => 'पिन कोड क्विज़';
+
+  @override
+  String get pinQuizSub =>
+      'सभी, DK साइड, उडुपी साइड, Non-TD, BO और उसका SO – कार्यालय ↔ पिन';
+
+  @override
+  String get pinQuizIntro =>
+      'सीखें हर कार्यालय का पिन, हर पिन का कार्यालय और हर BO किस SO के अंतर्गत है। पहले पिन बुक पढ़ें, फिर क्विज़।';
+
+  @override
+  String get pinQuizOfficeToPin => 'कार्यालय → पिन कोड';
+
+  @override
+  String get pinQuizPinToOffice => 'पिन कोड → कार्यालय';
+
+  @override
+  String get pinQuizBos => 'शाखा डाकघर (BO)';
+
+  @override
+  String get pinQuizAll => 'सभी (TD + Non-TD)';
+
+  @override
+  String get pinQuizAllSub =>
+      'दोनों साइड के TD कार्यालय, उनके BO और Non-TD कार्यालय';
+
+  @override
+  String get pinQuizDk => 'DK / मंगलूरु साइड TD';
+
+  @override
+  String get pinQuizDkSub => 'मंगलूरु साइड लाइनों के HO / SO';
+
+  @override
+  String get pinQuizUdupi => 'उडुपी साइड TD';
+
+  @override
+  String get pinQuizUdupiSub => 'उडुपी साइड लाइनों के HO / SO';
+
+  @override
+  String get pinQuizNonTd => 'Non-TD';
+
+  @override
+  String get pinQuizNonTdSub =>
+      'TD क्षेत्र के बाहर के कार्यालय, ज़िला और राज्य के साथ';
+
+  @override
+  String get pinQuizOfficeAllSub =>
+      'पिन देखें, उसका कार्यालय बताएँ (TD और Non-TD)';
+
+  @override
+  String get pinQuizOfficeSideSub =>
+      'पिन देखें, उसका कार्यालय बताएँ; उत्तर में उसके BO';
+
+  @override
+  String get pinQuizOfficeNonTdSub => 'Non-TD पिन देखें, उसका कार्यालय बताएँ';
+
+  @override
+  String get pinQuizBoPin => 'BO → पिन कोड';
+
+  @override
+  String get pinQuizBoPinSub => 'शाखा डाकघर का नाम → उसका पिन';
+
+  @override
+  String get pinQuizBoSo => 'BO → उसका SO';
+
+  @override
+  String get pinQuizBoSoSub => 'शाखा डाकघर → वह किस SO / HO के अंतर्गत है';
+
+  @override
   String get noSchemes =>
       'अभी कोई स्कीम नहीं। अपने कार्यालय की सॉर्टिंग स्कीम (Excel/CSV) आयात करें, नई बनाएं, या नमूना आज़माएं।';
 

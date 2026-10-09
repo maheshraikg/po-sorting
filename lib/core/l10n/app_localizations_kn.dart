@@ -1440,6 +1440,75 @@ class AppLocalizationsKn extends AppLocalizations {
   String get pinBookNoHead => 'ಕೇವಲ BOಗಳು';
 
   @override
+  String get pinQuiz => 'ಪಿನ್ ಕೋಡ್ ಕ್ವಿಜ್';
+
+  @override
+  String get pinQuizSub =>
+      'ಎಲ್ಲಾ, DK ಕಡೆ, ಉಡುಪಿ ಕಡೆ, Non-TD, BO ಮತ್ತು ಅದರ SO – ಕಚೇರಿ ↔ ಪಿನ್';
+
+  @override
+  String get pinQuizIntro =>
+      'ಪ್ರತಿ ಕಚೇರಿಯ ಪಿನ್, ಪ್ರತಿ ಪಿನ್‌ನ ಕಚೇರಿ ಮತ್ತು ಪ್ರತಿ BO ಯಾವ SO ಅಡಿಯಲ್ಲಿದೆ ಎಂದು ಕಲಿಯಿರಿ. ಮೊದಲು ಪಿನ್ ಪುಸ್ತಕ ಓದಿ, ನಂತರ ಕ್ವಿಜ್.';
+
+  @override
+  String get pinQuizOfficeToPin => 'ಕಚೇರಿ → ಪಿನ್ ಕೋಡ್';
+
+  @override
+  String get pinQuizPinToOffice => 'ಪಿನ್ ಕೋಡ್ → ಕಚೇರಿ';
+
+  @override
+  String get pinQuizBos => 'ಶಾಖಾ ಕಚೇರಿಗಳು (BO)';
+
+  @override
+  String get pinQuizAll => 'ಎಲ್ಲಾ (TD + Non-TD)';
+
+  @override
+  String get pinQuizAllSub =>
+      'ಎರಡೂ ಕಡೆಯ TD ಕಚೇರಿಗಳು, BOಗಳು ಮತ್ತು Non-TD ಕಚೇರಿಗಳು';
+
+  @override
+  String get pinQuizDk => 'DK / ಮಂಗಳೂರು ಕಡೆ TD';
+
+  @override
+  String get pinQuizDkSub => 'ಮಂಗಳೂರು ಕಡೆಯ ಲೈನ್‌ಗಳ HO / SO';
+
+  @override
+  String get pinQuizUdupi => 'ಉಡುಪಿ ಕಡೆ TD';
+
+  @override
+  String get pinQuizUdupiSub => 'ಉಡುಪಿ ಕಡೆಯ ಲೈನ್‌ಗಳ HO / SO';
+
+  @override
+  String get pinQuizNonTd => 'Non-TD';
+
+  @override
+  String get pinQuizNonTdSub =>
+      'TD ಪ್ರದೇಶದ ಹೊರಗಿನ ಕಚೇರಿಗಳು, ಜಿಲ್ಲೆ ಮತ್ತು ರಾಜ್ಯದೊಂದಿಗೆ';
+
+  @override
+  String get pinQuizOfficeAllSub =>
+      'ಪಿನ್ ನೋಡಿ, ಅದರ ಕಚೇರಿ ಹೇಳಿ (TD ಮತ್ತು Non-TD)';
+
+  @override
+  String get pinQuizOfficeSideSub =>
+      'ಪಿನ್ ನೋಡಿ, ಅದರ ಕಚೇರಿ ಹೇಳಿ; ಉತ್ತರದಲ್ಲಿ ಅದರ BOಗಳು';
+
+  @override
+  String get pinQuizOfficeNonTdSub => 'Non-TD ಪಿನ್ ನೋಡಿ, ಅದರ ಕಚೇರಿ ಹೇಳಿ';
+
+  @override
+  String get pinQuizBoPin => 'BO → ಪಿನ್ ಕೋಡ್';
+
+  @override
+  String get pinQuizBoPinSub => 'ಶಾಖಾ ಕಚೇರಿ ಹೆಸರು → ಅದರ ಪಿನ್';
+
+  @override
+  String get pinQuizBoSo => 'BO → ಅದರ SO';
+
+  @override
+  String get pinQuizBoSoSub => 'ಶಾಖಾ ಕಚೇರಿ → ಅದು ಸೇರುವ SO / HO';
+
+  @override
   String get noSchemes =>
       'ಇನ್ನೂ ಸ್ಕೀಮ್‌ಗಳಿಲ್ಲ. ನಿಮ್ಮ ಕಚೇರಿಯ ಸಾರ್ಟಿಂಗ್ ಸ್ಕೀಮ್ (Excel/CSV) ಆಮದು ಮಾಡಿ, ಹೊಸದು ರಚಿಸಿ ಅಥವಾ ಮಾದರಿ ಪ್ರಯತ್ನಿಸಿ.';
 

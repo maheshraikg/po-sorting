@@ -196,7 +196,7 @@ class _QuizScreenState extends State<QuizScreen> {
             if (_chosen != null && q.card.near != null && q.card.answerDetail.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
-                child: Text('${q.card.answer} · ${q.card.answerDetail}', style: t.bodyLarge?.copyWith(fontWeight: FontWeight.w600), textAlign: TextAlign.center),
+                child: Text('${q.card.prompt} → ${q.card.answer} · ${q.card.answerDetail}', style: t.bodyLarge?.copyWith(fontWeight: FontWeight.w600), textAlign: TextAlign.center),
               ),
           ],
         ),

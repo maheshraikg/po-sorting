@@ -5,6 +5,7 @@ import '../../core/theme.dart';
 import '../../core/widgets.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../learn/learn_screen.dart';
+import '../learn/pin_quiz_screen.dart';
 import '../schemes/schemes_screen.dart';
 import 'about_screen.dart';
 import 'contributors_screen.dart';
@@ -36,6 +37,7 @@ class MoreScreen extends StatelessWidget {
         children: [
           item(Icons.edit_note, l.editData, l.editDataSub, const EditDataScreen()),
           item(Icons.school_outlined, l.navLearn, l.learnSub, const LearnScreen()),
+          item(Icons.pin_outlined, l.pinQuiz, l.pinQuizSub, const PinQuizScreen()),
           item(Icons.rule_folder_outlined, l.schemes, l.schemesSub, const SchemesScreen()),
           item(Icons.storage_outlined, l.pinDirectory, l.pinDirectorySub, const DirectoryScreen()),
           item(Icons.star_outline, l.favourites, l.favouritesSub, const FavouritesScreen()),
