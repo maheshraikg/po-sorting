@@ -9,6 +9,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # release with the APKs
     env:
       # Play Store upload key, from repository secrets (absent on forks).
       HAS_UPLOAD_KEY: ${{ secrets.UPLOAD_KEYSTORE_BASE64 != '' }}
@@ -127,3 +129,17 @@ jobs:
           path: |
             build/app/outputs/flutter-apk/*-release.apk
             apk-sizes.txt
+
+      # Release with the plain .apk files so the app can be shared with one
+      # link: https://github.com/<owner>/<repo>/releases/latest/download/po-sorting-arm64.apk
+      - name: Release the APKs
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && env.HAS_UPLOAD_KEY == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version=$(grep -m1 '^version:' pubspec.yaml | sed 's/version: *//; s/+.*//')
+          tag="v$version"
+          gh release delete "$tag" --yes --cleanup-tag 2>/dev/null || true
+          gh release create "$tag" --target "$GITHUB_SHA" --latest --title "PO Sorting $version" \
+            --notes "PO Sorting $version. po-sorting-arm64.apk = most phones; po-sorting-armv7.apk = older phones." \
+            po-sorting-arm64.apk po-sorting-armv7.apk
