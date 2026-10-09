@@ -5,6 +5,7 @@ library;
 
 import 'dart:typed_data';
 
+import 'airports.dart';
 import 'import/table_reader.dart';
 
 const String kNshAsset = 'assets/schemes/nsh_mangalore.csv';
@@ -31,7 +32,11 @@ enum HubTableKind {
 }
 
 class NshHub {
-  const NshHub({required this.name, required this.kind, required this.circle, required this.series, this.mappedTo = '', this.exclude = const {}});
+  const NshHub({required this.name, required this.kind, required this.circle, required this.series, this.mappedTo = '', this.exclude = const {}, this.air = ''});
+
+  /// Air code set for this hub ("HYD"); empty = from the hub's city, see
+  /// [hubAirCode].
+  final String air;
 
   /// "MUMBAI NSH", "KOZHIKODE ICH".
   final String name;
@@ -140,8 +145,8 @@ class NshTable {
 
   /// The table as a CSV file (same columns as the bundled sheet).
   String toCsv() => writeCsv([
-    ['Hub', 'Kind', 'Circle', 'Series', 'Mapped To', 'Exclude'],
-    for (final h in hubs) [h.name, h.kind, h.circle, h.series, h.mappedTo, h.exclude.join(', ')],
+    ['Hub', 'Kind', 'Circle', 'Series', 'Mapped To', 'Exclude', 'Air'],
+    for (final h in hubs) [h.name, h.kind, h.circle, h.series, h.mappedTo, h.exclude.join(', '), h.air],
   ]);
 
   static NshTable parse(Uint8List bytes) {
@@ -150,7 +155,7 @@ class NshTable {
     final head = [for (final h in rows.first) h.trim().toLowerCase()];
     int col(String name) => head.indexOf(name);
     String cell(List<String> r, int i) => i >= 0 && i < r.length ? r[i].trim() : '';
-    final hub = col('hub'), kind = col('kind'), circle = col('circle'), series = col('series'), mapped = col('mapped to'), exclude = col('exclude');
+    final hub = col('hub'), kind = col('kind'), circle = col('circle'), series = col('series'), mapped = col('mapped to'), exclude = col('exclude'), air = col('air');
     return NshTable([
       for (final r in rows.skip(1))
         if (cell(r, hub).isNotEmpty)
@@ -161,6 +166,7 @@ class NshTable {
             series: cell(r, series),
             mappedTo: cell(r, mapped),
             exclude: {for (final x in cell(r, exclude).split(',')) if (x.trim().isNotEmpty) x.trim()},
+            air: cell(r, air).toUpperCase(),
           ),
     ]);
   }
@@ -209,4 +215,39 @@ String _hubKey(String s) {
     'nashikroad': 'nashik',
   };
   return aliases[k] ?? k;
+}
+
+/// Other spellings of airport cities in hub names.
+const Map<String, String> _cityAliases = {
+  'bangalore': 'BLR', 'bengaluru': 'BLR', 'mangalore': 'IXE', 'mangaluru': 'IXE', 'mysore': 'MYQ', 'mysuru': 'MYQ',
+  'hubli': 'HBX', 'hubballi': 'HBX', 'belgaum': 'IXG', 'belagavi': 'IXG', 'gulbarga': 'GBI', 'kalaburagi': 'GBI',
+  'madras': 'MAA', 'chennai': 'MAA', 'trichy': 'TRZ', 'tiruchirappalli': 'TRZ', 'cochin': 'COK', 'kochi': 'COK',
+  'ernakulam': 'COK', 'calicut': 'CCJ', 'kozhikode': 'CCJ', 'trivandrum': 'TRV', 'thiruvananthapuram': 'TRV',
+  'vizag': 'VTZ', 'visakhapatnam': 'VTZ', 'vishakapatnam': 'VTZ', 'tirupathi': 'TIR', 'tirupati': 'TIR',
+  'bombay': 'BOM', 'mumbai': 'BOM', 'calcutta': 'CCU', 'kolkata': 'CCU', 'baroda': 'BDQ', 'vadodara': 'BDQ',
+  'gauhati': 'GAU', 'guwahati': 'GAU', 'new delhi': 'DEL', 'delhi': 'DEL',
+};
+
+/// Air code shown on a hub card: the one set for the hub, else the airport
+/// of the first city in its name ("Bengaluru Parcel Hub" → BLR); '' if none.
+String hubAirCode(NshHub h) {
+  if (h.air.isNotEmpty) return h.air;
+  final name = h.name.toLowerCase();
+  var best = '';
+  var at = 1 << 30;
+  void check(String city, String code) {
+    final i = RegExp('\\b${RegExp.escape(city)}\\b').firstMatch(name)?.start;
+    if (i != null && i < at) {
+      at = i;
+      best = code;
+    }
+  }
+
+  for (final e in _cityAliases.entries) {
+    check(e.key, e.value);
+  }
+  for (final a in kAirports) {
+    check(a.city.toLowerCase(), a.iata);
+  }
+  return best;
 }

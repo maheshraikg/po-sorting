@@ -1545,6 +1545,13 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String get hubAirCode => 'एयर कोड (वैकल्पिक)';
+
+  @override
+  String get hubAirCodeHint =>
+      'हब कार्ड पर दिखता है, जैसे HYD। खाली छोड़ें तो हब शहर का हवाई अड्डा।';
+
+  @override
   String get noSchemes =>
       'अभी कोई स्कीम नहीं। अपने कार्यालय की सॉर्टिंग स्कीम (Excel/CSV) आयात करें, नई बनाएं, या नमूना आज़माएं।';
 

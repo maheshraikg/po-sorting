@@ -2782,6 +2782,18 @@ abstract class AppLocalizations {
   /// **'You chose {chosen}'**
   String youChose(String chosen);
 
+  /// No description provided for @hubAirCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Air code (optional)'**
+  String get hubAirCode;
+
+  /// No description provided for @hubAirCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Shown on the hub card, e.g. HYD. Leave empty to use the airport of the hub\'s city.'**
+  String get hubAirCodeHint;
+
   /// No description provided for @noSchemes.
   ///
   /// In en, this message translates to:

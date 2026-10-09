@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -91,5 +93,17 @@ void main() {
     await tester.tap(find.text('TD').first);
     await settle(tester, rounds: 6);
     expect(find.byKey(const ValueKey('nsh_card')), findsNothing);
+  });
+
+  test('hub air code: set on the hub, else the airport of its city', () {
+    NshHub hub(String name, [String air = '']) => NshHub(name: name, kind: 'NSH', circle: '', series: '515', air: air);
+    expect(hubAirCode(hub('Bengaluru Parcel Hub / Ananthapur PH')), 'BLR');
+    expect(hubAirCode(hub('Hyderabad PH / Kurnool PH')), 'HYD');
+    expect(hubAirCode(hub('TIRUPATHI NSH')), 'TIR');
+    expect(hubAirCode(hub('MANGALORE NSH')), 'IXE');
+    expect(hubAirCode(hub('KURNOOL NSH')), '');
+    expect(hubAirCode(hub('KURNOOL NSH', 'HYD')), 'HYD');
+    final t = NshTable([hub('KURNOOL NSH', 'HYD')]);
+    expect(NshTable.parse(Uint8List.fromList(utf8.encode(t.toCsv()))).hubs.single.air, 'HYD');
   });
 }

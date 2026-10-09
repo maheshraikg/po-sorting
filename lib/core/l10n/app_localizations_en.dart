@@ -1547,6 +1547,13 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get hubAirCode => 'Air code (optional)';
+
+  @override
+  String get hubAirCodeHint =>
+      'Shown on the hub card, e.g. HYD. Leave empty to use the airport of the hub\'s city.';
+
+  @override
   String get noSchemes =>
       'No schemes yet. Import your office\'s sorting scheme (Excel/CSV), create one, or try the SAMPLE.';
 

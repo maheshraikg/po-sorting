@@ -24,6 +24,9 @@ import '../schemes/import_wizard.dart';
 import '../settings/office_fixes.dart';
 import '../schemes/scheme_editor.dart';
 import 'air_badge.dart';
+import 'hub_cards.dart';
+
+export 'hub_cards.dart';
 
 class SortResultView extends StatelessWidget {
   const SortResultView({super.key, required this.result, this.showBreakdown = true, this.onEdited});
@@ -74,8 +77,13 @@ class SortResultView extends StatelessWidget {
         final l1Part = services.l1?.resolve(r.digits);
         final nphPart = services.nph?.resolve(r.digits);
         final l1Possible = l1Part == null ? services.l1?.candidates(r.digits) ?? const <NshHub>[] : const <NshHub>[];
-        if (l1Part != null || nphPart != null || l1Possible.isNotEmpty) {
-          children.add(RmsL1Card(l1: l1Part, nph: nphPart, possible: l1Possible));
+        final nphPossible = nphPart == null ? services.nph?.candidates(r.digits) ?? const <NshHub>[] : const <NshHub>[];
+        if (nphPart != null || nphPossible.isNotEmpty) {
+          children.add(NphCard(match: nphPart, possible: nphPossible));
+          children.add(gap);
+        }
+        if (l1Part != null || l1Possible.isNotEmpty || nphPart != null) {
+          children.add(RmsL1Card(l1: l1Part, possible: l1Possible));
           children.add(gap);
         }
       }
@@ -164,8 +172,12 @@ class SortResultView extends StatelessWidget {
       }
       final l1 = r.category == kCatNonTD ? services.l1?.resolve(r.digits) : null;
       final nph = r.category == kCatNonTD ? services.nph?.resolve(r.digits) : null;
+      if (nph != null) {
+        children.add(NphCard(match: nph));
+        children.add(gap);
+      }
       if (l1 != null || nph != null) {
-        children.add(RmsL1Card(l1: l1, nph: nph));
+        children.add(RmsL1Card(l1: l1));
         children.add(gap);
       }
       if (scheme != null && r.otherBag != null) {
@@ -355,255 +367,6 @@ class _OfficeListState extends State<_OfficeList> {
                 label: Text(l.showAllN(offices.length)),
               ),
             ),
-        ],
-      ),
-    );
-  }
-}
-
-/// NSH / ICH for speed post, shown under the PH bag: hub, circle and the PIN
-/// series the hub takes (from the NSH sorting extract).
-class NshCard extends StatelessWidget {
-  const NshCard({super.key, required this.match, this.compact = false, this.rmsNsh});
-
-  final NshMatch match;
-  final bool compact;
-
-  /// NSH for this PIN in the RMS data; shown when it differs from the sheet.
-  final String? rmsNsh;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context);
-    final t = Theme.of(context).textTheme;
-    final cs = Theme.of(context).colorScheme;
-    final h = match.hub;
-    final accent = h.isIch ? kSkyDeep : cs.primary;
-    return Container(
-      key: const ValueKey('nsh_card'),
-      decoration: BoxDecoration(
-        color: cs.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(compact ? 16 : 20),
-        border: Border.all(color: accent, width: 2),
-      ),
-      padding: EdgeInsets.fromLTRB(16, compact ? 10 : 14, 16, compact ? 10 : 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.local_shipping_outlined, color: accent),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  h.isIch ? l.ichLabel : l.nshLabel,
-                  style: t.labelMedium?.copyWith(color: accent, letterSpacing: 1.2, fontWeight: FontWeight.w900),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(color: accent, borderRadius: BorderRadius.circular(8)),
-                child: Text(h.kind, style: t.labelMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w900)),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            alignment: Alignment.centerLeft,
-            child: Text(h.name, style: (compact ? t.headlineSmall : t.headlineMedium)?.copyWith(fontWeight: FontWeight.w900, height: 1.1)),
-          ),
-          Text(h.circle, style: t.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: cs.onSurfaceVariant)),
-          if (h.mappedTo.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: 4),
-              child: Row(children: [
-                Icon(Icons.arrow_forward, size: 18, color: accent),
-                const SizedBox(width: 4),
-                Expanded(child: Text(l.ichMappedTo(h.mappedTo), style: t.titleSmall?.copyWith(fontWeight: FontWeight.w800, color: accent))),
-              ]),
-            ),
-          if (rmsNsh != null && !sameHub(rmsNsh!, h.name) && !(h.mappedTo.isNotEmpty && sameHub(rmsNsh!, h.mappedTo)))
-            Container(
-              key: const ValueKey('nsh_rms'),
-              margin: const EdgeInsets.only(top: 8),
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(color: cs.tertiaryContainer, borderRadius: BorderRadius.circular(12)),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.compare_arrows, color: cs.onTertiaryContainer),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      l.nshRmsDiffers(rmsNsh!),
-                      style: t.bodyMedium?.copyWith(fontWeight: FontWeight.w800, color: cs.onTertiaryContainer),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          if (match.alsoListed.isNotEmpty)
-            Container(
-              key: const ValueKey('nsh_also'),
-              margin: const EdgeInsets.only(top: 8),
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(color: cs.secondaryContainer, borderRadius: BorderRadius.circular(12)),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.info_outline, color: cs.onSecondaryContainer),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: Text(
-                      l.nshAlsoListed(match.matched, [h.name, ...match.alsoListed.map((x) => x.name)].join(' / ')),
-                      style: t.bodyMedium?.copyWith(fontWeight: FontWeight.w700, color: cs.onSecondaryContainer),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          const SizedBox(height: 6),
-          Text(l.nshPinRange, style: t.labelMedium?.copyWith(fontWeight: FontWeight.w800, color: cs.onSurfaceVariant)),
-          Text(h.series, key: const ValueKey('nsh_series'), style: t.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
-          Text(l.nshMatched(match.matched), style: t.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
-        ],
-      ),
-    );
-  }
-}
-
-/// RMS L1 (and the NPH parcel hub) for the PIN, from the MR RMS sorting data.
-class RmsL1Card extends StatefulWidget {
-  const RmsL1Card({super.key, this.l1, this.nph, this.compact = false, this.possible = const []});
-
-  final NshMatch? l1;
-  final NshMatch? nph;
-  final bool compact;
-
-  /// For a partial PIN with several L1s: the ones it can still be.
-  final List<NshHub> possible;
-
-  @override
-  State<RmsL1Card> createState() => _RmsL1CardState();
-}
-
-class _RmsL1CardState extends State<RmsL1Card> {
-  static const _short = 140;
-  bool _all = false;
-
-  /// End of the last whole series before [_short] characters.
-  static int _cut(String s) {
-    final i = s.lastIndexOf(',', _short);
-    return i > 0 ? i : _short;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context);
-    final t = Theme.of(context).textTheme;
-    final cs = Theme.of(context).colorScheme;
-    const accent = Color(0xFF6D28D9);
-    final h = widget.l1?.hub;
-    final series = h?.series ?? '';
-    final long = series.length > _short && !_all;
-    return Container(
-      key: const ValueKey('l1_card'),
-      decoration: BoxDecoration(
-        color: cs.surfaceContainerLowest,
-        borderRadius: BorderRadius.circular(widget.compact ? 16 : 20),
-        border: Border.all(color: accent, width: 2),
-      ),
-      padding: EdgeInsets.fromLTRB(16, widget.compact ? 10 : 14, 16, widget.compact ? 10 : 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.alt_route, color: accent),
-              const SizedBox(width: 8),
-              Expanded(child: Text(l.rmsL1Label, style: t.labelMedium?.copyWith(color: accent, letterSpacing: 1.2, fontWeight: FontWeight.w900))),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                decoration: BoxDecoration(color: accent, borderRadius: BorderRadius.circular(8)),
-                child: Text('L1', style: t.labelMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w900)),
-              ),
-            ],
-          ),
-          const SizedBox(height: 4),
-          if (h == null && widget.possible.isNotEmpty) ...[
-            Text(l.possibleHubsN(widget.possible.length), style: t.titleSmall?.copyWith(fontWeight: FontWeight.w800, color: cs.onSurfaceVariant)),
-            const SizedBox(height: 4),
-            for (final p in widget.possible.take(_all ? widget.possible.length : 6))
-              Padding(
-                padding: const EdgeInsets.only(bottom: 2),
-                child: Text('• ${p.name}', style: t.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
-              ),
-            if (!_all && widget.possible.length > 6)
-              TextButton(onPressed: () => setState(() => _all = true), child: Text(l.showAllN(widget.possible.length))),
-            Text(l.typeMoreDigits, style: t.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
-          ] else if (h == null)
-            Text(l.rmsL1None, style: t.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: cs.onSurfaceVariant))
-          else ...[
-            Text(h.name, key: const ValueKey('l1_name'), style: (widget.compact ? t.titleLarge : t.headlineSmall)?.copyWith(fontWeight: FontWeight.w900, height: 1.15)),
-            if (h.circle.isNotEmpty) Text(h.circle, style: t.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: cs.onSurfaceVariant)),
-          ],
-          if (widget.nph != null)
-            Padding(
-              padding: const EdgeInsets.only(top: 6),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(Icons.inventory_2_outlined, size: 20, color: cs.onSurfaceVariant),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(l.nphLine(widget.nph!.hub.name), key: const ValueKey('nph_name'), style: t.titleSmall?.copyWith(fontWeight: FontWeight.w800)),
-                  ),
-                ],
-              ),
-            ),
-          if (h != null) ...[
-            const SizedBox(height: 6),
-            Text(l.nshPinRange, style: t.labelMedium?.copyWith(fontWeight: FontWeight.w800, color: cs.onSurfaceVariant)),
-            Text(long ? '${series.substring(0, _cut(series))}, …' : series,
-                key: const ValueKey('l1_series'), style: t.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
-            if (long)
-              TextButton(key: const ValueKey('l1_more'), onPressed: () => setState(() => _all = true), child: Text(l.showAll)),
-            Text(l.nshMatched(widget.l1!.matched), style: t.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-/// Partial PIN that more than one hub takes: list them.
-class PossibleHubsCard extends StatelessWidget {
-  const PossibleHubsCard({super.key, required this.title, required this.hubs});
-
-  final String title;
-  final List<NshHub> hubs;
-
-  @override
-  Widget build(BuildContext context) {
-    final l = AppLocalizations.of(context);
-    final t = Theme.of(context).textTheme;
-    final cs = Theme.of(context).colorScheme;
-    return Container(
-      decoration: BoxDecoration(color: cs.surfaceContainerLowest, borderRadius: BorderRadius.circular(20), border: Border.all(color: cs.primary, width: 2)),
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(children: [
-            Icon(Icons.local_shipping_outlined, color: cs.primary),
-            const SizedBox(width: 8),
-            Expanded(child: Text(title, style: t.labelMedium?.copyWith(color: cs.primary, letterSpacing: 1.2, fontWeight: FontWeight.w900))),
-          ]),
-          const SizedBox(height: 4),
-          Text(l.possibleHubsN(hubs.length), style: t.titleSmall?.copyWith(fontWeight: FontWeight.w800, color: cs.onSurfaceVariant)),
-          for (final h in hubs.take(8)) Text('• ${h.name}  (${h.circle})', style: t.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
-          Text(l.typeMoreDigits, style: t.bodySmall?.copyWith(color: cs.onSurfaceVariant)),
         ],
       ),
     );

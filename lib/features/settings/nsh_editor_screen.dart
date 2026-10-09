@@ -147,6 +147,7 @@ class _NshHubDialogState extends State<NshHubDialog> {
   late final _circle = TextEditingController(text: widget.hub?.circle ?? '');
   late final _series = TextEditingController(text: widget.hub?.series ?? '');
   late final _mapped = TextEditingController(text: widget.hub?.mappedTo ?? '');
+  late final _air = TextEditingController(text: widget.hub?.air ?? '');
   String? _error;
 
   void _submit() {
@@ -159,7 +160,7 @@ class _NshHubDialogState extends State<NshHubDialog> {
     }
     Navigator.pop(
       context,
-      NshHub(name: name, kind: _kind, circle: _circle.text.trim(), series: series, mappedTo: _mapped.text.trim().toUpperCase(), exclude: widget.hub?.exclude ?? const {}),
+      NshHub(name: name, kind: _kind, circle: _circle.text.trim(), series: series, mappedTo: _mapped.text.trim().toUpperCase(), exclude: widget.hub?.exclude ?? const {}, air: _air.text.trim().toUpperCase()),
     );
   }
 
@@ -188,6 +189,12 @@ class _NshHubDialogState extends State<NshHubDialog> {
               maxLines: 6,
               keyboardType: TextInputType.text,
               decoration: InputDecoration(labelText: l.nshPinRange, helperText: l.nshSeriesHint, helperMaxLines: 2),
+            ),
+            TextField(
+              key: const ValueKey('nsh_dialog_air'),
+              controller: _air,
+              textCapitalization: TextCapitalization.characters,
+              decoration: InputDecoration(labelText: l.hubAirCode, helperText: l.hubAirCodeHint, helperMaxLines: 2),
             ),
             if (_kind == 'ICH') TextField(controller: _mapped, textCapitalization: TextCapitalization.characters, decoration: InputDecoration(labelText: l.nshMappedField)),
             if (_error != null) Padding(padding: const EdgeInsets.only(top: 8), child: Text(_error!, style: TextStyle(color: Theme.of(context).colorScheme.error))),

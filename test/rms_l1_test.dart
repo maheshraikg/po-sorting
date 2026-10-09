@@ -42,6 +42,6 @@ void main() {
     await settle(tester, rounds: 6);
     await tester.scrollUntilVisible(find.byKey(const ValueKey('l1_card')), 200, scrollable: find.byType(Scrollable).first);
     expect((tester.widget(find.byKey(const ValueKey('l1_name'))) as Text).data, 'Kozhikode RMS L1U');
-    expect((tester.widget(find.byKey(const ValueKey('nph_name'))) as Text).data, 'Parcel hub (NPH): Kozhikode PH');
+    expect((tester.widget(find.byKey(const ValueKey('nph_name'))) as Text).data, 'Kozhikode PH');
   });
 }
