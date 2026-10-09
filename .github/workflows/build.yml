@@ -133,6 +133,17 @@ jobs:
             build/app/outputs/flutter-apk/*-release.apk
             apk-sizes.txt
 
+      # Proves every APK has a valid signature for Android 7 (API 24) and
+      # newer, so a failed install is never the file's fault.
+      - name: Verify APK signatures
+        run: |
+          APKSIGNER=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | sort -V | tail -1)
+          echo '### APK signatures' >> "$GITHUB_STEP_SUMMARY"
+          for f in po-sorting.apk po-sorting-arm64.apk po-sorting-armv7.apk; do
+            "$APKSIGNER" verify --verbose --min-sdk-version 24 "$f" | tee "$f.verify.txt"
+            echo "- $f: $(grep -c 'Verified using' "$f.verify.txt") schemes checked, OK" >> "$GITHUB_STEP_SUMMARY"
+          done
+
       # Release with the plain .apk files so the app can be shared with one
       # link: https://github.com/<owner>/<repo>/releases/latest/download/po-sorting-arm64.apk
       - name: Release the APKs
