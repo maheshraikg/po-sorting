@@ -29,7 +29,11 @@ import 'hub_cards.dart';
 export 'hub_cards.dart';
 
 class SortResultView extends StatelessWidget {
-  const SortResultView({super.key, required this.result, this.showBreakdown = true, this.onEdited});
+  const SortResultView({super.key, required this.result, this.showBreakdown = true, this.onEdited, this.fillHeight});
+
+  /// Height the Non-TD cards (PH, NSH, NPH, L1) share, so together they
+  /// fill the screen; null = natural size.
+  final double? fillHeight;
 
   final SortResult result;
   final bool showBreakdown;
@@ -45,6 +49,46 @@ class SortResultView extends StatelessWidget {
     final scheme = services.active;
     const gap = SizedBox(height: 8);
     final children = <Widget>[];
+    // Non-TD cards (PH, NSH, NPH, L1): one after the other, or with
+    // [fillHeight] sharing that height exactly (PH a little more); a card
+    // whose text needs more room is scaled down to its share.
+    final cards = <(double, Widget Function(double))>[];
+    void addCard(double weight, Widget Function(double minHeight) make) => cards.add((weight, make));
+    void flushCards() {
+      if (cards.isEmpty) return;
+      final fill = fillHeight;
+      if (fill == null || fill < 120 * cards.length) {
+        for (final c in cards) {
+          children.add(c.$2(0));
+          children.add(gap);
+        }
+      } else {
+        final total = cards.fold<double>(0, (a, c) => a + c.$1);
+        final free = fill - 8.0 * cards.length;
+        children.add(SizedBox(
+          key: const ValueKey('nontd_fill'),
+          height: fill,
+          child: Column(
+            children: [
+              for (final c in cards) ...[
+                SizedBox(
+                  height: free * c.$1 / total,
+                  child: LayoutBuilder(
+                    builder: (context, box) => FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.topCenter,
+                      child: SizedBox(width: box.maxWidth, child: c.$2(box.maxHeight)),
+                    ),
+                  ),
+                ),
+                gap,
+              ],
+            ],
+          ),
+        ));
+      }
+      cards.clear();
+    }
 
     if (r.digits.isEmpty) return const SizedBox.shrink();
     if (r.breakdown == null && !r.valid) {
@@ -56,7 +100,8 @@ class SortResultView extends StatelessWidget {
       if (r.likelyBag != null) {
         if (nonTd) {
           final lo = int.parse(r.digits.padRight(6, '0')), hi = int.parse(r.digits.padRight(6, '9'));
-          children.add(PhCard(
+          addCard(1.35, (h) => PhCard(
+            minHeight: h,
             bag: r.likelyBag!,
             label: l.phBag,
             series: scheme?.pinSeries(r.likelyBag!.code, category: kCatNonTD),
@@ -65,19 +110,17 @@ class SortResultView extends StatelessWidget {
         } else {
           children.add(Text(l.likelyBag, style: Theme.of(context).textTheme.labelLarge));
           children.add(BagCard(bag: r.likelyBag!, compact: true));
+          children.add(gap);
         }
-        children.add(gap);
       }
       if (nonTd) {
         final nshPart = services.nsh?.resolve(r.digits);
         if (nshPart != null) {
-          children.add(NshCard(match: nshPart));
-          children.add(gap);
+          addCard(1.0, (h) => NshCard(match: nshPart, minHeight: h));
         } else {
           final c = services.nsh?.candidates(r.digits) ?? const [];
           if (c.isNotEmpty) {
-            children.add(PossibleHubsCard(title: l.nshLabel, hubs: c, key: const ValueKey('nsh_possible')));
-            children.add(gap);
+            addCard(1.0, (h) => PossibleHubsCard(title: l.nshLabel, hubs: c, key: const ValueKey('nsh_possible'), minHeight: h));
           }
         }
         final l1Part = services.l1?.resolve(r.digits);
@@ -85,14 +128,13 @@ class SortResultView extends StatelessWidget {
         final l1Possible = l1Part == null ? services.l1?.candidates(r.digits) ?? const <NshHub>[] : const <NshHub>[];
         final nphPossible = nphPart == null ? services.nph?.candidates(r.digits) ?? const <NshHub>[] : const <NshHub>[];
         if (nphPart != null || nphPossible.isNotEmpty) {
-          children.add(NphCard(match: nphPart, possible: nphPossible));
-          children.add(gap);
+          addCard(1.0, (h) => NphCard(match: nphPart, possible: nphPossible, minHeight: h));
         }
         if (l1Part != null || l1Possible.isNotEmpty || nphPart != null) {
-          children.add(RmsL1Card(l1: l1Part, possible: l1Possible));
-          children.add(gap);
+          addCard(1.0, (h) => RmsL1Card(l1: l1Part, possible: l1Possible, minHeight: h));
         }
       }
+      flushCards();
       final s = nonTd ? null : r.prefixSummary;
       if (s != null) {
         children.add(
@@ -157,13 +199,13 @@ class SortResultView extends StatelessWidget {
         }
       } else if (r.bag != null && r.category == kCatNonTD) {
         final pin = int.tryParse(r.digits);
-        children.add(PhCard(
+        addCard(1.35, (h) => PhCard(
+          minHeight: h,
           bag: r.bag!,
           label: l.phBag,
           series: scheme.pinSeries(r.bag!.code, category: kCatNonTD),
           trailing: pin == null || !r.complete ? null : AirBadge(lo: pin, hi: pin, foreground: onColour(bagColour(context, r.bag!))),
         ));
-        children.add(const SizedBox(height: 8));
       } else if (r.bag != null) {
         final pin = int.tryParse(r.digits);
         children.add(BagCard(
@@ -182,19 +224,17 @@ class SortResultView extends StatelessWidget {
       final nsh = r.category == kCatNonTD ? services.nsh?.resolve(r.digits) : null;
       final rmsNsh = r.category == kCatNonTD && r.complete ? services.rmsNsh?.resolve(r.digits)?.hub.name : null;
       if (nsh != null) {
-        children.add(NshCard(match: nsh, rmsNsh: rmsNsh));
-        children.add(gap);
+        addCard(1.0, (h) => NshCard(match: nsh, rmsNsh: rmsNsh, minHeight: h));
       }
       final l1 = r.category == kCatNonTD ? services.l1?.resolve(r.digits) : null;
       final nph = r.category == kCatNonTD ? services.nph?.resolve(r.digits) : null;
       if (nph != null) {
-        children.add(NphCard(match: nph));
-        children.add(gap);
+        addCard(1.0, (h) => NphCard(match: nph, minHeight: h));
       }
       if (l1 != null || nph != null) {
-        children.add(RmsL1Card(l1: l1));
-        children.add(gap);
+        addCard(1.0, (h) => RmsL1Card(l1: l1, minHeight: h));
       }
+      flushCards();
       if (scheme != null && r.otherBag != null) {
         children.add(WarningBanner(text: l.otherModeHint(categoryLabel(l, r.otherCategory!), r.otherBag!.label), icon: Icons.swap_horiz));
         children.add(gap);

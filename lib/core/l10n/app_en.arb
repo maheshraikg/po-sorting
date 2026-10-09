@@ -472,6 +472,14 @@
     }
   },
   "typeMoreDigits": "Type more digits of the PIN to narrow it down.",
+  "morePinRanges": "+{count} more",
+  "@morePinRanges": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "findPinHint": "Office, village, city, taluk or district",
   "findPinTip": "Type in English, ಕನ್ನಡ or हिन्दी. Spelling mistakes are fine: \"Puttoor\", \"Putur\" and \"ಪುತ್ತೂರು\" all find Puttur.",
   "allStates": "All states",
@@ -1325,5 +1333,11 @@
         "type": "String"
       }
     }
-  }
+  },
+  "textSize": "Text size",
+  "textSizeSub": "Makes text bigger on every screen",
+  "textSizeNormal": "Normal",
+  "textSizeLarge": "Large",
+  "textSizeXl": "Extra large",
+  "textSizeHuge": "Huge"
 }

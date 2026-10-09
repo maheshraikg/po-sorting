@@ -822,6 +822,11 @@ class AppLocalizationsHi extends AppLocalizations {
   String get typeMoreDigits => 'सटीक जानने के लिए पिन के और अंक लिखें।';
 
   @override
+  String morePinRanges(int count) {
+    return '+$count और';
+  }
+
+  @override
   String get findPinHint => 'डाकघर, गाँव, शहर, तहसील या ज़िला';
 
   @override
@@ -2224,4 +2229,22 @@ class AppLocalizationsHi extends AppLocalizations {
   String officeRenamed(String name) {
     return 'सहेजा गया: $name';
   }
+
+  @override
+  String get textSize => 'अक्षर आकार';
+
+  @override
+  String get textSizeSub => 'हर स्क्रीन पर अक्षर बड़े करता है';
+
+  @override
+  String get textSizeNormal => 'सामान्य';
+
+  @override
+  String get textSizeLarge => 'बड़ा';
+
+  @override
+  String get textSizeXl => 'और बड़ा';
+
+  @override
+  String get textSizeHuge => 'बहुत बड़ा';
 }

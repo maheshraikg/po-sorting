@@ -4,6 +4,7 @@ import '../../core/app_scope.dart';
 import '../../core/constants.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../../core/labels.dart';
+import '../../core/settings.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -48,6 +49,35 @@ class SettingsScreen extends StatelessWidget {
                 ],
                 selected: {s.themeMode},
                 onSelectionChanged: (v) => s.themeMode = v.first,
+              ),
+            ),
+            const Divider(),
+            ListTile(
+              title: Text(l.textSize, style: const TextStyle(fontWeight: FontWeight.w700)),
+              subtitle: Text(l.textSizeSub),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: SegmentedButton<double>(
+                key: const ValueKey('text_size'),
+                showSelectedIcon: false,
+                segments: [
+                  for (final (i, v) in Settings.textSizes.indexed)
+                    ButtonSegment(
+                      value: v,
+                      label: Text('A', style: TextStyle(fontSize: 14.0 + i * 4, fontWeight: FontWeight.w900)),
+                      tooltip: [l.textSizeNormal, l.textSizeLarge, l.textSizeXl, l.textSizeHuge][i],
+                    ),
+                ],
+                selected: {Settings.textSizes.contains(s.textSize) ? s.textSize : 1.1},
+                onSelectionChanged: (v) => s.textSize = v.first,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 6, 16, 0),
+              child: Text(
+                [l.textSizeNormal, l.textSizeLarge, l.textSizeXl, l.textSizeHuge][Settings.textSizes.indexOf(Settings.textSizes.contains(s.textSize) ? s.textSize : 1.1)],
+                style: Theme.of(context).textTheme.bodySmall,
               ),
             ),
             const Divider(),

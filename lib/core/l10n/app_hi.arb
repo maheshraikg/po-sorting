@@ -240,6 +240,7 @@
   "rmsNshHubsSub": "NSH शीट से अलग होने पर NSH कार्ड पर दिखता है",
   "possibleHubsN": "{count} में से एक हो सकता है:",
   "typeMoreDigits": "सटीक जानने के लिए पिन के और अंक लिखें।",
+  "morePinRanges": "+{count} और",
   "findPinHint": "डाकघर, गाँव, शहर, तहसील या ज़िला",
   "findPinTip": "अंग्रेज़ी, कन्नड़ या हिन्दी में टाइप करें। वर्तनी की गलती चलेगी: \"Puttoor\", \"Putur\" और \"पुत्तूर\" सभी Puttur ढूंढते हैं।",
   "allStates": "सभी राज्य",
@@ -647,5 +648,11 @@
   "editAirSub": "एयर कोड जोड़ें, बदलें या हटाएं (एयर कोड टैब)",
   "editFiles": "आयात, निर्यात या पुनर्स्थापन",
   "editFilesSub": "अपने कार्यालय की Excel / CSV लोड करें, बैकअप सहेजें या मूल डेटा वापस लाएं",
-  "officeRenamed": "सहेजा गया: {name}"
+  "officeRenamed": "सहेजा गया: {name}",
+  "textSize": "अक्षर आकार",
+  "textSizeSub": "हर स्क्रीन पर अक्षर बड़े करता है",
+  "textSizeNormal": "सामान्य",
+  "textSizeLarge": "बड़ा",
+  "textSizeXl": "और बड़ा",
+  "textSizeHuge": "बहुत बड़ा"
 }

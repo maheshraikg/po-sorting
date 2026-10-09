@@ -820,6 +820,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get typeMoreDigits => 'Type more digits of the PIN to narrow it down.';
 
   @override
+  String morePinRanges(int count) {
+    return '+$count more';
+  }
+
+  @override
   String get findPinHint => 'Office, village, city, taluk or district';
 
   @override
@@ -2228,4 +2233,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String officeRenamed(String name) {
     return 'Saved: $name';
   }
+
+  @override
+  String get textSize => 'Text size';
+
+  @override
+  String get textSizeSub => 'Makes text bigger on every screen';
+
+  @override
+  String get textSizeNormal => 'Normal';
+
+  @override
+  String get textSizeLarge => 'Large';
+
+  @override
+  String get textSizeXl => 'Extra large';
+
+  @override
+  String get textSizeHuge => 'Huge';
 }

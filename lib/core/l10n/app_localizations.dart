@@ -1540,6 +1540,12 @@ abstract class AppLocalizations {
   /// **'Type more digits of the PIN to narrow it down.'**
   String get typeMoreDigits;
 
+  /// No description provided for @morePinRanges.
+  ///
+  /// In en, this message translates to:
+  /// **'+{count} more'**
+  String morePinRanges(int count);
+
   /// No description provided for @findPinHint.
   ///
   /// In en, this message translates to:
@@ -3987,6 +3993,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Saved: {name}'**
   String officeRenamed(String name);
+
+  /// No description provided for @textSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Text size'**
+  String get textSize;
+
+  /// No description provided for @textSizeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Makes text bigger on every screen'**
+  String get textSizeSub;
+
+  /// No description provided for @textSizeNormal.
+  ///
+  /// In en, this message translates to:
+  /// **'Normal'**
+  String get textSizeNormal;
+
+  /// No description provided for @textSizeLarge.
+  ///
+  /// In en, this message translates to:
+  /// **'Large'**
+  String get textSizeLarge;
+
+  /// No description provided for @textSizeXl.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra large'**
+  String get textSizeXl;
+
+  /// No description provided for @textSizeHuge.
+  ///
+  /// In en, this message translates to:
+  /// **'Huge'**
+  String get textSizeHuge;
 }
 
 class _AppLocalizationsDelegate

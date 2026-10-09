@@ -822,6 +822,11 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಖಚಿತಪಡಿಸಲು ಪಿನ್‌ನ ಇನ್ನಷ್ಟು ಅಂಕಿಗಳನ್ನು ಟೈಪ್ ಮಾಡಿ.';
 
   @override
+  String morePinRanges(int count) {
+    return '+$count ಇನ್ನಷ್ಟು';
+  }
+
+  @override
   String get findPinHint => 'ಕಚೇರಿ, ಗ್ರಾಮ, ನಗರ, ತಾಲ್ಲೂಕು ಅಥವಾ ಜಿಲ್ಲೆ';
 
   @override
@@ -2234,4 +2239,22 @@ class AppLocalizationsKn extends AppLocalizations {
   String officeRenamed(String name) {
     return 'ಉಳಿಸಲಾಗಿದೆ: $name';
   }
+
+  @override
+  String get textSize => 'ಅಕ್ಷರ ಗಾತ್ರ';
+
+  @override
+  String get textSizeSub => 'ಎಲ್ಲಾ ಪರದೆಗಳಲ್ಲಿ ಅಕ್ಷರಗಳನ್ನು ದೊಡ್ಡದಾಗಿಸುತ್ತದೆ';
+
+  @override
+  String get textSizeNormal => 'ಸಾಮಾನ್ಯ';
+
+  @override
+  String get textSizeLarge => 'ದೊಡ್ಡದು';
+
+  @override
+  String get textSizeXl => 'ಇನ್ನೂ ದೊಡ್ಡದು';
+
+  @override
+  String get textSizeHuge => 'ಅತಿ ದೊಡ್ಡದು';
 }

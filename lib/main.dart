@@ -104,8 +104,14 @@ class _SortingSahayakAppState extends State<SortingSahayakApp> {
           return const Locale('en');
         },
         // AppScope wraps the Navigator so every pushed route can reach it.
-        builder: (context, child) =>
-            services == null ? child! : AppScope(settings: widget.settings, services: services, child: child!),
+        builder: (context, child) {
+          final mq = MediaQuery.of(context);
+          // The app's text size on top of the phone's, kept below 2× so
+          // layouts hold.
+          final scale = (mq.textScaler.scale(16) / 16 * widget.settings.textSize).clamp(1.0, 2.0);
+          final scaled = MediaQuery(data: mq.copyWith(textScaler: TextScaler.linear(scale)), child: child!);
+          return services == null ? scaled : AppScope(settings: widget.settings, services: services, child: scaled);
+        },
         home: _error != null
             ? Scaffold(body: Center(child: Padding(padding: const EdgeInsets.all(24), child: Text('$_error'))))
             : services == null

@@ -189,12 +189,7 @@ class SortScreenState extends State<SortScreen> {
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  if (isPin)
-                    FilledButton.icon(
-                      onPressed: () => Navigator.pop(c, 'open'),
-                      icon: const Icon(Icons.search),
-                      label: Text(l.openThisPin),
-                    ),
+                  if (isPin) FilledButton.icon(onPressed: () => Navigator.pop(c, 'open'), icon: const Icon(Icons.search), label: Text(l.openThisPin)),
                   if (id != null)
                     OutlinedButton.icon(
                       key: const ValueKey('box_edit'),
@@ -244,11 +239,7 @@ class SortScreenState extends State<SortScreen> {
       setState(() => _result = null);
       return;
     }
-    final r = await services.engine.resolvePin(
-      _digits,
-      category: settings.category,
-      officeName: _scannedPlace.isEmpty ? null : _scannedPlace,
-    );
+    final r = await services.engine.resolvePin(_digits, category: settings.category, officeName: _scannedPlace.isEmpty ? null : _scannedPlace);
     if (!mounted || seq != _seq) return;
     setState(() => _result = r);
     if (r.complete && r.valid) {
@@ -304,12 +295,7 @@ class SortScreenState extends State<SortScreen> {
         actionsPadding: const EdgeInsets.only(right: 4),
         actions: [
           IconButton(tooltip: l.voiceInput, visualDensity: VisualDensity.compact, onPressed: _voice, icon: const Icon(Icons.mic_none)),
-          IconButton(
-            tooltip: l.scanAddress,
-            visualDensity: VisualDensity.compact,
-            onPressed: _scan,
-            icon: const Icon(Icons.document_scanner_outlined),
-          ),
+          IconButton(tooltip: l.scanAddress, visualDensity: VisualDensity.compact, onPressed: _scan, icon: const Icon(Icons.document_scanner_outlined)),
           if (r != null && r.complete && r.valid)
             IconButton(
               visualDensity: VisualDensity.compact,
@@ -359,72 +345,76 @@ class SortScreenState extends State<SortScreen> {
               ),
             ),
             Expanded(
-              child: ListView(
-                padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                children: [
-                  if (scheme == null) ...[const NoSchemeBar(), const SizedBox(height: 10)],
-                  // Main answer first: the big bag card.
-                  if (r != null && r.digits == _digits && r.complete) ...[
-                    SortResultView(result: r),
-                  ] else ...[
-                    if (_places.isNotEmpty && _digits.isEmpty) ...[
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(4, 0, 4, 6),
-                        child: Text(
-                          l.postOfficesFound,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
-                        ),
-                      ),
-                      for (final p in _places) _PlaceCard(hit: p, onTap: () => setPin(p.office.pin)),
-                      const SizedBox(height: 8),
-                    ],
-                    // Non-TD: from 3 digits on, the PH / NSH / L1 cards come first.
-                    if (partialCards) ...[SortResultView(result: r, showBreakdown: false), const SizedBox(height: 10)],
-                    if (scheme != null && _query.isNotEmpty && (matches.isNotEmpty || _places.isEmpty))
-                      _LiveList(
-                        matches: matches,
-                        scheme: scheme,
-                        query: _query,
-                        onPick: (m) => _showBox(scheme, m),
-                        onAdd: (bag) => _addOffice(scheme, bag),
-                      ),
-                    // Partial PIN without list entries: sorting district / likely bag.
-                    if (!partialCards && r != null && r.digits == _digits && _digits.isNotEmpty && matches.isEmpty) SortResultView(result: r),
-                  ],
-                  if (_query.isEmpty && _recents.isNotEmpty) ...[
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Text(l.recentLookups, style: Theme.of(context).textTheme.titleMedium),
-                        const Spacer(),
-                        TextButton(
-                          onPressed: () async {
-                            await services.user.clearRecents();
-                            services.touchRecents();
-                          },
-                          child: Text(l.clear),
-                        ),
-                      ],
-                    ),
-                    Wrap(
-                      spacing: 8,
-                      runSpacing: 8,
-                      children: [
-                        for (final p in _recents)
-                          ActionChip(
-                            label: Text('$p', style: const TextStyle(fontSize: 18)),
-                            onPressed: () => setPin('$p'),
+              child: LayoutBuilder(
+                builder: (context, box) {
+                  // Non-TD: the PH / NSH / NPH / L1 cards share the screen.
+                  final fill = settings.category == kCatNonTD ? box.maxHeight - 22 : null;
+                  return ListView(
+                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                    children: [
+                      if (scheme == null) ...[const NoSchemeBar(), const SizedBox(height: 10)],
+                      // Main answer first: the big bag card.
+                      if (r != null && r.digits == _digits && r.complete) ...[
+                        SortResultView(result: r, fillHeight: fill),
+                      ] else ...[
+                        if (_places.isNotEmpty && _digits.isEmpty) ...[
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(4, 0, 4, 6),
+                            child: Text(l.postOfficesFound, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
                           ),
+                          for (final p in _places) _PlaceCard(hit: p, onTap: () => setPin(p.office.pin)),
+                          const SizedBox(height: 8),
+                        ],
+                        // Non-TD: from 3 digits on, the PH / NSH / L1 cards come first.
+                        if (partialCards) ...[SortResultView(result: r, showBreakdown: false, fillHeight: fill), const SizedBox(height: 10)],
+                        // The cards already answer a Non-TD PIN: no list of rules under them.
+                        if (!partialCards && scheme != null && _query.isNotEmpty && (matches.isNotEmpty || _places.isEmpty))
+                          _LiveList(
+                            matches: matches,
+                            scheme: scheme,
+                            query: _query,
+                            onPick: (m) => _showBox(scheme, m),
+                            onAdd: (bag) => _addOffice(scheme, bag),
+                          ),
+                        // Partial PIN without list entries: sorting district / likely bag.
+                        if (!partialCards && r != null && r.digits == _digits && _digits.isNotEmpty && matches.isEmpty) SortResultView(result: r),
                       ],
-                    ),
-                  ],
-                  if (_query.isEmpty && _recents.isEmpty && scheme != null)
-                    Padding(
-                      padding: const EdgeInsets.all(24),
-                      child: Text(l.sortHint, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium),
-                    ),
-                ],
+                      if (_query.isEmpty && _recents.isNotEmpty) ...[
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Text(l.recentLookups, style: Theme.of(context).textTheme.titleMedium),
+                            const Spacer(),
+                            TextButton(
+                              onPressed: () async {
+                                await services.user.clearRecents();
+                                services.touchRecents();
+                              },
+                              child: Text(l.clear),
+                            ),
+                          ],
+                        ),
+                        Wrap(
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: [
+                            for (final p in _recents)
+                              ActionChip(
+                                label: Text('$p', style: const TextStyle(fontSize: 18)),
+                                onPressed: () => setPin('$p'),
+                              ),
+                          ],
+                        ),
+                      ],
+                      if (_query.isEmpty && _recents.isEmpty && scheme != null)
+                        Padding(
+                          padding: const EdgeInsets.all(24),
+                          child: Text(l.sortHint, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium),
+                        ),
+                    ],
+                  );
+                },
               ),
             ),
           ],
@@ -470,12 +460,7 @@ class _SearchField extends StatelessWidget {
         keyboardType: letters ? TextInputType.text : TextInputType.number,
         textInputAction: TextInputAction.search,
         inputFormatters: letters ? null : [FilteringTextInputFormatter.allow(RegExp(r'[0-9०-९೦-೯ ]'))],
-        style: TextStyle(
-          fontSize: letters ? 26 : 36,
-          fontWeight: FontWeight.w900,
-          letterSpacing: letters ? 0 : 4,
-          color: error ? c.error : c.primary,
-        ),
+        style: TextStyle(fontSize: letters ? 26 : 36, fontWeight: FontWeight.w900, letterSpacing: letters ? 0 : 4, color: error ? c.error : c.primary),
         onChanged: onChanged,
         onTap: () {
           // Tap selects everything so the next PIN simply replaces it.
@@ -497,12 +482,7 @@ class _SearchField extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               if (controller.text.isNotEmpty)
-                IconButton(
-                  key: const ValueKey('clear_field'),
-                  tooltip: l.clear,
-                  onPressed: onClear,
-                  icon: const Icon(Icons.close, size: 30),
-                ),
+                IconButton(key: const ValueKey('clear_field'), tooltip: l.clear, onPressed: onClear, icon: const Icon(Icons.close, size: 30)),
               // Big, labelled switch between the number pad and letters
               // (to type a place name instead of a PIN).
               Padding(

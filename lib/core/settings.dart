@@ -38,6 +38,17 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Text size for the whole app, on top of the phone's own setting
+  /// (1.0 normal … 1.3 huge). Starts at large: sorting is read at arm's length.
+  static const List<double> textSizes = [1.0, 1.1, 1.2, 1.3];
+
+  double get textSize => _prefs.getDouble('textSize') ?? 1.1;
+
+  set textSize(double v) {
+    _prefs.setDouble('textSize', v);
+    notifyListeners();
+  }
+
   /// True once the bundled default scheme was offered (so deleting it does
   /// not bring it back on the next launch).
   bool get defaultSchemeDone => _prefs.getBool('defaultSchemeDone') ?? false;
