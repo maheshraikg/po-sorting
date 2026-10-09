@@ -335,5 +335,5 @@ Airport codes: public IATA codes.
 
 ## Licence
 
-Copyright (c) 2026 KAVYA (github.com/maheshraikg). All rights reserved – see
+Copyright (c) 2026 Mahesh Rai (github.com/maheshraikg). All rights reserved – see
 [LICENSE](LICENSE). Third-party components: [NOTICE](NOTICE).
