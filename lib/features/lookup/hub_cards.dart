@@ -81,21 +81,15 @@ class PhCard extends StatelessWidget {
                     style: t.headlineMedium?.copyWith(color: fg, fontSize: 32, fontWeight: FontWeight.w900, height: 1.0),
                   ),
                 ),
-                if (bag.name.isNotEmpty && bag.name != bag.code)
-                  Text(
-                    bag.name,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: t.titleMedium?.copyWith(color: fg, fontWeight: FontWeight.w700),
-                  ),
-                if (series != null)
-                  Text(
-                    series!,
-                    key: const ValueKey('ph_series'),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: t.bodyLarge?.copyWith(color: fg.withValues(alpha: 0.9), fontWeight: FontWeight.w700),
-                  ),
+                // State and PIN range on one line (the range wraps whole).
+                Text.rich(
+                  TextSpan(children: [
+                    if (bag.name.isNotEmpty && bag.name != bag.code) TextSpan(text: series == null ? bag.name : '${bag.name}  ·  '),
+                    if (series != null) TextSpan(text: series, style: TextStyle(color: fg.withValues(alpha: 0.92), fontWeight: FontWeight.w800)),
+                  ]),
+                  key: const ValueKey('ph_series'),
+                  style: t.titleMedium?.copyWith(color: fg, fontWeight: FontWeight.w700),
+                ),
               ],
             ),
           ),
@@ -323,47 +317,32 @@ class _HubTileState extends State<HubTile> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Heading row: tag, circle, air code, arrow.
                     Row(
                       children: [
+                        HubTag(widget.tag, a, widget.icon),
+                        const SizedBox(width: 8),
                         Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Flexible(
-                                    child: FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerLeft, child: HubTag(widget.tag, a, widget.icon)),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  if (widget.subtitle.isNotEmpty)
-                                    Expanded(
-                                      child: Text(
-                                        widget.subtitle,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: t.labelLarge?.copyWith(fontSize: 16, color: soft, fontWeight: FontWeight.w800),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                              const SizedBox(height: 4),
-                              if (widget.name != null)
-                                Text(
-                                  widget.name!,
-                                  key: widget.nameKey,
-                                  maxLines: widget.series.length > 60 ? 1 : 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: widget.nameSmall
-                                      ? t.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: soft)
-                                      : t.titleLarge?.copyWith(fontSize: 24, fontWeight: FontWeight.w900, height: 1.15, color: Colors.white),
-                                ),
-                            ],
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            alignment: Alignment.centerLeft,
+                            child: Text(widget.subtitle, style: t.labelLarge?.copyWith(fontSize: 16, color: soft, fontWeight: FontWeight.w800)),
                           ),
                         ),
                         if (widget.air.isNotEmpty) ...[const SizedBox(width: 6), HubAirChip(widget.air)],
                         if (canOpen) const Icon(Icons.chevron_right, color: soft, size: 26),
                       ],
                     ),
+                    const SizedBox(height: 4),
+                    // Hub name in full, across the card.
+                    if (widget.name != null)
+                      Text(
+                        widget.name!,
+                        key: widget.nameKey,
+                        style: widget.nameSmall
+                            ? t.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: soft)
+                            : t.titleLarge?.copyWith(fontSize: widget.name!.contains('\n') ? 19 : 22, fontWeight: FontWeight.w900, height: 1.12, color: Colors.white),
+                      ),
                     // Every PIN range, full card width.
                     if (widget.series.isNotEmpty)
                       Padding(
@@ -372,7 +351,7 @@ class _HubTileState extends State<HubTile> {
                           widget.series,
                           key: widget.seriesKey,
                           // Long lists a little smaller, so all of them fit.
-                          style: t.bodyLarge?.copyWith(fontSize: widget.series.length > 60 ? 14 : 16, fontWeight: FontWeight.w800, color: soft, height: 1.25),
+                          style: t.bodyLarge?.copyWith(fontSize: widget.series.length > 60 ? 14 : 16, fontWeight: FontWeight.w800, color: soft, height: 1.18),
                         ),
                       ),
                     ...widget.notes,
@@ -425,7 +404,7 @@ List<Widget> _possibleDetails(BuildContext context, List<NshHub> hubs) => [
     Padding(
       padding: const EdgeInsets.only(left: 2, bottom: 2),
       child: Text(
-        '• ${h.name}${hubAirCode(h).isEmpty ? '' : '  ✈ ${hubAirCode(h)}'}',
+        '• ${h.name}${hubAirCode(h).isEmpty ? '' : '  (${hubAirCode(h)})'}',
         style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w800, color: Colors.white),
       ),
     ),
@@ -435,7 +414,8 @@ List<Widget> _possibleDetails(BuildContext context, List<NshHub> hubs) => [
   ),
 ];
 
-String _possibleName(List<NshHub> hubs) => hubs.length <= 2 ? hubs.map((h) => h.name).join(' / ') : '${hubs.take(2).map((h) => h.name).join(' / ')} …';
+/// Every hub a partial PIN can still go to, one per line, with air codes.
+String _possibleName(List<NshHub> hubs) => [for (final h in hubs) '• ${h.name}${hubAirCode(h).isEmpty ? '' : '  (${hubAirCode(h)})'}'].join('\n');
 
 /// NSH / ICH for speed post.
 class NshCard extends StatelessWidget {
