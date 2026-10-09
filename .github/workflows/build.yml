@@ -145,4 +145,4 @@ jobs:
           gh release delete "$tag" --yes --cleanup-tag 2>/dev/null || true
           gh release create "$tag" --target "$GITHUB_SHA" --latest --title "PO Sorting $version" \
             --notes "PO Sorting $version. po-sorting.apk works on every phone; po-sorting-arm64.apk / po-sorting-armv7.apk are smaller per-phone builds." \
-            po-sorting.apk po-sorting-arm64.apk po-sorting-armv7.apk
+            po-sorting.apk po-sorting-arm64.apk po-sorting-armv7.apk po-sorting-release.aab
