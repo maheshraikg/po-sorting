@@ -1503,6 +1503,48 @@ class AppLocalizationsHi extends AppLocalizations {
   String get pinQuizBoSoSub => 'शाखा डाकघर → वह किस SO / HO के अंतर्गत है';
 
   @override
+  String get pinQuizNotTried => 'अभी तक नहीं किया';
+
+  @override
+  String pinQuizStats(int count, String best, String last) {
+    return '$count क्विज़ · सर्वश्रेष्ठ $best% · पिछला $last%';
+  }
+
+  @override
+  String get pinQuizProgress => 'आपकी पिन क्विज़ प्रगति';
+
+  @override
+  String get pinQuizTaken => 'क्विज़';
+
+  @override
+  String get pinQuizAverage => 'औसत';
+
+  @override
+  String get pinQuizRecent => 'पिछले 5';
+
+  @override
+  String get pinQuizMistakes => 'गलतियाँ';
+
+  @override
+  String get myMistakes => 'मेरी गलतियाँ';
+
+  @override
+  String get practiseMistakes => 'गलतियों का अभ्यास';
+
+  @override
+  String get noPinMistakes =>
+      'अभी कोई गलती नहीं। पिन कोड क्विज़ करें – गलत उत्तर यहाँ दिखेंगे।';
+
+  @override
+  String get mistakesIntro =>
+      'प्रश्न → सही उत्तर। गलतियों के अभ्यास में सही उत्तर देने पर गलती हट जाती है।';
+
+  @override
+  String youChose(String chosen) {
+    return 'आपने चुना $chosen';
+  }
+
+  @override
   String get noSchemes =>
       'अभी कोई स्कीम नहीं। अपने कार्यालय की सॉर्टिंग स्कीम (Excel/CSV) आयात करें, नई बनाएं, या नमूना आज़माएं।';
 

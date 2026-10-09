@@ -46,6 +46,48 @@ class PinBookEntry {
   final String line;
 }
 
+/// Quiz kinds (see QuizScreen) that are office ↔ PIN practice.
+bool isPinQuizKind(String kind) =>
+    kind == 'quiz-bag-bo' || kind.endsWith('-pin') || kind.endsWith('-office') || kind.endsWith('-parent');
+
+final _sixDigits = RegExp(r'^\d{6}$');
+final _parentAnswer = RegExp(r' – \d{6}$');
+
+/// Practice from past mistakes: each question with its right answer, the
+/// wrong choice made before and other answers of the same kind.
+List<QuizQuestion> mistakeQuiz(List<({String kind, String question, String correct, String? chosen})> mistakes, {Random? random, int count = 20}) {
+  final rnd = random ?? Random();
+  int type(String kind, String answer) => kind.endsWith('-parent') || _parentAnswer.hasMatch(answer) ? 2 : _sixDigits.hasMatch(answer) ? 1 : 0;
+  final byType = <int, Set<String>>{};
+  for (final m in mistakes) {
+    (byType[type(m.kind, m.correct)] ??= {}).add(m.correct);
+  }
+  final out = <QuizQuestion>[];
+  for (final m in mistakes.take(count)) {
+    final t = type(m.kind, m.correct);
+    final others = {...byType[t]!}..remove(m.correct);
+    final opts = <String>{m.correct};
+    if (m.chosen != null && m.chosen!.isNotEmpty && m.chosen != m.correct) opts.add(m.chosen!);
+    for (final o in others.toList()..shuffle(rnd)) {
+      if (opts.length >= 4) break;
+      opts.add(o);
+    }
+    if (opts.length < 2) continue;
+    final card = LearnCard(
+      key: 'mistake:${m.question}',
+      prompt: m.question,
+      answer: m.correct,
+      isPin: _sixDigits.hasMatch(m.question),
+      asksPin: t == 1,
+      asksParent: t == 2,
+      asksOffice: t == 0 && _sixDigits.hasMatch(m.question),
+      category: m.kind.contains('-nonTd') ? kCatNonTD : null,
+    );
+    out.add(QuizQuestion(card, opts.toList()..shuffle(rnd)));
+  }
+  return out..shuffle(rnd);
+}
+
 /// The Udupi-side TD line(s): any bag whose code or name says "Udupi".
 bool isUdupiSideBag(Bag b) => '${b.code} ${b.name}'.toLowerCase().contains('udupi');
 
@@ -430,8 +472,8 @@ class LearnEngine {
         out[key] = LearnCard(
           key: key,
           prompt: '$bo BO',
-          answer: e.head!,
-          answerDetail: '${e.pin} · ${e.line}',
+          answer: '${e.head!} – ${e.pin}',
+          answerDetail: e.line,
           prefix: '${e.pin}'.substring(0, 3),
           isPin: false,
           category: kCatTD,

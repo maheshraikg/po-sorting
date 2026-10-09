@@ -1505,6 +1505,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pinQuizBoSoSub => 'Branch office → the SO / HO it comes under';
 
   @override
+  String get pinQuizNotTried => 'Not tried yet';
+
+  @override
+  String pinQuizStats(int count, String best, String last) {
+    return '$count quizzes · best $best% · last $last%';
+  }
+
+  @override
+  String get pinQuizProgress => 'Your PIN quiz progress';
+
+  @override
+  String get pinQuizTaken => 'Quizzes';
+
+  @override
+  String get pinQuizAverage => 'Average';
+
+  @override
+  String get pinQuizRecent => 'Last 5';
+
+  @override
+  String get pinQuizMistakes => 'Mistakes';
+
+  @override
+  String get myMistakes => 'My mistakes';
+
+  @override
+  String get practiseMistakes => 'Practise mistakes';
+
+  @override
+  String get noPinMistakes =>
+      'No mistakes yet. Take a PIN code quiz – wrong answers show up here.';
+
+  @override
+  String get mistakesIntro =>
+      'Question → right answer. A mistake goes away once you answer it right in Practise mistakes.';
+
+  @override
+  String youChose(String chosen) {
+    return 'You chose $chosen';
+  }
+
+  @override
   String get noSchemes =>
       'No schemes yet. Import your office\'s sorting scheme (Excel/CSV), create one, or try the SAMPLE.';
 

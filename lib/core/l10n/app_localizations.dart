@@ -2710,6 +2710,78 @@ abstract class AppLocalizations {
   /// **'Branch office → the SO / HO it comes under'**
   String get pinQuizBoSoSub;
 
+  /// No description provided for @pinQuizNotTried.
+  ///
+  /// In en, this message translates to:
+  /// **'Not tried yet'**
+  String get pinQuizNotTried;
+
+  /// No description provided for @pinQuizStats.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} quizzes · best {best}% · last {last}%'**
+  String pinQuizStats(int count, String best, String last);
+
+  /// No description provided for @pinQuizProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Your PIN quiz progress'**
+  String get pinQuizProgress;
+
+  /// No description provided for @pinQuizTaken.
+  ///
+  /// In en, this message translates to:
+  /// **'Quizzes'**
+  String get pinQuizTaken;
+
+  /// No description provided for @pinQuizAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Average'**
+  String get pinQuizAverage;
+
+  /// No description provided for @pinQuizRecent.
+  ///
+  /// In en, this message translates to:
+  /// **'Last 5'**
+  String get pinQuizRecent;
+
+  /// No description provided for @pinQuizMistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'Mistakes'**
+  String get pinQuizMistakes;
+
+  /// No description provided for @myMistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'My mistakes'**
+  String get myMistakes;
+
+  /// No description provided for @practiseMistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'Practise mistakes'**
+  String get practiseMistakes;
+
+  /// No description provided for @noPinMistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'No mistakes yet. Take a PIN code quiz – wrong answers show up here.'**
+  String get noPinMistakes;
+
+  /// No description provided for @mistakesIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Question → right answer. A mistake goes away once you answer it right in Practise mistakes.'**
+  String get mistakesIntro;
+
+  /// No description provided for @youChose.
+  ///
+  /// In en, this message translates to:
+  /// **'You chose {chosen}'**
+  String youChose(String chosen);
+
   /// No description provided for @noSchemes.
   ///
   /// In en, this message translates to:

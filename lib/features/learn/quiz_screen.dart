@@ -18,7 +18,17 @@ import 'learn_screen.dart' show learnSectionLabel;
 import 'progress.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key, required this.mode, this.section = LearnSection.all, this.lineCode, this.ask = LearnAsk.sort});
+  const QuizScreen({super.key, required this.mode, this.section = LearnSection.all, this.lineCode, this.ask = LearnAsk.sort, this.questions});
+
+  /// Ready-made questions (practice from past mistakes); a right answer
+  /// there clears that mistake.
+  final List<QuizQuestion>? questions;
+
+  /// Quiz-history kind for a bag-mode quiz of [section] / [ask].
+  static String kindFor(FlashMode mode, LearnSection section, LearnAsk ask) =>
+      'quiz-${mode.name}${section == LearnSection.all ? '' : '-${section.name}'}${ask == LearnAsk.sort ? '' : '-${ask.name}'}';
+
+  static const String mistakesKind = 'mistakes-pin';
 
   final FlashMode mode;
 
@@ -45,7 +55,11 @@ class _QuizScreenState extends State<QuizScreen> {
   List<QuizRecord> _history = [];
   bool _done = false;
 
-  String get _kind => widget.lineCode != null ? 'line-${widget.lineCode}' : 'quiz-${widget.mode.name}${widget.section == LearnSection.all ? '' : '-${widget.section.name}'}${widget.ask == LearnAsk.sort ? '' : '-${widget.ask.name}'}';
+  String get _kind => widget.questions != null
+      ? QuizScreen.mistakesKind
+      : widget.lineCode != null
+      ? 'line-${widget.lineCode}'
+      : QuizScreen.kindFor(widget.mode, widget.section, widget.ask);
 
   @override
   void didChangeDependencies() {
@@ -66,9 +80,14 @@ class _QuizScreenState extends State<QuizScreen> {
       setState(() => _qs = []);
       return;
     }
-    final regions = await s.pinRegions();
-    final engine = await LearnEngine.load(s.directory, scheme, regions: regions, section: widget.section, ask: widget.ask);
-    final qs = widget.lineCode != null ? engine.lineQuiz(widget.lineCode!) : engine.quiz(widget.mode, section: widget.section, ask: widget.ask);
+    final List<QuizQuestion> qs;
+    if (widget.questions != null) {
+      qs = [...widget.questions!]..shuffle();
+    } else {
+      final regions = await s.pinRegions();
+      final engine = await LearnEngine.load(s.directory, scheme, regions: regions, section: widget.section, ask: widget.ask);
+      qs = widget.lineCode != null ? engine.lineQuiz(widget.lineCode!) : engine.quiz(widget.mode, section: widget.section, ask: widget.ask);
+    }
     if (!mounted) return;
     setState(() {
       _qs = qs;
@@ -98,6 +117,7 @@ class _QuizScreenState extends State<QuizScreen> {
     if (right) {
       context.settings.addLearnXp(kXpCorrect);
       AppFeedback.success(context.settings);
+      if (widget.questions != null) await s.user.clearMistake(q.card.prompt, q.card.answer);
     } else {
       AppFeedback.warning(context.settings);
       await s.user.addMistake(s.active?.scheme.id, _kind, q.card.prompt, q.card.isPin ? q.card.prefix : null, q.card.answer, o);

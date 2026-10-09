@@ -921,6 +921,38 @@
   "pinQuizBoPinSub": "Branch office name → its PIN",
   "pinQuizBoSo": "BO → its SO",
   "pinQuizBoSoSub": "Branch office → the SO / HO it comes under",
+  "pinQuizNotTried": "Not tried yet",
+  "pinQuizStats": "{count} quizzes · best {best}% · last {last}%",
+  "@pinQuizStats": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "best": {
+        "type": "String"
+      },
+      "last": {
+        "type": "String"
+      }
+    }
+  },
+  "pinQuizProgress": "Your PIN quiz progress",
+  "pinQuizTaken": "Quizzes",
+  "pinQuizAverage": "Average",
+  "pinQuizRecent": "Last 5",
+  "pinQuizMistakes": "Mistakes",
+  "myMistakes": "My mistakes",
+  "practiseMistakes": "Practise mistakes",
+  "noPinMistakes": "No mistakes yet. Take a PIN code quiz – wrong answers show up here.",
+  "mistakesIntro": "Question → right answer. A mistake goes away once you answer it right in Practise mistakes.",
+  "youChose": "You chose {chosen}",
+  "@youChose": {
+    "placeholders": {
+      "chosen": {
+        "type": "String"
+      }
+    }
+  },
   "noSchemes": "No schemes yet. Import your office's sorting scheme (Excel/CSV), create one, or try the SAMPLE.",
   "schemesPrivacy": "Schemes are department documents: they stay on this phone. Share only with your team.",
   "importScheme": "Import scheme",

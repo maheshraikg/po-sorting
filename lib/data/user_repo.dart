@@ -133,6 +133,18 @@ class QuizRecord {
   double get percent => total == 0 ? 0 : score * 100 / total;
 }
 
+/// One question answered wrongly (grouped: how often, last wrong choice).
+class Mistake {
+  const Mistake({required this.kind, required this.question, required this.correct, this.chosen, required this.wrong, required this.ts});
+
+  final String kind;
+  final String question;
+  final String correct;
+  final String? chosen;
+  final int wrong;
+  final DateTime ts;
+}
+
 class WeakArea {
   const WeakArea(this.label, this.wrong, this.kind);
 
@@ -286,6 +298,36 @@ class UserRepo {
         'correct': correct,
         'chosen': chosen,
       });
+
+  /// Questions answered wrongly, most recent first, grouped by question and
+  /// answer; [kinds] filters by quiz kind.
+  Future<List<Mistake>> mistakes({int? schemeId, bool Function(String kind)? kinds, int limit = 300}) async {
+    final rows = await db.query(
+      'quiz_mistakes',
+      where: schemeId == null ? null : 'scheme_id = ?',
+      whereArgs: schemeId == null ? null : [schemeId],
+      orderBy: 'ts DESC',
+      limit: 5000,
+    );
+    final out = <String, Mistake>{};
+    for (final r in rows) {
+      final kind = r['kind'] as String? ?? '';
+      if (kinds != null && !kinds(kind)) continue;
+      final q = r['question'] as String? ?? '';
+      final c = r['correct'] as String? ?? '';
+      final key = '$q\u0000$c';
+      final m = out[key];
+      out[key] = m == null
+          ? Mistake(kind: kind, question: q, correct: c, chosen: r['chosen'] as String?, wrong: 1, ts: DateTime.fromMillisecondsSinceEpoch(r['ts'] as int))
+          : Mistake(kind: m.kind, question: q, correct: c, chosen: m.chosen, wrong: m.wrong + 1, ts: m.ts);
+      if (out.length >= limit && m == null) break;
+    }
+    return out.values.toList();
+  }
+
+  /// Forgets the mistakes for [question] (answered right in mistake practice).
+  Future<void> clearMistake(String question, String correct) =>
+      db.delete('quiz_mistakes', where: 'question = ? AND correct = ?', whereArgs: [question, correct]);
 
   /// Bags and 3-digit prefixes answered wrongly most often.
   Future<List<WeakArea>> weakAreas(int? schemeId, {int limit = 8}) async {

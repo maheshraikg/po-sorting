@@ -1509,6 +1509,48 @@ class AppLocalizationsKn extends AppLocalizations {
   String get pinQuizBoSoSub => 'ಶಾಖಾ ಕಚೇರಿ → ಅದು ಸೇರುವ SO / HO';
 
   @override
+  String get pinQuizNotTried => 'ಇನ್ನೂ ಪ್ರಯತ್ನಿಸಿಲ್ಲ';
+
+  @override
+  String pinQuizStats(int count, String best, String last) {
+    return '$count ಕ್ವಿಜ್ · ಉತ್ತಮ $best% · ಕೊನೆಯ $last%';
+  }
+
+  @override
+  String get pinQuizProgress => 'ನಿಮ್ಮ ಪಿನ್ ಕ್ವಿಜ್ ಪ್ರಗತಿ';
+
+  @override
+  String get pinQuizTaken => 'ಕ್ವಿಜ್‌ಗಳು';
+
+  @override
+  String get pinQuizAverage => 'ಸರಾಸರಿ';
+
+  @override
+  String get pinQuizRecent => 'ಕೊನೆಯ 5';
+
+  @override
+  String get pinQuizMistakes => 'ತಪ್ಪುಗಳು';
+
+  @override
+  String get myMistakes => 'ನನ್ನ ತಪ್ಪುಗಳು';
+
+  @override
+  String get practiseMistakes => 'ತಪ್ಪುಗಳನ್ನು ಅಭ್ಯಾಸ ಮಾಡಿ';
+
+  @override
+  String get noPinMistakes =>
+      'ಇನ್ನೂ ತಪ್ಪುಗಳಿಲ್ಲ. ಪಿನ್ ಕೋಡ್ ಕ್ವಿಜ್ ಮಾಡಿ – ತಪ್ಪು ಉತ್ತರಗಳು ಇಲ್ಲಿ ಕಾಣುತ್ತವೆ.';
+
+  @override
+  String get mistakesIntro =>
+      'ಪ್ರಶ್ನೆ → ಸರಿಯಾದ ಉತ್ತರ. ತಪ್ಪುಗಳ ಅಭ್ಯಾಸದಲ್ಲಿ ಸರಿ ಉತ್ತರಿಸಿದಾಗ ತಪ್ಪು ಹೋಗುತ್ತದೆ.';
+
+  @override
+  String youChose(String chosen) {
+    return 'ನೀವು ಆರಿಸಿದ್ದು $chosen';
+  }
+
+  @override
   String get noSchemes =>
       'ಇನ್ನೂ ಸ್ಕೀಮ್‌ಗಳಿಲ್ಲ. ನಿಮ್ಮ ಕಚೇರಿಯ ಸಾರ್ಟಿಂಗ್ ಸ್ಕೀಮ್ (Excel/CSV) ಆಮದು ಮಾಡಿ, ಹೊಸದು ರಚಿಸಿ ಅಥವಾ ಮಾದರಿ ಪ್ರಯತ್ನಿಸಿ.';
 
