@@ -1558,6 +1558,12 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಹಬ್ ಕಾರ್ಡ್‌ನಲ್ಲಿ ತೋರಿಸಲಾಗುತ್ತದೆ, ಉದಾ HYD. ಖಾಲಿ ಬಿಟ್ಟರೆ ಹಬ್ ನಗರದ ವಿಮಾನ ನಿಲ್ದಾಣ.';
 
   @override
+  String get pinQuizStart => 'ಕ್ವಿಜ್';
+
+  @override
+  String get pinQuizCards => 'ಫ್ಲ್ಯಾಶ್‌ಕಾರ್ಡ್';
+
+  @override
   String get noSchemes =>
       'ಇನ್ನೂ ಸ್ಕೀಮ್‌ಗಳಿಲ್ಲ. ನಿಮ್ಮ ಕಚೇರಿಯ ಸಾರ್ಟಿಂಗ್ ಸ್ಕೀಮ್ (Excel/CSV) ಆಮದು ಮಾಡಿ, ಹೊಸದು ರಚಿಸಿ ಅಥವಾ ಮಾದರಿ ಪ್ರಯತ್ನಿಸಿ.';
 

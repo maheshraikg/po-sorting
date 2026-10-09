@@ -610,7 +610,8 @@ class PossibleHubsCard extends StatelessWidget {
 
 
 /// Cards one under the other, each at its own natural height plus a share
-/// (by [weights]) of the space left in [height], so together they fill it.
+/// (by [weights]) of the space left in [height], so together they fill it
+/// (each grows by at most half its height).
 /// When they need more than [height], they keep their natural height (and
 /// the page scrolls) – never squeezed or scaled.
 class FillColumn extends MultiChildRenderObjectWidget {
@@ -664,7 +665,9 @@ class _RenderFillColumn extends RenderBox
     var y = 0.0;
     for (var i = 0; i < kids.length; i++) {
       final weight = i < weights.length ? weights[i] : 1.0;
-      final h = natural[i] + (wsum == 0 ? 0 : spare * weight / wsum);
+      // At most half again its own height: on tablets the cards stay
+      // cards instead of tall empty boxes.
+      final h = natural[i] + (wsum == 0 ? 0 : (spare * weight / wsum).clamp(0.0, natural[i] * 0.5));
       kids[i].layout(BoxConstraints.tightFor(width: w, height: h), parentUsesSize: true);
       (kids[i].parentData! as _FillParentData).offset = Offset(0, y);
       y += h + gap;

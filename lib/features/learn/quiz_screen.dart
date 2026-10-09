@@ -181,7 +181,14 @@ class _QuizScreenState extends State<QuizScreen> {
     };
     return Scaffold(
       appBar: AppBar(title: Text(title), actions: [
-        Center(child: Padding(padding: const EdgeInsets.only(right: 16), child: Text('⏱ ${_sw.elapsed.inSeconds}s', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)))),
+        Padding(
+          padding: const EdgeInsets.only(right: 16),
+          child: Row(children: [
+            const Icon(Icons.timer_outlined, size: 20),
+            const SizedBox(width: 4),
+            Text('${_sw.elapsed.inSeconds}s', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
+          ]),
+        ),
       ]),
       body: Padding(
         padding: const EdgeInsets.all(16),

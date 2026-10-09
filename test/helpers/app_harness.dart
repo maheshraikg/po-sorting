@@ -38,6 +38,7 @@ class Harness {
     settings: settings,
     services: services,
     child: MaterialApp(
+      debugShowCheckedModeBanner: false,
       theme: buildTheme(Brightness.light),
       locale: locale,
       supportedLocales: AppLocalizations.supportedLocales,

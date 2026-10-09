@@ -1554,6 +1554,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Shown on the hub card, e.g. HYD. Leave empty to use the airport of the hub\'s city.';
 
   @override
+  String get pinQuizStart => 'Quiz';
+
+  @override
+  String get pinQuizCards => 'Flashcards';
+
+  @override
   String get noSchemes =>
       'No schemes yet. Import your office\'s sorting scheme (Excel/CSV), create one, or try the SAMPLE.';
 

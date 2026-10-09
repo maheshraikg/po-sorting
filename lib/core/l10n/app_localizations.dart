@@ -2794,6 +2794,18 @@ abstract class AppLocalizations {
   /// **'Shown on the hub card, e.g. HYD. Leave empty to use the airport of the hub\'s city.'**
   String get hubAirCodeHint;
 
+  /// No description provided for @pinQuizStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz'**
+  String get pinQuizStart;
+
+  /// No description provided for @pinQuizCards.
+  ///
+  /// In en, this message translates to:
+  /// **'Flashcards'**
+  String get pinQuizCards;
+
   /// No description provided for @noSchemes.
   ///
   /// In en, this message translates to:
