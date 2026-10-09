@@ -4,6 +4,7 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import '../../core/l10n/app_localizations.dart';
 import '../../core/theme.dart';
@@ -77,7 +78,7 @@ class PhCard extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     bag.code,
-                    style: t.headlineMedium?.copyWith(color: fg, fontSize: 34, fontWeight: FontWeight.w900, height: 1.05),
+                    style: t.headlineMedium?.copyWith(color: fg, fontSize: 32, fontWeight: FontWeight.w900, height: 1.0),
                   ),
                 ),
                 if (bag.name.isNotEmpty && bag.name != bag.code)
@@ -350,20 +351,11 @@ class _HubTileState extends State<HubTile> {
                                 Text(
                                   widget.name!,
                                   key: widget.nameKey,
-                                  // Filling the screen: one line; tap for everything.
-                                  maxLines: widget.minHeight > 0 ? 1 : 2,
+                                  maxLines: widget.series.length > 60 ? 1 : 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: widget.nameSmall
                                       ? t.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: soft)
                                       : t.titleLarge?.copyWith(fontSize: 24, fontWeight: FontWeight.w900, height: 1.15, color: Colors.white),
-                                ),
-                              if (widget.series.isNotEmpty)
-                                Text(
-                                  shortSeries(widget.series, maxChars: widget.minHeight > 0 ? 20 : 40, more: widget.minHeight > 0 ? (n) => '+$n' : AppLocalizations.of(context).morePinRanges),
-                                  key: widget.seriesKey,
-                                  maxLines: widget.minHeight > 0 ? 1 : 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: t.bodyLarge?.copyWith(fontSize: 17, fontWeight: FontWeight.w800, color: soft),
                                 ),
                             ],
                           ),
@@ -372,6 +364,17 @@ class _HubTileState extends State<HubTile> {
                         if (canOpen) const Icon(Icons.chevron_right, color: soft, size: 26),
                       ],
                     ),
+                    // Every PIN range, full card width.
+                    if (widget.series.isNotEmpty)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2, right: 4),
+                        child: Text(
+                          widget.series,
+                          key: widget.seriesKey,
+                          // Long lists a little smaller, so all of them fit.
+                          style: t.bodyLarge?.copyWith(fontSize: widget.series.length > 60 ? 14 : 16, fontWeight: FontWeight.w800, color: soft, height: 1.25),
+                        ),
+                      ),
                     ...widget.notes,
                   ],
                 ),
@@ -571,16 +574,73 @@ class PossibleHubsCard extends StatelessWidget {
   );
 }
 
-/// First PIN ranges of [series] (about two lines) and "+N more" for the rest.
-String shortSeries(String series, {int maxChars = 40, String Function(int count)? more}) {
-  final parts = [for (final x in series.split(',')) if (x.trim().isNotEmpty) x.trim()];
-  final shown = <String>[];
-  var len = 0;
-  for (final p in parts) {
-    if (shown.isNotEmpty && len + p.length + 2 > maxChars) break;
-    shown.add(p);
-    len += p.length + 2;
+
+/// Cards one under the other, each at its own natural height plus a share
+/// (by [weights]) of the space left in [height], so together they fill it.
+/// When they need more than [height], they keep their natural height (and
+/// the page scrolls) – never squeezed or scaled.
+class FillColumn extends MultiChildRenderObjectWidget {
+  const FillColumn({super.key, required this.height, required this.weights, this.gap = 8, required super.children});
+
+  final double height;
+  final List<double> weights;
+  final double gap;
+
+  @override
+  RenderObject createRenderObject(BuildContext context) => _RenderFillColumn(height, weights, gap);
+
+  @override
+  void updateRenderObject(BuildContext context, RenderObject renderObject) {
+    (renderObject as _RenderFillColumn)
+      ..fillHeight = height
+      ..weights = weights
+      ..gap = gap
+      ..markNeedsLayout();
   }
-  final rest = parts.length - shown.length;
-  return rest == 0 ? shown.join(', ') : '${shown.join(', ')}  ${more?.call(rest) ?? '+$rest'}';
+}
+
+class _FillParentData extends ContainerBoxParentData<RenderBox> {}
+
+class _RenderFillColumn extends RenderBox
+    with ContainerRenderObjectMixin<RenderBox, _FillParentData>, RenderBoxContainerDefaultsMixin<RenderBox, _FillParentData> {
+  _RenderFillColumn(this.fillHeight, this.weights, this.gap);
+
+  double fillHeight;
+  List<double> weights;
+  double gap;
+
+  @override
+  void setupParentData(RenderBox child) {
+    if (child.parentData is! _FillParentData) child.parentData = _FillParentData();
+  }
+
+  @override
+  void performLayout() {
+    final w = constraints.maxWidth;
+    final kids = <RenderBox>[];
+    var c = firstChild;
+    while (c != null) {
+      kids.add(c);
+      c = childAfter(c);
+    }
+    final natural = [for (final k in kids) k.getMinIntrinsicHeight(w)];
+    final used = natural.fold<double>(0, (a, b) => a + b) + gap * (kids.length - 1);
+    final spare = (fillHeight - used).clamp(0.0, double.infinity);
+    final wsum = [for (var i = 0; i < kids.length; i++) i < weights.length ? weights[i] : 1.0].fold<double>(0, (a, b) => a + b);
+    var y = 0.0;
+    for (var i = 0; i < kids.length; i++) {
+      final weight = i < weights.length ? weights[i] : 1.0;
+      final h = natural[i] + (wsum == 0 ? 0 : spare * weight / wsum);
+      kids[i].layout(BoxConstraints.tightFor(width: w, height: h), parentUsesSize: true);
+      (kids[i].parentData! as _FillParentData).offset = Offset(0, y);
+      y += h + gap;
+    }
+    size = constraints.constrain(Size(w, kids.isEmpty ? 0 : y - gap));
+  }
+
+  @override
+  void paint(PaintingContext context, Offset offset) => defaultPaint(context, offset);
+
+  @override
+  bool hitTestChildren(BoxHitTestResult result, {required Offset position}) => defaultHitTestChildren(result, position: position);
 }

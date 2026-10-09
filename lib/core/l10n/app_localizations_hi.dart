@@ -822,11 +822,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get typeMoreDigits => 'सटीक जानने के लिए पिन के और अंक लिखें।';
 
   @override
-  String morePinRanges(int count) {
-    return '+$count और';
-  }
-
-  @override
   String get findPinHint => 'डाकघर, गाँव, शहर, तहसील या ज़िला';
 
   @override

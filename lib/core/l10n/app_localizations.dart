@@ -1540,12 +1540,6 @@ abstract class AppLocalizations {
   /// **'Type more digits of the PIN to narrow it down.'**
   String get typeMoreDigits;
 
-  /// No description provided for @morePinRanges.
-  ///
-  /// In en, this message translates to:
-  /// **'+{count} more'**
-  String morePinRanges(int count);
-
   /// No description provided for @findPinHint.
   ///
   /// In en, this message translates to:

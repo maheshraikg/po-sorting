@@ -49,43 +49,27 @@ class SortResultView extends StatelessWidget {
     final scheme = services.active;
     const gap = SizedBox(height: 8);
     final children = <Widget>[];
-    // Non-TD cards (PH, NSH, NPH, L1): one after the other, or with
-    // [fillHeight] sharing that height exactly (PH a little more); a card
-    // whose text needs more room is scaled down to its share.
+    // Non-TD cards (PH, NSH, NPH, L1): one after the other; with
+    // [fillHeight] each also takes a share of the space left, so together
+    // they fill the screen (never squeezed: long ones just grow).
     final cards = <(double, Widget Function(double))>[];
     void addCard(double weight, Widget Function(double minHeight) make) => cards.add((weight, make));
     void flushCards() {
       if (cards.isEmpty) return;
       final fill = fillHeight;
-      if (fill == null || fill < 120 * cards.length) {
+      if (fill == null) {
         for (final c in cards) {
           children.add(c.$2(0));
           children.add(gap);
         }
       } else {
-        final total = cards.fold<double>(0, (a, c) => a + c.$1);
-        final free = fill - 8.0 * cards.length;
-        children.add(SizedBox(
+        children.add(FillColumn(
           key: const ValueKey('nontd_fill'),
           height: fill,
-          child: Column(
-            children: [
-              for (final c in cards) ...[
-                SizedBox(
-                  height: free * c.$1 / total,
-                  child: LayoutBuilder(
-                    builder: (context, box) => FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.topCenter,
-                      child: SizedBox(width: box.maxWidth, child: c.$2(box.maxHeight)),
-                    ),
-                  ),
-                ),
-                gap,
-              ],
-            ],
-          ),
+          weights: [for (final c in cards) c.$1],
+          children: [for (final c in cards) c.$2(0)],
         ));
+        children.add(gap);
       }
       cards.clear();
     }

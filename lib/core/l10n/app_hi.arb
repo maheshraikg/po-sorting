@@ -240,7 +240,6 @@
   "rmsNshHubsSub": "NSH शीट से अलग होने पर NSH कार्ड पर दिखता है",
   "possibleHubsN": "{count} में से एक हो सकता है:",
   "typeMoreDigits": "सटीक जानने के लिए पिन के और अंक लिखें।",
-  "morePinRanges": "+{count} और",
   "findPinHint": "डाकघर, गाँव, शहर, तहसील या ज़िला",
   "findPinTip": "अंग्रेज़ी, कन्नड़ या हिन्दी में टाइप करें। वर्तनी की गलती चलेगी: \"Puttoor\", \"Putur\" और \"पुत्तूर\" सभी Puttur ढूंढते हैं।",
   "allStates": "सभी राज्य",

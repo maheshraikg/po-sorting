@@ -820,11 +820,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get typeMoreDigits => 'Type more digits of the PIN to narrow it down.';
 
   @override
-  String morePinRanges(int count) {
-    return '+$count more';
-  }
-
-  @override
   String get findPinHint => 'Office, village, city, taluk or district';
 
   @override

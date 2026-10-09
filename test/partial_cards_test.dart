@@ -44,9 +44,9 @@ void main() {
     expect(find.text('Mangaluru RMS L1U'), findsOneWidget);
     expect(find.text('Add office'), findsNothing); // no rule list under the cards
     expect(find.byKey(const ValueKey('nph_card')), findsOneWidget);
-    // Long L1 range: first ranges and "+N more" on the card, all of them on tap.
+    // Every L1 PIN range on the card (and in the sheet on tap).
     final l1Series = (tester.widget(find.byKey(const ValueKey('l1_series'))) as Text).data!;
-    expect(l1Series, contains('+'));
+    expect(l1Series, h.services.l1!.resolve('575')!.hub.series);
     await tester.tap(find.byKey(const ValueKey('l1_card')));
     await settle(tester, rounds: 6);
     final hub = h.services.l1!.resolve('575')!.hub;

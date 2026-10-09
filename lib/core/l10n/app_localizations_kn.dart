@@ -822,11 +822,6 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಖಚಿತಪಡಿಸಲು ಪಿನ್‌ನ ಇನ್ನಷ್ಟು ಅಂಕಿಗಳನ್ನು ಟೈಪ್ ಮಾಡಿ.';
 
   @override
-  String morePinRanges(int count) {
-    return '+$count ಇನ್ನಷ್ಟು';
-  }
-
-  @override
   String get findPinHint => 'ಕಚೇರಿ, ಗ್ರಾಮ, ನಗರ, ತಾಲ್ಲೂಕು ಅಥವಾ ಜಿಲ್ಲೆ';
 
   @override
