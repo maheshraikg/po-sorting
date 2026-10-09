@@ -4,6 +4,7 @@ import '../../core/app_scope.dart';
 import '../../core/constants.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../../core/labels.dart';
+import '../../core/reminder.dart';
 import '../../core/settings.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -88,6 +89,7 @@ class SettingsScreen extends StatelessWidget {
               subtitle: Text(l.ttsSettingSub),
             ),
             SwitchListTile(value: s.hapticsEnabled, onChanged: (v) => s.hapticsEnabled = v, title: Text(l.hapticsSetting)),
+            const ReminderTile(),
             const Divider(),
             ListTile(
               title: Text(l.categories, style: const TextStyle(fontWeight: FontWeight.w700)),
@@ -137,6 +139,60 @@ class SettingsScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+/// Daily practice reminder: on / off and the time.
+class ReminderTile extends StatelessWidget {
+  const ReminderTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final s = context.settings;
+    final m = s.reminderMinutes;
+    String fmt(int v) => TimeOfDay(hour: v ~/ 60, minute: v % 60).format(context);
+    Future<void> turnOn(int minutes) async {
+      final ok = await PracticeReminder.enable(minutes, title: l.reminderTitle, body: l.reminderBody, channel: l.reminderSetting);
+      if (!context.mounted) return;
+      if (ok) {
+        s.reminderMinutes = minutes;
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(l.reminderDenied)));
+      }
+    }
+
+    return Column(
+      children: [
+        SwitchListTile(
+          key: const ValueKey('reminder_switch'),
+          value: m != null,
+          secondary: const Icon(Icons.alarm),
+          title: Text(l.reminderSetting),
+          subtitle: Text(m == null ? l.reminderOff : l.reminderAt(fmt(m))),
+          onChanged: !PracticeReminder.supported
+              ? null
+              : (on) async {
+                  if (on) {
+                    await turnOn(19 * 60);
+                  } else {
+                    await PracticeReminder.disable();
+                    s.reminderMinutes = null;
+                  }
+                },
+        ),
+        if (m != null)
+          ListTile(
+            leading: const SizedBox(width: 24),
+            title: Text(l.reminderTime),
+            trailing: Text(fmt(m), style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 18)),
+            onTap: () async {
+              final t = await showTimePicker(context: context, initialTime: TimeOfDay(hour: m ~/ 60, minute: m % 60));
+              if (t != null) await turnOn(t.hour * 60 + t.minute);
+            },
+          ),
+      ],
     );
   }
 }

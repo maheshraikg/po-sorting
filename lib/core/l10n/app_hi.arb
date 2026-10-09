@@ -654,5 +654,12 @@
   "textSizeLarge": "बड़ा",
   "textSizeXl": "और बड़ा",
   "textSizeHuge": "बहुत बड़ा",
-  "roleSortingExtract": "सॉर्टिंग एक्सट्रैक्ट प्रदाता"
+  "roleSortingExtract": "सॉर्टिंग एक्सट्रैक्ट प्रदाता",
+  "reminderSetting": "रोज़ अभ्यास अनुस्मारक",
+  "reminderOff": "बंद – रोज़ 5 मिनट की पिन क्विज़ के लिए चालू करें",
+  "reminderAt": "हर दिन {time} बजे",
+  "reminderTime": "अनुस्मारक समय",
+  "reminderTitle": "पिन क्विज़ का समय",
+  "reminderBody": "5 मिनट का अभ्यास आपकी सॉर्टिंग तेज़ रखता है। सीखें → पिन कोड क्विज़ खोलें।",
+  "reminderDenied": "PO Sorting के लिए सूचनाएँ बंद हैं। फ़ोन की Settings → Apps में चालू करें।"
 }

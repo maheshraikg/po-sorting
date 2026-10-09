@@ -1332,5 +1332,19 @@
   "textSizeLarge": "Large",
   "textSizeXl": "Extra large",
   "textSizeHuge": "Huge",
-  "roleSortingExtract": "Sorting extract provider"
+  "roleSortingExtract": "Sorting extract provider",
+  "reminderSetting": "Daily practice reminder",
+  "reminderOff": "Off – turn on for a 5-minute PIN quiz every day",
+  "reminderAt": "Every day at {time}",
+  "@reminderAt": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "reminderTime": "Reminder time",
+  "reminderTitle": "Time for a PIN quiz",
+  "reminderBody": "5 minutes of practice keeps your sorting fast. Open Learn → PIN code quiz.",
+  "reminderDenied": "Notifications are off for PO Sorting. Turn them on in the phone's Settings → Apps."
 }

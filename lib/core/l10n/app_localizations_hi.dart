@@ -2245,4 +2245,29 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get roleSortingExtract => 'सॉर्टिंग एक्सट्रैक्ट प्रदाता';
+
+  @override
+  String get reminderSetting => 'रोज़ अभ्यास अनुस्मारक';
+
+  @override
+  String get reminderOff => 'बंद – रोज़ 5 मिनट की पिन क्विज़ के लिए चालू करें';
+
+  @override
+  String reminderAt(String time) {
+    return 'हर दिन $time बजे';
+  }
+
+  @override
+  String get reminderTime => 'अनुस्मारक समय';
+
+  @override
+  String get reminderTitle => 'पिन क्विज़ का समय';
+
+  @override
+  String get reminderBody =>
+      '5 मिनट का अभ्यास आपकी सॉर्टिंग तेज़ रखता है। सीखें → पिन कोड क्विज़ खोलें।';
+
+  @override
+  String get reminderDenied =>
+      'PO Sorting के लिए सूचनाएँ बंद हैं। फ़ोन की Settings → Apps में चालू करें।';
 }

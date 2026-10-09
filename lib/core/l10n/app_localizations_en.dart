@@ -2249,4 +2249,29 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get roleSortingExtract => 'Sorting extract provider';
+
+  @override
+  String get reminderSetting => 'Daily practice reminder';
+
+  @override
+  String get reminderOff => 'Off – turn on for a 5-minute PIN quiz every day';
+
+  @override
+  String reminderAt(String time) {
+    return 'Every day at $time';
+  }
+
+  @override
+  String get reminderTime => 'Reminder time';
+
+  @override
+  String get reminderTitle => 'Time for a PIN quiz';
+
+  @override
+  String get reminderBody =>
+      '5 minutes of practice keeps your sorting fast. Open Learn → PIN code quiz.';
+
+  @override
+  String get reminderDenied =>
+      'Notifications are off for PO Sorting. Turn them on in the phone\'s Settings → Apps.';
 }

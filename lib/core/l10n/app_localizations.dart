@@ -4029,6 +4029,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sorting extract provider'**
   String get roleSortingExtract;
+
+  /// No description provided for @reminderSetting.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily practice reminder'**
+  String get reminderSetting;
+
+  /// No description provided for @reminderOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off – turn on for a 5-minute PIN quiz every day'**
+  String get reminderOff;
+
+  /// No description provided for @reminderAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Every day at {time}'**
+  String reminderAt(String time);
+
+  /// No description provided for @reminderTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder time'**
+  String get reminderTime;
+
+  /// No description provided for @reminderTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time for a PIN quiz'**
+  String get reminderTitle;
+
+  /// No description provided for @reminderBody.
+  ///
+  /// In en, this message translates to:
+  /// **'5 minutes of practice keeps your sorting fast. Open Learn → PIN code quiz.'**
+  String get reminderBody;
+
+  /// No description provided for @reminderDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications are off for PO Sorting. Turn them on in the phone\'s Settings → Apps.'**
+  String get reminderDenied;
 }
 
 class _AppLocalizationsDelegate

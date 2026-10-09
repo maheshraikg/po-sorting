@@ -2255,4 +2255,29 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get roleSortingExtract => 'ಸಾರ್ಟಿಂಗ್ ಎಕ್ಸ್‌ಟ್ರಾಕ್ಟ್ ಒದಗಿಸಿದವರು';
+
+  @override
+  String get reminderSetting => 'ದೈನಂದಿನ ಅಭ್ಯಾಸ ಜ್ಞಾಪನೆ';
+
+  @override
+  String get reminderOff => 'ಆಫ್ – ಪ್ರತಿದಿನ 5 ನಿಮಿಷದ ಪಿನ್ ಕ್ವಿಜ್‌ಗೆ ಆನ್ ಮಾಡಿ';
+
+  @override
+  String reminderAt(String time) {
+    return 'ಪ್ರತಿದಿನ $time ಕ್ಕೆ';
+  }
+
+  @override
+  String get reminderTime => 'ಜ್ಞಾಪನೆ ಸಮಯ';
+
+  @override
+  String get reminderTitle => 'ಪಿನ್ ಕ್ವಿಜ್ ಸಮಯ';
+
+  @override
+  String get reminderBody =>
+      '5 ನಿಮಿಷದ ಅಭ್ಯಾಸ ನಿಮ್ಮ ಸಾರ್ಟಿಂಗ್ ವೇಗವಾಗಿಡುತ್ತದೆ. ಕಲಿಯಿರಿ → ಪಿನ್ ಕೋಡ್ ಕ್ವಿಜ್ ತೆರೆಯಿರಿ.';
+
+  @override
+  String get reminderDenied =>
+      'PO Sorting ಗೆ ಅಧಿಸೂಚನೆಗಳು ಆಫ್ ಆಗಿವೆ. ಫೋನ್ ಸೆಟ್ಟಿಂಗ್ಸ್ → ಆ್ಯಪ್ಸ್‌ನಲ್ಲಿ ಆನ್ ಮಾಡಿ.';
 }

@@ -133,6 +133,18 @@ class Settings extends ChangeNotifier {
 
   // ---- Learning progress (XP, level, daily streak, game records) ----
 
+  /// Daily practice reminder: minutes after midnight, or null when off.
+  int? get reminderMinutes => _prefs.getInt('reminderMinutes');
+
+  set reminderMinutes(int? v) {
+    if (v == null) {
+      _prefs.remove('reminderMinutes');
+    } else {
+      _prefs.setInt('reminderMinutes', v);
+    }
+    notifyListeners();
+  }
+
   int get learnXp => _prefs.getInt('learnXp') ?? 0;
 
   /// Day ("yyyy-mm-dd") XP was last earned.
