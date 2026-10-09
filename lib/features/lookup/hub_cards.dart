@@ -32,6 +32,8 @@ class PhCard extends StatelessWidget {
     final fg = onColour(bg);
     final t = Theme.of(context).textTheme;
     final deep = Color.lerp(bg, Colors.black, 0.22)!;
+    // Heading pill in the text colour, its text in the bag colour.
+    final pillText = fg == Colors.black ? Color.lerp(bg, Colors.white, 0.1)! : deep;
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [bg, deep]),
@@ -46,17 +48,49 @@ class PhCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(label.toUpperCase(), style: t.labelSmall?.copyWith(color: fg.withValues(alpha: 0.8), letterSpacing: 1.4, fontWeight: FontWeight.w800)),
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   alignment: Alignment.centerLeft,
-                  child: Text(bag.code, style: t.headlineMedium?.copyWith(color: fg, fontWeight: FontWeight.w900, height: 1.05)),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 2),
+                    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
+                    decoration: BoxDecoration(color: fg.withValues(alpha: 0.9), borderRadius: BorderRadius.circular(8)),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.shopping_bag_outlined, size: 16, color: pillText),
+                        const SizedBox(width: 5),
+                        Text(
+                          label.toUpperCase(),
+                          style: TextStyle(color: pillText, fontSize: 15, letterSpacing: 1, fontWeight: FontWeight.w900),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                FittedBox(
+                  fit: BoxFit.scaleDown,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    bag.code,
+                    style: t.headlineMedium?.copyWith(color: fg, fontWeight: FontWeight.w900, height: 1.05),
+                  ),
                 ),
                 if (bag.name.isNotEmpty && bag.name != bag.code)
-                  Text(bag.name, maxLines: 1, overflow: TextOverflow.ellipsis, style: t.titleSmall?.copyWith(color: fg, fontWeight: FontWeight.w700)),
+                  Text(
+                    bag.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: t.titleSmall?.copyWith(color: fg, fontWeight: FontWeight.w700),
+                  ),
                 if (series != null)
-                  Text(series!, key: const ValueKey('ph_series'), maxLines: 1, overflow: TextOverflow.ellipsis,
-                      style: t.bodySmall?.copyWith(color: fg.withValues(alpha: 0.9), fontWeight: FontWeight.w700)),
+                  Text(
+                    series!,
+                    key: const ValueKey('ph_series'),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: t.bodyMedium?.copyWith(color: fg.withValues(alpha: 0.9), fontWeight: FontWeight.w700),
+                  ),
               ],
             ),
           ),
@@ -79,17 +113,54 @@ class HubAirChip extends StatelessWidget {
     return Container(
       key: ValueKey('hub_air_$code'),
       padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-      decoration: BoxDecoration(color: c.withValues(alpha: 0.14), borderRadius: BorderRadius.circular(10), border: Border.all(color: c.withValues(alpha: 0.45))),
+      decoration: BoxDecoration(
+        color: c.withValues(alpha: 0.14),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: c.withValues(alpha: 0.45)),
+      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.flight, size: 15, color: c),
+          Icon(Icons.flight, size: 17, color: c),
           const SizedBox(width: 3),
-          Text(code, style: TextStyle(color: c, fontWeight: FontWeight.w900, fontSize: 16, letterSpacing: 0.8)),
+          Text(
+            code,
+            style: TextStyle(color: c, fontWeight: FontWeight.w900, fontSize: 18, letterSpacing: 0.8),
+          ),
         ],
       ),
     );
   }
+}
+
+/// Filled heading pill: "🚚 NSH L1" in white on the accent colour.
+class HubTag extends StatelessWidget {
+  const HubTag(this.text, this.colour, this.icon, {super.key});
+
+  final String text;
+  final Color colour;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4),
+    decoration: BoxDecoration(
+      color: colour,
+      borderRadius: BorderRadius.circular(8),
+      boxShadow: [BoxShadow(color: colour.withValues(alpha: 0.35), blurRadius: 4, offset: const Offset(0, 1))],
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(icon, size: 16, color: Colors.white),
+        const SizedBox(width: 5),
+        Text(
+          text,
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 15, letterSpacing: 0.8),
+        ),
+      ],
+    ),
+  );
 }
 
 /// One compact hub row: accent stripe, tag + circle, hub name, PIN range on
@@ -150,39 +221,53 @@ class _HubTileState extends State<HubTile> {
       child: InkWell(
         onTap: canOpen ? () => setState(() => _open = !_open) : null,
         child: Container(
-          decoration: BoxDecoration(border: Border(left: BorderSide(color: a, width: 6))),
-          padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+          decoration: BoxDecoration(
+            border: Border(left: BorderSide(color: a, width: 6)),
+          ),
+          padding: const EdgeInsets.fromLTRB(12, 10, 10, 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  Container(
-                    width: 38,
-                    height: 38,
-                    decoration: BoxDecoration(color: a.withValues(alpha: 0.13), shape: BoxShape.circle),
-                    child: Icon(widget.icon, color: a, size: 21),
-                  ),
-                  const SizedBox(width: 10),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text.rich(
-                          TextSpan(children: [
-                            TextSpan(text: widget.tag, style: TextStyle(color: a, fontWeight: FontWeight.w900, letterSpacing: 1)),
-                            if (widget.subtitle.isNotEmpty) TextSpan(text: '  ·  ${widget.subtitle}', style: TextStyle(color: cs.onSurfaceVariant, fontWeight: FontWeight.w600)),
-                          ]),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: t.labelMedium,
+                        Row(
+                          children: [
+                            Flexible(
+                              child: FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerLeft, child: HubTag(widget.tag, a, widget.icon)),
+                            ),
+                            const SizedBox(width: 8),
+                            if (widget.subtitle.isNotEmpty)
+                              Expanded(
+                                child: Text(
+                                  widget.subtitle,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: t.labelLarge?.copyWith(color: cs.onSurfaceVariant, fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                          ],
                         ),
+                        const SizedBox(height: 4),
                         if (widget.name != null)
-                          Text(widget.name!, key: widget.nameKey, maxLines: 2, overflow: TextOverflow.ellipsis,
-                              style: t.titleMedium?.copyWith(fontWeight: FontWeight.w900, height: 1.15)),
+                          Text(
+                            widget.name!,
+                            key: widget.nameKey,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: t.titleLarge?.copyWith(fontSize: 20, fontWeight: FontWeight.w900, height: 1.15),
+                          ),
                         if (widget.series.isNotEmpty)
-                          Text(widget.series, key: widget.seriesKey, maxLines: _open ? null : 1, overflow: _open ? null : TextOverflow.ellipsis,
-                              style: t.bodySmall?.copyWith(fontWeight: FontWeight.w700, color: cs.onSurfaceVariant)),
+                          Text(
+                            widget.series,
+                            key: widget.seriesKey,
+                            maxLines: _open ? null : 1,
+                            overflow: _open ? null : TextOverflow.ellipsis,
+                            style: t.bodyMedium?.copyWith(fontWeight: FontWeight.w700, color: cs.onSurfaceVariant),
+                          ),
                       ],
                     ),
                   ),
@@ -212,14 +297,19 @@ Widget _note(BuildContext context, Key key, IconData icon, String text, Color co
       children: [
         Icon(icon, size: 16, color: c),
         const SizedBox(width: 6),
-        Expanded(child: Text(text, style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w800, color: c))),
+        Expanded(
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w800, color: c),
+          ),
+        ),
       ],
     ),
   );
 }
 
 Widget _matched(BuildContext context, String matched) => Padding(
-  padding: const EdgeInsets.only(top: 4, left: 48),
+  padding: const EdgeInsets.only(top: 4, left: 2),
   child: Text(AppLocalizations.of(context).nshMatched(matched), style: Theme.of(context).textTheme.bodySmall),
 );
 
@@ -228,11 +318,11 @@ List<Widget> _possibleDetails(BuildContext context, List<NshHub> hubs) => [
   const SizedBox(height: 4),
   for (final h in hubs)
     Padding(
-      padding: const EdgeInsets.only(left: 48, bottom: 2),
+      padding: const EdgeInsets.only(left: 2, bottom: 2),
       child: Text('• ${h.name}${hubAirCode(h).isEmpty ? '' : '  ✈ ${hubAirCode(h)}'}', style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700)),
     ),
   Padding(
-    padding: const EdgeInsets.only(left: 48),
+    padding: const EdgeInsets.only(left: 2),
     child: Text(AppLocalizations.of(context).typeMoreDigits, style: Theme.of(context).textTheme.bodySmall),
   ),
 ];
@@ -269,8 +359,7 @@ class NshCard extends StatelessWidget {
         if (rmsNsh != null && !sameHub(rmsNsh!, h.name) && !(h.mappedTo.isNotEmpty && sameHub(rmsNsh!, h.mappedTo)))
           _note(context, const ValueKey('nsh_rms'), Icons.compare_arrows, l.nshRmsDiffers(rmsNsh!), kAccentAmber),
         if (match.alsoListed.isNotEmpty)
-          _note(context, const ValueKey('nsh_also'), Icons.info_outline,
-              l.nshAlsoListed(match.matched, [h.name, ...match.alsoListed.map((x) => x.name)].join(' / ')), kAccentAmber),
+          _note(context, const ValueKey('nsh_also'), Icons.info_outline, l.nshAlsoListed(match.matched, [h.name, ...match.alsoListed.map((x) => x.name)].join(' / ')), kAccentAmber),
       ],
       details: [_matched(context, match.matched)],
     );
@@ -330,7 +419,11 @@ class RmsL1Card extends StatelessWidget {
       series: h?.series ?? '',
       seriesKey: const ValueKey('l1_series'),
       air: h == null ? '' : hubAirCode(h),
-      details: h != null ? [_matched(context, l1!.matched)] : none ? const [] : _possibleDetails(context, possible),
+      details: h != null
+          ? [_matched(context, l1!.matched)]
+          : none
+          ? const []
+          : _possibleDetails(context, possible),
     );
   }
 }
