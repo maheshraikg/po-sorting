@@ -2175,17 +2175,17 @@ class AppLocalizationsEn extends AppLocalizations {
       'The new name is used everywhere in the app on this phone and stays after updates.';
 
   @override
-  String get officeFixes => 'Office name corrections';
+  String get officeFixes => 'My office changes';
 
   @override
-  String get officeFixesSub => 'Names you corrected in the PIN directory';
+  String get officeFixesSub => 'Offices you added, changed or removed';
 
   @override
   String get officeFixesHint =>
-      'To correct a name, tap the pencil next to an office in a Sort result.';
+      'In a Sort result, tap the pencil next to an office to change its name, PIN, type, district or state, or remove it; tap \"Add office\" to add one. Undo any change here.';
 
   @override
-  String get officeFixesNone => 'No corrections yet';
+  String get officeFixesNone => 'No changes yet';
 
   @override
   String wasName(String name) {
@@ -2280,4 +2280,59 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get reminderDenied =>
       'Notifications are off for PO Sorting. Turn them on in the phone\'s Settings → Apps.';
+
+  @override
+  String get officeAdd => 'Add post office';
+
+  @override
+  String get officeEdit => 'Edit post office';
+
+  @override
+  String get officePin => 'PIN code';
+
+  @override
+  String get officeType => 'Type';
+
+  @override
+  String get officeTypeNone => 'Not set';
+
+  @override
+  String get officeRemove => 'Remove';
+
+  @override
+  String officeRemoveConfirm(String name) {
+    return 'Remove $name from the PIN directory on this phone?';
+  }
+
+  @override
+  String get officeInvalid => 'Enter the office name and a 6-digit PIN.';
+
+  @override
+  String officeAdded(String name) {
+    return 'Added $name';
+  }
+
+  @override
+  String officeSaved(String name) {
+    return 'Saved $name';
+  }
+
+  @override
+  String officeRemoved(String name) {
+    return 'Removed $name';
+  }
+
+  @override
+  String get officeAddHere => 'Add office';
+
+  @override
+  String get officeChangeAdded => 'Added';
+
+  @override
+  String officeChangeEdited(String was) {
+    return 'Changed from: $was';
+  }
+
+  @override
+  String get officeChangeRemoved => 'Removed';
 }

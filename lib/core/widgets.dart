@@ -62,24 +62,6 @@ class BagCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (!compact)
-                        // Heading pill, like the Non-TD hub cards.
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 4),
-                          padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
-                          decoration: BoxDecoration(color: fg.withValues(alpha: 0.9), borderRadius: BorderRadius.circular(8)),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(Icons.shopping_bag_outlined, size: 16, color: fg == Colors.black ? bg : dark),
-                              const SizedBox(width: 5),
-                              Text(
-                                (label ?? l.bag).toUpperCase(),
-                                style: TextStyle(color: fg == Colors.black ? bg : dark, fontSize: 15, letterSpacing: 1, fontWeight: FontWeight.w900),
-                              ),
-                            ],
-                          ),
-                        ),
                       FittedBox(
                         fit: BoxFit.scaleDown,
                         alignment: Alignment.centerLeft,

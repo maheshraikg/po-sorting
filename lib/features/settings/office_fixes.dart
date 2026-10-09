@@ -8,7 +8,8 @@ import '../../core/l10n/app_localizations.dart';
 import '../../core/settings.dart';
 import '../../core/widgets.dart';
 import '../../data/app_services.dart';
-import '../../data/directory_builder.dart' show NameCorrection;
+import '../../data/directory_builder.dart' show NameCorrection, OfficeData, OfficeEdit;
+import 'office_editor.dart';
 import '../../data/models/office.dart';
 
 NameCorrection _fix(Map<String, Object?> m, {bool undo = false}) => NameCorrection(
@@ -78,13 +79,31 @@ class OfficeFixesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final fixes = context.settings.officeFixes;
+    final edits = [for (final e in context.settings.officeEdits) OfficeEdit.fromJson(e)];
     return Scaffold(
       appBar: AppBar(title: Text(l.officeFixes)),
       body: ListView(
         padding: const EdgeInsets.all(12),
         children: [
           Padding(padding: const EdgeInsets.all(4), child: Text(l.officeFixesHint)),
-          if (fixes.isEmpty) EmptyState(icon: Icons.edit_location_alt_outlined, text: l.officeFixesNone),
+          if (fixes.isEmpty && edits.isEmpty) EmptyState(icon: Icons.edit_location_alt_outlined, text: l.officeFixesNone),
+          for (final (i, e) in edits.indexed)
+            Card(
+              key: ValueKey('office_change_$i'),
+              child: ListTile(
+                leading: Icon(
+                  e.before == null ? Icons.add_location_alt_outlined : e.after == null ? Icons.wrong_location_outlined : Icons.edit_location_alt_outlined,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                title: Text(_line(e.after ?? e.before!), style: const TextStyle(fontWeight: FontWeight.w800)),
+                subtitle: Text(e.before == null ? l.officeChangeAdded : e.after == null ? l.officeChangeRemoved : l.officeChangeEdited(_line(e.before!))),
+                trailing: TextButton.icon(
+                  icon: const Icon(Icons.undo),
+                  label: Text(l.restore),
+                  onPressed: () => undoOfficeChange(context.settings, context.services, i),
+                ),
+              ),
+            ),
           for (final f in fixes)
             Card(
               child: ListTile(
@@ -107,3 +126,9 @@ class OfficeFixesScreen extends StatelessWidget {
     );
   }
 }
+
+String _line(OfficeData o) => [
+  '${o.name} ${o.type}'.trim(),
+  '${o.pincode}',
+  if (o.district.isNotEmpty || o.state.isNotEmpty) [o.district, o.state].where((x) => x.isNotEmpty).join(', '),
+].join(' · ');

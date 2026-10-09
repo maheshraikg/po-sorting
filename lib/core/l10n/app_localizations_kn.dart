@@ -2180,17 +2180,17 @@ class AppLocalizationsKn extends AppLocalizations {
       'ಹೊಸ ಹೆಸರು ಈ ಫೋನ್‌ನ ಆ್ಯಪ್‌ನಲ್ಲಿ ಎಲ್ಲೆಡೆ ಬಳಕೆಯಾಗುತ್ತದೆ ಮತ್ತು ಅಪ್‌ಡೇಟ್ ನಂತರವೂ ಉಳಿಯುತ್ತದೆ.';
 
   @override
-  String get officeFixes => 'ಕಚೇರಿ ಹೆಸರು ತಿದ್ದುಪಡಿಗಳು';
+  String get officeFixes => 'ನನ್ನ ಕಚೇರಿ ಬದಲಾವಣೆಗಳು';
 
   @override
-  String get officeFixesSub => 'ಪಿನ್ ಡೈರೆಕ್ಟರಿಯಲ್ಲಿ ನೀವು ಸರಿಪಡಿಸಿದ ಹೆಸರುಗಳು';
+  String get officeFixesSub => 'ನೀವು ಸೇರಿಸಿದ, ಬದಲಿಸಿದ ಅಥವಾ ತೆಗೆದ ಕಚೇರಿಗಳು';
 
   @override
   String get officeFixesHint =>
-      'ಹೆಸರು ಸರಿಪಡಿಸಲು, ಸಾರ್ಟ್ ಫಲಿತಾಂಶದಲ್ಲಿ ಕಚೇರಿಯ ಪಕ್ಕದ ಪೆನ್ಸಿಲ್ ಒತ್ತಿ.';
+      'ಸಾರ್ಟ್ ಫಲಿತಾಂಶದಲ್ಲಿ ಕಚೇರಿಯ ಪಕ್ಕದ ಪೆನ್ಸಿಲ್ ಒತ್ತಿ ಹೆಸರು, ಪಿನ್, ವಿಧ, ಜಿಲ್ಲೆ ಅಥವಾ ರಾಜ್ಯ ಬದಲಿಸಿ ಅಥವಾ ತೆಗೆದುಹಾಕಿ; \"ಕಚೇರಿ ಸೇರಿಸಿ\" ಒತ್ತಿ ಹೊಸದು ಸೇರಿಸಿ. ಇಲ್ಲಿ ಯಾವುದೇ ಬದಲಾವಣೆ ರದ್ದುಮಾಡಿ.';
 
   @override
-  String get officeFixesNone => 'ಇನ್ನೂ ತಿದ್ದುಪಡಿಗಳಿಲ್ಲ';
+  String get officeFixesNone => 'ಇನ್ನೂ ಬದಲಾವಣೆಗಳಿಲ್ಲ';
 
   @override
   String wasName(String name) {
@@ -2286,4 +2286,59 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get reminderDenied =>
       'PO Sorting ಗೆ ಅಧಿಸೂಚನೆಗಳು ಆಫ್ ಆಗಿವೆ. ಫೋನ್ ಸೆಟ್ಟಿಂಗ್ಸ್ → ಆ್ಯಪ್ಸ್‌ನಲ್ಲಿ ಆನ್ ಮಾಡಿ.';
+
+  @override
+  String get officeAdd => 'ಅಂಚೆ ಕಚೇರಿ ಸೇರಿಸಿ';
+
+  @override
+  String get officeEdit => 'ಅಂಚೆ ಕಚೇರಿ ಬದಲಿಸಿ';
+
+  @override
+  String get officePin => 'ಪಿನ್ ಕೋಡ್';
+
+  @override
+  String get officeType => 'ವಿಧ';
+
+  @override
+  String get officeTypeNone => 'ಹೊಂದಿಸಿಲ್ಲ';
+
+  @override
+  String get officeRemove => 'ತೆಗೆದುಹಾಕಿ';
+
+  @override
+  String officeRemoveConfirm(String name) {
+    return 'ಈ ಫೋನ್‌ನ ಪಿನ್ ಡೈರೆಕ್ಟರಿಯಿಂದ $name ತೆಗೆದುಹಾಕಬೇಕೆ?';
+  }
+
+  @override
+  String get officeInvalid => 'ಕಚೇರಿ ಹೆಸರು ಮತ್ತು 6 ಅಂಕಿಯ ಪಿನ್ ನಮೂದಿಸಿ.';
+
+  @override
+  String officeAdded(String name) {
+    return '$name ಸೇರಿಸಲಾಗಿದೆ';
+  }
+
+  @override
+  String officeSaved(String name) {
+    return '$name ಉಳಿಸಲಾಗಿದೆ';
+  }
+
+  @override
+  String officeRemoved(String name) {
+    return '$name ತೆಗೆದುಹಾಕಲಾಗಿದೆ';
+  }
+
+  @override
+  String get officeAddHere => 'ಕಚೇರಿ ಸೇರಿಸಿ';
+
+  @override
+  String get officeChangeAdded => 'ಸೇರಿಸಿದ್ದು';
+
+  @override
+  String officeChangeEdited(String was) {
+    return 'ಹಿಂದಿನದು: $was';
+  }
+
+  @override
+  String get officeChangeRemoved => 'ತೆಗೆದದ್ದು';
 }

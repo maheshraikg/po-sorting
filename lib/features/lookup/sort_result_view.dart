@@ -18,10 +18,11 @@ import '../../data/import/scheme_import.dart';
 import '../../data/import/scheme_io.dart';
 import '../../data/models/office.dart';
 import '../../data/models/scheme.dart';
+import '../../data/directory_builder.dart' show OfficeData;
 import '../../data/nsh.dart';
 import '../../data/sort_engine.dart';
 import '../schemes/import_wizard.dart';
-import '../settings/office_fixes.dart';
+import '../settings/office_editor.dart';
 import '../schemes/scheme_editor.dart';
 import 'air_badge.dart';
 import 'hub_cards.dart';
@@ -229,11 +230,11 @@ class SortResultView extends StatelessWidget {
         children.add(gap);
       }
       if (r.notInDirectory) {
-        children.add(WarningBanner(text: l.pinNotInDirectory));
+        children.add(WarningBanner(text: l.pinNotInDirectory, action: _AddOfficeButton(pin: int.tryParse(r.digits))));
         children.add(gap);
       }
       if (r.offices.isNotEmpty) {
-        children.add(_OfficeList(key: ValueKey('offices_${r.digits}'), offices: r.offices));
+        children.add(_OfficeList(key: ValueKey('offices_${r.digits}'), offices: r.offices, pin: int.tryParse(r.digits)));
         children.add(gap);
       }
     }
@@ -369,9 +370,12 @@ class _EditButtons extends StatelessWidget {
 
 /// Delivery offices of a PIN: the first 12, then "Show all N" for the rest.
 class _OfficeList extends StatefulWidget {
-  const _OfficeList({super.key, required this.offices});
+  const _OfficeList({super.key, required this.offices, required this.pin});
 
   final List<Office> offices;
+
+  /// PIN typed; new offices start with it.
+  final int? pin;
 
   @override
   State<_OfficeList> createState() => _OfficeListState();
@@ -395,7 +399,7 @@ class _OfficeListState extends State<_OfficeList> {
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
             child: Text(l.deliveryOfficesN(offices.length), style: Theme.of(context).textTheme.labelLarge),
           ),
-          for (final o in shown) OfficeTile(office: o, onEdit: () => editOfficeName(context, o)),
+          for (final o in shown) OfficeTile(office: o, onEdit: () => editOffice(context, office: o)),
           if (!_all && offices.length > _first)
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
@@ -406,7 +410,33 @@ class _OfficeListState extends State<_OfficeList> {
                 label: Text(l.showAllN(offices.length)),
               ),
             ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+            child: _AddOfficeButton(pin: widget.pin, like: offices.firstOrNull),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+/// "Add office" for this PIN (district and state from [like]).
+class _AddOfficeButton extends StatelessWidget {
+  const _AddOfficeButton({this.pin, this.like});
+
+  final int? pin;
+  final Office? like;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    return TextButton.icon(
+      key: const ValueKey('office_add'),
+      icon: const Icon(Icons.add_location_alt_outlined),
+      label: Text(l.officeAddHere),
+      onPressed: () => editOffice(
+        context,
+        template: OfficeData(pincode: pin ?? like?.pincode ?? 0, name: '', district: like?.district ?? '', state: like?.state ?? ''),
       ),
     );
   }

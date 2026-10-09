@@ -81,7 +81,8 @@ void main() {
     await settle(tester);
     await tester.enterText(find.byKey(const ValueKey('pin_field')), '574201');
     await settle(tester, rounds: 6);
-    expect(find.text('PH / BAG'), findsOneWidget);
+    expect(find.text('PH / BAG'), findsNothing); // name only, no heading
+    expect(find.byType(PhCard), findsOneWidget);
     expect((tester.widget(find.byKey(const ValueKey('ph_series'))) as Text).textSpan!.toPlainText(), endsWith('574-576'));
     final scheme = h.services.active!;
     expect(scheme.pinSeries('BANGALORE', category: kCatNonTD), '515, 560-563');

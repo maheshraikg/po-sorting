@@ -131,6 +131,23 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// The user's own office changes (added / edited / removed), as
+  /// OfficeEdit JSON; re-applied to the directory on every start.
+  List<Map<String, Object?>> get officeEdits {
+    final raw = _prefs.getString('officeEdits');
+    if (raw == null || raw.isEmpty) return const [];
+    try {
+      return [for (final e in jsonDecode(raw) as List) Map<String, Object?>.from(e as Map)];
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  set officeEdits(List<Map<String, Object?>> v) {
+    _prefs.setString('officeEdits', jsonEncode(v));
+    notifyListeners();
+  }
+
   // ---- Learning progress (XP, level, daily streak, game records) ----
 
   /// Daily practice reminder: minutes after midnight, or null when off.

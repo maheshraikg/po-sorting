@@ -6,6 +6,7 @@ import 'package:sorting_sahayak/core/constants.dart';
 import 'package:sorting_sahayak/data/import/scheme_io.dart';
 import 'package:sorting_sahayak/data/nsh.dart';
 import 'package:sorting_sahayak/features/home_shell.dart';
+import 'package:sorting_sahayak/features/lookup/hub_cards.dart';
 
 import 'helpers/app_harness.dart';
 
@@ -36,7 +37,8 @@ void main() {
     await settle(tester);
     await tester.enterText(find.byKey(const ValueKey('pin_field')), '575');
     await settle(tester, rounds: 6);
-    expect(find.text('PH / BAG'), findsOneWidget);
+    expect(find.text('PH / BAG'), findsNothing); // name only, no heading
+    expect(find.byType(PhCard), findsOneWidget);
     expect(find.byKey(const ValueKey('ph_series')), findsOneWidget);
     expect(find.byKey(const ValueKey('nsh_card')), findsOneWidget);
     expect(find.text('MANGALORE NSH'), findsOneWidget);

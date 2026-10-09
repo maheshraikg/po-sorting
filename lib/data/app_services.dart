@@ -4,7 +4,7 @@ library;
 import 'package:flutter/foundation.dart';
 import 'package:sqflite_common/sqlite_api.dart';
 
-import 'directory_builder.dart' show NameCorrection, applyNameCorrections;
+import 'directory_builder.dart' show NameCorrection, OfficeEdit, applyNameCorrections, applyOfficeEdits;
 import 'directory_repo.dart';
 import 'mismatch.dart';
 import 'nsh.dart';
@@ -98,6 +98,17 @@ class AppServices extends ChangeNotifier {
   /// search. Returns the number renamed.
   Future<int> renameOffices(List<NameCorrection> fixes) async {
     final n = await applyNameCorrections(_directoryDb, fixes);
+    if (n > 0) {
+      directory = DirectoryRepo(_directoryDb);
+      _regions = null;
+      notifyListeners();
+    }
+    return n;
+  }
+
+  /// Adds, edits or removes offices in the directory (user changes).
+  Future<int> editOffices(List<OfficeEdit> edits) async {
+    final n = await applyOfficeEdits(_directoryDb, edits);
     if (n > 0) {
       directory = DirectoryRepo(_directoryDb);
       _regions = null;

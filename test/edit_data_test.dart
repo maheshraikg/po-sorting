@@ -2,13 +2,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sorting_sahayak/data/directory_builder.dart' show OfficeData, OfficeEdit;
 import 'package:sorting_sahayak/data/import/scheme_io.dart';
+import 'package:sorting_sahayak/data/models/office.dart';
 import 'package:sorting_sahayak/data/models/scheme.dart';
 import 'package:sorting_sahayak/data/nsh.dart';
 import 'package:sorting_sahayak/data/resolver.dart';
 import 'package:sorting_sahayak/features/schemes/scheme_editor.dart';
 import 'package:sorting_sahayak/features/settings/edit_data_screen.dart';
 import 'package:sorting_sahayak/features/settings/nsh_editor_screen.dart';
+import 'package:sorting_sahayak/features/settings/office_editor.dart';
 import 'package:sorting_sahayak/features/settings/office_fixes.dart';
 
 import 'helpers/app_harness.dart';
@@ -99,5 +102,55 @@ void main() {
     expect(h.settings.officeFixes, isEmpty);
     final back = await tester.runAsync(() => h.services.directory.officesInRange(574202, 574202));
     expect(back!.map((o) => o.officeName), contains('Darbe'));
+  });
+
+  testWidgets('offices: add, edit (name, PIN, type, delivery, district), remove, undo; kept after restart', (tester) async {
+    final h = await _setUp(tester);
+    final s = h.settings, sv = h.services;
+    Future<List<Office>> at(int pin) async => (await tester.runAsync(() => sv.directory.officesForPin(pin)))!;
+    final darbe = (await at(574202)).firstWhere((o) => o.officeName == 'Darbe');
+    // Edit everything.
+    await tester.runAsync(() => saveOfficeChange(s, sv, officeData(darbe),
+        const OfficeData(pincode: 574203, name: 'Darbe Padavu', type: 'SO', delivery: false, district: 'DK', state: 'Karnataka')));
+    expect((await at(574202)).any((o) => o.officeName == 'Darbe'), isFalse);
+    final moved = (await at(574203)).firstWhere((o) => o.officeName == 'Darbe Padavu');
+    expect((moved.officeType, moved.delivery, moved.district), ('SO', false, 'DK'));
+    // Edit it again: still one change, from the original.
+    await tester.runAsync(() => saveOfficeChange(s, sv, officeData(moved), OfficeData(pincode: 574203, name: 'Darbe P', type: 'SO', delivery: false, district: 'DK', state: 'Karnataka')));
+    expect(s.officeEdits, hasLength(1));
+    expect(OfficeEdit.fromJson(s.officeEdits.single).before!.name, 'Darbe');
+    // Add one, remove another.
+    await tester.runAsync(() => saveOfficeChange(s, sv, null, const OfficeData(pincode: 574202, name: 'Kemminje', type: 'BO', district: 'Dakshina Kannada', state: 'Karnataka')));
+    final kabaka = (await at(574220)).first;
+    await tester.runAsync(() => saveOfficeChange(s, sv, officeData(kabaka), null));
+    expect((await at(574202)).map((o) => o.officeName), contains('Kemminje'));
+    expect(await at(574220), isEmpty);
+    expect(s.officeEdits, hasLength(3));
+    // Next start: applying again changes nothing.
+    await tester.runAsync(() => applyOfficeEditsOnStart(s, sv));
+    expect((await at(574202)).where((o) => o.officeName == 'Kemminje'), hasLength(1));
+    // The changes screen lists them; undo the removal.
+    await tester.pumpWidget(h.wrap(const OfficeFixesScreen()));
+    await tester.pump();
+    expect(find.byKey(const ValueKey('office_change_2')), findsOneWidget);
+    await tester.tap(find.descendant(of: find.byKey(const ValueKey('office_change_2')), matching: find.text('Restore')));
+    await settle(tester);
+    expect((await at(574220)).map((o) => o.officeName), contains(kabaka.officeName));
+    expect(s.officeEdits, hasLength(2));
+  });
+
+  testWidgets('office dialog: change the name and PIN from the Sort result pencil', (tester) async {
+    final h = await _setUp(tester);
+    final darbe = (await tester.runAsync(() => h.services.directory.officesForPin(574202)))!.firstWhere((o) => o.officeName == 'Darbe');
+    await tester.pumpWidget(h.wrap(Builder(builder: (c) => Scaffold(body: Center(child: TextButton(onPressed: () => editOffice(c, office: darbe), child: const Text('go')))))));
+    await tester.tap(find.text('go'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const ValueKey('office_name_field')), 'Darbe Junction');
+    await tester.enterText(find.byKey(const ValueKey('office_pin_field')), '574299');
+    await tester.tap(find.byKey(const ValueKey('office_save')));
+    await settle(tester, rounds: 6);
+    final now = (await tester.runAsync(() => h.services.directory.officesForPin(574299)))!;
+    expect(now.map((o) => o.officeName), contains('Darbe Junction'));
+    expect(find.text('Saved Darbe Junction'), findsOneWidget);
   });
 }

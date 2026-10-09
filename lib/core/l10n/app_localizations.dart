@@ -3901,25 +3901,25 @@ abstract class AppLocalizations {
   /// No description provided for @officeFixes.
   ///
   /// In en, this message translates to:
-  /// **'Office name corrections'**
+  /// **'My office changes'**
   String get officeFixes;
 
   /// No description provided for @officeFixesSub.
   ///
   /// In en, this message translates to:
-  /// **'Names you corrected in the PIN directory'**
+  /// **'Offices you added, changed or removed'**
   String get officeFixesSub;
 
   /// No description provided for @officeFixesHint.
   ///
   /// In en, this message translates to:
-  /// **'To correct a name, tap the pencil next to an office in a Sort result.'**
+  /// **'In a Sort result, tap the pencil next to an office to change its name, PIN, type, district or state, or remove it; tap \"Add office\" to add one. Undo any change here.'**
   String get officeFixesHint;
 
   /// No description provided for @officeFixesNone.
   ///
   /// In en, this message translates to:
-  /// **'No corrections yet'**
+  /// **'No changes yet'**
   String get officeFixesNone;
 
   /// No description provided for @wasName.
@@ -4083,6 +4083,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Notifications are off for PO Sorting. Turn them on in the phone\'s Settings → Apps.'**
   String get reminderDenied;
+
+  /// No description provided for @officeAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add post office'**
+  String get officeAdd;
+
+  /// No description provided for @officeEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit post office'**
+  String get officeEdit;
+
+  /// No description provided for @officePin.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN code'**
+  String get officePin;
+
+  /// No description provided for @officeType.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get officeType;
+
+  /// No description provided for @officeTypeNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Not set'**
+  String get officeTypeNone;
+
+  /// No description provided for @officeRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove'**
+  String get officeRemove;
+
+  /// No description provided for @officeRemoveConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {name} from the PIN directory on this phone?'**
+  String officeRemoveConfirm(String name);
+
+  /// No description provided for @officeInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the office name and a 6-digit PIN.'**
+  String get officeInvalid;
+
+  /// No description provided for @officeAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Added {name}'**
+  String officeAdded(String name);
+
+  /// No description provided for @officeSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved {name}'**
+  String officeSaved(String name);
+
+  /// No description provided for @officeRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed {name}'**
+  String officeRemoved(String name);
+
+  /// No description provided for @officeAddHere.
+  ///
+  /// In en, this message translates to:
+  /// **'Add office'**
+  String get officeAddHere;
+
+  /// No description provided for @officeChangeAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Added'**
+  String get officeChangeAdded;
+
+  /// No description provided for @officeChangeEdited.
+  ///
+  /// In en, this message translates to:
+  /// **'Changed from: {was}'**
+  String officeChangeEdited(String was);
+
+  /// No description provided for @officeChangeRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Removed'**
+  String get officeChangeRemoved;
 }
 
 class _AppLocalizationsDelegate

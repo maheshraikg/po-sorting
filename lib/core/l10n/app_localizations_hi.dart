@@ -2172,17 +2172,17 @@ class AppLocalizationsHi extends AppLocalizations {
       'नया नाम इस फ़ोन के ऐप में हर जगह दिखेगा और अपडेट के बाद भी रहेगा।';
 
   @override
-  String get officeFixes => 'कार्यालय नाम सुधार';
+  String get officeFixes => 'मेरे कार्यालय बदलाव';
 
   @override
-  String get officeFixesSub => 'पिन निर्देशिका में आपके सुधारे नाम';
+  String get officeFixesSub => 'आपके जोड़े, बदले या हटाए कार्यालय';
 
   @override
   String get officeFixesHint =>
-      'नाम सुधारने के लिए, सॉर्ट परिणाम में कार्यालय के पास पेंसिल दबाएं।';
+      'सॉर्ट परिणाम में कार्यालय के पास पेंसिल दबाकर नाम, पिन, प्रकार, ज़िला या राज्य बदलें या हटाएँ; \"कार्यालय जोड़ें\" से नया जोड़ें। यहाँ कोई भी बदलाव वापस लें।';
 
   @override
-  String get officeFixesNone => 'अभी कोई सुधार नहीं';
+  String get officeFixesNone => 'अभी कोई बदलाव नहीं';
 
   @override
   String wasName(String name) {
@@ -2276,4 +2276,59 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get reminderDenied =>
       'PO Sorting के लिए सूचनाएँ बंद हैं। फ़ोन की Settings → Apps में चालू करें।';
+
+  @override
+  String get officeAdd => 'डाकघर जोड़ें';
+
+  @override
+  String get officeEdit => 'डाकघर बदलें';
+
+  @override
+  String get officePin => 'पिन कोड';
+
+  @override
+  String get officeType => 'प्रकार';
+
+  @override
+  String get officeTypeNone => 'तय नहीं';
+
+  @override
+  String get officeRemove => 'हटाएँ';
+
+  @override
+  String officeRemoveConfirm(String name) {
+    return 'इस फ़ोन की पिन डायरेक्टरी से $name हटाएँ?';
+  }
+
+  @override
+  String get officeInvalid => 'कार्यालय का नाम और 6 अंकों का पिन डालें।';
+
+  @override
+  String officeAdded(String name) {
+    return '$name जोड़ा गया';
+  }
+
+  @override
+  String officeSaved(String name) {
+    return '$name सहेजा गया';
+  }
+
+  @override
+  String officeRemoved(String name) {
+    return '$name हटाया गया';
+  }
+
+  @override
+  String get officeAddHere => 'कार्यालय जोड़ें';
+
+  @override
+  String get officeChangeAdded => 'जोड़ा';
+
+  @override
+  String officeChangeEdited(String was) {
+    return 'पहले: $was';
+  }
+
+  @override
+  String get officeChangeRemoved => 'हटाया';
 }

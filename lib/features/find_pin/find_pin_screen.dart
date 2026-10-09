@@ -7,6 +7,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../settings/office_editor.dart';
 import '../../core/app_scope.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../../core/widgets.dart';
@@ -102,9 +103,24 @@ class _FindPinScreenState extends State<FindPinScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            OfficeTile(office: o),
+            OfficeTile(
+              office: o,
+              onEdit: () async {
+                Navigator.pop(c);
+                if (await editOffice(context, office: o) && mounted) _search();
+              },
+            ),
             if (o.division.isNotEmpty || o.taluk.isNotEmpty)
-              ListTile(dense: true, title: Text([if (o.taluk.isNotEmpty) '${l.taluk}: ${o.taluk}', if (o.division.isNotEmpty) '${l.division}: ${o.division}', if (o.region.isNotEmpty) o.region].join(' · '))),
+              ListTile(
+                dense: true,
+                title: Text(
+                  [
+                    if (o.taluk.isNotEmpty) '${l.taluk}: ${o.taluk}',
+                    if (o.division.isNotEmpty) '${l.division}: ${o.division}',
+                    if (o.region.isNotEmpty) o.region,
+                  ].join(' · '),
+                ),
+              ),
             ListTile(
               leading: const Icon(Icons.dialpad),
               title: Text(l.sortThisPin),
@@ -162,10 +178,14 @@ class _FindPinScreenState extends State<FindPinScreen> {
               hintText: l.findPinHint,
               suffixIcon: _q.text.isEmpty
                   ? null
-                  : IconButton(tooltip: l.clear, icon: const Icon(Icons.close), onPressed: () {
-                      _q.clear();
-                      _search();
-                    }),
+                  : IconButton(
+                      tooltip: l.clear,
+                      icon: const Icon(Icons.close),
+                      onPressed: () {
+                        _q.clear();
+                        _search();
+                      },
+                    ),
             ),
             onChanged: (v) {
               setState(() {});
@@ -216,26 +236,26 @@ class _FindPinScreenState extends State<FindPinScreen> {
           const SizedBox(height: 8),
           if (_searching) const LinearProgressIndicator(),
           if (!_searching && _q.text.trim().length >= 2 && _hits.isEmpty)
-            Padding(padding: const EdgeInsets.all(16), child: Text(l.noResults, textAlign: TextAlign.center)),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(l.noResults, textAlign: TextAlign.center),
+            ),
           for (final h in _hits)
             Card(
               margin: const EdgeInsets.symmetric(vertical: 4),
-              child: Builder(builder: (_) {
-                final res = engine.resolveOffice(h.office, category: settings.category);
-                return OfficeTile(
-                  office: h.office,
-                  onTap: () => _details(h.office),
-                  subtitleExtra: res.bag == null ? null : '${l.bag}: ${res.bag!.label}',
-                  trailing: res.bag == null
-                      ? null
-                      : CircleAvatar(backgroundColor: bagColour(context, res.bag), radius: 10),
-                );
-              }),
+              child: Builder(
+                builder: (_) {
+                  final res = engine.resolveOffice(h.office, category: settings.category);
+                  return OfficeTile(
+                    office: h.office,
+                    onTap: () => _details(h.office),
+                    subtitleExtra: res.bag == null ? null : '${l.bag}: ${res.bag!.label}',
+                    trailing: res.bag == null ? null : CircleAvatar(backgroundColor: bagColour(context, res.bag), radius: 10),
+                  );
+                },
+              ),
             ),
-          if (_q.text.isEmpty) ...[
-            const SizedBox(height: 8),
-            Text(l.findPinTip, style: Theme.of(context).textTheme.bodyMedium),
-          ],
+          if (_q.text.isEmpty) ...[const SizedBox(height: 8), Text(l.findPinTip, style: Theme.of(context).textTheme.bodyMedium)],
           const SizedBox(height: 16),
           Card(
             child: ExpansionTile(
@@ -261,11 +281,7 @@ class _FindPinScreenState extends State<FindPinScreen> {
                 ),
                 const SizedBox(height: 8),
                 if (_mmPin.text.length == 6 && _mmPlace.text.trim().length >= 2)
-                  MismatchView(
-                    pin: _mmPin.text,
-                    place: _mmPlace.text,
-                    onPickPin: (o) => setState(() => _mmPin.text = o.pin),
-                  ),
+                  MismatchView(pin: _mmPin.text, place: _mmPlace.text, onPickPin: (o) => setState(() => _mmPin.text = o.pin)),
               ],
             ),
           ),

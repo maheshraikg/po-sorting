@@ -1297,10 +1297,10 @@
   },
   "editOfficeName": "Correct office name",
   "editOfficeNameHint": "The new name is used everywhere in the app on this phone and stays after updates.",
-  "officeFixes": "Office name corrections",
-  "officeFixesSub": "Names you corrected in the PIN directory",
-  "officeFixesHint": "To correct a name, tap the pencil next to an office in a Sort result.",
-  "officeFixesNone": "No corrections yet",
+  "officeFixes": "My office changes",
+  "officeFixesSub": "Offices you added, changed or removed",
+  "officeFixesHint": "In a Sort result, tap the pencil next to an office to change its name, PIN, type, district or state, or remove it; tap \"Add office\" to add one. Undo any change here.",
+  "officeFixesNone": "No changes yet",
   "wasName": "was \"{name}\"",
   "@wasName": {
     "placeholders": {
@@ -1348,5 +1348,55 @@
   "reminderTime": "Reminder time",
   "reminderTitle": "Time for a PIN quiz",
   "reminderBody": "5 minutes of practice keeps your sorting fast. Open Learn → PIN code quiz.",
-  "reminderDenied": "Notifications are off for PO Sorting. Turn them on in the phone's Settings → Apps."
+  "reminderDenied": "Notifications are off for PO Sorting. Turn them on in the phone's Settings → Apps.",
+  "officeAdd": "Add post office",
+  "officeEdit": "Edit post office",
+  "officePin": "PIN code",
+  "officeType": "Type",
+  "officeTypeNone": "Not set",
+  "officeRemove": "Remove",
+  "officeRemoveConfirm": "Remove {name} from the PIN directory on this phone?",
+  "@officeRemoveConfirm": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "officeInvalid": "Enter the office name and a 6-digit PIN.",
+  "officeAdded": "Added {name}",
+  "@officeAdded": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "officeSaved": "Saved {name}",
+  "@officeSaved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "officeRemoved": "Removed {name}",
+  "@officeRemoved": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "officeAddHere": "Add office",
+  "officeChangeAdded": "Added",
+  "officeChangeEdited": "Changed from: {was}",
+  "@officeChangeEdited": {
+    "placeholders": {
+      "was": {
+        "type": "String"
+      }
+    }
+  },
+  "officeChangeRemoved": "Removed"
 }

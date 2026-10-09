@@ -35,9 +35,9 @@ class PhCard extends StatelessWidget {
     final fg = onColour(bg);
     final t = Theme.of(context).textTheme;
     final deep = Color.lerp(bg, Colors.black, 0.22)!;
-    // Heading pill in the text colour, its text in the bag colour.
-    final pillText = fg == Colors.black ? Color.lerp(bg, Colors.white, 0.1)! : deep;
-    return Container(
+    return Semantics(
+      label: label,
+      child: Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [bg, deep]),
         borderRadius: BorderRadius.circular(18),
@@ -56,29 +56,9 @@ class PhCard extends StatelessWidget {
                 FittedBox(
                   fit: BoxFit.scaleDown,
                   alignment: Alignment.centerLeft,
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 2),
-                    padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 3),
-                    decoration: BoxDecoration(color: fg.withValues(alpha: 0.9), borderRadius: BorderRadius.circular(8)),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.shopping_bag_outlined, size: 16, color: pillText),
-                        const SizedBox(width: 5),
-                        Text(
-                          label.toUpperCase(),
-                          style: TextStyle(color: pillText, fontSize: 16, letterSpacing: 1, fontWeight: FontWeight.w900),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerLeft,
                   child: Text(
                     bag.code,
-                    style: t.headlineMedium?.copyWith(color: fg, fontSize: 32, fontWeight: FontWeight.w900, height: 1.0),
+                    style: t.headlineMedium?.copyWith(color: fg, fontSize: 36, fontWeight: FontWeight.w900, height: 1.05),
                   ),
                 ),
                 // State and PIN range on one line (the range wraps whole).
@@ -95,6 +75,7 @@ class PhCard extends StatelessWidget {
           ),
           if (trailing != null) ...[const SizedBox(width: 8), trailing!],
         ],
+      ),
       ),
     );
   }

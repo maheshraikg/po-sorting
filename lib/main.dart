@@ -14,6 +14,7 @@ import 'data/db.dart';
 import 'data/import/scheme_io.dart';
 import 'data/nsh.dart';
 import 'features/home_shell.dart';
+import 'features/settings/office_editor.dart';
 import 'features/settings/office_fixes.dart';
 
 Future<void> main() async {
@@ -53,6 +54,7 @@ Future<AppServices> _openServices(Settings settings) async {
   }
   // The user's own office name fixes (kept across directory updates).
   await applyOfficeFixes(settings, s);
+  await applyOfficeEditsOnStart(settings, s);
   // Default scheme installed before its air codes were bundled.
   if (await addDefaultAirCodes(s.schemes, loadAssetBytes)) await s.reloadActive();
   // Default scheme installed with older Non-TD data (once per data version).

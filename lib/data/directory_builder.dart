@@ -372,3 +372,98 @@ Future<int> applyNameCorrections(Database db, List<NameCorrection> fixes) async 
   }
   return n;
 }
+
+/// One office as the user sees and edits it.
+class OfficeData {
+  const OfficeData({required this.pincode, required this.name, this.type = '', this.delivery = true, this.district = '', this.state = ''});
+
+  final int pincode;
+  final String name;
+  final String type;
+  final bool delivery;
+  final String district;
+  final String state;
+
+  factory OfficeData.fromJson(Map<String, Object?> m) => OfficeData(
+    pincode: (m['pin'] as num).toInt(),
+    name: m['name'] as String? ?? '',
+    type: m['type'] as String? ?? '',
+    delivery: m['delivery'] as bool? ?? true,
+    district: m['district'] as String? ?? '',
+    state: m['state'] as String? ?? '',
+  );
+
+  Map<String, Object?> toJson() => {'pin': pincode, 'name': name, 'type': type, 'delivery': delivery, 'district': district, 'state': state};
+
+  /// Same office (PIN, name and type identify a directory row).
+  bool sameOffice(OfficeData o) => o.pincode == pincode && o.name == name && o.type == type;
+
+  bool sameAs(OfficeData o) => sameOffice(o) && o.delivery == delivery && o.district == district && o.state == state;
+}
+
+/// A user change to the directory: add ([before] null), delete ([after]
+/// null) or edit.
+class OfficeEdit {
+  const OfficeEdit({this.before, this.after});
+
+  final OfficeData? before;
+  final OfficeData? after;
+
+  factory OfficeEdit.fromJson(Map<String, Object?> m) => OfficeEdit(
+    before: m['before'] == null ? null : OfficeData.fromJson(Map<String, Object?>.from(m['before'] as Map)),
+    after: m['after'] == null ? null : OfficeData.fromJson(Map<String, Object?>.from(m['after'] as Map)),
+  );
+
+  Map<String, Object?> toJson() => {'before': before?.toJson(), 'after': after?.toJson()};
+
+  OfficeEdit get inverse => OfficeEdit(before: after, after: before);
+}
+
+/// Applies [edits] to the directory. Safe to run again: an edit or delete
+/// only touches a row that still has the old values, an add is skipped if
+/// the office is already there. Returns the number of rows changed.
+Future<int> applyOfficeEdits(Database db, List<OfficeEdit> edits) async {
+  var n = 0;
+  const where = 'pincode = ? AND office_name = ? AND IFNULL(office_type, \'\') = ?';
+  List<Object?> key(OfficeData o) => [o.pincode, o.name, o.type];
+  Map<String, Object?> row(OfficeData o) {
+    final bare = o.name.replaceAll(RegExp(r'\(.*?\)'), ' ').trim();
+    final norm = normalizePlace(bare.isEmpty ? o.name : bare);
+    return {
+      'pincode': o.pincode,
+      'office_name': o.name,
+      'office_name_norm': norm,
+      'office_words': placeWords(o.name).join(' '),
+      'name_key': phoneticKey(norm),
+      'office_type': o.type,
+      'delivery': o.delivery ? 'Delivery' : 'Non Delivery',
+      'district': o.district,
+      'district_norm': normalizePlace(o.district),
+      'state': o.state,
+    };
+  }
+
+  for (final e in edits) {
+    final before = e.before, after = e.after;
+    if (before == null && after != null) {
+      final exists = await db.query('offices', columns: ['id'], where: where, whereArgs: key(after), limit: 1);
+      if (exists.isNotEmpty) continue;
+      // Same division / region / circle as the other offices at that PIN.
+      final unit = await db.query('offices', columns: ['unit_id'], where: 'pincode = ? AND unit_id IS NOT NULL', whereArgs: [after.pincode], limit: 1);
+      await db.insert('offices', {...row(after), 'unit_id': unit.isEmpty ? null : unit.first['unit_id']});
+      n++;
+    } else if (before != null && after == null) {
+      n += await db.delete('offices', where: where, whereArgs: key(before));
+    } else if (before != null && after != null) {
+      n += await db.update('offices', row(after), where: where, whereArgs: key(before));
+    }
+  }
+  if (n > 0) {
+    try {
+      await db.execute("INSERT INTO offices_fts(offices_fts) VALUES('rebuild')");
+    } catch (_) {
+      // No FTS5 index in this DB.
+    }
+  }
+  return n;
+}
