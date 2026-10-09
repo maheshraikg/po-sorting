@@ -2246,4 +2246,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get textSizeHuge => 'Huge';
+
+  @override
+  String get roleSortingExtract => 'Sorting extract provider';
 }

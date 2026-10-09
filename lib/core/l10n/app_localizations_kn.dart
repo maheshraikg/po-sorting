@@ -2252,4 +2252,7 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get textSizeHuge => 'ಅತಿ ದೊಡ್ಡದು';
+
+  @override
+  String get roleSortingExtract => 'ಸಾರ್ಟಿಂಗ್ ಎಕ್ಸ್‌ಟ್ರಾಕ್ಟ್ ಒದಗಿಸಿದವರು';
 }

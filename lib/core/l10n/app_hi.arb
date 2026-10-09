@@ -653,5 +653,6 @@
   "textSizeNormal": "सामान्य",
   "textSizeLarge": "बड़ा",
   "textSizeXl": "और बड़ा",
-  "textSizeHuge": "बहुत बड़ा"
+  "textSizeHuge": "बहुत बड़ा",
+  "roleSortingExtract": "सॉर्टिंग एक्सट्रैक्ट प्रदाता"
 }

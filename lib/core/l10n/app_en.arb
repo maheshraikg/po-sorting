@@ -1331,5 +1331,6 @@
   "textSizeNormal": "Normal",
   "textSizeLarge": "Large",
   "textSizeXl": "Extra large",
-  "textSizeHuge": "Huge"
+  "textSizeHuge": "Huge",
+  "roleSortingExtract": "Sorting extract provider"
 }

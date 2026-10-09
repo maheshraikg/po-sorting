@@ -4023,6 +4023,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Huge'**
   String get textSizeHuge;
+
+  /// No description provided for @roleSortingExtract.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorting extract provider'**
+  String get roleSortingExtract;
 }
 
 class _AppLocalizationsDelegate

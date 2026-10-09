@@ -2242,4 +2242,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get textSizeHuge => 'बहुत बड़ा';
+
+  @override
+  String get roleSortingExtract => 'सॉर्टिंग एक्सट्रैक्ट प्रदाता';
 }

@@ -24,6 +24,7 @@ final kContributors = <Contributor>[
   Contributor(kDeveloperName, (l) => l.roleDeveloper, Icons.code, phone: kDeveloperPhone),
   Contributor('Ranjith', (l) => l.roleIdeaData, Icons.lightbulb_outline, phone: '8296551488'),
   Contributor('Ganesh Gowda', (l) => l.rolePinData, Icons.pin_drop_outlined, phone: '9731243939'),
+  Contributor('Gururaja', (l) => l.roleSortingExtract, Icons.table_view_outlined, phone: '8722779998'),
 ];
 
 class ContributorsScreen extends StatelessWidget {

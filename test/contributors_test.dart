@@ -28,6 +28,7 @@ void main() {
       ('Mahesh Rai', 'Design and development', '81056 93721'),
       ('Ranjith', 'App idea and sorting data', '82965 51488'),
       ('Ganesh Gowda', 'PIN code data', '97312 43939'),
+      ('Gururaja', 'Sorting extract provider', '87227 79998'),
     ]) {
       await tester.scrollUntilVisible(find.byKey(ValueKey('contributor_$name')), 100, scrollable: list);
       final card = find.byKey(ValueKey('contributor_$name'));
