@@ -105,6 +105,9 @@ jobs:
       # files short when unzipping, and the APK then will not install.
       - name: Name APKs for direct download
         run: |
+          # One APK for every phone (arm64 + armv7 + x86_64), for sharing.
+          flutter build apk --release
+          cp build/app/outputs/flutter-apk/app-release.apk po-sorting.apk
           cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk po-sorting-arm64.apk
           cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk po-sorting-armv7.apk
 
@@ -141,5 +144,5 @@ jobs:
           tag="v$version"
           gh release delete "$tag" --yes --cleanup-tag 2>/dev/null || true
           gh release create "$tag" --target "$GITHUB_SHA" --latest --title "PO Sorting $version" \
-            --notes "PO Sorting $version. po-sorting-arm64.apk = most phones; po-sorting-armv7.apk = older phones." \
-            po-sorting-arm64.apk po-sorting-armv7.apk
+            --notes "PO Sorting $version. po-sorting.apk works on every phone; po-sorting-arm64.apk / po-sorting-armv7.apk are smaller per-phone builds." \
+            po-sorting.apk po-sorting-arm64.apk po-sorting-armv7.apk
