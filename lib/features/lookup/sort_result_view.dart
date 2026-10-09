@@ -104,7 +104,7 @@ class SortResultView extends StatelessWidget {
         } else {
           final c = services.nsh?.candidates(r.digits) ?? const [];
           if (c.isNotEmpty) {
-            addCard(1.0, (h) => PossibleHubsCard(title: l.nshLabel, hubs: c, key: const ValueKey('nsh_possible'), minHeight: h));
+            addCard(1.0, (h) => PossibleHubsCard(title: l.nshLabel, hubs: c, key: const ValueKey('nsh_possible'), minHeight: h, prefix: r.digits));
           }
         }
         final l1Part = services.l1?.resolve(r.digits);
@@ -112,10 +112,10 @@ class SortResultView extends StatelessWidget {
         final l1Possible = l1Part == null ? services.l1?.candidates(r.digits) ?? const <NshHub>[] : const <NshHub>[];
         final nphPossible = nphPart == null ? services.nph?.candidates(r.digits) ?? const <NshHub>[] : const <NshHub>[];
         if (nphPart != null || nphPossible.isNotEmpty) {
-          addCard(1.0, (h) => NphCard(match: nphPart, possible: nphPossible, minHeight: h));
+          addCard(1.0, (h) => NphCard(match: nphPart, possible: nphPossible, minHeight: h, prefix: r.digits));
         }
         if (l1Part != null || l1Possible.isNotEmpty || nphPart != null) {
-          addCard(1.0, (h) => RmsL1Card(l1: l1Part, possible: l1Possible, minHeight: h));
+          addCard(1.0, (h) => RmsL1Card(l1: l1Part, possible: l1Possible, minHeight: h, prefix: r.digits));
         }
       }
       flushCards();

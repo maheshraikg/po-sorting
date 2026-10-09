@@ -180,11 +180,15 @@ class HubTile extends StatefulWidget {
     this.notes = const [],
     this.details = const [],
     this.nameSmall = false,
+    this.body = const [],
     this.minHeight = 0,
   });
 
   /// Grows the tile to this height (content centred), to fill the screen.
   final double minHeight;
+
+  /// Shown under the name (the possible hubs of a partial PIN).
+  final List<Widget> body;
 
   /// Name is a message ("No L1 …"), shown smaller.
   final bool nameSmall;
@@ -258,6 +262,7 @@ class _HubTileState extends State<HubTile> {
                   Text(widget.name!, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white, height: 1.15)),
                 ],
                 ...widget.notes,
+                ...widget.body,
                 if (ranges.isNotEmpty) ...[
                   const SizedBox(height: 14),
                   Text('${l.nshPinRange} (${ranges.length})', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: Color(0xE6FFFFFF), letterSpacing: 0.5)),
@@ -343,6 +348,7 @@ class _HubTileState extends State<HubTile> {
                             ? t.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: soft)
                             : t.titleLarge?.copyWith(fontSize: widget.name!.contains('\n') ? 19 : 22, fontWeight: FontWeight.w900, height: 1.12, color: Colors.white),
                       ),
+                    ...widget.body,
                     // Every PIN range, full card width.
                     if (widget.series.isNotEmpty)
                       Padding(
@@ -415,7 +421,45 @@ List<Widget> _possibleDetails(BuildContext context, List<NshHub> hubs) => [
 ];
 
 /// Every hub a partial PIN can still go to, one per line, with air codes.
-String _possibleName(List<NshHub> hubs) => [for (final h in hubs) '• ${h.name}${hubAirCode(h).isEmpty ? '' : '  (${hubAirCode(h)})'}'].join('\n');
+/// PIN ranges of [series] a PIN starting with [prefix] can fall in.
+String seriesFor(String series, String prefix) {
+  if (prefix.isEmpty) return series;
+  final lo = int.parse(prefix.padRight(6, '0')), hi = int.parse(prefix.padRight(6, '9'));
+  bool hit(String t) {
+    final m = RegExp(r'^(\d+)\s*-\s*(\d+)$').firstMatch(t);
+    if (m != null) {
+      final a = m.group(1)!, b = m.group(2)!;
+      if (a.length == 6 && b.length == 6) return int.parse(a) <= hi && int.parse(b) >= lo;
+      // Short range ("515-518"): compare as prefixes.
+      final n = a.length;
+      final p = prefix.length >= n ? int.parse(prefix.substring(0, n)) : null;
+      if (p != null) return int.parse(a) <= p && p <= int.parse(b);
+      final pa = int.parse(prefix), sa = int.parse(a.substring(0, prefix.length)), sb = int.parse(b.substring(0, prefix.length));
+      return sa <= pa && pa <= sb;
+    }
+    return t.startsWith(prefix) || prefix.startsWith(t);
+  }
+
+  return [for (final t in series.split(',').map((x) => x.trim())) if (t.isNotEmpty && hit(t)) t].join(', ');
+}
+
+/// Each hub a partial PIN can still go to: name, air code and its PIN
+/// ranges for the digits typed.
+List<Widget> _possibleBody(BuildContext context, List<NshHub> hubs, String prefix) => [
+  for (final h in hubs) ...[
+    const SizedBox(height: 4),
+    Text(
+      '• ${h.name}${hubAirCode(h).isEmpty ? '' : '  (${hubAirCode(h)})'}',
+      style: const TextStyle(fontSize: 19, fontWeight: FontWeight.w900, color: Colors.white, height: 1.15),
+    ),
+    if (seriesFor(h.series, prefix).isNotEmpty)
+      Padding(
+        padding: const EdgeInsets.only(left: 14),
+        child: Text(seriesFor(h.series, prefix), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: Color(0xE6FFFFFF), height: 1.18)),
+      ),
+  ],
+];
+
 
 /// NSH / ICH for speed post.
 class NshCard extends StatelessWidget {
@@ -465,7 +509,10 @@ class NshCard extends StatelessWidget {
 
 /// NPH parcel hub, from the MR RMS sorting data.
 class NphCard extends StatelessWidget {
-  const NphCard({super.key, this.match, this.possible = const [], this.compact = false, this.minHeight = 0});
+  const NphCard({super.key, this.match, this.possible = const [], this.compact = false, this.minHeight = 0, this.prefix = ''});
+
+  /// Digits typed (partial PIN), for the ranges of the possible hubs.
+  final String prefix;
 
   final double minHeight;
 
@@ -483,7 +530,8 @@ class NphCard extends StatelessWidget {
       tag: 'NPH L1',
       accent: kNphAccent,
       icon: Icons.inventory_2_outlined,
-      name: h?.name ?? _possibleName(possible),
+      name: h?.name,
+      body: h == null ? _possibleBody(context, possible, prefix) : const [],
       nameKey: h == null ? null : const ValueKey('nph_name'),
       subtitle: h?.circle ?? l.possibleHubsN(possible.length).replaceAll(':', ''),
       series: h?.series ?? '',
@@ -495,7 +543,10 @@ class NphCard extends StatelessWidget {
 
 /// RMS L1 / L2 for the PIN, from the MR RMS sorting data.
 class RmsL1Card extends StatelessWidget {
-  const RmsL1Card({super.key, this.l1, this.compact = false, this.possible = const [], this.minHeight = 0});
+  const RmsL1Card({super.key, this.l1, this.compact = false, this.possible = const [], this.minHeight = 0, this.prefix = ''});
+
+  /// Digits typed (partial PIN), for the ranges of the possible hubs.
+  final String prefix;
 
   final double minHeight;
 
@@ -516,7 +567,8 @@ class RmsL1Card extends StatelessWidget {
       tag: 'RMS L1',
       accent: kL1Accent,
       icon: Icons.alt_route,
-      name: h?.name ?? (none ? l.rmsL1None : _possibleName(possible)),
+      name: h?.name ?? (none ? l.rmsL1None : null),
+      body: h == null && !none ? _possibleBody(context, possible, prefix) : const [],
       nameKey: h == null ? null : const ValueKey('l1_name'),
       subtitle: h?.circle ?? (none ? '' : l.possibleHubsN(possible.length).replaceAll(':', '')),
       series: h?.series ?? '',
@@ -534,7 +586,9 @@ class RmsL1Card extends StatelessWidget {
 
 /// Partial PIN that more than one NSH takes: list them.
 class PossibleHubsCard extends StatelessWidget {
-  const PossibleHubsCard({super.key, required this.title, required this.hubs, this.tag = 'NSH L1', this.minHeight = 0});
+  const PossibleHubsCard({super.key, required this.title, required this.hubs, this.tag = 'NSH L1', this.minHeight = 0, this.prefix = ''});
+
+  final String prefix;
 
   final double minHeight;
 
@@ -548,7 +602,7 @@ class PossibleHubsCard extends StatelessWidget {
     tag: tag,
     accent: kNshAccent,
     icon: Icons.local_shipping_outlined,
-    name: _possibleName(hubs),
+    body: _possibleBody(context, hubs, prefix),
     subtitle: AppLocalizations.of(context).possibleHubsN(hubs.length).replaceAll(':', ''),
     details: _possibleDetails(context, hubs),
   );

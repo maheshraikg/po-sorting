@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:sorting_sahayak/features/lookup/hub_cards.dart';
 import 'package:sorting_sahayak/core/constants.dart';
 import 'package:sorting_sahayak/data/import/scheme_io.dart';
 import 'package:sorting_sahayak/data/nsh.dart';
@@ -105,5 +106,14 @@ void main() {
     expect(hubAirCode(hub('KURNOOL NSH', 'HYD')), 'HYD');
     final t = NshTable([hub('KURNOOL NSH', 'HYD')]);
     expect(NshTable.parse(Uint8List.fromList(utf8.encode(t.toCsv()))).hubs.single.air, 'HYD');
+  });
+
+  test('PIN ranges of a hub for a partial PIN', () {
+    const s = '575, 5742-5743, 5745, 57412, 574101-574102, 576111-576112';
+    expect(seriesFor(s, '574'), '5742-5743, 5745, 57412, 574101-574102');
+    expect(seriesFor(s, '5751'), '575');
+    expect(seriesFor('515-518, 524', '516'), '515-518');
+    expect(seriesFor('515-518, 524', '52'), '524');
+    expect(seriesFor('400-403', '4'), '400-403');
   });
 }
