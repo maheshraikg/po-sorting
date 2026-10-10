@@ -1,9 +1,11 @@
+import 'dart:typed_data';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sorting_sahayak/data/directory_builder.dart' show OfficeData, OfficeEdit;
 import 'package:sorting_sahayak/data/import/scheme_io.dart';
+import 'package:sorting_sahayak/data/import/table_reader.dart';
 import 'package:sorting_sahayak/data/models/office.dart';
 import 'package:sorting_sahayak/data/models/scheme.dart';
 import 'package:sorting_sahayak/data/nsh.dart';
@@ -11,6 +13,8 @@ import 'package:sorting_sahayak/data/resolver.dart';
 import 'package:sorting_sahayak/features/schemes/scheme_editor.dart';
 import 'package:sorting_sahayak/features/settings/edit_data_screen.dart';
 import 'package:sorting_sahayak/features/settings/nsh_editor_screen.dart';
+import 'package:sorting_sahayak/features/lookup/hub_cards.dart';
+import 'package:sorting_sahayak/features/settings/export_all.dart';
 import 'package:sorting_sahayak/features/settings/office_editor.dart';
 import 'package:sorting_sahayak/features/settings/office_fixes.dart';
 
@@ -152,5 +156,36 @@ void main() {
     final now = (await tester.runAsync(() => h.services.directory.officesForPin(574299)))!;
     expect(now.map((o) => o.officeName), contains('Darbe Junction'));
     expect(find.text('Saved Darbe Junction'), findsOneWidget);
+  });
+
+  testWidgets('hub card: Edit in the details sheet changes the hub for this phone', (tester) async {
+    final h = await _setUp(tester);
+    h.services.nph = NshTable.parse(File(kRmsNphAsset).readAsBytesSync());
+    final m = h.services.nph!.resolve('560001')!;
+    await tester.pumpWidget(h.wrap(Scaffold(body: SingleChildScrollView(child: NphCard(match: m)))));
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('nph_card')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('hub_edit')));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byKey(const ValueKey('nsh_dialog_name')), 'My Parcel Hub');
+    await tester.enterText(find.byKey(const ValueKey('nsh_dialog_air')), 'HYD');
+    await tester.tap(find.byKey(const ValueKey('nsh_dialog_save')));
+    await tester.pumpAndSettle();
+    final now = h.services.nph!.resolve('560001')!.hub;
+    expect((now.name, now.air), ('My Parcel Hub', 'HYD'));
+    expect(h.settings.tableCsv(HubTableKind.nph.prefsKey), contains('My Parcel Hub'));
+  });
+
+  testWidgets('export all: schemes, hub tables, office changes and favourites', (tester) async {
+    final h = await _setUp(tester);
+    h.services.l1 = NshTable.parse(File(kRmsL1Asset).readAsBytesSync());
+    await tester.runAsync(() => saveOfficeChange(h.settings, h.services, null, const OfficeData(pincode: 574202, name: 'Kemminje', type: 'BO')));
+    final files = (await tester.runAsync(() => exportAllData(h.services, h.settings, now: DateTime(2026, 10, 10))))!;
+    expect(files.keys, contains('PO_Sorting_data_2026-10-10.xlsx'));
+    expect(files.keys.where((k) => k.endsWith('.xlsx')).length, greaterThan(1)); // + the scheme
+    final book = readTable(files['PO_Sorting_data_2026-10-10.xlsx'] as Uint8List, 'x.xlsx');
+    expect(book.sheets.keys, containsAll(['NSH', 'RMS_L1', 'Office_changes', 'Favourites']));
+    expect(book.sheets['Office_changes']![1].take(3), ['Added', '574202', 'Kemminje']);
   });
 }

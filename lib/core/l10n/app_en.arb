@@ -1398,5 +1398,8 @@
       }
     }
   },
-  "officeChangeRemoved": "Removed"
+  "officeChangeRemoved": "Removed",
+  "hubEditThis": "Edit this hub",
+  "exportAll": "Export all my data",
+  "exportAllSub": "Lines, rules, air codes, NSH / NPH / L1 hubs, office changes and favourites as Excel files – share or save them"
 }

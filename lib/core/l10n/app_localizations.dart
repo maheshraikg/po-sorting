@@ -4173,6 +4173,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Removed'**
   String get officeChangeRemoved;
+
+  /// No description provided for @hubEditThis.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit this hub'**
+  String get hubEditThis;
+
+  /// No description provided for @exportAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Export all my data'**
+  String get exportAll;
+
+  /// No description provided for @exportAllSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Lines, rules, air codes, NSH / NPH / L1 hubs, office changes and favourites as Excel files – share or save them'**
+  String get exportAllSub;
 }
 
 class _AppLocalizationsDelegate

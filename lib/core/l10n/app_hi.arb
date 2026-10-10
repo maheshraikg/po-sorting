@@ -678,5 +678,8 @@
   "officeAddHere": "कार्यालय जोड़ें",
   "officeChangeAdded": "जोड़ा",
   "officeChangeEdited": "पहले: {was}",
-  "officeChangeRemoved": "हटाया"
+  "officeChangeRemoved": "हटाया",
+  "hubEditThis": "यह हब बदलें",
+  "exportAll": "मेरा सारा डेटा निर्यात करें",
+  "exportAllSub": "लाइनें, नियम, एयर कोड, NSH / NPH / L1 हब, कार्यालय बदलाव और पसंदीदा Excel फ़ाइलों में – साझा करें या सहेजें"
 }

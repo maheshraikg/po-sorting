@@ -678,5 +678,8 @@
   "officeAddHere": "ಕಚೇರಿ ಸೇರಿಸಿ",
   "officeChangeAdded": "ಸೇರಿಸಿದ್ದು",
   "officeChangeEdited": "ಹಿಂದಿನದು: {was}",
-  "officeChangeRemoved": "ತೆಗೆದದ್ದು"
+  "officeChangeRemoved": "ತೆಗೆದದ್ದು",
+  "hubEditThis": "ಈ ಹಬ್ ಬದಲಿಸಿ",
+  "exportAll": "ನನ್ನ ಎಲ್ಲಾ ಡೇಟಾ ರಫ್ತು ಮಾಡಿ",
+  "exportAllSub": "ಲೈನ್‌ಗಳು, ನಿಯಮಗಳು, ಏರ್ ಕೋಡ್‌ಗಳು, NSH / NPH / L1 ಹಬ್‌ಗಳು, ಕಚೇರಿ ಬದಲಾವಣೆಗಳು ಮತ್ತು ಮೆಚ್ಚಿನವು Excel ಫೈಲ್‌ಗಳಾಗಿ – ಹಂಚಿ ಅಥವಾ ಉಳಿಸಿ"
 }

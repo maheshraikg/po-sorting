@@ -11,6 +11,7 @@ import '../../core/theme.dart';
 import '../../core/widgets.dart' show bagColour;
 import '../../data/models/scheme.dart';
 import '../../data/nsh.dart';
+import '../settings/nsh_editor_screen.dart' show editHubOf;
 
 const Color kNshAccent = Color(0xFF4F46E5);
 const Color kIchAccent = Color(0xFF0369A1);
@@ -163,7 +164,11 @@ class HubTile extends StatefulWidget {
     this.nameSmall = false,
     this.body = const [],
     this.minHeight = 0,
+    this.onEdit,
   });
+
+  /// Edit this hub in the user's copy of its table (from the details sheet).
+  final Future<bool> Function(BuildContext context)? onEdit;
 
   /// Grows the tile to this height (content centred), to fill the screen.
   final double minHeight;
@@ -241,6 +246,21 @@ class _HubTileState extends State<HubTile> {
                 if (widget.name != null) ...[
                   const SizedBox(height: 10),
                   Text(widget.name!, style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w900, color: Colors.white, height: 1.15)),
+                ],
+                if (widget.onEdit != null) ...[
+                  const SizedBox(height: 12),
+                  FilledButton.icon(
+                    key: const ValueKey('hub_edit'),
+                    style: FilledButton.styleFrom(backgroundColor: Colors.white, foregroundColor: deep, minimumSize: const Size.fromHeight(52)),
+                    onPressed: () {
+                      final edit = widget.onEdit!;
+                      final outer = this.context;
+                      Navigator.pop(ctx);
+                      edit(outer);
+                    },
+                    icon: const Icon(Icons.edit),
+                    label: Text(l.hubEditThis),
+                  ),
                 ],
                 ...widget.notes,
                 ...widget.body,
@@ -484,6 +504,7 @@ class NshCard extends StatelessWidget {
           ),
       ],
       details: [_matched(context, match.matched)],
+      onEdit: (c) => editHubOf(c, HubTableKind.nsh, h),
     );
   }
 }
@@ -518,6 +539,7 @@ class NphCard extends StatelessWidget {
       series: h?.series ?? '',
       air: h == null ? '' : hubAirCode(h),
       details: h == null ? _possibleDetails(context, possible) : [_matched(context, match!.matched)],
+      onEdit: h == null ? null : (c) => editHubOf(c, HubTableKind.nph, h),
     );
   }
 }
@@ -556,6 +578,7 @@ class RmsL1Card extends StatelessWidget {
       seriesKey: const ValueKey('l1_series'),
       air: h == null ? '' : hubAirCode(h),
       nameSmall: none,
+      onEdit: h == null ? null : (c) => editHubOf(c, HubTableKind.l1, h),
       details: h != null
           ? [_matched(context, l1!.matched)]
           : none

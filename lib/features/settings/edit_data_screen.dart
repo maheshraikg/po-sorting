@@ -5,6 +5,7 @@ library;
 import 'package:flutter/material.dart';
 
 import '../../core/app_scope.dart';
+import '../../core/files.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../../core/theme.dart';
 import '../../core/widgets.dart';
@@ -13,6 +14,7 @@ import '../lines/lines_screen.dart';
 import '../schemes/scheme_editor.dart';
 import '../schemes/schemes_screen.dart';
 import 'nsh_editor_screen.dart';
+import 'export_all.dart';
 import 'office_fixes.dart';
 
 class EditDataScreen extends StatelessWidget {
@@ -50,6 +52,19 @@ class EditDataScreen extends StatelessWidget {
           tile('nph', Icons.inventory_2_outlined, l.nphHubs, l.nphHubsSub, const NshEditorScreen(kind: HubTableKind.nph)),
           tile('rmsnsh', Icons.compare_arrows, l.rmsNshHubs, l.rmsNshHubsSub, const NshEditorScreen(kind: HubTableKind.rmsNsh)),
           tile('offices', Icons.edit_location_alt_outlined, l.officeFixes, l.officeFixesSub, const OfficeFixesScreen()),
+          Card(
+            child: ListTile(
+              key: const ValueKey('edit_export'),
+              leading: const IconBadge(Icons.ios_share, kPostGreen),
+              title: Text(l.exportAll, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 18)),
+              subtitle: Text(l.exportAllSub),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () async {
+                final files = await exportAllData(context.services, context.settings);
+                await shareFiles(files, text: l.exportAll);
+              },
+            ),
+          ),
           tile('schemes', Icons.file_open_outlined, l.editFiles, l.editFilesSub, const SchemesScreen()),
         ],
       ),

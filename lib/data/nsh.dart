@@ -144,10 +144,13 @@ class NshTable {
   }
 
   /// The table as a CSV file (same columns as the bundled sheet).
-  String toCsv() => writeCsv([
+  String toCsv() => writeCsv(toRows());
+
+  /// Header + one row per hub (the CSV / spreadsheet columns).
+  List<List<String>> toRows() => [
     ['Hub', 'Kind', 'Circle', 'Series', 'Mapped To', 'Exclude', 'Air'],
     for (final h in hubs) [h.name, h.kind, h.circle, h.series, h.mappedTo, h.exclude.join(', '), h.air],
-  ]);
+  ];
 
   static NshTable parse(Uint8List bytes) {
     final t = readTable(bytes, 'nsh.csv');

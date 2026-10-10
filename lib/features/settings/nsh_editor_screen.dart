@@ -10,6 +10,25 @@ import '../../core/l10n/app_localizations.dart';
 import '../../core/widgets.dart';
 import '../../data/nsh.dart';
 
+/// Saves [hubs] as the user's copy of the [kind] table.
+void saveHubTable(BuildContext context, HubTableKind kind, List<NshHub> hubs) {
+  final t = NshTable(hubs);
+  context.settings.setTableCsv(kind.prefsKey, t.toCsv());
+  context.services.setTable(kind, t);
+}
+
+/// Edit one hub of the [kind] table (from a result card). True if saved.
+Future<bool> editHubOf(BuildContext context, HubTableKind kind, NshHub hub) async {
+  final hubs = [...?context.services.table(kind)?.hubs];
+  final i = hubs.indexWhere((h) => identical(h, hub) || (h.name == hub.name && h.series == hub.series));
+  if (i < 0) return false;
+  final h = await showDialog<NshHub>(context: context, builder: (_) => NshHubDialog(hub: hubs[i], kind: kind));
+  if (h == null || !context.mounted) return false;
+  hubs[i] = h;
+  saveHubTable(context, kind, hubs);
+  return true;
+}
+
 class NshEditorScreen extends StatefulWidget {
   const NshEditorScreen({super.key, this.kind = HubTableKind.nsh});
 
@@ -23,9 +42,7 @@ class _NshEditorScreenState extends State<NshEditorScreen> {
   String _filter = '';
 
   Future<void> _save(List<NshHub> hubs) async {
-    final t = NshTable(hubs);
-    context.settings.setTableCsv(widget.kind.prefsKey, t.toCsv());
-    context.services.setTable(widget.kind, t);
+    saveHubTable(context, widget.kind, hubs);
     setState(() {});
   }
 

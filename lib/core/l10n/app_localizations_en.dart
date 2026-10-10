@@ -2335,4 +2335,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get officeChangeRemoved => 'Removed';
+
+  @override
+  String get hubEditThis => 'Edit this hub';
+
+  @override
+  String get exportAll => 'Export all my data';
+
+  @override
+  String get exportAllSub =>
+      'Lines, rules, air codes, NSH / NPH / L1 hubs, office changes and favourites as Excel files – share or save them';
 }

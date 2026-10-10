@@ -2341,4 +2341,14 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get officeChangeRemoved => 'ತೆಗೆದದ್ದು';
+
+  @override
+  String get hubEditThis => 'ಈ ಹಬ್ ಬದಲಿಸಿ';
+
+  @override
+  String get exportAll => 'ನನ್ನ ಎಲ್ಲಾ ಡೇಟಾ ರಫ್ತು ಮಾಡಿ';
+
+  @override
+  String get exportAllSub =>
+      'ಲೈನ್‌ಗಳು, ನಿಯಮಗಳು, ಏರ್ ಕೋಡ್‌ಗಳು, NSH / NPH / L1 ಹಬ್‌ಗಳು, ಕಚೇರಿ ಬದಲಾವಣೆಗಳು ಮತ್ತು ಮೆಚ್ಚಿನವು Excel ಫೈಲ್‌ಗಳಾಗಿ – ಹಂಚಿ ಅಥವಾ ಉಳಿಸಿ';
 }

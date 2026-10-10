@@ -2331,4 +2331,14 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get officeChangeRemoved => 'हटाया';
+
+  @override
+  String get hubEditThis => 'यह हब बदलें';
+
+  @override
+  String get exportAll => 'मेरा सारा डेटा निर्यात करें';
+
+  @override
+  String get exportAllSub =>
+      'लाइनें, नियम, एयर कोड, NSH / NPH / L1 हब, कार्यालय बदलाव और पसंदीदा Excel फ़ाइलों में – साझा करें या सहेजें';
 }
