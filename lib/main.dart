@@ -119,7 +119,13 @@ class _SortingSahayakAppState extends State<SortingSahayakApp> {
           // The app's text size on top of the phone's, kept below 2× so
           // layouts hold.
           final scale = (mq.textScaler.scale(16) / 16 * widget.settings.textSize).clamp(1.0, 2.0);
-          final scaled = MediaQuery(data: mq.copyWith(textScaler: TextScaler.linear(scale)), child: child!);
+          // Edge-to-edge: keep every screen's content above the phone's
+          // navigation buttons (the area behind them stays app-coloured).
+          final safe = ColoredBox(
+            color: Theme.of(context).colorScheme.surfaceContainerLowest,
+            child: SafeArea(top: false, left: false, right: false, child: child!),
+          );
+          final scaled = MediaQuery(data: mq.copyWith(textScaler: TextScaler.linear(scale)), child: safe);
           return services == null ? scaled : AppScope(settings: widget.settings, services: services, child: scaled);
         },
         home: _error != null
