@@ -2341,4 +2341,25 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get exportAllSub =>
       'लाइनें, नियम, एयर कोड, NSH / NPH / L1 हब, कार्यालय बदलाव और पसंदीदा Excel फ़ाइलों में – साझा करें या सहेजें';
+
+  @override
+  String get parcelNetwork => 'पार्सल हब नेटवर्क';
+
+  @override
+  String get parcelNetworkSub => '07.10.2026 से MPOP L1 / L2 पार्सल हब';
+
+  @override
+  String get parcelNetworkIntro =>
+      'MPOP के तहत पुनर्गठित पार्सल हब नेटवर्क (पार्सल निदेशालय पत्र F.No. 39-04/2025-PD, 24.09.2026), 07.10.2026 से लागू: 60 L1 हब, 127 L2 हब और उनके L1, तथा अन्य सर्किलों के L1 हब को सीधे बैग बंद करने की अनुमति वाले 52 L2 हब। सॉर्ट का NPH कार्ड इसी सूची का पालन करता है।';
+
+  @override
+  String get parcelNetworkDirect => 'सीधे बैग';
+
+  @override
+  String get parcelNetworkSearch => 'हब या सर्किल खोजें';
+
+  @override
+  String parcelNetworkDirectTo(String hubs) {
+    return 'सीधे बैग: $hubs';
+  }
 }

@@ -1,0 +1,365 @@
+To 
+All Chief Postmaster Generals 
+Subject: Rationalization of the L1/L2 Parcel Hub Network under MPOP 
+FNo. 39-04/2025-PD 
+Government of India 
+Ministry of Communications 
+Department of Posts 
+Parcel Directorate 
+This is in continuation of Parcel Directorate's letter of even number dated 24.08.2026 
+regarding rationalization of the existing L1/L2 Parcel Hub Network under the Mail Parcel 
+Optimization Project (MPOP), wherein Circles were requested to furnish 
+comments/suggestions on the proposed downgrading of 19 L1 Parcel Hubs to L2 status and 
+authorization of 52 L2 Parcel Hubs for direct cross-Circie bag closure. 
+2. Comments/suggestions received from the Circles within the stipulated period, along 
+with the issues raised during the video conference held on 28.08.2026, have been examined 
+by the Parcel Directorate. It has accordingly been decided to implement the proposed 
+rationalization of the Parcel Hub Network. 
+(i) 
+3. Accordingly, the existing network of 79 L1 and 109 L2 Parcel Hubs is hereby 
+rationalized as under: 
+Hub Details 
+Number of L1 Parcel Hubs 
+Number of L2 Parcel Hubs 
+Direct bag cdosure by L2 Hubs 
+Chanakyapuri Post Office Complex, 
+New Delhi-110021 
+Dated: 24.09.2026 
+Existing 
+79 
+109 
+Not permitted 
+Revised 
+The revised list of 60 L1 Parcel Hubs is at Annexure-I. 
+60 
+127 
+Permitted for 52 L2 Hubs 
+(ü) The revised list of 127 L2 Parcel Hubs, along with their mapped L1 Hubs, is at 
+Annexure-II. 
+(iüi) The list of L2 Hubs authorized for direct bag closure to identified L1 Hubs of 
+neighbouring/other Circles is at Annexure-III, 
+Such direct bagging shall be undertaken only where justified by parcel volumes and 
+Connectivity and shall be reviewed after six months based on actual traffic. This is in 
+addition to the existing authorization of L2 Hubs to close bags directly to L1/L2 Hubs within the Circle. 
+4. 
+5. Circles shall prepare/update the Due Mail Sorting List (DMSL) for all L1 and L2 Parcel 
+Hubs strictly in accordance with the revised network at Annexures I to III and ensure its 
+implementation by all originating offices under their jurisdiction. 
+6. The existing PIN code-to-hub mapping may be accessed through the link below. Circles 
+shall obtain the required information from field units and update the mapping through the 
+Circle Office only: 
+https://docs.google.com/spreadsheets/d/1VscLfxkqBG5dX4FFLc6BIF9H660EBoOHzPWZhX Ygmk/edit?qid=2147027540#gid=2147027540 
+Circles shall review and update the PIN code. mapping under their jurisdiction in 
+accordance with the revised L1/L2 network and furnish confirmation to this Directorate. The 
+consolidated mapping will thereafter be shared with CEPT, Mysuru, for necessary updating in 
+APT 2.0. 
+7. 
+The exercise shall be treated as time-bound. The updated DMSL and revised PIN 
+code mapping may be furnishedfconfirmed to this Directorate latest by 30.09.2026, to 
+enable timely updation in the system. 
+8 
+9. The revised network compfising of 60 L1 Parcel hubs and 127 L2 Parcel hubs 
+shall come into effect w.e.f. 07.10.2026. 
+10. 
+Encl: Annexure I to III 
+Copy to: 
+i. 
+ii. 
+ii. 
+İV. 
+V. 
+This issues with the approval of Member (Operations). 
+vi. 
+vi. 
+PSO to Secretary Posts for information please. 
+PPS to Director General Postal Services for information please. 
+PPS to Member (Operations), Dak Bhawan for information please 
+(Syed Fraz Haider Nabi) 
+Deputy General Manager 
+Parcel Directorate 
+Director RAKANPA, Ghaziabad & Director All PTCs for information please 
+DDG Mails Operations, Dak Bhawan for information please 
+DDG IR & GB, Dak Bhawan for information please 
+GM (CEPT), Mysuru -for updation of PIN code/hub mapping in the system 
+ Annexure I 
+Revised List of L1 Parcel Hubs (60) under MPOP 
+S. No. Circle Name of L1 Hub 
+1 1 CBPO 56 APO 
+2 2 CBPO 99 APO 
+3 Andhra Pradesh Tirupati 
+4 Andhra Pradesh Vijayawada 
+5 Andhra Pradesh Visakhapatnam 
+6 Assam Guwahati 
+7 Assam Silchar 
+8 Bihar Patna 
+9 Chhattisgarh Raipur 
+10 Delhi Delhi 
+11 Gujarat Ahmedabad 
+12 Gujarat Rajkot 
+13 Gujarat Surat 
+14 Haryana Ambala 
+15 Haryana Rohtak 
+16 Haryana Gurgaon 
+17 Himachal Pradesh Pathankot 
+18 Himachal Pradesh Shimla 
+19 Jammu & Kashmir Jammu 
+20 Jammu & Kashmir Srinagar 
+21 Jharkhand Ranchi 
+22 Karnataka Bangalore 
+23 Karnataka Hubli 
+24 Karnataka Mangalore 
+25 Karnataka Arsikere 
+26 Kerala Kochi 
+27 Kerala Kozhikode 
+28 Kerala Thiruvananthapuram 
+29 Kerala Thrissur 
+30 Madhya Pradesh Bhopal 
+31 Madhya Pradesh GWALIOR 
+32 Madhya Pradesh Indore 
+33 Madhya Pradesh Jabalpur 
+34 Maharashtra CS Nagar 
+35 Maharashtra Mumbai 
+36 Maharashtra Nagpur 
+37 Maharashtra Pune 
+38 North East Imphal 
+39 Orissa Bhubaneswar 
+40 Punjab Chandigarh 
+41 Punjab Jalandhar 
+42 Punjab Ludhiana 
+43 Rajasthan Jaipur 
+44 Rajasthan Jodhpur 
+45 Tamil Nadu Chennai 
+46 Tamil Nadu Coimbatore 
+47 Tamil Nadu Madurai 
+48 Tamil Nadu Salem 
+49 Telangana Hyderabad 
+50 Uttar Pradesh Agra 
+51 Uttar Pradesh Bareilly 
+52 Uttar Pradesh Ghaziabad 
+53 Uttar Pradesh Kanpur 
+54 Uttar Pradesh Lucknow 
+55 Uttar Pradesh Prayagraj 
+56 Uttarakhand Dehradun 
+57 Uttarakhand Rudrapur 
+58 West Bengal Kolkata 
+59 West Bengal Siliguri 
+60 West Bengal Port Blair 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Annexure II 
+Revised List of L2 Parcel Hubs (127) under MPOP 
+S. No. Circle L2 Hub Mapped L1 Hub 
+1 Andhra Pradesh Ananthpur Bengaluru 
+2 Andhra Pradesh Cuddapah Tirupati 
+3 Andhra Pradesh Eluru Vijayawada 
+4 Andhra Pradesh Guntur Vijayawada 
+5 Andhra Pradesh Kurnool Hyderabad 
+6 Andhra Pradesh Nellore Tirupati 
+7 Andhra Pradesh Ongole Vijayawada 
+8 Andhra Pradesh Rajamundry Vijayawada 
+9 Andhra Pradesh Srikakulam Vishakhapatnam 
+10 Assam Jorhat Guwahati 
+11 Assam Tezpur Guwahati 
+12 Assam Dibrugarh Guwahati 
+13 Bihar Barauni Patna 
+14 Bihar Bhagalpur Patna 
+15 Bihar Chapra Patna 
+16 Bihar Gaya Patna 
+17 Bihar Kiul Patna 
+18 Bihar Muzaffarpur Patna 
+19 Chhattisgarh Bilaspur Raipur 
+20 Chhattisgarh Durg Raipur 
+21 Gujarat Anand Ahmedabad 
+22 Gujarat Bharuch Surat 
+23 Gujarat Bhavnagar Ahmedabad 
+24 Gujarat Bhuj Ahmedabad 
+25 Gujarat Jamnagar Rajkot 
+26 Gujarat Junagarh Rajkot 
+27 Gujarat Mehsana Ahmedabad 
+28 Gujarat Valsad Surat 
+29 Gujarat Vadodara Ahmedabad 
+30 Haryana Hisar Rohtak 
+31 Haryana Karnal Ambala 
+32 Haryana Sonepat Rohtak 
+33 Himachal Pradesh Hamirpur Pathankot 
+34 Himachal Pradesh Mandi Ambala 
+35 Jammu & Kashmir Leh Delhi 
+36 Jharkhand Dhanbad Ranchi 
+37 Jharkhand B. Deoghar Ranchi 
+38 Jharkhand Jamshedpur Ranchi 
+39 Karnataka Bagalkot Hubli 
+40 Karnataka Devangere Bengaluru 
+41 Karnataka Gulbarga Hyderabad 
+42 Karnataka Hosapete Hubli 
+43 Karnataka Raichur Hyderabad 
+44 Karnataka Tumkur Bengaluru 
+45 Karnataka Belagavi Hubli 
+46 Karnataka Mysuru Bengaluru 
+47 Kerala Kannur Kozhikode 
+48 Kerala Kollam Thiruvananthapuram 
+49 Kerala Kottayam Kochi 
+50 Kerala Palakkad Coimbatore 
+51 Kerala Tiruvalla Kochi 
+52 Madhya Pradesh Itarsi Bhopal 
+53 Madhya Pradesh Katni Jabalpur 
+54 Madhya Pradesh Ratlam Indore 
+55 Madhya Pradesh Satna Jabalpur 
+56 Maharashtra Ahmednagar Pune 
+57 Maharashtra Akola Nagpur 
+58 Maharashtra Amravati Nagpur 
+59 Maharashtra Chandarpur Nagpur 
+60 Maharashtra Jalgaon Mumbai 
+61 Maharashtra Miraj Pune 
+62 Maharashtra Nanded CS Nagar 
+63 Maharashtra Nashik Mumbai 
+64 Maharashtra Ratnagiri Mumbai 
+65 Maharashtra Satara PUNE 
+66 Maharashtra Solapur PUNE 
+67 Maharashtra Margaon Mumbai 
+68 North East Shillong Guwahati 
+69 North East Aizawl Silchar 
+70 North East Itanagar Guwahati 
+71 North East Agartala Silchar 
+72 North East Dimapur Guwahati 
+73 Orissa Balangir Bhubaneshwar 
+74 Orissa Balasore Bhubaneshwar 
+75 Orissa Cuttack Bhubaneshwar 
+76 Orissa Jajpur Bhubaneshwar 
+77 Orissa Jeypore Bhubaneshwar 
+78 Orissa Berhampur Bhubaneshwar 
+79 Orissa Sambalpur Bhubaneshwar 
+80 Punjab Amritsar Jalandhar 
+81 Punjab Bhatinda Ludhiana 
+82 Punjab Patiala Chandigarh 
+83 Rajasthan Alwar JAIPUR 
+84 Rajasthan Bikaner Jodhpur 
+85 Rajasthan Falna Jodhpur 
+86 Rajasthan Kota Jaipur 
+87 Rajasthan Sikar Jaipur 
+88 Rajasthan Sri Ganganagar Jodhpur 
+89 Rajasthan Udaipur Jaipur 
+90 Rajasthan Ajmer Jaipur 
+91 Tamil Nadu Dindigul Madurai 
+92 Tamil Nadu Erode Salem 
+93 Tamil Nadu Jolarpatti Chennai 
+94 Tamil Nadu Karaikudi Madurai 
+95 Tamil Nadu Mayiladuuturai Chennai 
+96 Tamil Nadu Nagarcoil Madurai 
+97 Tamil Nadu Thanjavur Chennai 
+98 Tamil Nadu Tirunelveli Madurai 
+99 Tamil Nadu Tirupur Coimbatore 
+100 Tamil Nadu Tuticorin Madurai 
+101 Tamil Nadu Vellore Chennai 
+102 Tamil Nadu Villupuram Chennai 
+103 Tamil Nadu Vridhachalam Chennai 
+104 Tamil Nadu Trichy Chennai 
+105 Telangana Karimnagar Hyderabad 
+106 Telangana Nalgonda Hyderabad 
+107 Telangana Nizamabad Hyderabad 
+108 Telangana Warangal Hyderabad 
+109 Uttar Pradesh Aligarh Agra 
+110 Uttar Pradesh Faizabad Lucknow 
+111 Uttar Pradesh Gonda Lucknow 
+112 Uttar Pradesh Kheri Lucknow 
+113 Uttar Pradesh Mau Lucknow 
+114 Uttar Pradesh Meerut Ghaziabad 
+115 Uttar Pradesh Moradabad Bareilly 
+116 Uttar Pradesh Saharanpur Ghaziabad 
+117 Uttar Pradesh Varanasi Prayagraj 
+118 Uttar Pradesh Jhanshi Agra 
+119 Uttar Pradesh Gorakhpur Lucknow 
+120 Uttara-khand Haridwar Dehradun 
+121 West Bengal Bankura Kolkata 
+122 West Bengal Berhampore Kolkata 
+123 West Bengal Burdwan Kolkata 
+124 West Bengal Howrah Kolkata 
+125 West Bengal Kharagpur Kolkata 
+126 West Bengal Malda Siliguri 
+127 West Bengal Sealdah Kolkata 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  
+Annexure III 
+L2 Hubs Authorized for Direct Bag Closure to L1 Hubs of Other Circles 
+S. 
+No. Circle L2 Hub L1 Hub(s) of Other Circle(s) Authorized 
+1 Andhra Pradesh Guntur Hyderabad, Bhubaneshwar & L1 Hubs of Karnataka 
+2 Assam Dibrugarh Delhi, Mumbai, Hyderabad, Chennai, Bengaluru, Kolkata & all Hubs of Assam & NE Circle  
+3 Bihar Barauni Lucknow, Ranchi, Kolkata, Siliguri, Bhubaneshwar  
+4 Bihar Muzaffarpur Lucknow, Ranchi, Kolkata, Siliguri, Bhubaneshwar  
+5 Chhattisgarh Bilaspur Bhopal, Indore, Bhubaneshwar, Ranchi & L1 Hubs of Maharashtra Circle  
+6 Gujarat Mehsana L1 Hubs of Delhi, Rajasthan, Madhya Pradesh, Maharashtra Circles 
+7 Gujarat Vadodara L1 Hubs of Rajasthan, Madhya Pradesh, Maharashtra, Delhi Circles 
+8 Haryana Karnal L1 Hubs of Punjab, Uttar Pradesh & Delhi 
+9 Haryana Hisar L1 Hubs of Punjab, Rajasthan & Delhi 
+10 Jammu & Kashmir Leh L1 Hubs of Punjab, Haryana & Delhi 
+11 Jharkhand B.Deoghar L1 hubs of Bihar, Chhattisgarh, Odisha & West Bengal Circles  
+12 Jharkhand Jamshedpur L1 hubs of Bihar, Chhattisgarh, Odisha & West Bengal Circles  
+13 Karnataka Belagavi L1 Hubs of Kerala, Tamilnadu, Andhra Pradesh, Telangana, Maharashtra, Gujarat, 1CBPO, 2 CBPO & Delhi 
+14 Karnataka Mysuru L1 Hubs of Kerala, Tamilnadu, Andhra Pradesh, Telangana, Delhi & Mumbai 
+15 Kerala Kannaur L1 Hubs of Karnataka, Tamilnadu, Andhra Pradesh, 
+Telangana & Delhi 
+16 Kerala Kollam L1 Hubs of Karnataka, Tamilnadu, Andhra Pradesh, Telangana & Delhi 
+17 Kerala Kottayam L1 Hubs of Karnataka, Tamilnadu, Andhra Pradesh, Telangana & Delhi 
+18 Kerala Palakkad L1 Hubs of Karnataka, Tamilnadu, Andhra Pradesh, Telangana & Delhi 
+19 Maharashtra Nashik  L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi 
+20 Maharashtra Miraj  L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi 
+21 Maharashtra Solapur  L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi 
+22 Maharashtra Jalgaon  L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi 
+23 Maharashtra Akola  L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi 
+24 Maharashtra Nanded  L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi 
+25 Maharashtra Ahmednagar  L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi 
+26 North East Dimapur Delhi, Mumbai, Hyderabad, Chennai, Bengaluru, Kolkata, Siliguri & all Hubs of Assam Circle 
+27 North East Shillong Delhi, Mumbai, Hyderabad, Chennai, Bengaluru, Kolkata, Siliguri & all Hubs of Assam Circle 
+28 North East Aizawl Delhi, Mumbai, Hyderabad, Chennai, Bengaluru, Kolkata, Siliguri & all Hubs of Assam Circle 
+29 North East Itanagar Delhi, Mumbai, Hyderabad, Chennai, Bengaluru, Kolkata, Siliguri & all Hubs of Assam Circle 
+30 North East Agartala Delhi, Mumbai, Hyderabad, Chennai, Bengaluru, Kolkata, Siliguri & all Hubs of Assam Circle 
+31 Odisha Berhampur L1 hubs of Bihar, Chhattisgarh, Jharkhand & West Bengal Circles  
+32 Odisha Sambalpur L1 hubs of Bihar, Chhattisgarh, Jharkhand & West Bengal Circles  
+33 Punjab Bhatinda L1 Hubs of Haryana, Rajasthan, Himachal Pradesh & Delhi 
+34 Punjab Patiala L1 Hubs of Haryana, Rajasthan, Himachal Pradesh & Delhi 
+35 Punjab Amritsar L1 Hubs of Haryana, Rajasthan, Himachal Pradesh & Delhi 
+36 Rajasthan Sikar L1 Hubs of Haryana, Delhi, Maharashtra & Gujarat 
+37 Rajasthan Udaipur L1 Hubs of Haryana, Delhi, Maharashtra & Gujarat 
+38 Rajasthan Bikaner L1 Hubs of Haryana, Delhi, Maharashtra & Gujarat 
+39 Rajasthan Ajmer L1 Hubs of Haryana, Delhi, Maharashtra & Gujarat 
+40 Tamilnadu Tiruvalla L1 Hubs of Karnataka, Andhra Pradesh, Kerala & Telangana Circles  
+41 Tamilnadu Tirupur L1 Hub Mumbai & L1 Hubs of Karnataka, Andhra Pradesh, Kerala & Telangana Circles  
+42 Tamilnadu Villupuram L1 Hubs of Karnataka, Andhra Pradesh, Kerala & Telangana Circles  
+43 Tamilnadu Erode L1 Hubs of Karnataka, Andhra Pradesh, Kerala & Telangana Circles  
+44 Tamilnadu Trichy Delhi, Mumbai, Kolkata & L1 Hubs of Karnataka, Andhra Pradesh, Kerala & Telangana Circles  
+45 Tamilnadu Jollarpettai Bengaluru & Kozhikode 
+46 Tamilnadu Vellore Bengaluru & Kozhikode 
+47 Telangana Warangal L1 Hubs of Andhra Pradesh, Chhattisgarh, Maharashtra, Karnataka 
+48 Uttar Pradesh Varanasi L1 Hubs of Bihar, Jharkhand, Madhya Pradesh, Chhattisgarh 
+49 Uttar Pradesh Meerut L1 hubs of Delhi, Haryana, Uttarakhand, Rajasthan 
+50 Uttar Pradesh Gorakhpur L1 hubs of Delhi, Mumbai, Kolkata, Chennai, Hyderabad, Bengaluru,  
+51 West Bengal Sealdah L1 hubs of Jharkhand, Odisha, Bihar Circles  
+52 West Bengal Portblair Delhi, Mumbai, Chennai, Hyderabad, Bengaluru, Kolkata 
+  
+ 

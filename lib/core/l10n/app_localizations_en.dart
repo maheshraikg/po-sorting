@@ -2345,4 +2345,25 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get exportAllSub =>
       'Lines, rules, air codes, NSH / NPH / L1 hubs, office changes and favourites as Excel files – share or save them';
+
+  @override
+  String get parcelNetwork => 'Parcel hub network';
+
+  @override
+  String get parcelNetworkSub => 'MPOP L1 / L2 parcel hubs from 07.10.2026';
+
+  @override
+  String get parcelNetworkIntro =>
+      'Rationalised parcel hub network under MPOP (Parcel Directorate letter F.No. 39-04/2025-PD, 24.09.2026), in force from 07.10.2026: 60 L1 hubs, 127 L2 hubs with their L1, and 52 L2 hubs allowed direct bag closure to L1 hubs of other circles. The NPH card in Sort follows this list.';
+
+  @override
+  String get parcelNetworkDirect => 'Direct bags';
+
+  @override
+  String get parcelNetworkSearch => 'Search hub or circle';
+
+  @override
+  String parcelNetworkDirectTo(String hubs) {
+    return 'Direct bags to: $hubs';
+  }
 }

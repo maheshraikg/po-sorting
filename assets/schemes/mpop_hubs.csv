@@ -1,0 +1,188 @@
+Level,Circle,Hub,Mapped L1,Direct bag closure to
+L1,,1 CBPO 56 APO,,
+L1,,2 CBPO 99 APO,,
+L1,Andhra Pradesh,Tirupati,,
+L1,Andhra Pradesh,Vijayawada,,
+L1,Andhra Pradesh,Visakhapatnam,,
+L1,Assam,Guwahati,,
+L1,Assam,Silchar,,
+L1,Bihar,Patna,,
+L1,Chhattisgarh,Raipur,,
+L1,Delhi,Delhi,,
+L1,Gujarat,Ahmedabad,,
+L1,Gujarat,Rajkot,,
+L1,Gujarat,Surat,,
+L1,Haryana,Ambala,,
+L1,Haryana,Rohtak,,
+L1,Haryana,Gurgaon,,
+L1,Himachal Pradesh,Pathankot,,
+L1,Himachal Pradesh,Shimla,,
+L1,Jammu & Kashmir,Jammu,,
+L1,Jammu & Kashmir,Srinagar,,
+L1,Jharkhand,Ranchi,,
+L1,Karnataka,Bangalore,,
+L1,Karnataka,Hubli,,
+L1,Karnataka,Mangalore,,
+L1,Karnataka,Arsikere,,
+L1,Kerala,Kochi,,
+L1,Kerala,Kozhikode,,
+L1,Kerala,Thiruvananthapuram,,
+L1,Kerala,Thrissur,,
+L1,Madhya Pradesh,Bhopal,,
+L1,Madhya Pradesh,Gwalior,,
+L1,Madhya Pradesh,Indore,,
+L1,Madhya Pradesh,Jabalpur,,
+L1,Maharashtra,CS Nagar,,
+L1,Maharashtra,Mumbai,,
+L1,Maharashtra,Nagpur,,
+L1,Maharashtra,Pune,,
+L1,North East,Imphal,,
+L1,Orissa,Bhubaneswar,,
+L1,Punjab,Chandigarh,,
+L1,Punjab,Jalandhar,,
+L1,Punjab,Ludhiana,,
+L1,Rajasthan,Jaipur,,
+L1,Rajasthan,Jodhpur,,
+L1,Tamil Nadu,Chennai,,
+L1,Tamil Nadu,Coimbatore,,
+L1,Tamil Nadu,Madurai,,
+L1,Tamil Nadu,Salem,,
+L1,Telangana,Hyderabad,,
+L1,Uttar Pradesh,Agra,,
+L1,Uttar Pradesh,Bareilly,,
+L1,Uttar Pradesh,Ghaziabad,,
+L1,Uttar Pradesh,Kanpur,,
+L1,Uttar Pradesh,Lucknow,,
+L1,Uttar Pradesh,Prayagraj,,
+L1,Uttarakhand,Dehradun,,
+L1,Uttarakhand,Rudrapur,,
+L1,West Bengal,Kolkata,,
+L1,West Bengal,Siliguri,,
+L1,West Bengal,Port Blair,,"Delhi, Mumbai, Chennai, Hyderabad, Bengaluru, Kolkata"
+L2,Andhra Pradesh,Ananthpur,Bangalore,
+L2,Andhra Pradesh,Cuddapah,Tirupati,
+L2,Andhra Pradesh,Eluru,Vijayawada,
+L2,Andhra Pradesh,Guntur,Vijayawada,"Hyderabad, Bhubaneshwar & L1 Hubs of Karnataka"
+L2,Andhra Pradesh,Kurnool,Hyderabad,
+L2,Andhra Pradesh,Nellore,Tirupati,
+L2,Andhra Pradesh,Ongole,Vijayawada,
+L2,Andhra Pradesh,Rajamundry,Vijayawada,
+L2,Andhra Pradesh,Srikakulam,Visakhapatnam,
+L2,Assam,Jorhat,Guwahati,
+L2,Assam,Tezpur,Guwahati,
+L2,Assam,Dibrugarh,Guwahati,"Delhi, Mumbai, Hyderabad, Chennai, Bengaluru, Kolkata & all Hubs of Assam & NE Circle"
+L2,Bihar,Barauni,Patna,"Lucknow, Ranchi, Kolkata, Siliguri, Bhubaneshwar"
+L2,Bihar,Bhagalpur,Patna,
+L2,Bihar,Chapra,Patna,
+L2,Bihar,Gaya,Patna,
+L2,Bihar,Kiul,Patna,
+L2,Bihar,Muzaffarpur,Patna,"Lucknow, Ranchi, Kolkata, Siliguri, Bhubaneshwar"
+L2,Chhattisgarh,Bilaspur,Raipur,"Bhopal, Indore, Bhubaneshwar, Ranchi & L1 Hubs of Maharashtra Circle"
+L2,Chhattisgarh,Durg,Raipur,
+L2,Gujarat,Anand,Ahmedabad,
+L2,Gujarat,Bharuch,Surat,
+L2,Gujarat,Bhavnagar,Ahmedabad,
+L2,Gujarat,Bhuj,Ahmedabad,
+L2,Gujarat,Jamnagar,Rajkot,
+L2,Gujarat,Junagarh,Rajkot,
+L2,Gujarat,Mehsana,Ahmedabad,"L1 Hubs of Delhi, Rajasthan, Madhya Pradesh, Maharashtra Circles"
+L2,Gujarat,Valsad,Surat,
+L2,Gujarat,Vadodara,Ahmedabad,"L1 Hubs of Rajasthan, Madhya Pradesh, Maharashtra, Delhi Circles"
+L2,Haryana,Hisar,Rohtak,"L1 Hubs of Punjab, Rajasthan & Delhi"
+L2,Haryana,Karnal,Ambala,"L1 Hubs of Punjab, Uttar Pradesh & Delhi"
+L2,Haryana,Sonepat,Rohtak,
+L2,Himachal Pradesh,Hamirpur,Pathankot,
+L2,Himachal Pradesh,Mandi,Ambala,
+L2,Jammu & Kashmir,Leh,Delhi,"L1 Hubs of Punjab, Haryana & Delhi"
+L2,Jharkhand,Dhanbad,Ranchi,
+L2,Jharkhand,B. Deoghar,Ranchi,"L1 hubs of Bihar, Chhattisgarh, Odisha & West Bengal Circles"
+L2,Jharkhand,Jamshedpur,Ranchi,"L1 hubs of Bihar, Chhattisgarh, Odisha & West Bengal Circles"
+L2,Karnataka,Bagalkot,Hubli,
+L2,Karnataka,Devangere,Bangalore,
+L2,Karnataka,Gulbarga,Hyderabad,
+L2,Karnataka,Hosapete,Hubli,
+L2,Karnataka,Raichur,Hyderabad,
+L2,Karnataka,Tumkur,Bangalore,
+L2,Karnataka,Belagavi,Hubli,"L1 Hubs of Kerala, Tamilnadu, Andhra Pradesh, Telangana, Maharashtra, Gujarat, 1CBPO, 2 CBPO & Delhi"
+L2,Karnataka,Mysuru,Bangalore,"L1 Hubs of Kerala, Tamilnadu, Andhra Pradesh, Telangana, Delhi & Mumbai"
+L2,Kerala,Kannur,Kozhikode,"L1 Hubs of Karnataka, Tamilnadu, Andhra Pradesh, Telangana & Delhi"
+L2,Kerala,Kollam,Thiruvananthapuram,"L1 Hubs of Karnataka, Tamilnadu, Andhra Pradesh, Telangana & Delhi"
+L2,Kerala,Kottayam,Kochi,"L1 Hubs of Karnataka, Tamilnadu, Andhra Pradesh, Telangana & Delhi"
+L2,Kerala,Palakkad,Coimbatore,"L1 Hubs of Karnataka, Tamilnadu, Andhra Pradesh, Telangana & Delhi"
+L2,Kerala,Tiruvalla,Kochi,"L1 Hubs of Karnataka, Andhra Pradesh, Kerala & Telangana Circles"
+L2,Madhya Pradesh,Itarsi,Bhopal,
+L2,Madhya Pradesh,Katni,Jabalpur,
+L2,Madhya Pradesh,Ratlam,Indore,
+L2,Madhya Pradesh,Satna,Jabalpur,
+L2,Maharashtra,Ahmednagar,Pune,"L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi"
+L2,Maharashtra,Akola,Nagpur,"L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi"
+L2,Maharashtra,Amravati,Nagpur,
+L2,Maharashtra,Chandarpur,Nagpur,
+L2,Maharashtra,Jalgaon,Mumbai,"L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi"
+L2,Maharashtra,Miraj,Pune,"L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi"
+L2,Maharashtra,Nanded,CS Nagar,"L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi"
+L2,Maharashtra,Nashik,Mumbai,"L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi"
+L2,Maharashtra,Ratnagiri,Mumbai,
+L2,Maharashtra,Satara,Pune,
+L2,Maharashtra,Solapur,Pune,"L1 Hubs of Gujarat, Madhya Pradesh, Telangana & Delhi"
+L2,Maharashtra,Margaon,Mumbai,
+L2,North East,Shillong,Guwahati,"Delhi, Mumbai, Hyderabad, Chennai, Bengaluru, Kolkata, Siliguri & all Hubs of Assam Circle"
+L2,North East,Aizawl,Silchar,"Delhi, Mumbai, Hyderabad, Chennai, Bengaluru, Kolkata, Siliguri & all Hubs of Assam Circle"
+L2,North East,Itanagar,Guwahati,"Delhi, Mumbai, Hyderabad, Chennai, Bengaluru, Kolkata, Siliguri & all Hubs of Assam Circle"
+L2,North East,Agartala,Silchar,"Delhi, Mumbai, Hyderabad, Chennai, Bengaluru, Kolkata, Siliguri & all Hubs of Assam Circle"
+L2,North East,Dimapur,Guwahati,"Delhi, Mumbai, Hyderabad, Chennai, Bengaluru, Kolkata, Siliguri & all Hubs of Assam Circle"
+L2,Orissa,Balangir,Bhubaneswar,
+L2,Orissa,Balasore,Bhubaneswar,
+L2,Orissa,Cuttack,Bhubaneswar,
+L2,Orissa,Jajpur,Bhubaneswar,
+L2,Orissa,Jeypore,Bhubaneswar,
+L2,Orissa,Berhampur,Bhubaneswar,"L1 hubs of Bihar, Chhattisgarh, Jharkhand & West Bengal Circles"
+L2,Orissa,Sambalpur,Bhubaneswar,"L1 hubs of Bihar, Chhattisgarh, Jharkhand & West Bengal Circles"
+L2,Punjab,Amritsar,Jalandhar,"L1 Hubs of Haryana, Rajasthan, Himachal Pradesh & Delhi"
+L2,Punjab,Bhatinda,Ludhiana,"L1 Hubs of Haryana, Rajasthan, Himachal Pradesh & Delhi"
+L2,Punjab,Patiala,Chandigarh,"L1 Hubs of Haryana, Rajasthan, Himachal Pradesh & Delhi"
+L2,Rajasthan,Alwar,Jaipur,
+L2,Rajasthan,Bikaner,Jodhpur,"L1 Hubs of Haryana, Delhi, Maharashtra & Gujarat"
+L2,Rajasthan,Falna,Jodhpur,
+L2,Rajasthan,Kota,Jaipur,
+L2,Rajasthan,Sikar,Jaipur,"L1 Hubs of Haryana, Delhi, Maharashtra & Gujarat"
+L2,Rajasthan,Sri Ganganagar,Jodhpur,
+L2,Rajasthan,Udaipur,Jaipur,"L1 Hubs of Haryana, Delhi, Maharashtra & Gujarat"
+L2,Rajasthan,Ajmer,Jaipur,"L1 Hubs of Haryana, Delhi, Maharashtra & Gujarat"
+L2,Tamil Nadu,Dindigul,Madurai,
+L2,Tamil Nadu,Erode,Salem,"L1 Hubs of Karnataka, Andhra Pradesh, Kerala & Telangana Circles"
+L2,Tamil Nadu,Jolarpatti,Chennai,Bengaluru & Kozhikode
+L2,Tamil Nadu,Karaikudi,Madurai,
+L2,Tamil Nadu,Mayiladuuturai,Chennai,
+L2,Tamil Nadu,Nagarcoil,Madurai,
+L2,Tamil Nadu,Thanjavur,Chennai,
+L2,Tamil Nadu,Tirunelveli,Madurai,
+L2,Tamil Nadu,Tirupur,Coimbatore,"L1 Hub Mumbai & L1 Hubs of Karnataka, Andhra Pradesh, Kerala & Telangana Circles"
+L2,Tamil Nadu,Tuticorin,Madurai,
+L2,Tamil Nadu,Vellore,Chennai,Bengaluru & Kozhikode
+L2,Tamil Nadu,Villupuram,Chennai,"L1 Hubs of Karnataka, Andhra Pradesh, Kerala & Telangana Circles"
+L2,Tamil Nadu,Vridhachalam,Chennai,
+L2,Tamil Nadu,Trichy,Chennai,"Delhi, Mumbai, Kolkata & L1 Hubs of Karnataka, Andhra Pradesh, Kerala & Telangana Circles"
+L2,Telangana,Karimnagar,Hyderabad,
+L2,Telangana,Nalgonda,Hyderabad,
+L2,Telangana,Nizamabad,Hyderabad,
+L2,Telangana,Warangal,Hyderabad,"L1 Hubs of Andhra Pradesh, Chhattisgarh, Maharashtra, Karnataka"
+L2,Uttar Pradesh,Aligarh,Agra,
+L2,Uttar Pradesh,Faizabad,Lucknow,
+L2,Uttar Pradesh,Gonda,Lucknow,
+L2,Uttar Pradesh,Kheri,Lucknow,
+L2,Uttar Pradesh,Mau,Lucknow,
+L2,Uttar Pradesh,Meerut,Ghaziabad,"L1 hubs of Delhi, Haryana, Uttarakhand, Rajasthan"
+L2,Uttar Pradesh,Moradabad,Bareilly,
+L2,Uttar Pradesh,Saharanpur,Ghaziabad,
+L2,Uttar Pradesh,Varanasi,Prayagraj,"L1 Hubs of Bihar, Jharkhand, Madhya Pradesh, Chhattisgarh"
+L2,Uttar Pradesh,Jhanshi,Agra,
+L2,Uttar Pradesh,Gorakhpur,Lucknow,"L1 hubs of Delhi, Mumbai, Kolkata, Chennai, Hyderabad, Bengaluru,"
+L2,Uttara-khand,Haridwar,Dehradun,
+L2,West Bengal,Bankura,Kolkata,
+L2,West Bengal,Berhampore,Kolkata,
+L2,West Bengal,Burdwan,Kolkata,
+L2,West Bengal,Howrah,Kolkata,
+L2,West Bengal,Kharagpur,Kolkata,
+L2,West Bengal,Malda,Siliguri,
+L2,West Bengal,Sealdah,Kolkata,"L1 hubs of Jharkhand, Odisha, Bihar Circles"
