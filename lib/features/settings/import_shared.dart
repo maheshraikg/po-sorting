@@ -14,10 +14,11 @@ import '../../core/l10n/app_localizations.dart';
 import '../../core/settings.dart';
 import '../../core/theme.dart';
 import '../../data/app_services.dart';
-import '../../data/directory_builder.dart' show NameCorrection, OfficeData;
+import '../../data/directory_builder.dart' show NameCorrection, OfficeData, OfficeEdit;
 import '../../data/import/scheme_import.dart';
 import '../../data/import/scheme_io.dart';
 import '../../data/import/table_reader.dart';
+import '../../data/models/office.dart';
 import '../../data/models/scheme.dart';
 import '../../data/nsh.dart';
 import '../../data/villages.dart';
@@ -31,6 +32,52 @@ class SharedOfficeChange {
 
   final OfficeData? before;
   final OfficeData? after;
+}
+
+/// The change [e] still needs on this phone (null = nothing to do): adds a
+/// missing office, updates one whose details differ, removes or edits one
+/// that is still here.
+Future<OfficeEdit?> neededChange(AppServices services, SharedOfficeChange e, [Map<int, List<Office>>? cache]) async {
+  Future<OfficeData?> find(OfficeData o) async {
+    final offs = cache == null ? await services.directory.officesForPin(o.pincode) : (cache[o.pincode] ??= await services.directory.officesForPin(o.pincode));
+    final x = offs.where((x) => x.officeName == o.name && x.officeType == o.type).firstOrNull;
+    return x == null ? null : officeData(x);
+  }
+
+  final before = e.before, after = e.after;
+  if (before == null) {
+    final here = await find(after!);
+    if (here == null) return OfficeEdit(before: null, after: after);
+    return here.sameAs(after) ? null : OfficeEdit(before: here, after: after);
+  }
+  final here = await find(before);
+  if (here == null) return null;
+  if (after == null) return OfficeEdit(before: here, after: null);
+  if (here.sameAs(after)) return null;
+  if (!after.sameOffice(here) && await find(after) != null) return null;
+  return OfficeEdit(before: here, after: after);
+}
+
+String _editKey(OfficeEdit e) => [e.before, e.after].map((o) => o == null ? '-' : '${o.pincode}|${o.name}|${o.type}').join('>');
+
+/// Office changes of [d] still needed here, without repeats.
+Future<List<OfficeEdit>> neededChanges(AppServices services, SharedData d) async {
+  final cache = <int, List<Office>>{};
+  final seen = <String>{};
+  final out = <OfficeEdit>[];
+  String key(OfficeData o) => '${o.pincode}|${o.name}|${o.type}';
+  // Offices that earlier changes in the list create or take away.
+  final made = <String>{}, gone = <String>{};
+  for (final e in d.officeChanges) {
+    final n = await neededChange(services, e, cache);
+    if (n == null || !seen.add(_editKey(n))) continue;
+    if (n.after != null && made.contains(key(n.after!))) continue;
+    if (n.before != null && gone.contains(key(n.before!))) continue;
+    out.add(n);
+    if (n.after != null) made.add(key(n.after!));
+    if (n.before != null && (n.after == null || key(n.after!) != key(n.before!))) gone.add(key(n.before!));
+  }
+  return out;
 }
 
 class SharedData {
@@ -97,6 +144,14 @@ SharedData? readSharedData(TableFile t) {
   }
 
   final changes = <SharedOfficeChange>[];
+  final byOffice = <String, VillageList>{};
+  void addVillage(int pin, String name, String v) {
+    final k = '$pin|$name';
+    final old = byOffice[k];
+    if (old?.villages.contains(v) ?? false) return;
+    byOffice[k] = VillageList(pin: pin, office: name, villages: [...?old?.villages, v]);
+  }
+
   final renames = <Map<String, Object?>>[];
   for (final r in body('Office_changes')) {
     final now = office(r, 1), was = office(r, 7);
@@ -112,14 +167,50 @@ SharedData? readSharedData(TableFile t) {
     }
   }
 
-  final byOffice = <String, VillageList>{};
   for (final r in body('Villages')) {
     final pin = int.tryParse(at(r, 0));
     final name = at(r, 1), v = at(r, 2);
     if (pin == null || name.isEmpty || v.isEmpty) continue;
-    final k = '$pin|$name';
-    final old = byOffice[k];
-    byOffice[k] = VillageList(pin: pin, office: name, villages: [...?old?.villages, v]);
+    addVillage(pin, name, v);
+  }
+
+  // Full office list (columns found by header, so a sheet edited in Google
+  // Sheets / Excel still reads).
+  final full = s['Offices'];
+  if (full != null && full.length > 1) {
+    final h = [for (final c in full.first) c.trim().toLowerCase()];
+    int col(String name) => h.indexOf(name.toLowerCase());
+    final cPin = col('PIN'), cName = col('Office'), cType = col('Type'), cDel = col('Delivery'), cDist = col('District'), cState = col('State');
+    final cVil = col('Villages'), cStatus = col('Status'), cWasPin = col('Was PIN'), cWas = col('Was office');
+    String get(List<String> r, int i) => i < 0 ? '' : at(r, i);
+    for (final r in full.skip(1)) {
+      final pin = int.tryParse(get(r, cPin));
+      final name = get(r, cName);
+      if (pin == null || name.isEmpty) continue;
+      final o = OfficeData(
+        pincode: pin,
+        name: name,
+        type: get(r, cType),
+        delivery: get(r, cDel).toLowerCase() != 'non-delivery',
+        district: get(r, cDist),
+        state: get(r, cState),
+      );
+      final status = get(r, cStatus).toLowerCase();
+      if (status == 'removed') {
+        changes.add(SharedOfficeChange(o, null));
+        continue;
+      }
+      final wasPin = int.tryParse(get(r, cWasPin)), wasName = get(r, cWas);
+      if (wasPin != null && wasName.isNotEmpty) {
+        changes.add(
+          SharedOfficeChange(OfficeData(pincode: wasPin, name: wasName, type: o.type, delivery: o.delivery, district: o.district, state: o.state), o),
+        );
+      }
+      changes.add(SharedOfficeChange(null, o));
+      for (final v in get(r, cVil).split(',')) {
+        if (v.trim().isNotEmpty) addVillage(pin, name, v.trim());
+      }
+    }
   }
 
   final edited = aboutValue('Edited hub tables').split(',').map((x) => x.trim()).toSet();
@@ -162,7 +253,10 @@ class ShareChoice {
 
 /// How a share pack compares with this phone.
 class ShareOffer {
-  const ShareOffer({required this.tables, required this.schemeSame});
+  const ShareOffer({required this.tables, required this.schemeSame, this.offices = 0});
+
+  /// Office changes (and name fixes) still needed on this phone.
+  final int offices;
 
   /// Hub tables in the file that differ from this phone's.
   final Set<HubTableKind> tables;
@@ -183,7 +277,7 @@ NshTable? _table(List<List<String>> rows) {
   }
 }
 
-ShareOffer shareOffer(AppServices services, SharedData d) {
+Future<ShareOffer> shareOffer(AppServices services, SharedData d) async {
   final tables = <HubTableKind>{};
   for (final e in d.tables.entries) {
     final t = _table(e.value);
@@ -191,7 +285,7 @@ ShareOffer shareOffer(AppServices services, SharedData d) {
   }
   final a = services.active;
   final same = a != null && d.hasScheme && writeCsv(bagRulesTable(a.bagResolver.rules, a.bags)) == writeCsv(d.schemeRules);
-  return ShareOffer(tables: tables, schemeSame: same);
+  return ShareOffer(tables: tables, schemeSame: same, offices: (await neededChanges(services, d)).length + d.renames.length);
 }
 
 /// What an import added.
@@ -207,17 +301,10 @@ class ShareResult {
 Future<ShareResult> applySharedData(AppServices services, Settings settings, SharedData d, ShareChoice c) async {
   final out = ShareResult();
   if (c.offices) {
-    Future<bool> has(OfficeData o) async => (await services.directory.officesForPin(o.pincode)).any((x) => x.officeName == o.name && x.officeType == o.type);
     for (final e in d.officeChanges) {
-      final before = e.before, after = e.after;
-      if (before == null) {
-        if (await has(after!)) continue;
-      } else if (!await has(before)) {
-        continue;
-      } else if (after != null && before.sameAs(after)) {
-        continue;
-      }
-      await saveOfficeChange(settings, services, before, after);
+      final n = await neededChange(services, e);
+      if (n == null) continue;
+      await saveOfficeChange(settings, services, n.before, n.after);
       out.offices++;
     }
     final fixes = [...settings.officeFixes];
@@ -299,14 +386,15 @@ Future<void> importSharedData(BuildContext context) async {
   } catch (_) {
     d = null;
   }
-  final offer = d == null ? null : shareOffer(services, d);
-  if (d == null || (d.isEmpty && offer!.tables.isEmpty)) {
+  final offer = d == null ? null : await shareOffer(services, d);
+  if (!context.mounted) return;
+  if (d == null || (offer!.offices == 0 && d.villageCount == 0 && d.favourites.isEmpty && !d.hasScheme && offer.tables.isEmpty)) {
     messenger.showSnackBar(SnackBar(content: Text(d == null ? l.shareNotPack : l.shareEmpty)));
     return;
   }
   final choice = await showDialog<ShareChoice>(
     context: context,
-    builder: (_) => ShareImportDialog(data: d!, offer: offer!, fileName: f.name),
+    builder: (_) => ShareImportDialog(data: d!, offer: offer, fileName: f.name),
   );
   if (choice == null) return;
   final r = await applySharedData(services, settings, d, choice);
@@ -348,7 +436,7 @@ class _ShareImportDialogState extends State<ShareImportDialog> {
           children: [
             Text([widget.fileName, if (d.date.isNotEmpty) d.date].join(' · '), style: Theme.of(context).textTheme.bodySmall),
             const SizedBox(height: 8),
-            if (d.officeCount > 0) row('offices', l.officeFixes, l.shareNOffices(d.officeCount), _c.offices, (v) => _c.offices = v),
+            if (widget.offer.offices > 0) row('offices', l.officeFixes, l.shareNOffices(widget.offer.offices), _c.offices, (v) => _c.offices = v),
             if (d.villageCount > 0) row('villages', l.villagesMine, l.shareNVillages(d.villageCount), _c.villages, (v) => _c.villages = v),
             for (final k in widget.offer.tables)
               row(

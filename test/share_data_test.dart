@@ -58,14 +58,24 @@ void main() {
     final files = (await tester.runAsync(() => exportAllData(a.services, a.settings, now: DateTime(2026, 10, 16))))!;
     final bytes = files[sharePackName(DateTime(2026, 10, 16))] as Uint8List;
     final pack = readSharedData(readTable(bytes, 'PO_Sorting_data_2026-10-16.xlsx'))!;
-    expect(pack.officeCount, 2);
+    expect(pack.renames, isEmpty);
+    // Full office list of the area, with status.
+    final offices = readTable(bytes, 'x.xlsx').sheets['Offices']!;
+    expect(offices.first.take(3), ['PIN', 'Office', 'Type']);
+    expect(offices.length, greaterThan(10));
+    String status(String name) => offices.firstWhere((r) => r[1] == name)[12];
+    expect(status('Kemminje'), 'Added');
+    expect(status('Darbe Jn'), 'Changed');
+    expect(offices.firstWhere((r) => r[1] == 'Kemminje')[9], 'Kodimbadi, Bolwar');
+    expect(offices.where((r) => r[12] == 'Original'), isNotEmpty);
     expect(pack.villageCount, 2);
     expect(pack.editedTables, {HubTableKind.nph});
     expect(pack.hasScheme, isTrue);
 
     // Phone B.
     final b = await _phone(tester);
-    final offer = shareOffer(b.services, pack);
+    final offer = (await tester.runAsync(() => shareOffer(b.services, pack)))!;
+    expect(offer.offices, 2);
     expect(offer.tables, {HubTableKind.nph}); // B has the same bundled NSH / L1 / RMS NSH
     expect(offer.schemeSame, isTrue); // B has the same default scheme
     final choice = offer.choice(pack)..scheme = true;
@@ -113,6 +123,7 @@ void main() {
         ['r'],
       ],
     );
+    final offer = (await tester.runAsync(() => shareOffer(h.services, d)))!;
     ShareChoice? got;
     await tester.pumpWidget(
       h.wrap(
@@ -121,7 +132,7 @@ void main() {
             body: TextButton(
               onPressed: () async => got = await showDialog(
                 context: c,
-                builder: (_) => ShareImportDialog(data: d, offer: shareOffer(h.services, d), fileName: 'x.xlsx'),
+                builder: (_) => ShareImportDialog(data: d, offer: offer, fileName: 'x.xlsx'),
               ),
               child: const Text('go'),
             ),
@@ -139,5 +150,30 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('share_import')));
     await tester.pumpAndSettle();
     expect((got!.favourites, got!.scheme), (true, false));
+  });
+
+  testWidgets('Offices sheet edited in Google Sheets: new row added, Removed row removed', (tester) async {
+    final h = await _phone(tester);
+    final rows = [
+      ['PIN', 'Office', 'Type', 'Delivery', 'District', 'State', 'Villages', 'Status'],
+      ['574202', 'Hosa Kere', 'BO', 'Delivery', 'Dakshina Kannada', 'Karnataka', 'Kere Bail, Mundaje', ''],
+      ['574202', 'Darbe', 'BO', 'Delivery', '', '', '', 'Removed'],
+    ];
+    final d = readSharedData(
+      TableFile({
+        'About': [
+          [kSharePackMarker],
+        ],
+        'Offices': rows,
+      }),
+    )!;
+    final offer = (await tester.runAsync(() => shareOffer(h.services, d)))!;
+    expect(offer.offices, 2);
+    final r = (await tester.runAsync(() => applySharedData(h.services, h.settings, d, offer.choice(d))))!;
+    expect((r.offices, r.villages), (2, 2));
+    final at = (await tester.runAsync(() => h.services.directory.officesForPin(574202)))!.map((o) => o.officeName);
+    expect(at, contains('Hosa Kere'));
+    expect(at, isNot(contains('Darbe')));
+    expect(h.services.villages.of(574202, 'Hosa Kere'), ['Kere Bail', 'Mundaje']);
   });
 }
