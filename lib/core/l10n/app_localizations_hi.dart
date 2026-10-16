@@ -2415,7 +2415,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get shareImportSub =>
-      'किसी और का भेजा PO_Sorting_data Excel फ़ाइल चुनें';
+      'किसी और की भेजी PO_Sorting_data Excel फ़ाइल चुनें (Downloads, WhatsApp या Drive से)';
 
   @override
   String get shareImportTitle => 'साझा डेटा आयात';
@@ -2467,4 +2467,71 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get shareEmpty => 'इस फ़ाइल में आयात के लिए कोई बदलाव नहीं।';
+
+  @override
+  String get shareData => 'डेटा साझा करें और बैकअप';
+
+  @override
+  String get shareDataSub =>
+      'अपना सारा डेटा दूसरों को भेजें, Drive में सहेजें, या फ़ाइल आयात करें';
+
+  @override
+  String get shareDataIntro =>
+      'आपके कार्यालय, गांव, लाइनें, नियम, हब और पसंदीदा एक Excel फ़ाइल में। दूसरा उपयोगकर्ता इसे आयात करके वही डेटा पाता है।';
+
+  @override
+  String get shareDataSend => 'पूरा डेटा भेजें';
+
+  @override
+  String get shareDataSendSub => 'WhatsApp, Gmail, Drive, Bluetooth…';
+
+  @override
+  String get shareDataSave => 'फ़ाइल सहेजें (फ़ोन या Google Drive)';
+
+  @override
+  String get shareDataSaveSub =>
+      'बैकअप रखें; ऑनलाइन सहेजने के लिए सूची में Drive चुनें';
+
+  @override
+  String get shareDataText =>
+      'PO Sorting डेटा। PO Sorting → और → डेटा साझा करें और बैकअप → साझा डेटा आयात खोलें।';
+
+  @override
+  String get shareSaved => 'फ़ाइल सहेजी गई';
+
+  @override
+  String get shareDataHow => 'किसी और से कैसे साझा करें';
+
+  @override
+  String get shareStep1 => 'अपने बदलाव करें: कार्यालय, गांव, लाइनें, हब।';
+
+  @override
+  String get shareStep2 =>
+      '\"पूरा डेटा भेजें\" दबाएं और WhatsApp पर भेजें, या Drive में सहेजें।';
+
+  @override
+  String get shareStep3 => 'दूसरा व्यक्ति फ़ाइल अपने फ़ोन में डाउनलोड करता है।';
+
+  @override
+  String get shareStep4 =>
+      'वे यह स्क्रीन खोलें, \"साझा डेटा आयात करें\" दबाएं, फ़ाइल चुनें, जो चाहिए उस पर टिक करें और आयात दबाएं।';
+
+  @override
+  String get shareSheetsTitle => 'Google Sheets';
+
+  @override
+  String get shareSheetsHint =>
+      'फ़ाइल Google Sheets और Excel में खुलती है – वहां जांचें या सुधारें। Sheets से फिर आयात के लिए: File → Download → Microsoft Excel (.xlsx)। शीट के नाम न बदलें (Office_changes, Villages, NPH…)।';
+
+  @override
+  String get shareTable => 'हब तालिका';
+
+  @override
+  String get shareTableEdited => 'भेजने वाले ने बदली – आपकी तालिका की जगह लेगी';
+
+  @override
+  String get shareTableDiffers => 'आपकी से अलग – आपकी तालिका की जगह लेगी';
+
+  @override
+  String get shareSchemeSame => 'आपकी जैसी ही';
 }

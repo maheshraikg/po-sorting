@@ -5,6 +5,8 @@
 /// with "Import shared data" (see import_shared.dart).
 library;
 
+import 'dart:typed_data';
+
 import '../../core/constants.dart';
 import '../../core/settings.dart';
 import '../../data/app_services.dart';
@@ -25,12 +27,21 @@ String _d(DateTime t) => '${t.year}-${t.month.toString().padLeft(2, '0')}-${t.da
 /// File name of the share pack made on [now].
 String sharePackName(DateTime now) => 'PO_Sorting_data_${_d(now)}.xlsx';
 
+/// Every scheme as its own file, plus the share pack.
 Future<Map<String, Object>> exportAllData(AppServices services, Settings settings, {DateTime? now}) async {
   final when = now ?? DateTime.now();
   final files = <String, Object>{};
   for (final s in await services.schemes.schemes()) {
     files.addAll(await exportScheme(services.schemes, s, xlsx: true));
   }
+  files[sharePackName(when)] = await buildSharePack(services, settings, now: when);
+  return files;
+}
+
+/// The share pack: one .xlsx with all of this phone's data that another
+/// user can import (and that opens in Excel / Google Sheets).
+Future<Uint8List> buildSharePack(AppServices services, Settings settings, {DateTime? now}) async {
+  final when = now ?? DateTime.now();
   final edited = [
     for (final e in kHubSheets.entries)
       if (settings.tableCsv(e.key.prefsKey) != null) e.value,
@@ -44,7 +55,8 @@ Future<Map<String, Object>> exportAllData(AppServices services, Settings setting
       ['Date', _d(when)],
       ['Edited hub tables', edited.join(', ')],
       ['Scheme', scheme?.scheme.name ?? ''],
-      ['Import', 'Open PO Sorting → More → Edit my data → Import shared data, and pick this file.'],
+      ['Import', 'Open PO Sorting → More → Share & backup data → Import a data file, and pick this file.'],
+      ['Google Sheets', 'To edit in Google Sheets and import again: File → Download → Microsoft Excel (.xlsx). Keep the sheet names.'],
     ],
     for (final e in kHubSheets.entries)
       if (services.table(e.key) != null) e.value: services.table(e.key)!.toRows(),
@@ -82,6 +94,5 @@ Future<Map<String, Object>> exportAllData(AppServices services, Settings setting
     if (scheme.airResolver.rules.isNotEmpty) sheets['Scheme_AirCodes'] = airCodesTable(scheme.airResolver.rules);
     if (scheme.hubResolver.rules.isNotEmpty) sheets['Scheme_DMSL'] = dmslTable(scheme.hubResolver.rules);
   }
-  files[sharePackName(when)] = writeXlsx(sheets);
-  return files;
+  return writeXlsx(sheets);
 }

@@ -65,7 +65,12 @@ void main() {
 
     // Phone B.
     final b = await _phone(tester);
-    final r = (await tester.runAsync(() => applySharedData(b.services, b.settings, pack, ShareChoice())))!;
+    final offer = shareOffer(b.services, pack);
+    expect(offer.tables, {HubTableKind.nph}); // B has the same bundled NSH / L1 / RMS NSH
+    expect(offer.schemeSame, isTrue); // B has the same default scheme
+    final choice = offer.choice(pack)..scheme = true;
+    expect(choice.tables, {HubTableKind.nph});
+    final r = (await tester.runAsync(() => applySharedData(b.services, b.settings, pack, choice)))!;
     expect((r.offices, r.villages, r.tables, r.favourites, r.scheme), (2, 2, 1, 1, true));
     final at = (await tester.runAsync(() => b.services.directory.officesForPin(574202)))!.map((o) => o.officeName).toList();
     expect(at, containsAll(['Kemminje', 'Darbe Jn']));
@@ -116,7 +121,7 @@ void main() {
             body: TextButton(
               onPressed: () async => got = await showDialog(
                 context: c,
-                builder: (_) => ShareImportDialog(data: d, fileName: 'x.xlsx'),
+                builder: (_) => ShareImportDialog(data: d, offer: shareOffer(h.services, d), fileName: 'x.xlsx'),
               ),
               child: const Text('go'),
             ),

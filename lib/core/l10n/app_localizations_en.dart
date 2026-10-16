@@ -2420,7 +2420,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareImportSub =>
-      'Pick the PO_Sorting_data Excel file another user sent you';
+      'Pick the PO_Sorting_data Excel file another user sent you (from Downloads, WhatsApp or Drive)';
 
   @override
   String get shareImportTitle => 'Import shared data';
@@ -2472,4 +2472,72 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareEmpty => 'This file has no changes to import.';
+
+  @override
+  String get shareData => 'Share & backup data';
+
+  @override
+  String get shareDataSub =>
+      'Send all your data to others, save it to Drive, or import a file';
+
+  @override
+  String get shareDataIntro =>
+      'Your offices, villages, lines, rules, hubs and favourites go into one Excel file. Another user imports it and gets the same data.';
+
+  @override
+  String get shareDataSend => 'Send full data';
+
+  @override
+  String get shareDataSendSub => 'WhatsApp, Gmail, Drive, Bluetooth…';
+
+  @override
+  String get shareDataSave => 'Save file (phone or Google Drive)';
+
+  @override
+  String get shareDataSaveSub =>
+      'Keep a backup; choose Drive in the list to save it online';
+
+  @override
+  String get shareDataText =>
+      'PO Sorting data. Open PO Sorting → More → Share & backup data → Import a data file.';
+
+  @override
+  String get shareSaved => 'File saved';
+
+  @override
+  String get shareDataHow => 'How to share with another person';
+
+  @override
+  String get shareStep1 => 'Make your changes: offices, villages, lines, hubs.';
+
+  @override
+  String get shareStep2 =>
+      'Tap \"Send full data\" and send the file on WhatsApp, or save it to Drive.';
+
+  @override
+  String get shareStep3 =>
+      'The other person downloads the file on their phone.';
+
+  @override
+  String get shareStep4 =>
+      'They open this screen, tap \"Import shared data\", pick the file, tick what they want and tap Import.';
+
+  @override
+  String get shareSheetsTitle => 'Google Sheets';
+
+  @override
+  String get shareSheetsHint =>
+      'The file opens in Google Sheets and Excel – you can check or correct it there. To import it again from Sheets: File → Download → Microsoft Excel (.xlsx). Keep the sheet names (Office_changes, Villages, NPH…).';
+
+  @override
+  String get shareTable => 'Hub table';
+
+  @override
+  String get shareTableEdited => 'Edited by the sender – replaces yours';
+
+  @override
+  String get shareTableDiffers => 'Different from yours – replaces yours';
+
+  @override
+  String get shareSchemeSame => 'same as yours';
 }

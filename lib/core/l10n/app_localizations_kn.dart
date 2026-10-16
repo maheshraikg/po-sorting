@@ -2427,7 +2427,7 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get shareImportSub =>
-      'ಇನ್ನೊಬ್ಬರು ಕಳುಹಿಸಿದ PO_Sorting_data Excel ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ';
+      'ಇನ್ನೊಬ್ಬರು ಕಳುಹಿಸಿದ PO_Sorting_data Excel ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ (Downloads, WhatsApp ಅಥವಾ Drive ನಿಂದ)';
 
   @override
   String get shareImportTitle => 'ಹಂಚಿದ ಡೇಟಾ ಆಮದು';
@@ -2479,4 +2479,73 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get shareEmpty => 'ಈ ಫೈಲ್‌ನಲ್ಲಿ ಆಮದು ಮಾಡಲು ಬದಲಾವಣೆಗಳಿಲ್ಲ.';
+
+  @override
+  String get shareData => 'ಡೇಟಾ ಹಂಚಿ & ಬ್ಯಾಕಪ್';
+
+  @override
+  String get shareDataSub =>
+      'ನಿಮ್ಮ ಎಲ್ಲಾ ಡೇಟಾ ಇತರರಿಗೆ ಕಳುಹಿಸಿ, Drive ಗೆ ಉಳಿಸಿ, ಅಥವಾ ಫೈಲ್ ಆಮದು ಮಾಡಿ';
+
+  @override
+  String get shareDataIntro =>
+      'ನಿಮ್ಮ ಕಚೇರಿ, ಗ್ರಾಮ, ಲೈನ್, ನಿಯಮ, ಹಬ್ ಮತ್ತು ಮೆಚ್ಚಿನವು ಒಂದೇ Excel ಫೈಲ್‌ನಲ್ಲಿ. ಇನ್ನೊಬ್ಬರು ಅದನ್ನು ಆಮದು ಮಾಡಿದರೆ ಅದೇ ಡೇಟಾ ಸಿಗುತ್ತದೆ.';
+
+  @override
+  String get shareDataSend => 'ಪೂರ್ಣ ಡೇಟಾ ಕಳುಹಿಸಿ';
+
+  @override
+  String get shareDataSendSub => 'WhatsApp, Gmail, Drive, Bluetooth…';
+
+  @override
+  String get shareDataSave => 'ಫೈಲ್ ಉಳಿಸಿ (ಫೋನ್ ಅಥವಾ Google Drive)';
+
+  @override
+  String get shareDataSaveSub =>
+      'ಬ್ಯಾಕಪ್ ಇಡಿ; ಆನ್‌ಲೈನ್ ಉಳಿಸಲು ಪಟ್ಟಿಯಲ್ಲಿ Drive ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String get shareDataText =>
+      'PO Sorting ಡೇಟಾ. PO Sorting → ಇನ್ನಷ್ಟು → ಡೇಟಾ ಹಂಚಿ & ಬ್ಯಾಕಪ್ → ಹಂಚಿದ ಡೇಟಾ ಆಮದು ತೆರೆಯಿರಿ.';
+
+  @override
+  String get shareSaved => 'ಫೈಲ್ ಉಳಿಸಲಾಗಿದೆ';
+
+  @override
+  String get shareDataHow => 'ಇನ್ನೊಬ್ಬರೊಂದಿಗೆ ಹಂಚುವುದು ಹೇಗೆ';
+
+  @override
+  String get shareStep1 => 'ನಿಮ್ಮ ಬದಲಾವಣೆ ಮಾಡಿ: ಕಚೇರಿ, ಗ್ರಾಮ, ಲೈನ್, ಹಬ್.';
+
+  @override
+  String get shareStep2 =>
+      '\"ಪೂರ್ಣ ಡೇಟಾ ಕಳುಹಿಸಿ\" ಒತ್ತಿ WhatsApp ನಲ್ಲಿ ಕಳುಹಿಸಿ, ಅಥವಾ Drive ಗೆ ಉಳಿಸಿ.';
+
+  @override
+  String get shareStep3 =>
+      'ಇನ್ನೊಬ್ಬರು ಫೈಲ್ ಅನ್ನು ತಮ್ಮ ಫೋನ್‌ಗೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡುತ್ತಾರೆ.';
+
+  @override
+  String get shareStep4 =>
+      'ಅವರು ಈ ಪರದೆ ತೆರೆದು \"ಹಂಚಿದ ಡೇಟಾ ಆಮದು\" ಒತ್ತಿ, ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ, ಬೇಕಾದುದನ್ನು ಗುರುತಿಸಿ ಆಮದು ಒತ್ತುತ್ತಾರೆ.';
+
+  @override
+  String get shareSheetsTitle => 'Google Sheets';
+
+  @override
+  String get shareSheetsHint =>
+      'ಫೈಲ್ Google Sheets ಮತ್ತು Excel ನಲ್ಲಿ ತೆರೆಯುತ್ತದೆ – ಅಲ್ಲಿ ಪರಿಶೀಲಿಸಿ ಅಥವಾ ಸರಿಪಡಿಸಿ. Sheets ನಿಂದ ಮತ್ತೆ ಆಮದು ಮಾಡಲು: File → Download → Microsoft Excel (.xlsx). ಶೀಟ್ ಹೆಸರುಗಳನ್ನು ಬದಲಿಸಬೇಡಿ (Office_changes, Villages, NPH…).';
+
+  @override
+  String get shareTable => 'ಹಬ್ ಪಟ್ಟಿ';
+
+  @override
+  String get shareTableEdited =>
+      'ಕಳುಹಿಸಿದವರು ಬದಲಿಸಿದ್ದು – ನಿಮ್ಮದನ್ನು ಬದಲಿಸುತ್ತದೆ';
+
+  @override
+  String get shareTableDiffers => 'ನಿಮ್ಮದಕ್ಕಿಂತ ಬೇರೆ – ನಿಮ್ಮದನ್ನು ಬದಲಿಸುತ್ತದೆ';
+
+  @override
+  String get shareSchemeSame => 'ನಿಮ್ಮದರಂತೆಯೇ';
 }

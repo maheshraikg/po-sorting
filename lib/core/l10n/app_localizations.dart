@@ -4315,7 +4315,7 @@ abstract class AppLocalizations {
   /// No description provided for @shareImportSub.
   ///
   /// In en, this message translates to:
-  /// **'Pick the PO_Sorting_data Excel file another user sent you'**
+  /// **'Pick the PO_Sorting_data Excel file another user sent you (from Downloads, WhatsApp or Drive)'**
   String get shareImportSub;
 
   /// No description provided for @shareImportTitle.
@@ -4395,6 +4395,126 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This file has no changes to import.'**
   String get shareEmpty;
+
+  /// No description provided for @shareData.
+  ///
+  /// In en, this message translates to:
+  /// **'Share & backup data'**
+  String get shareData;
+
+  /// No description provided for @shareDataSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Send all your data to others, save it to Drive, or import a file'**
+  String get shareDataSub;
+
+  /// No description provided for @shareDataIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Your offices, villages, lines, rules, hubs and favourites go into one Excel file. Another user imports it and gets the same data.'**
+  String get shareDataIntro;
+
+  /// No description provided for @shareDataSend.
+  ///
+  /// In en, this message translates to:
+  /// **'Send full data'**
+  String get shareDataSend;
+
+  /// No description provided for @shareDataSendSub.
+  ///
+  /// In en, this message translates to:
+  /// **'WhatsApp, Gmail, Drive, Bluetooth…'**
+  String get shareDataSendSub;
+
+  /// No description provided for @shareDataSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save file (phone or Google Drive)'**
+  String get shareDataSave;
+
+  /// No description provided for @shareDataSaveSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep a backup; choose Drive in the list to save it online'**
+  String get shareDataSaveSub;
+
+  /// No description provided for @shareDataText.
+  ///
+  /// In en, this message translates to:
+  /// **'PO Sorting data. Open PO Sorting → More → Share & backup data → Import a data file.'**
+  String get shareDataText;
+
+  /// No description provided for @shareSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'File saved'**
+  String get shareSaved;
+
+  /// No description provided for @shareDataHow.
+  ///
+  /// In en, this message translates to:
+  /// **'How to share with another person'**
+  String get shareDataHow;
+
+  /// No description provided for @shareStep1.
+  ///
+  /// In en, this message translates to:
+  /// **'Make your changes: offices, villages, lines, hubs.'**
+  String get shareStep1;
+
+  /// No description provided for @shareStep2.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap \"Send full data\" and send the file on WhatsApp, or save it to Drive.'**
+  String get shareStep2;
+
+  /// No description provided for @shareStep3.
+  ///
+  /// In en, this message translates to:
+  /// **'The other person downloads the file on their phone.'**
+  String get shareStep3;
+
+  /// No description provided for @shareStep4.
+  ///
+  /// In en, this message translates to:
+  /// **'They open this screen, tap \"Import shared data\", pick the file, tick what they want and tap Import.'**
+  String get shareStep4;
+
+  /// No description provided for @shareSheetsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Google Sheets'**
+  String get shareSheetsTitle;
+
+  /// No description provided for @shareSheetsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The file opens in Google Sheets and Excel – you can check or correct it there. To import it again from Sheets: File → Download → Microsoft Excel (.xlsx). Keep the sheet names (Office_changes, Villages, NPH…).'**
+  String get shareSheetsHint;
+
+  /// No description provided for @shareTable.
+  ///
+  /// In en, this message translates to:
+  /// **'Hub table'**
+  String get shareTable;
+
+  /// No description provided for @shareTableEdited.
+  ///
+  /// In en, this message translates to:
+  /// **'Edited by the sender – replaces yours'**
+  String get shareTableEdited;
+
+  /// No description provided for @shareTableDiffers.
+  ///
+  /// In en, this message translates to:
+  /// **'Different from yours – replaces yours'**
+  String get shareTableDiffers;
+
+  /// No description provided for @shareSchemeSame.
+  ///
+  /// In en, this message translates to:
+  /// **'same as yours'**
+  String get shareSchemeSame;
 }
 
 class _AppLocalizationsDelegate

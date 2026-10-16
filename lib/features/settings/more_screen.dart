@@ -17,6 +17,7 @@ import 'help_screen.dart';
 import 'legal_screen.dart';
 import 'parcel_network_screen.dart';
 import 'settings_screen.dart';
+import 'share_data_screen.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
@@ -37,6 +38,7 @@ class MoreScreen extends StatelessWidget {
       body: ListView(
         children: [
           item(Icons.edit_note, l.editData, l.editDataSub, const EditDataScreen()),
+          item(Icons.cloud_sync_outlined, l.shareData, l.shareDataSub, const ShareDataScreen()),
           item(Icons.school_outlined, l.navLearn, l.learnSub, const LearnScreen()),
           item(Icons.pin_outlined, l.pinQuiz, l.pinQuizSub, const PinQuizScreen()),
           item(Icons.rule_folder_outlined, l.schemes, l.schemesSub, const SchemesScreen()),

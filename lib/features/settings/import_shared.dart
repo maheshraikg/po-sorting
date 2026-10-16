@@ -68,7 +68,8 @@ class SharedData {
   int get officeCount => officeChanges.length + renames.length;
   bool get hasScheme => schemeRules.length > 1;
 
-  bool get isEmpty => officeCount == 0 && villageCount == 0 && editedTables.isEmpty && favourites.isEmpty && !hasScheme;
+  /// Nothing to import apart from (maybe) hub tables; see [ShareOffer].
+  bool get isEmpty => officeCount == 0 && villageCount == 0 && favourites.isEmpty && !hasScheme;
 }
 
 /// Reads a share pack; null when [t] is not one.
@@ -151,9 +152,46 @@ SharedData? readSharedData(TableFile t) {
 
 /// What to take from a share pack.
 class ShareChoice {
-  ShareChoice({this.offices = true, this.villages = true, this.tables = true, this.favourites = true, this.scheme = true});
+  ShareChoice({this.offices = true, this.villages = true, Set<HubTableKind>? tables, this.favourites = true, this.scheme = true}) : tables = tables ?? {};
 
-  bool offices, villages, tables, favourites, scheme;
+  bool offices, villages, favourites, scheme;
+
+  /// Hub tables to take (they replace this phone's copy).
+  final Set<HubTableKind> tables;
+}
+
+/// How a share pack compares with this phone.
+class ShareOffer {
+  const ShareOffer({required this.tables, required this.schemeSame});
+
+  /// Hub tables in the file that differ from this phone's.
+  final Set<HubTableKind> tables;
+
+  /// The file's scheme has the same rules as the active scheme here.
+  final bool schemeSame;
+
+  /// Ticked at first: the sender's own edits, and a scheme not here yet.
+  ShareChoice choice(SharedData d) => ShareChoice(tables: tables.intersection(d.editedTables), scheme: !schemeSame);
+}
+
+NshTable? _table(List<List<String>> rows) {
+  try {
+    final t = NshTable.parse(Uint8List.fromList(utf8.encode(writeCsv(rows))));
+    return t.hubs.isEmpty ? null : t;
+  } catch (_) {
+    return null;
+  }
+}
+
+ShareOffer shareOffer(AppServices services, SharedData d) {
+  final tables = <HubTableKind>{};
+  for (final e in d.tables.entries) {
+    final t = _table(e.value);
+    if (t != null && t.toCsv() != services.table(e.key)?.toCsv()) tables.add(e.key);
+  }
+  final a = services.active;
+  final same = a != null && d.hasScheme && writeCsv(bagRulesTable(a.bagResolver.rules, a.bags)) == writeCsv(d.schemeRules);
+  return ShareOffer(tables: tables, schemeSame: same);
 }
 
 /// What an import added.
@@ -204,15 +242,12 @@ Future<ShareResult> applySharedData(AppServices services, Settings settings, Sha
       out.villages += services.villages.of(v.pin, v.office).length - before;
     }
   }
-  if (c.tables) {
-    for (final k in d.editedTables) {
-      final csv = writeCsv(d.tables[k]!);
-      final t = NshTable.parse(Uint8List.fromList(utf8.encode(csv)));
-      if (t.hubs.isEmpty) continue;
-      settings.setTableCsv(k.prefsKey, csv);
-      services.setTable(k, t);
-      out.tables++;
-    }
+  for (final k in c.tables) {
+    final t = d.tables[k] == null ? null : _table(d.tables[k]!);
+    if (t == null) continue;
+    settings.setTableCsv(k.prefsKey, t.toCsv());
+    services.setTable(k, t);
+    out.tables++;
   }
   if (c.favourites) {
     final have = await services.user.favourites();
@@ -264,13 +299,14 @@ Future<void> importSharedData(BuildContext context) async {
   } catch (_) {
     d = null;
   }
-  if (d == null || d.isEmpty) {
+  final offer = d == null ? null : shareOffer(services, d);
+  if (d == null || (d.isEmpty && offer!.tables.isEmpty)) {
     messenger.showSnackBar(SnackBar(content: Text(d == null ? l.shareNotPack : l.shareEmpty)));
     return;
   }
   final choice = await showDialog<ShareChoice>(
     context: context,
-    builder: (_) => ShareImportDialog(data: d!, fileName: f.name),
+    builder: (_) => ShareImportDialog(data: d!, offer: offer!, fileName: f.name),
   );
   if (choice == null) return;
   final r = await applySharedData(services, settings, d, choice);
@@ -278,9 +314,10 @@ Future<void> importSharedData(BuildContext context) async {
 }
 
 class ShareImportDialog extends StatefulWidget {
-  const ShareImportDialog({super.key, required this.data, required this.fileName});
+  const ShareImportDialog({super.key, required this.data, required this.offer, required this.fileName});
 
   final SharedData data;
+  final ShareOffer offer;
   final String fileName;
 
   @override
@@ -288,7 +325,7 @@ class ShareImportDialog extends StatefulWidget {
 }
 
 class _ShareImportDialogState extends State<ShareImportDialog> {
-  final _c = ShareChoice();
+  late final _c = widget.offer.choice(widget.data);
 
   @override
   Widget build(BuildContext context) {
@@ -313,14 +350,23 @@ class _ShareImportDialogState extends State<ShareImportDialog> {
             const SizedBox(height: 8),
             if (d.officeCount > 0) row('offices', l.officeFixes, l.shareNOffices(d.officeCount), _c.offices, (v) => _c.offices = v),
             if (d.villageCount > 0) row('villages', l.villagesMine, l.shareNVillages(d.villageCount), _c.villages, (v) => _c.villages = v),
-            if (d.editedTables.isNotEmpty)
-              row('tables', l.shareTables, [for (final k in d.editedTables) kHubSheets[k]!].join(', '), _c.tables, (v) => _c.tables = v),
+            for (final k in widget.offer.tables)
+              row(
+                'table_${k.name}',
+                '${l.shareTable} ${kHubSheets[k]!.replaceAll('_', ' ')}',
+                d.editedTables.contains(k) ? l.shareTableEdited : l.shareTableDiffers,
+                _c.tables.contains(k),
+                (v) => v ? _c.tables.add(k) : _c.tables.remove(k),
+              ),
             if (d.favourites.isNotEmpty) row('favourites', l.favourites, l.shareNFavourites(d.favourites.length), _c.favourites, (v) => _c.favourites = v),
             if (d.hasScheme)
               row(
                 'scheme',
                 l.shareScheme,
-                l.shareSchemeSub(d.schemeName.isEmpty ? '—' : d.schemeName, d.schemeRules.length - 1),
+                [
+                  l.shareSchemeSub(d.schemeName.isEmpty ? '—' : d.schemeName, d.schemeRules.length - 1),
+                  if (widget.offer.schemeSame) l.shareSchemeSame,
+                ].join(' · '),
                 _c.scheme,
                 (v) => _c.scheme = v,
               ),
