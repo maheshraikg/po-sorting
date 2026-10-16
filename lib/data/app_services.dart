@@ -11,6 +11,7 @@ import 'nsh.dart';
 import 'scheme_repo.dart';
 import 'sort_engine.dart';
 import 'user_repo.dart';
+import 'villages.dart';
 
 class AppServices extends ChangeNotifier {
   AppServices({required Database directoryDb, required Database userDb})
@@ -62,6 +63,17 @@ class AppServices extends ChangeNotifier {
     notifyListeners();
   }
 
+  VillageBook _villages = VillageBook.empty;
+
+  /// The user's villages under offices (searched with the offices).
+  VillageBook get villages => _villages;
+
+  set villages(VillageBook b) {
+    _villages = b;
+    directory.villages = b;
+    notifyListeners();
+  }
+
   ActiveScheme? get active => _active;
   List<String> get categories => _categories;
 
@@ -99,7 +111,7 @@ class AppServices extends ChangeNotifier {
   Future<int> renameOffices(List<NameCorrection> fixes) async {
     final n = await applyNameCorrections(_directoryDb, fixes);
     if (n > 0) {
-      directory = DirectoryRepo(_directoryDb);
+      directory = DirectoryRepo(_directoryDb, villages: _villages);
       _regions = null;
       notifyListeners();
     }
@@ -110,7 +122,7 @@ class AppServices extends ChangeNotifier {
   Future<int> editOffices(List<OfficeEdit> edits) async {
     final n = await applyOfficeEdits(_directoryDb, edits);
     if (n > 0) {
-      directory = DirectoryRepo(_directoryDb);
+      directory = DirectoryRepo(_directoryDb, villages: _villages);
       _regions = null;
       notifyListeners();
     }
@@ -121,7 +133,7 @@ class AppServices extends ChangeNotifier {
   Future<void> replaceDirectory(Database db) async {
     final old = _directoryDb;
     _directoryDb = db;
-    directory = DirectoryRepo(db);
+    directory = DirectoryRepo(db, villages: _villages);
     _regions = null;
     notifyListeners();
     await old.close();

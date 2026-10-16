@@ -9,6 +9,7 @@ import '../../data/directory_builder.dart' show OfficeData, OfficeEdit;
 import '../../data/import/scheme_io.dart';
 import '../../data/import/table_reader.dart';
 import '../../data/nsh.dart';
+import '../../data/villages.dart';
 
 String _d(DateTime t) => '${t.year}-${t.month.toString().padLeft(2, '0')}-${t.day.toString().padLeft(2, '0')}';
 
@@ -34,6 +35,11 @@ Future<Map<String, Object>> exportAllData(AppServices services, Settings setting
     ['Change', 'PIN', 'Office', 'Type', 'Delivery', 'District', 'State', 'Was PIN', 'Was office', 'Was type', 'Was delivery', 'Was district', 'Was state'],
     for (final e in edits) [e.before == null ? 'Added' : e.after == null ? 'Removed' : 'Changed', ...office(e.after ?? e.before), ...office(e.after == null ? null : e.before)],
     for (final f in settings.officeFixes) ['Renamed', '${f['pin']}', '${f['new']}', '${f['type']}', '', '', '', '${f['pin']}', '${f['old']}', '${f['type']}', '', '', ''],
+  ];
+  sheets['Villages'] = [
+    ['PIN', 'Office', 'Village'],
+    for (final e in settings.villages.map(VillageList.fromJson))
+      for (final v in e.villages) ['${e.pin}', e.office, v],
   ];
   final favs = await services.user.favourites();
   sheets['Favourites'] = [

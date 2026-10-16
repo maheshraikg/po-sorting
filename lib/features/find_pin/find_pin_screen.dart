@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../settings/office_editor.dart';
+import '../settings/village_editor.dart';
 import '../../core/app_scope.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../../core/widgets.dart';
@@ -105,9 +106,19 @@ class _FindPinScreenState extends State<FindPinScreen> {
           children: [
             OfficeTile(
               office: o,
+              villages: services.villages.of(o.pincode, o.officeName),
               onEdit: () async {
                 Navigator.pop(c);
                 if (await editOffice(context, office: o) && mounted) _search();
+              },
+            ),
+            ListTile(
+              key: const ValueKey('office_villages'),
+              leading: const Icon(Icons.holiday_village_outlined),
+              title: Text(l.villagesEdit),
+              onTap: () async {
+                Navigator.pop(c);
+                if (await editVillages(context, pin: o.pincode, name: o.officeName, type: o.officeType) && mounted) _search();
               },
             ),
             if (o.division.isNotEmpty || o.taluk.isNotEmpty)
@@ -249,7 +260,11 @@ class _FindPinScreenState extends State<FindPinScreen> {
                   return OfficeTile(
                     office: h.office,
                     onTap: () => _details(h.office),
-                    subtitleExtra: res.bag == null ? null : '${l.bag}: ${res.bag!.label}',
+                    villages: services.villages.of(h.office.pincode, h.office.officeName),
+                    subtitleExtra: [
+                      if (h.village != null) l.villageFound(h.village!),
+                      if (res.bag != null) '${l.bag}: ${res.bag!.label}',
+                    ].join('\n').nullIfEmpty,
                     trailing: res.bag == null ? null : CircleAvatar(backgroundColor: bagColour(context, res.bag), radius: 10),
                   );
                 },
@@ -326,4 +341,8 @@ class _ChoiceFilter extends StatelessWidget {
       },
     );
   }
+}
+
+extension on String {
+  String? get nullIfEmpty => isEmpty ? null : this;
 }

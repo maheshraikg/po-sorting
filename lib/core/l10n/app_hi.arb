@@ -687,5 +687,18 @@
   "parcelNetworkIntro": "MPOP के तहत पुनर्गठित पार्सल हब नेटवर्क (पार्सल निदेशालय पत्र F.No. 39-04/2025-PD, 24.09.2026), 07.10.2026 से लागू: 60 L1 हब, 127 L2 हब और उनके L1, तथा अन्य सर्किलों के L1 हब को सीधे बैग बंद करने की अनुमति वाले 52 L2 हब। सॉर्ट का NPH कार्ड इसी सूची का पालन करता है।",
   "parcelNetworkDirect": "सीधे बैग",
   "parcelNetworkSearch": "हब या सर्किल खोजें",
-  "parcelNetworkDirectTo": "सीधे बैग: {hubs}"
+  "parcelNetworkDirectTo": "सीधे बैग: {hubs}",
+  "villages": "गांव",
+  "villagesEdit": "गांव जोड़ें / हटाएं",
+  "villageAdd": "गांव जोड़ें",
+  "villageAddHint": "गांव का नाम लिखें और + दबाएं। कॉमा से कई जोड़ें।",
+  "villageRemove": "गांव हटाएं",
+  "villagesNone": "अभी कोई गांव नहीं।",
+  "villagesSaved": "{name} के लिए {count} गांव सहेजे गए",
+  "villageFound": "गांव: {village}",
+  "villagesMine": "मेरे गांव",
+  "villagesMineSub": "डाकघरों के नीचे आपके जोड़े गांव",
+  "villagesMineNone": "अभी कोई गांव नहीं जोड़ा। पिन खोलें, फिर डाकघर के पास गांव बटन दबाएं।",
+  "villagesHint": "गांव का नाम खोजने पर उसका डाकघर और पिन दिखता है।",
+  "villagesCount": "{n} डाकघरों के नीचे {count} गांव"
 }

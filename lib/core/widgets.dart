@@ -324,10 +324,25 @@ class HubRouteCard extends StatelessWidget {
 }
 
 class OfficeTile extends StatelessWidget {
-  const OfficeTile({super.key, required this.office, this.trailing, this.onTap, this.subtitleExtra, this.onEdit});
+  const OfficeTile({
+    super.key,
+    required this.office,
+    this.trailing,
+    this.onTap,
+    this.subtitleExtra,
+    this.onEdit,
+    this.villages = const [],
+    this.onVillages,
+  });
 
   final Office office;
   final Widget? trailing;
+
+  /// The user's villages under this office, shown under it.
+  final List<String> villages;
+
+  /// Shows an "add / remove villages" button when set.
+  final VoidCallback? onVillages;
 
   /// Shows an edit button (rename the office) when set.
   final VoidCallback? onEdit;
@@ -354,6 +369,11 @@ class OfficeTile extends StatelessWidget {
               style: office.delivery ? null : TextStyle(color: warn, fontWeight: FontWeight.w700),
             ),
             TextSpan(text: '\n${office.district}, ${office.state}'),
+            if (villages.isNotEmpty)
+              TextSpan(
+                text: '\n${l.villages}: ${villages.join(', ')}',
+                style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w600),
+              ),
             if (subtitleExtra != null)
               TextSpan(
                 text: '\n$subtitleExtra',
@@ -364,13 +384,26 @@ class OfficeTile extends StatelessWidget {
       ),
       isThreeLine: true,
       trailing: trailing ??
-          (onEdit == null
+          (onEdit == null && onVillages == null
               ? null
-              : IconButton(
-                  key: ValueKey('edit_office_${office.pin}_${office.officeName}'),
-                  tooltip: l.editOfficeName,
-                  icon: const Icon(Icons.edit_outlined),
-                  onPressed: onEdit,
+              : Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (onVillages != null)
+                      IconButton(
+                        key: ValueKey('villages_office_${office.pin}_${office.officeName}'),
+                        tooltip: l.villages,
+                        icon: const Icon(Icons.holiday_village_outlined),
+                        onPressed: onVillages,
+                      ),
+                    if (onEdit != null)
+                      IconButton(
+                        key: ValueKey('edit_office_${office.pin}_${office.officeName}'),
+                        tooltip: l.editOfficeName,
+                        icon: const Icon(Icons.edit_outlined),
+                        onPressed: onEdit,
+                      ),
+                  ],
                 )),
     );
   }

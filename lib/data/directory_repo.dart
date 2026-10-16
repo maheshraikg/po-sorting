@@ -7,14 +7,18 @@ import 'package:sqflite_common/sqlite_api.dart';
 import '../core/fuzzy.dart';
 import 'directory_builder.dart' show kOfficeFrom, kOfficeSelect;
 import 'models/office.dart';
+import 'villages.dart';
 
 class SearchHit {
-  const SearchHit(this.office, this.score);
+  const SearchHit(this.office, this.score, {this.village});
 
   final Office office;
 
   /// 0..1 similarity of the query to this office (name, taluk or district).
   final double score;
+
+  /// The user's village (under this office) that matched the query.
+  final String? village;
 }
 
 class SearchFilter {
@@ -50,9 +54,12 @@ abstract class DirectorySource {
 }
 
 class DirectoryRepo implements DirectorySource {
-  DirectoryRepo(this.db, {bool? useFts}) : _forceFts = useFts;
+  DirectoryRepo(this.db, {bool? useFts, this.villages}) : _forceFts = useFts;
 
   final Database db;
+
+  /// The user's villages under offices; found by [search] too.
+  VillageBook? villages;
   final bool? _forceFts;
   bool? _fts;
   Map<String, List<String>>? _keyBuckets;
@@ -214,6 +221,7 @@ class DirectoryRepo implements DirectorySource {
       if (o.officeType == 'SO') s += 0.002;
       hits.add(SearchHit(o, s > 1 ? 1 : s));
     }
+    await _addVillages(query, filter, hits);
     hits.sort((a, b) {
       final c = b.score.compareTo(a.score);
       return c != 0 ? c : a.office.officeName.compareTo(b.office.officeName);
@@ -222,6 +230,30 @@ class DirectoryRepo implements DirectorySource {
   }
 
   double _max(double a, double b) => a > b ? a : b;
+
+  /// Offices with a user village matching [query]; replaces a weaker hit of
+  /// the same office.
+  Future<void> _addVillages(String query, SearchFilter f, List<SearchHit> hits) async {
+    final book = villages;
+    if (book == null || book.isEmpty) return;
+    final pins = <int, List<Office>>{};
+    for (final v in book.find(query).take(30)) {
+      final offs = pins[v.pin] ??= await officesForPin(v.pin);
+      final o = offs.where((o) => normalizePlace(o.officeName) == v.officeNorm).firstOrNull;
+      if (o == null) continue;
+      if (f.state != null && o.state != f.state) continue;
+      if (f.district != null && o.district != f.district) continue;
+      if (f.deliveryOnly && !o.delivery) continue;
+      final i = hits.indexWhere((h) => h.office.pincode == o.pincode && h.office.officeName == o.officeName);
+      // A village match beats a same-score office-name match.
+      final s = v.score + 0.005;
+      if (i < 0) {
+        hits.add(SearchHit(o, s > 1 ? 1 : s, village: v.village));
+      } else if (hits[i].village == null) {
+        hits[i] = SearchHit(o, _max(hits[i].score, s > 1 ? 1 : s), village: v.village);
+      }
+    }
+  }
 
   /// Loads distinct phonetic keys once, bucketed by first letter, and
   /// returns keys within the tolerated edit distance of [qk].

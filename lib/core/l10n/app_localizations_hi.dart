@@ -2362,4 +2362,51 @@ class AppLocalizationsHi extends AppLocalizations {
   String parcelNetworkDirectTo(String hubs) {
     return 'सीधे बैग: $hubs';
   }
+
+  @override
+  String get villages => 'गांव';
+
+  @override
+  String get villagesEdit => 'गांव जोड़ें / हटाएं';
+
+  @override
+  String get villageAdd => 'गांव जोड़ें';
+
+  @override
+  String get villageAddHint =>
+      'गांव का नाम लिखें और + दबाएं। कॉमा से कई जोड़ें।';
+
+  @override
+  String get villageRemove => 'गांव हटाएं';
+
+  @override
+  String get villagesNone => 'अभी कोई गांव नहीं।';
+
+  @override
+  String villagesSaved(int count, String name) {
+    return '$name के लिए $count गांव सहेजे गए';
+  }
+
+  @override
+  String villageFound(String village) {
+    return 'गांव: $village';
+  }
+
+  @override
+  String get villagesMine => 'मेरे गांव';
+
+  @override
+  String get villagesMineSub => 'डाकघरों के नीचे आपके जोड़े गांव';
+
+  @override
+  String get villagesMineNone =>
+      'अभी कोई गांव नहीं जोड़ा। पिन खोलें, फिर डाकघर के पास गांव बटन दबाएं।';
+
+  @override
+  String get villagesHint => 'गांव का नाम खोजने पर उसका डाकघर और पिन दिखता है।';
+
+  @override
+  String villagesCount(int count, int n) {
+    return '$n डाकघरों के नीचे $count गांव';
+  }
 }

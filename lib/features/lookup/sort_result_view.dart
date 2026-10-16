@@ -23,6 +23,7 @@ import '../../data/nsh.dart';
 import '../../data/sort_engine.dart';
 import '../schemes/import_wizard.dart';
 import '../settings/office_editor.dart';
+import '../settings/village_editor.dart';
 import '../schemes/scheme_editor.dart';
 import 'air_badge.dart';
 import 'hub_cards.dart';
@@ -399,7 +400,13 @@ class _OfficeListState extends State<_OfficeList> {
             padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
             child: Text(l.deliveryOfficesN(offices.length), style: Theme.of(context).textTheme.labelLarge),
           ),
-          for (final o in shown) OfficeTile(office: o, onEdit: () => editOffice(context, office: o)),
+          for (final o in shown)
+            OfficeTile(
+              office: o,
+              villages: context.services.villages.of(o.pincode, o.officeName),
+              onVillages: () => editVillages(context, pin: o.pincode, name: o.officeName, type: o.officeType),
+              onEdit: () => editOffice(context, office: o),
+            ),
           if (!_all && offices.length > _first)
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),

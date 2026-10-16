@@ -2366,4 +2366,52 @@ class AppLocalizationsEn extends AppLocalizations {
   String parcelNetworkDirectTo(String hubs) {
     return 'Direct bags to: $hubs';
   }
+
+  @override
+  String get villages => 'Villages';
+
+  @override
+  String get villagesEdit => 'Add / remove villages';
+
+  @override
+  String get villageAdd => 'Add village';
+
+  @override
+  String get villageAddHint =>
+      'Type a village name and tap +. Add many with commas.';
+
+  @override
+  String get villageRemove => 'Remove village';
+
+  @override
+  String get villagesNone => 'No villages yet.';
+
+  @override
+  String villagesSaved(int count, String name) {
+    return '$count villages saved for $name';
+  }
+
+  @override
+  String villageFound(String village) {
+    return 'Village: $village';
+  }
+
+  @override
+  String get villagesMine => 'My villages';
+
+  @override
+  String get villagesMineSub => 'Villages you added under offices';
+
+  @override
+  String get villagesMineNone =>
+      'No villages added yet. Open a PIN, then tap the village button next to an office.';
+
+  @override
+  String get villagesHint =>
+      'Searching a village name shows its office and PIN.';
+
+  @override
+  String villagesCount(int count, int n) {
+    return '$count villages under $n offices';
+  }
 }

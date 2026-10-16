@@ -144,14 +144,14 @@ class SortScreenState extends State<SortScreen> {
     // Mangaluru, not a "Manglore BO" in Haryana.
     final hits = await services.directory.search(q, limit: 40);
     final engine = services.engine;
-    final all = [for (final h in hits) _PlaceHit(h.office, null, engine.resolveOffice(h.office, category: category))];
+    final all = [for (final h in hits) _PlaceHit(h.office, null, engine.resolveOffice(h.office, category: category), village: h.village)];
     final out = <_PlaceHit>[];
     for (final p in inModeFirst(all, (p) => p.result.bag != null).take(10)) {
       final o = p.office;
       final same = await services.directory.officesForPin(o.pincode);
       const heads = {'SO', 'PO', 'HO'};
       final so = heads.contains(o.officeType) ? null : same.where((x) => heads.contains(x.officeType)).firstOrNull;
-      out.add(_PlaceHit(o, so, p.result));
+      out.add(_PlaceHit(o, so, p.result, village: p.village));
     }
     if (!mounted || seq != _placeSeq || q != _query) return;
     setState(() => _places = out);
@@ -747,9 +747,12 @@ class _KeyChip extends StatelessWidget {
 List<T> inModeFirst<T>(List<T> items, bool Function(T) inMode) => [...items.where(inMode), ...items.where((x) => !inMode(x))];
 
 class _PlaceHit {
-  const _PlaceHit(this.office, this.accountOffice, this.result);
+  const _PlaceHit(this.office, this.accountOffice, this.result, {this.village});
 
   final Office office;
+
+  /// The user's village under this office that matched the search.
+  final String? village;
 
   /// The SO / HO a branch office belongs to (same PIN), if any.
   final Office? accountOffice;
@@ -791,6 +794,12 @@ class _PlaceCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      if (hit.village != null)
+                        Text(
+                          l.villageFound(hit.village!),
+                          key: const ValueKey('place_village'),
+                          style: t.titleSmall?.copyWith(fontWeight: FontWeight.w800, color: c.primary),
+                        ),
                       Text('${o.officeName} ${o.officeType}', style: t.titleLarge?.copyWith(fontWeight: FontWeight.w900)),
                       Text(
                         [o.pin, if (so != null) '${l.soLabel} ${so.officeName}', o.district].join(' · '),

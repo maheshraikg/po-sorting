@@ -16,6 +16,7 @@ import '../schemes/schemes_screen.dart';
 import 'nsh_editor_screen.dart';
 import 'export_all.dart';
 import 'office_fixes.dart';
+import 'village_editor.dart';
 
 class EditDataScreen extends StatelessWidget {
   const EditDataScreen({super.key});
@@ -52,6 +53,7 @@ class EditDataScreen extends StatelessWidget {
           tile('nph', Icons.inventory_2_outlined, l.nphHubs, l.nphHubsSub, const NshEditorScreen(kind: HubTableKind.nph)),
           tile('rmsnsh', Icons.compare_arrows, l.rmsNshHubs, l.rmsNshHubsSub, const NshEditorScreen(kind: HubTableKind.rmsNsh)),
           tile('offices', Icons.edit_location_alt_outlined, l.officeFixes, l.officeFixesSub, const OfficeFixesScreen()),
+          tile('villages', Icons.holiday_village_outlined, l.villagesMine, l.villagesMineSub, const VillagesScreen()),
           Card(
             child: ListTile(
               key: const ValueKey('edit_export'),

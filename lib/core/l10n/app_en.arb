@@ -1414,5 +1414,45 @@
         "type": "String"
       }
     }
+  },
+  "villages": "Villages",
+  "villagesEdit": "Add / remove villages",
+  "villageAdd": "Add village",
+  "villageAddHint": "Type a village name and tap +. Add many with commas.",
+  "villageRemove": "Remove village",
+  "villagesNone": "No villages yet.",
+  "villagesSaved": "{count} villages saved for {name}",
+  "@villagesSaved": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "villageFound": "Village: {village}",
+  "@villageFound": {
+    "placeholders": {
+      "village": {
+        "type": "String"
+      }
+    }
+  },
+  "villagesMine": "My villages",
+  "villagesMineSub": "Villages you added under offices",
+  "villagesMineNone": "No villages added yet. Open a PIN, then tap the village button next to an office.",
+  "villagesHint": "Searching a village name shows its office and PIN.",
+  "villagesCount": "{count} villages under {n} offices",
+  "@villagesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "n": {
+        "type": "int"
+      }
+    }
   }
 }

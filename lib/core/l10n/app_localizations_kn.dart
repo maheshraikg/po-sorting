@@ -2373,4 +2373,52 @@ class AppLocalizationsKn extends AppLocalizations {
   String parcelNetworkDirectTo(String hubs) {
     return 'ನೇರ ಬ್ಯಾಗ್: $hubs';
   }
+
+  @override
+  String get villages => 'ಗ್ರಾಮಗಳು';
+
+  @override
+  String get villagesEdit => 'ಗ್ರಾಮ ಸೇರಿಸಿ / ತೆಗೆಯಿರಿ';
+
+  @override
+  String get villageAdd => 'ಗ್ರಾಮ ಸೇರಿಸಿ';
+
+  @override
+  String get villageAddHint =>
+      'ಗ್ರಾಮದ ಹೆಸರು ಟೈಪ್ ಮಾಡಿ + ಒತ್ತಿ. ಅಲ್ಪವಿರಾಮದಿಂದ ಹಲವು ಸೇರಿಸಬಹುದು.';
+
+  @override
+  String get villageRemove => 'ಗ್ರಾಮ ತೆಗೆಯಿರಿ';
+
+  @override
+  String get villagesNone => 'ಇನ್ನೂ ಗ್ರಾಮಗಳಿಲ್ಲ.';
+
+  @override
+  String villagesSaved(int count, String name) {
+    return '$name ಗೆ $count ಗ್ರಾಮಗಳು ಉಳಿಸಲಾಗಿದೆ';
+  }
+
+  @override
+  String villageFound(String village) {
+    return 'ಗ್ರಾಮ: $village';
+  }
+
+  @override
+  String get villagesMine => 'ನನ್ನ ಗ್ರಾಮಗಳು';
+
+  @override
+  String get villagesMineSub => 'ಕಚೇರಿಗಳ ಅಡಿಯಲ್ಲಿ ನೀವು ಸೇರಿಸಿದ ಗ್ರಾಮಗಳು';
+
+  @override
+  String get villagesMineNone =>
+      'ಇನ್ನೂ ಗ್ರಾಮಗಳನ್ನು ಸೇರಿಸಿಲ್ಲ. ಪಿನ್ ತೆರೆದು ಕಚೇರಿಯ ಪಕ್ಕದ ಗ್ರಾಮ ಬಟನ್ ಒತ್ತಿ.';
+
+  @override
+  String get villagesHint =>
+      'ಗ್ರಾಮದ ಹೆಸರು ಹುಡುಕಿದರೆ ಅದರ ಕಚೇರಿ ಮತ್ತು ಪಿನ್ ತೋರಿಸುತ್ತದೆ.';
+
+  @override
+  String villagesCount(int count, int n) {
+    return '$n ಕಚೇರಿಗಳ ಅಡಿಯಲ್ಲಿ $count ಗ್ರಾಮಗಳು';
+  }
 }

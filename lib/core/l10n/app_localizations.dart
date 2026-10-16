@@ -4227,6 +4227,84 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Direct bags to: {hubs}'**
   String parcelNetworkDirectTo(String hubs);
+
+  /// No description provided for @villages.
+  ///
+  /// In en, this message translates to:
+  /// **'Villages'**
+  String get villages;
+
+  /// No description provided for @villagesEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Add / remove villages'**
+  String get villagesEdit;
+
+  /// No description provided for @villageAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add village'**
+  String get villageAdd;
+
+  /// No description provided for @villageAddHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Type a village name and tap +. Add many with commas.'**
+  String get villageAddHint;
+
+  /// No description provided for @villageRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove village'**
+  String get villageRemove;
+
+  /// No description provided for @villagesNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No villages yet.'**
+  String get villagesNone;
+
+  /// No description provided for @villagesSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} villages saved for {name}'**
+  String villagesSaved(int count, String name);
+
+  /// No description provided for @villageFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Village: {village}'**
+  String villageFound(String village);
+
+  /// No description provided for @villagesMine.
+  ///
+  /// In en, this message translates to:
+  /// **'My villages'**
+  String get villagesMine;
+
+  /// No description provided for @villagesMineSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Villages you added under offices'**
+  String get villagesMineSub;
+
+  /// No description provided for @villagesMineNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No villages added yet. Open a PIN, then tap the village button next to an office.'**
+  String get villagesMineNone;
+
+  /// No description provided for @villagesHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Searching a village name shows its office and PIN.'**
+  String get villagesHint;
+
+  /// No description provided for @villagesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} villages under {n} offices'**
+  String villagesCount(int count, int n);
 }
 
 class _AppLocalizationsDelegate

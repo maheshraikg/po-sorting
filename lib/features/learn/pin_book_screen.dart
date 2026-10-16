@@ -42,13 +42,16 @@ class _PinBookScreenState extends State<PinBookScreen> {
     setState(() => _entries = LearnEngine(scheme, branchOffices: offices).pinBook(widget.section));
   }
 
+  List<String> _villages(int pin, String bo) => context.services.villages.of(pin, bo);
+
   bool _matches(PinBookEntry e) {
     final q = _q.trim().toLowerCase();
     if (q.isEmpty) return true;
     return '${e.pin}'.startsWith(q) ||
         (e.head ?? '').toLowerCase().contains(q) ||
         e.line.toLowerCase().contains(q) ||
-        e.bos.any((b) => b.toLowerCase().contains(q));
+        e.bos.any((b) => b.toLowerCase().contains(q)) ||
+        e.bos.any((b) => _villages(e.pin, b).any((v) => v.toLowerCase().contains(q)));
   }
 
   @override
@@ -139,7 +142,19 @@ class _PinBookScreenState extends State<PinBookScreen> {
                                           color: cs.secondaryContainer,
                                           borderRadius: BorderRadius.circular(8),
                                         ),
-                                        child: Text(b, style: t.bodyMedium?.copyWith(color: cs.onSecondaryContainer, fontWeight: FontWeight.w600)),
+                                        child: Text.rich(
+                                          TextSpan(
+                                            text: b,
+                                            children: [
+                                              if (_villages(e.pin, b).isNotEmpty)
+                                                TextSpan(
+                                                  text: '\n${_villages(e.pin, b).join(', ')}',
+                                                  style: t.bodySmall?.copyWith(color: cs.onSecondaryContainer, fontWeight: FontWeight.w400),
+                                                ),
+                                            ],
+                                          ),
+                                          style: t.bodyMedium?.copyWith(color: cs.onSecondaryContainer, fontWeight: FontWeight.w600),
+                                        ),
                                       ),
                                   ],
                                 ),

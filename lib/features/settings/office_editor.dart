@@ -10,6 +10,7 @@ import '../../core/settings.dart';
 import '../../data/app_services.dart';
 import '../../data/directory_builder.dart' show OfficeData, OfficeEdit;
 import '../../data/models/office.dart';
+import 'village_editor.dart';
 
 OfficeData officeData(Office o) =>
     OfficeData(pincode: o.pincode, name: o.officeName, type: o.officeType, delivery: o.delivery, district: o.district, state: o.state);
@@ -39,6 +40,7 @@ Future<void> saveOfficeChange(Settings settings, AppServices services, OfficeDat
   }
   settings.officeEdits = [for (final e in list) e.toJson()];
   await services.editOffices([OfficeEdit(before: from, after: to)]);
+  if (from != null && to != null) moveOfficeVillages(settings, services, from.pincode, from.name, to.pincode, to.name);
 }
 
 /// Undoes a saved change.

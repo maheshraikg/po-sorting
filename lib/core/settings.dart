@@ -148,6 +148,22 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Villages the user added under offices (VillageList JSON).
+  List<Map<String, Object?>> get villages {
+    final raw = _prefs.getString('villages');
+    if (raw == null || raw.isEmpty) return const [];
+    try {
+      return [for (final e in jsonDecode(raw) as List) Map<String, Object?>.from(e as Map)];
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  set villages(List<Map<String, Object?>> v) {
+    _prefs.setString('villages', jsonEncode(v));
+    notifyListeners();
+  }
+
   // ---- Learning progress (XP, level, daily streak, game records) ----
 
   /// Daily practice reminder: minutes after midnight, or null when off.
