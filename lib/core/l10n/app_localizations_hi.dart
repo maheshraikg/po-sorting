@@ -2336,11 +2336,11 @@ class AppLocalizationsHi extends AppLocalizations {
   String get hubEditThis => 'यह हब बदलें';
 
   @override
-  String get exportAll => 'मेरा सारा डेटा निर्यात करें';
+  String get exportAll => 'मेरा सारा डेटा साझा / निर्यात करें';
 
   @override
   String get exportAllSub =>
-      'लाइनें, नियम, एयर कोड, NSH / NPH / L1 हब, कार्यालय बदलाव और पसंदीदा Excel फ़ाइलों में – साझा करें या सहेजें';
+      'आपकी लाइनें, नियम, हब, कार्यालय बदलाव, गांव और पसंदीदा एक Excel फ़ाइल में। WhatsApp पर भेजें या सहेजें; दूसरे इसे आयात कर सकते हैं।';
 
   @override
   String get parcelNetwork => 'पार्सल हब नेटवर्क';
@@ -2409,4 +2409,62 @@ class AppLocalizationsHi extends AppLocalizations {
   String villagesCount(int count, int n) {
     return '$n डाकघरों के नीचे $count गांव';
   }
+
+  @override
+  String get shareImport => 'साझा डेटा आयात करें';
+
+  @override
+  String get shareImportSub =>
+      'किसी और का भेजा PO_Sorting_data Excel फ़ाइल चुनें';
+
+  @override
+  String get shareImportTitle => 'साझा डेटा आयात';
+
+  @override
+  String get shareImportHint =>
+      'आपका डेटा बना रहता है। पहले से मौजूद बदलाव छोड़ दिए जाते हैं; गांव और पसंदीदा जुड़ते हैं; साझा स्कीम नई स्कीम के रूप में जुड़ती है (स्कीम में वापस बदल सकते हैं)।';
+
+  @override
+  String get shareImportGo => 'आयात';
+
+  @override
+  String get shareTables => 'बदली गई हब तालिकाएं';
+
+  @override
+  String get shareScheme => 'सॉर्टिंग स्कीम (लाइन और नियम)';
+
+  @override
+  String shareSchemeSub(String name, int count) {
+    return '$name · $count नियम';
+  }
+
+  @override
+  String shareNOffices(int count) {
+    return '$count कार्यालय बदलाव';
+  }
+
+  @override
+  String shareNVillages(int count) {
+    return '$count गांव';
+  }
+
+  @override
+  String shareNFavourites(int count) {
+    return '$count पसंदीदा';
+  }
+
+  @override
+  String shareImported(int count, int n, int rows, int shown) {
+    return 'आयात: $count कार्यालय बदलाव, $n गांव, $rows हब तालिका, $shown पसंदीदा';
+  }
+
+  @override
+  String get shareSchemeAdded => 'साझा स्कीम जोड़ी और सक्रिय की गई।';
+
+  @override
+  String get shareNotPack =>
+      'यह PO Sorting डेटा फ़ाइल नहीं है। \"डेटा साझा / निर्यात\" से बनी फ़ाइल उपयोग करें।';
+
+  @override
+  String get shareEmpty => 'इस फ़ाइल में आयात के लिए कोई बदलाव नहीं।';
 }

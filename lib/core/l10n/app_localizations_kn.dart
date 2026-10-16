@@ -2346,11 +2346,11 @@ class AppLocalizationsKn extends AppLocalizations {
   String get hubEditThis => 'ಈ ಹಬ್ ಬದಲಿಸಿ';
 
   @override
-  String get exportAll => 'ನನ್ನ ಎಲ್ಲಾ ಡೇಟಾ ರಫ್ತು ಮಾಡಿ';
+  String get exportAll => 'ನನ್ನ ಎಲ್ಲಾ ಡೇಟಾ ಹಂಚಿ / ರಫ್ತು ಮಾಡಿ';
 
   @override
   String get exportAllSub =>
-      'ಲೈನ್‌ಗಳು, ನಿಯಮಗಳು, ಏರ್ ಕೋಡ್‌ಗಳು, NSH / NPH / L1 ಹಬ್‌ಗಳು, ಕಚೇರಿ ಬದಲಾವಣೆಗಳು ಮತ್ತು ಮೆಚ್ಚಿನವು Excel ಫೈಲ್‌ಗಳಾಗಿ – ಹಂಚಿ ಅಥವಾ ಉಳಿಸಿ';
+      'ನಿಮ್ಮ ಲೈನ್, ನಿಯಮ, ಹಬ್, ಕಚೇರಿ ಬದಲಾವಣೆ, ಗ್ರಾಮ ಮತ್ತು ಮೆಚ್ಚಿನವುಗಳ ಒಂದು Excel ಫೈಲ್. WhatsApp ನಲ್ಲಿ ಕಳುಹಿಸಿ ಅಥವಾ ಉಳಿಸಿ; ಇತರರು ಅದನ್ನು ಆಮದು ಮಾಡಬಹುದು.';
 
   @override
   String get parcelNetwork => 'ಪಾರ್ಸೆಲ್ ಹಬ್ ಜಾಲ';
@@ -2421,4 +2421,62 @@ class AppLocalizationsKn extends AppLocalizations {
   String villagesCount(int count, int n) {
     return '$n ಕಚೇರಿಗಳ ಅಡಿಯಲ್ಲಿ $count ಗ್ರಾಮಗಳು';
   }
+
+  @override
+  String get shareImport => 'ಹಂಚಿದ ಡೇಟಾ ಆಮದು ಮಾಡಿ';
+
+  @override
+  String get shareImportSub =>
+      'ಇನ್ನೊಬ್ಬರು ಕಳುಹಿಸಿದ PO_Sorting_data Excel ಫೈಲ್ ಆಯ್ಕೆಮಾಡಿ';
+
+  @override
+  String get shareImportTitle => 'ಹಂಚಿದ ಡೇಟಾ ಆಮದು';
+
+  @override
+  String get shareImportHint =>
+      'ನಿಮ್ಮ ಡೇಟಾ ಉಳಿಯುತ್ತದೆ. ಈಗಾಗಲೇ ಇರುವ ಬದಲಾವಣೆಗಳನ್ನು ಬಿಡಲಾಗುತ್ತದೆ; ಗ್ರಾಮ ಮತ್ತು ಮೆಚ್ಚಿನವು ಸೇರುತ್ತವೆ; ಹಂಚಿದ ಸ್ಕೀಮ್ ಹೊಸ ಸ್ಕೀಮ್ ಆಗಿ ಸೇರುತ್ತದೆ (ಸ್ಕೀಮ್‌ಗಳಲ್ಲಿ ಮತ್ತೆ ಬದಲಿಸಬಹುದು).';
+
+  @override
+  String get shareImportGo => 'ಆಮದು';
+
+  @override
+  String get shareTables => 'ಬದಲಿಸಿದ ಹಬ್ ಪಟ್ಟಿಗಳು';
+
+  @override
+  String get shareScheme => 'ಸಾರ್ಟಿಂಗ್ ಸ್ಕೀಮ್ (ಲೈನ್ ಮತ್ತು ನಿಯಮ)';
+
+  @override
+  String shareSchemeSub(String name, int count) {
+    return '$name · $count ನಿಯಮಗಳು';
+  }
+
+  @override
+  String shareNOffices(int count) {
+    return '$count ಕಚೇರಿ ಬದಲಾವಣೆಗಳು';
+  }
+
+  @override
+  String shareNVillages(int count) {
+    return '$count ಗ್ರಾಮಗಳು';
+  }
+
+  @override
+  String shareNFavourites(int count) {
+    return '$count ಮೆಚ್ಚಿನವು';
+  }
+
+  @override
+  String shareImported(int count, int n, int rows, int shown) {
+    return 'ಆಮದು: $count ಕಚೇರಿ ಬದಲಾವಣೆ, $n ಗ್ರಾಮ, $rows ಹಬ್ ಪಟ್ಟಿ, $shown ಮೆಚ್ಚಿನವು';
+  }
+
+  @override
+  String get shareSchemeAdded => 'ಹಂಚಿದ ಸ್ಕೀಮ್ ಸೇರಿಸಿ ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ.';
+
+  @override
+  String get shareNotPack =>
+      'ಇದು PO Sorting ಡೇಟಾ ಫೈಲ್ ಅಲ್ಲ. \"ಡೇಟಾ ಹಂಚಿ / ರಫ್ತು\" ಮಾಡಿದ ಫೈಲ್ ಬಳಸಿ.';
+
+  @override
+  String get shareEmpty => 'ಈ ಫೈಲ್‌ನಲ್ಲಿ ಆಮದು ಮಾಡಲು ಬದಲಾವಣೆಗಳಿಲ್ಲ.';
 }

@@ -2340,11 +2340,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hubEditThis => 'Edit this hub';
 
   @override
-  String get exportAll => 'Export all my data';
+  String get exportAll => 'Share / export all my data';
 
   @override
   String get exportAllSub =>
-      'Lines, rules, air codes, NSH / NPH / L1 hubs, office changes and favourites as Excel files – share or save them';
+      'One Excel file with your lines, rules, hubs, office changes, villages and favourites. Send it on WhatsApp or save it; others can import it.';
 
   @override
   String get parcelNetwork => 'Parcel hub network';
@@ -2414,4 +2414,62 @@ class AppLocalizationsEn extends AppLocalizations {
   String villagesCount(int count, int n) {
     return '$count villages under $n offices';
   }
+
+  @override
+  String get shareImport => 'Import shared data';
+
+  @override
+  String get shareImportSub =>
+      'Pick the PO_Sorting_data Excel file another user sent you';
+
+  @override
+  String get shareImportTitle => 'Import shared data';
+
+  @override
+  String get shareImportHint =>
+      'Your own data stays. Changes already on this phone are skipped; villages and favourites are added; a shared scheme is added as a new scheme (change it back in Schemes).';
+
+  @override
+  String get shareImportGo => 'Import';
+
+  @override
+  String get shareTables => 'Edited hub tables';
+
+  @override
+  String get shareScheme => 'Sorting scheme (lines and rules)';
+
+  @override
+  String shareSchemeSub(String name, int count) {
+    return '$name · $count rules';
+  }
+
+  @override
+  String shareNOffices(int count) {
+    return '$count office changes';
+  }
+
+  @override
+  String shareNVillages(int count) {
+    return '$count villages';
+  }
+
+  @override
+  String shareNFavourites(int count) {
+    return '$count favourites';
+  }
+
+  @override
+  String shareImported(int count, int n, int rows, int shown) {
+    return 'Imported: $count office changes, $n villages, $rows hub tables, $shown favourites';
+  }
+
+  @override
+  String get shareSchemeAdded => 'Shared scheme added and made active.';
+
+  @override
+  String get shareNotPack =>
+      'This is not a PO Sorting data file. Use the file made with \"Share / export all my data\".';
+
+  @override
+  String get shareEmpty => 'This file has no changes to import.';
 }

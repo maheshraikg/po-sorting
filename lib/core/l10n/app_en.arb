@@ -1400,8 +1400,8 @@
   },
   "officeChangeRemoved": "Removed",
   "hubEditThis": "Edit this hub",
-  "exportAll": "Export all my data",
-  "exportAllSub": "Lines, rules, air codes, NSH / NPH / L1 hubs, office changes and favourites as Excel files – share or save them",
+  "exportAll": "Share / export all my data",
+  "exportAllSub": "One Excel file with your lines, rules, hubs, office changes, villages and favourites. Send it on WhatsApp or save it; others can import it.",
   "parcelNetwork": "Parcel hub network",
   "parcelNetworkSub": "MPOP L1 / L2 parcel hubs from 07.10.2026",
   "parcelNetworkIntro": "Rationalised parcel hub network under MPOP (Parcel Directorate letter F.No. 39-04/2025-PD, 24.09.2026), in force from 07.10.2026: 60 L1 hubs, 127 L2 hubs with their L1, and 52 L2 hubs allowed direct bag closure to L1 hubs of other circles. The NPH card in Sort follows this list.",
@@ -1454,5 +1454,67 @@
         "type": "int"
       }
     }
-  }
+  },
+  "shareImport": "Import shared data",
+  "shareImportSub": "Pick the PO_Sorting_data Excel file another user sent you",
+  "shareImportTitle": "Import shared data",
+  "shareImportHint": "Your own data stays. Changes already on this phone are skipped; villages and favourites are added; a shared scheme is added as a new scheme (change it back in Schemes).",
+  "shareImportGo": "Import",
+  "shareTables": "Edited hub tables",
+  "shareScheme": "Sorting scheme (lines and rules)",
+  "shareSchemeSub": "{name} · {count} rules",
+  "@shareSchemeSub": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "shareNOffices": "{count} office changes",
+  "@shareNOffices": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "shareNVillages": "{count} villages",
+  "@shareNVillages": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "shareNFavourites": "{count} favourites",
+  "@shareNFavourites": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "shareImported": "Imported: {count} office changes, {n} villages, {rows} hub tables, {shown} favourites",
+  "@shareImported": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "n": {
+        "type": "int"
+      },
+      "rows": {
+        "type": "int"
+      },
+      "shown": {
+        "type": "int"
+      }
+    }
+  },
+  "shareSchemeAdded": "Shared scheme added and made active.",
+  "shareNotPack": "This is not a PO Sorting data file. Use the file made with \"Share / export all my data\".",
+  "shareEmpty": "This file has no changes to import."
 }

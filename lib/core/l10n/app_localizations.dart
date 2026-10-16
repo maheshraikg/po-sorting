@@ -4183,13 +4183,13 @@ abstract class AppLocalizations {
   /// No description provided for @exportAll.
   ///
   /// In en, this message translates to:
-  /// **'Export all my data'**
+  /// **'Share / export all my data'**
   String get exportAll;
 
   /// No description provided for @exportAllSub.
   ///
   /// In en, this message translates to:
-  /// **'Lines, rules, air codes, NSH / NPH / L1 hubs, office changes and favourites as Excel files – share or save them'**
+  /// **'One Excel file with your lines, rules, hubs, office changes, villages and favourites. Send it on WhatsApp or save it; others can import it.'**
   String get exportAllSub;
 
   /// No description provided for @parcelNetwork.
@@ -4305,6 +4305,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} villages under {n} offices'**
   String villagesCount(int count, int n);
+
+  /// No description provided for @shareImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Import shared data'**
+  String get shareImport;
+
+  /// No description provided for @shareImportSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick the PO_Sorting_data Excel file another user sent you'**
+  String get shareImportSub;
+
+  /// No description provided for @shareImportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import shared data'**
+  String get shareImportTitle;
+
+  /// No description provided for @shareImportHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Your own data stays. Changes already on this phone are skipped; villages and favourites are added; a shared scheme is added as a new scheme (change it back in Schemes).'**
+  String get shareImportHint;
+
+  /// No description provided for @shareImportGo.
+  ///
+  /// In en, this message translates to:
+  /// **'Import'**
+  String get shareImportGo;
+
+  /// No description provided for @shareTables.
+  ///
+  /// In en, this message translates to:
+  /// **'Edited hub tables'**
+  String get shareTables;
+
+  /// No description provided for @shareScheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Sorting scheme (lines and rules)'**
+  String get shareScheme;
+
+  /// No description provided for @shareSchemeSub.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} · {count} rules'**
+  String shareSchemeSub(String name, int count);
+
+  /// No description provided for @shareNOffices.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} office changes'**
+  String shareNOffices(int count);
+
+  /// No description provided for @shareNVillages.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} villages'**
+  String shareNVillages(int count);
+
+  /// No description provided for @shareNFavourites.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} favourites'**
+  String shareNFavourites(int count);
+
+  /// No description provided for @shareImported.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported: {count} office changes, {n} villages, {rows} hub tables, {shown} favourites'**
+  String shareImported(int count, int n, int rows, int shown);
+
+  /// No description provided for @shareSchemeAdded.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared scheme added and made active.'**
+  String get shareSchemeAdded;
+
+  /// No description provided for @shareNotPack.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not a PO Sorting data file. Use the file made with \"Share / export all my data\".'**
+  String get shareNotPack;
+
+  /// No description provided for @shareEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'This file has no changes to import.'**
+  String get shareEmpty;
 }
 
 class _AppLocalizationsDelegate

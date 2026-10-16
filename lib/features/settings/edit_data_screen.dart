@@ -15,6 +15,7 @@ import '../schemes/scheme_editor.dart';
 import '../schemes/schemes_screen.dart';
 import 'nsh_editor_screen.dart';
 import 'export_all.dart';
+import 'import_shared.dart';
 import 'office_fixes.dart';
 import 'village_editor.dart';
 
@@ -65,6 +66,16 @@ class EditDataScreen extends StatelessWidget {
                 final files = await exportAllData(context.services, context.settings);
                 await shareFiles(files, text: l.exportAll);
               },
+            ),
+          ),
+          Card(
+            child: ListTile(
+              key: const ValueKey('edit_import_shared'),
+              leading: const IconBadge(Icons.download_for_offline_outlined, kPostGreen),
+              title: Text(l.shareImport, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 18)),
+              subtitle: Text(l.shareImportSub),
+              trailing: const Icon(Icons.chevron_right),
+              onTap: () => importSharedData(context),
             ),
           ),
           tile('schemes', Icons.file_open_outlined, l.editFiles, l.editFilesSub, const SchemesScreen()),
