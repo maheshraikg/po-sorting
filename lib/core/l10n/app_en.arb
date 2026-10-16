@@ -1199,6 +1199,57 @@
       }
     }
   },
+  "moveToMode": "Move to TD / Non-TD",
+  "moveToModeTitle": "Move {code} from {mode}",
+  "@moveToModeTitle": {
+    "placeholders": {
+      "code": {
+        "type": "String"
+      },
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "moveToModeTo": "Move to:",
+  "moveWholeLine": "Whole line ({count} offices / PINs)",
+  "@moveWholeLine": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "moveToModeGo": "Move to {mode}",
+  "@moveToModeGo": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "movedToMode": "Moved {count} to {mode}",
+  "@movedToMode": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "renameMode": "Rename",
+  "renameModeTitle": "Name for {mode}",
+  "@renameModeTitle": {
+    "placeholders": {
+      "mode": {
+        "type": "String"
+      }
+    }
+  },
+  "renameModeLabel": "Your name for this section",
+  "renameModeHint": "As your office calls it, e.g. Local / Outstation. Leave empty for the default name.",
   "dirSource": "Source",
   "dirRows": "Offices",
   "dirFileDate": "Data file date",

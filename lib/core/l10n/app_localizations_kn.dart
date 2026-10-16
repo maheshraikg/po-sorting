@@ -1943,6 +1943,47 @@ class AppLocalizationsKn extends AppLocalizations {
   }
 
   @override
+  String get moveToMode => 'TD / Non-TD ಗೆ ಸರಿಸಿ';
+
+  @override
+  String moveToModeTitle(String code, String mode) {
+    return '$mode ನಿಂದ $code ಸರಿಸಿ';
+  }
+
+  @override
+  String get moveToModeTo => 'ಇಲ್ಲಿಗೆ ಸರಿಸಿ:';
+
+  @override
+  String moveWholeLine(int count) {
+    return 'ಪೂರ್ಣ ಲೈನ್ ($count ಕಚೇರಿ / ಪಿನ್)';
+  }
+
+  @override
+  String moveToModeGo(String mode) {
+    return '$mode ಗೆ ಸರಿಸಿ';
+  }
+
+  @override
+  String movedToMode(int count, String mode) {
+    return '$count ಅನ್ನು $mode ಗೆ ಸರಿಸಲಾಗಿದೆ';
+  }
+
+  @override
+  String get renameMode => 'ಮರುಹೆಸರಿಸಿ';
+
+  @override
+  String renameModeTitle(String mode) {
+    return '$mode ಗೆ ಹೆಸರು';
+  }
+
+  @override
+  String get renameModeLabel => 'ಈ ವಿಭಾಗಕ್ಕೆ ನಿಮ್ಮ ಹೆಸರು';
+
+  @override
+  String get renameModeHint =>
+      'ನಿಮ್ಮ ಕಚೇರಿಯಲ್ಲಿ ಕರೆಯುವಂತೆ, ಉದಾ Local / Outstation. ಮೂಲ ಹೆಸರಿಗೆ ಖಾಲಿ ಬಿಡಿ.';
+
+  @override
   String get dirSource => 'ಮೂಲ';
 
   @override

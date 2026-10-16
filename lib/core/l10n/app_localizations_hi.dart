@@ -1937,6 +1937,47 @@ class AppLocalizationsHi extends AppLocalizations {
   }
 
   @override
+  String get moveToMode => 'TD / Non-TD में ले जाएं';
+
+  @override
+  String moveToModeTitle(String code, String mode) {
+    return '$mode से $code ले जाएं';
+  }
+
+  @override
+  String get moveToModeTo => 'यहां ले जाएं:';
+
+  @override
+  String moveWholeLine(int count) {
+    return 'पूरी लाइन ($count कार्यालय / पिन)';
+  }
+
+  @override
+  String moveToModeGo(String mode) {
+    return '$mode में ले जाएं';
+  }
+
+  @override
+  String movedToMode(int count, String mode) {
+    return '$count को $mode में ले जाया गया';
+  }
+
+  @override
+  String get renameMode => 'नाम बदलें';
+
+  @override
+  String renameModeTitle(String mode) {
+    return '$mode का नाम';
+  }
+
+  @override
+  String get renameModeLabel => 'इस अनुभाग के लिए आपका नाम';
+
+  @override
+  String get renameModeHint =>
+      'जैसे आपका कार्यालय कहता है, जैसे Local / Outstation। मूल नाम के लिए खाली छोड़ें।';
+
+  @override
   String get dirSource => 'स्रोत';
 
   @override

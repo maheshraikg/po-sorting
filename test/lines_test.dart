@@ -111,4 +111,49 @@ void main() {
     await tester.pumpAndSettle();
     expect(h.services.active!.bags['NT-61']!.name, 'Kasaragod side');
   });
+
+  testWidgets('move a whole line, or one stop, from Non-TD to TD', (tester) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.5;
+    addTearDown(tester.view.reset);
+    final h = await Harness.create(tester);
+    List<BagRule> on(String mode) => h.services.active!.rules.where((r) => r.bagCode == 'NT-61' && r.category == mode).toList();
+    final before = on(kCatNonTD).length;
+    expect(before, greaterThan(1));
+    await tester.pumpWidget(h.wrap(const LineDetailScreen(code: 'NT-61', category: kCatNonTD)));
+    await settle(tester, rounds: 6);
+    // One stop only.
+    await tester.tap(find.byKey(const ValueKey('line_move_mode')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('move_all')));
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('move_stop_0')));
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('move_to_TD')));
+    await tester.pump();
+    await tester.tap(find.byKey(const ValueKey('move_mode_go')));
+    await settle(tester, rounds: 6);
+    expect(on(kCatTD), isNotEmpty);
+    expect(on(kCatNonTD).length, lessThan(before));
+    expect(find.text('Moved 1 to TD'), findsOneWidget);
+    // The rest of the line.
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+    await tester.tap(find.byKey(const ValueKey('line_move_mode')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const ValueKey('move_mode_go')));
+    await settle(tester, rounds: 6);
+    expect(on(kCatNonTD), isEmpty);
+    expect(on(kCatTD).length, before);
+  });
+
+  testWidgets('rename TD / Non-TD to the office own names', (tester) async {
+    final h = await Harness.create(tester);
+    h.settings.categoryNames = {kCatTD: 'Local'};
+    await tester.pumpWidget(h.wrap(const LinesScreen()));
+    await settle(tester);
+    expect(find.text('Local'), findsOneWidget);
+    h.settings.categoryNames = {};
+    await tester.pumpAndSettle();
+    expect(find.text('Local'), findsNothing);
+  });
 }

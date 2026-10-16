@@ -7,6 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'core/app_scope.dart';
 import 'core/files.dart';
 import 'core/l10n/app_localizations.dart';
+import 'core/labels.dart';
 import 'core/settings.dart';
 import 'core/theme.dart';
 import 'data/app_services.dart';
@@ -29,6 +30,7 @@ Future<void> main() async {
     systemNavigationBarContrastEnforced: false,
   ));
   final settings = await Settings.load();
+  categoryNames = settings.categoryNames;
   runApp(SortingSahayakApp(settings: settings, open: () => _openServices(settings)));
 }
 

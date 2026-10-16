@@ -90,6 +90,7 @@ class SharedData {
     this.editedTables = const {},
     this.favourites = const [],
     this.schemeName = '',
+    this.modeNames = const {},
     this.schemeRules = const [],
     this.schemeAir = const [],
     this.schemeDmsl = const [],
@@ -107,6 +108,9 @@ class SharedData {
   final Set<HubTableKind> editedTables;
   final List<({int pin, String office, String note})> favourites;
   final String schemeName;
+
+  /// The sender's own names for TD / Non-TD (taken with the scheme).
+  final Map<String, String> modeNames;
   final List<List<String>> schemeRules;
   final List<List<String>> schemeAir;
   final List<List<String>> schemeDmsl;
@@ -235,6 +239,10 @@ SharedData? readSharedData(TableFile t) {
         if (int.tryParse(at(r, 0)) != null) (pin: int.parse(at(r, 0)), office: at(r, 1), note: at(r, 4)),
     ],
     schemeName: aboutValue('Scheme'),
+    modeNames: {
+      for (final p in aboutValue('Mode names').split(';'))
+        if (p.contains('=') && p.split('=')[1].trim().isNotEmpty) p.split('=')[0].trim(): p.split('=').sublist(1).join('=').trim(),
+    },
     schemeRules: s['Scheme_Rules'] ?? const [],
     schemeAir: s['Scheme_AirCodes'] ?? const [],
     schemeDmsl: s['Scheme_DMSL'] ?? const [],
@@ -367,6 +375,7 @@ Future<ShareResult> applySharedData(AppServices services, Settings settings, Sha
       }
       await services.reloadActive();
       out.scheme = true;
+      if (d.modeNames.isNotEmpty) settings.categoryNames = {...d.modeNames, ...settings.categoryNames};
     }
   }
   return out;

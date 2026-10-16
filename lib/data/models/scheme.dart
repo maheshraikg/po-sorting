@@ -245,6 +245,21 @@ class BagRule implements Matchable {
 
   String get describe => match.describe(officeName: officeName, district: district, state: state);
 
+  /// The same rule in another mode (TD / Non-TD / …).
+  BagRule withCategory(String? c) => BagRule(
+    id: id,
+    match: match,
+    officeName: officeName,
+    district: district,
+    state: state,
+    bagCode: bagCode,
+    bagName: bagName,
+    section: section,
+    remarks: remarks,
+    category: c,
+    connectivity: connectivity,
+  );
+
   Map<String, Object?> toRow(int schemeId) => {
     'scheme_id': schemeId,
     'type': match.type.db,

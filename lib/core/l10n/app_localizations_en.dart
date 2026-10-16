@@ -1938,6 +1938,47 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get moveToMode => 'Move to TD / Non-TD';
+
+  @override
+  String moveToModeTitle(String code, String mode) {
+    return 'Move $code from $mode';
+  }
+
+  @override
+  String get moveToModeTo => 'Move to:';
+
+  @override
+  String moveWholeLine(int count) {
+    return 'Whole line ($count offices / PINs)';
+  }
+
+  @override
+  String moveToModeGo(String mode) {
+    return 'Move to $mode';
+  }
+
+  @override
+  String movedToMode(int count, String mode) {
+    return 'Moved $count to $mode';
+  }
+
+  @override
+  String get renameMode => 'Rename';
+
+  @override
+  String renameModeTitle(String mode) {
+    return 'Name for $mode';
+  }
+
+  @override
+  String get renameModeLabel => 'Your name for this section';
+
+  @override
+  String get renameModeHint =>
+      'As your office calls it, e.g. Local / Outstation. Leave empty for the default name.';
+
+  @override
   String get dirSource => 'Source';
 
   @override

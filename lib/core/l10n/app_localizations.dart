@@ -3478,6 +3478,66 @@ abstract class AppLocalizations {
   /// **'Delete air code {code} for {series}?'**
   String deleteAirCodeConfirm(String code, String series);
 
+  /// No description provided for @moveToMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to TD / Non-TD'**
+  String get moveToMode;
+
+  /// No description provided for @moveToModeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Move {code} from {mode}'**
+  String moveToModeTitle(String code, String mode);
+
+  /// No description provided for @moveToModeTo.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to:'**
+  String get moveToModeTo;
+
+  /// No description provided for @moveWholeLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Whole line ({count} offices / PINs)'**
+  String moveWholeLine(int count);
+
+  /// No description provided for @moveToModeGo.
+  ///
+  /// In en, this message translates to:
+  /// **'Move to {mode}'**
+  String moveToModeGo(String mode);
+
+  /// No description provided for @movedToMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Moved {count} to {mode}'**
+  String movedToMode(int count, String mode);
+
+  /// No description provided for @renameMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get renameMode;
+
+  /// No description provided for @renameModeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Name for {mode}'**
+  String renameModeTitle(String mode);
+
+  /// No description provided for @renameModeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your name for this section'**
+  String get renameModeLabel;
+
+  /// No description provided for @renameModeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'As your office calls it, e.g. Local / Outstation. Leave empty for the default name.'**
+  String get renameModeHint;
+
   /// No description provided for @dirSource.
   ///
   /// In en, this message translates to:

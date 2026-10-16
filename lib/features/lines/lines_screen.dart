@@ -316,6 +316,28 @@ class LineDetailScreen extends StatelessWidget {
     if (changed && context.mounted) await context.services.reloadActive();
   }
 
+  /// Moves the chosen stops of this line (their rules in this mode) to
+  /// another mode, e.g. TD → Non-TD.
+  Future<void> _moveMode(BuildContext context, List<LineStop> stops) async {
+    final l = AppLocalizations.of(context);
+    final services = context.services;
+    final id = _schemeId(context);
+    final others = [for (final m in services.categories) if (m != category) m];
+    if (id == null || others.isEmpty || stops.isEmpty) return;
+    final r = await showDialog<(String, List<LineStop>)>(
+      context: context,
+      builder: (_) => MoveModeDialog(code: code, from: category, modes: others, stops: stops),
+    );
+    if (r == null || !context.mounted) return;
+    final (to, picked) = r;
+    final rules = moveStopsRules(picked, category);
+    for (final rule in rules) {
+      await services.schemes.upsertRule(id, rule.withCategory(to));
+    }
+    await services.reloadActive();
+    if (context.mounted) toast(context, l.movedToMode(picked.length, categoryLabel(l, to)));
+  }
+
   Future<void> _add(BuildContext context, RuleType type) async {
     final id = _schemeId(context);
     if (id == null) return;
@@ -432,6 +454,13 @@ class LineDetailScreen extends StatelessWidget {
                     icon: const Icon(Icons.pin_outlined),
                     label: Text(l.lineAddPin),
                   ),
+                  if (context.services.categories.length > 1 && stops.isNotEmpty)
+                    FilledButton.tonalIcon(
+                      key: const ValueKey('line_move_mode'),
+                      onPressed: () => _moveMode(context, stops),
+                      icon: const Icon(Icons.swap_horiz),
+                      label: Text(l.moveToMode),
+                    ),
                 ],
               ),
             ),
@@ -625,6 +654,101 @@ class _AreaStopState extends State<_AreaStop> {
               ),
         ],
       ),
+    );
+  }
+}
+
+/// The rules that put [stops] on a line in mode [from] (rules for every
+/// mode, with no category, move too).
+List<BagRule> moveStopsRules(List<LineStop> stops, String from) => [
+  for (final s in stops)
+    for (final r in [?s.officeRule, ...s.pinRules])
+      if (r.id != null && (r.category == null || r.category == from)) r,
+];
+
+/// Pick the mode to move to and which stops of the line go (all ticked).
+class MoveModeDialog extends StatefulWidget {
+  const MoveModeDialog({super.key, required this.code, required this.from, required this.modes, required this.stops});
+
+  final String code;
+  final String from;
+  final List<String> modes;
+  final List<LineStop> stops;
+
+  @override
+  State<MoveModeDialog> createState() => _MoveModeDialogState();
+}
+
+class _MoveModeDialogState extends State<MoveModeDialog> {
+  late String _to = widget.modes.first;
+  late final Set<int> _on = {for (var i = 0; i < widget.stops.length; i++) i};
+
+  String _label(LineStop s) => [if (s.position.isNotEmpty) s.position, s.name, if (s.pins.isNotEmpty) s.pins.join(', ')].join(' · ');
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    final all = _on.length == widget.stops.length;
+    return AlertDialog(
+      title: Text(l.moveToModeTitle(widget.code, categoryLabel(l, widget.from))),
+      content: SizedBox(
+        width: double.maxFinite,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(l.moveToModeTo, style: const TextStyle(fontWeight: FontWeight.w700)),
+            const SizedBox(height: 6),
+            Wrap(
+              spacing: 8,
+              children: [
+                for (final m in widget.modes)
+                  ChoiceChip(
+                    key: ValueKey('move_to_$m'),
+                    label: Text(categoryLabel(l, m)),
+                    selected: _to == m,
+                    onSelected: (_) => setState(() => _to = m),
+                  ),
+              ],
+            ),
+            CheckboxListTile(
+              key: const ValueKey('move_all'),
+              contentPadding: EdgeInsets.zero,
+              value: all,
+              title: Text(l.moveWholeLine(widget.stops.length), style: const TextStyle(fontWeight: FontWeight.w800)),
+              onChanged: (v) => setState(() {
+                _on.clear();
+                if (v == true) _on.addAll([for (var i = 0; i < widget.stops.length; i++) i]);
+              }),
+            ),
+            const Divider(height: 1),
+            Flexible(
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  for (final (i, s) in widget.stops.indexed)
+                    CheckboxListTile(
+                      key: ValueKey('move_stop_$i'),
+                      dense: true,
+                      contentPadding: EdgeInsets.zero,
+                      value: _on.contains(i),
+                      title: Text(_label(s)),
+                      onChanged: (v) => setState(() => v == true ? _on.add(i) : _on.remove(i)),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(context), child: Text(l.cancel)),
+        FilledButton(
+          key: const ValueKey('move_mode_go'),
+          onPressed: _on.isEmpty ? null : () => Navigator.pop(context, (_to, [for (final i in _on.toList()..sort()) widget.stops[i]])),
+          child: Text(l.moveToModeGo(categoryLabel(l, _to))),
+        ),
+      ],
     );
   }
 }

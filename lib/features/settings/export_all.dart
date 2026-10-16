@@ -153,6 +153,7 @@ Future<Uint8List> buildSharePack(AppServices services, Settings settings, {DateT
         'Offices = every office of my area now (Status: Original / Added / Changed / Removed). Office_changes = only my changes. Villages, Favourites, hub tables (NSH, RMS_L1, NPH, RMS_NSH), Scheme_* = lines and rules.',
       ],
       ['Scheme', scheme?.scheme.name ?? ''],
+      ['Mode names', [for (final e in settings.categoryNames.entries) '${e.key}=${e.value}'].join('; ')],
       ['Import', 'Open PO Sorting → More → Share & backup data → Import a data file, and pick this file.'],
       ['Google Sheets', 'To edit in Google Sheets and import again: File → Download → Microsoft Excel (.xlsx). Keep the sheet names.'],
     ],

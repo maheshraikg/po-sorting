@@ -1,3 +1,4 @@
+import 'labels.dart' as labels;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -145,6 +146,23 @@ class Settings extends ChangeNotifier {
 
   set officeEdits(List<Map<String, Object?>> v) {
     _prefs.setString('officeEdits', jsonEncode(v));
+    notifyListeners();
+  }
+
+  /// The user's own names for modes (category → name), e.g. TD → "Local".
+  Map<String, String> get categoryNames {
+    final raw = _prefs.getString('categoryNames');
+    if (raw == null || raw.isEmpty) return const {};
+    try {
+      return Map<String, String>.from(jsonDecode(raw) as Map);
+    } catch (_) {
+      return const {};
+    }
+  }
+
+  set categoryNames(Map<String, String> v) {
+    _prefs.setString('categoryNames', jsonEncode(v));
+    labels.categoryNames = v;
     notifyListeners();
   }
 

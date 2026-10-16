@@ -125,9 +125,18 @@ class SettingsScreen extends StatelessWidget {
               ListTile(
                 dense: true,
                 title: Text(categoryLabel(l, c)),
-                trailing: kBuiltInCategories.contains(c)
-                    ? null
-                    : IconButton(
+                subtitle: categoryLabel(l, c) == c ? null : Text(c),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      key: ValueKey('rename_category_$c'),
+                      tooltip: l.renameMode,
+                      icon: const Icon(Icons.edit_outlined),
+                      onPressed: () => renameMode(context, c),
+                    ),
+                    if (!kBuiltInCategories.contains(c))
+                      IconButton(
                         tooltip: l.delete,
                         icon: const Icon(Icons.delete_outline),
                         onPressed: () async {
@@ -135,12 +144,40 @@ class SettingsScreen extends StatelessWidget {
                           await services.reloadActive();
                         },
                       ),
+                  ],
+                ),
               ),
           ],
         ),
       ),
     );
   }
+}
+
+/// Asks for the user's own name of mode [c] ("TD" → "Local"); empty
+/// brings back the built-in name.
+Future<void> renameMode(BuildContext context, String c) async {
+  final l = AppLocalizations.of(context);
+  final settings = context.settings;
+  final ctrl = TextEditingController(text: settings.categoryNames[c] ?? '');
+  final name = await showDialog<String>(
+    context: context,
+    builder: (d) => AlertDialog(
+      title: Text(l.renameModeTitle(c)),
+      content: TextField(
+        key: const ValueKey('rename_category_field'),
+        controller: ctrl,
+        autofocus: true,
+        decoration: InputDecoration(labelText: l.renameModeLabel, helperText: l.renameModeHint, helperMaxLines: 3),
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(d), child: Text(l.cancel)),
+        FilledButton(key: const ValueKey('rename_category_save'), onPressed: () => Navigator.pop(d, ctrl.text.trim()), child: Text(l.save)),
+      ],
+    ),
+  );
+  if (name == null) return;
+  settings.categoryNames = {...settings.categoryNames, c: name}..removeWhere((_, v) => v.isEmpty);
 }
 
 /// Daily practice reminder: on / off and the time.
