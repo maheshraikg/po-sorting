@@ -145,7 +145,7 @@ void main() {
     final h = await _setUp(tester);
     await tester.runAsync(() => seedVillages(h.settings, h.services, (p) async => File(p).readAsBytesSync()));
     final n = h.settings.villages.fold<int>(0, (n, e) => n + (e['villages'] as List).length);
-    expect(n, greaterThan(2300));
+    expect(n, greaterThan(8000));
     expect(h.services.villages.of(573129, 'Bharathur'), contains('Adabyalu'));
     // Removed by the user: not added again.
     saveVillages(h.settings, h.services, 573129, 'Bharathur', []);

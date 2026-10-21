@@ -48,7 +48,13 @@ List<VillageRow> readVillageSheet(List<List<String>> rows) {
 }
 
 /// "Abbana BO", "Alur S.O (Hassan)" → "abbana", "alur".
-String officeKey(String name) =>
+String officeKey(String name) {
+  var n = name.replaceAll(RegExp(r'\(.*?\)'), ' ').replaceAll(RegExp(r'[BSHP]\.\s?O\.?\s*$'), ' ').replaceAll(RegExp(r'(?<=[a-z])[BSHP][Oo]\s*$'), ' ');
+  n = n.replaceAll(RegExp(r'shimoga', caseSensitive: false), 'shivamogga').replaceAll(RegExp(r'chikmagalur', caseSensitive: false), 'chikkamagaluru');
+  return _officeKey(n);
+}
+
+String _officeKey(String name) =>
     normalizePlace(name.replaceAll(RegExp(r'\(.*?\)'), ' ').replaceAll(RegExp(r'\b(b\.?\s?o|s\.?\s?o|h\.?\s?o|p\.?\s?o)\b\.?', caseSensitive: false), ' '));
 
 /// Short forms: "KH Kote" ~ "Kenchammanahosakote", "C.R.Patna" ~

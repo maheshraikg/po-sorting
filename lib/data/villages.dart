@@ -55,26 +55,61 @@ class VillageBook {
   /// Villages under the office [name] with [pin].
   List<String> of(int pin, String name) => _byOffice[_key(pin, name)] ?? const [];
 
+  /// Normalised names and phonetic keys, built on the first search.
+  List<_Entry>? _index;
+
+  List<_Entry> get _entries => _index ??= [
+    for (final e in _byOffice.entries)
+      for (final v in e.value) _Entry(e.key, v),
+  ];
+
   /// Villages whose name looks like [query] (spelling-tolerant), best first.
+  /// Exact / prefix / word matches are cheap; the spelling check runs only
+  /// on names with the same first sound and a similar length.
   List<VillageHit> find(String query, {double min = 0.6}) {
     final q = normalizePlace(query);
     if (q.length < 2) return const [];
     final qk = phoneticKey(q);
+    final edits = maxEditsFor(qk.length) + 1;
     final out = <VillageHit>[];
-    _byOffice.forEach((k, villages) {
-      final i = k.indexOf('|');
-      final pin = int.parse(k.substring(0, i));
-      final office = k.substring(i + 1);
-      for (final v in villages) {
-        final n = normalizePlace(v);
-        var s = n == q ? 1.0 : (n.startsWith(q) ? 0.97 : placeSimilarity(q, n, queryKey: qk));
-        if (s < min && n.split(' ').any((w) => w == q || (q.length >= 3 && w.startsWith(q)))) s = 0.9;
-        if (s >= min) out.add(VillageHit(pin, office, v, s));
+    for (final e in _entries) {
+      final n = e.norm;
+      double s;
+      if (n == q) {
+        s = 1;
+      } else if (n.startsWith(q)) {
+        s = 0.97;
+      } else if (q.length >= 3 && e.words.any((w) => w.startsWith(q))) {
+        s = 0.9;
+      } else if (q.length >= 4 && n.contains(q)) {
+        s = 0.8;
+      } else if (q.length >= 4 && e.key.isNotEmpty && qk.isNotEmpty && e.key.codeUnitAt(0) == qk.codeUnitAt(0) && (e.key.length - qk.length).abs() <= edits) {
+        s = placeSimilarity(q, n, queryKey: qk, candidateKey: e.key);
+      } else {
+        continue;
       }
-    });
+      if (s >= min) out.add(VillageHit(e.pin, e.office, e.village, s));
+    }
     out.sort((a, b) => b.score.compareTo(a.score));
     return out;
   }
+}
+
+class _Entry {
+  _Entry(String officeKey, this.village) : norm = normalizePlace(village) {
+    final i = officeKey.indexOf('|');
+    pin = int.parse(officeKey.substring(0, i));
+    office = officeKey.substring(i + 1);
+    key = phoneticKey(norm);
+    words = norm.split(' ');
+  }
+
+  late final int pin;
+  late final String office;
+  final String village;
+  final String norm;
+  late final String key;
+  late final List<String> words;
 }
 
 /// [lists] with the villages of office [name] / [pin] set to [villages]

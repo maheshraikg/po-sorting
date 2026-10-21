@@ -157,7 +157,12 @@ class _VillagesDialogState extends State<_VillagesDialog> {
 /// "Villages: Kodi, Hosur" under an office, or null when it has none.
 String? villagesLine(AppLocalizations l, List<String> villages) => villages.isEmpty ? null : '${l.villages}: ${villages.join(', ')}';
 
-const kStarterVillagesAsset = 'assets/villages/hassan_villages.csv';
+/// Bundled village directories (district → asset), added once each.
+const kStarterVillageAssets = {
+  'hassan': 'assets/villages/hassan_villages.csv',
+  'shimoga': 'assets/villages/shimoga_villages.csv',
+  'chikmagalur': 'assets/villages/chikmagalur_villages.csv',
+};
 
 /// Adds [add] to the saved villages; returns how many villages were new.
 int addVillageLists(Settings settings, AppServices services, List<VillageList> add) {
@@ -191,16 +196,21 @@ List<VillageList> villageListsFromRows(List<List<String>> rows) {
   ];
 }
 
-/// Adds the bundled village list once (first start after the update).
+/// Adds each bundled village list once (first start after the update).
 Future<void> seedVillages(Settings settings, AppServices services, Future<Uint8List> Function(String) loadAsset) async {
-  if (settings.villagesSeeded) return;
-  settings.villagesSeeded = true;
-  try {
-    final t = readTable(await loadAsset(kStarterVillagesAsset), 'villages.csv');
-    addVillageLists(settings, services, villageListsFromRows(t.sheets.values.first));
-  } catch (_) {
-    // Missing asset: nothing to add.
+  final done = settings.seededVillageSets;
+  final add = <VillageList>[];
+  for (final e in kStarterVillageAssets.entries) {
+    if (done.contains(e.key)) continue;
+    try {
+      final t = readTable(await loadAsset(e.value), 'villages.csv');
+      add.addAll(villageListsFromRows(t.sheets.values.first));
+    } catch (_) {
+      // Missing asset: nothing to add.
+    }
   }
+  if (add.isNotEmpty) addVillageLists(settings, services, add);
+  settings.seededVillageSets = [...done, ...kStarterVillageAssets.keys.where((k) => !done.contains(k))];
 }
 
 /// Picks a village sheet (a village directory "Village | PO | Account office

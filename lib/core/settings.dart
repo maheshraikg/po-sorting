@@ -187,10 +187,13 @@ class Settings extends ChangeNotifier {
 
   set beatsSeeded(bool v) => _prefs.setBool('beatsSeeded', v);
 
-  /// The bundled village list was added once (the user may remove it).
-  bool get villagesSeeded => _prefs.getBool('villagesSeeded') ?? false;
+  /// Bundled village lists already added once (the user may remove them).
+  List<String> get seededVillageSets => [
+    ...?_prefs.getStringList('seededVillageSets'),
+    if ((_prefs.getBool('villagesSeeded') ?? false) && !(_prefs.getStringList('seededVillageSets')?.contains('hassan') ?? false)) 'hassan',
+  ];
 
-  set villagesSeeded(bool v) => _prefs.setBool('villagesSeeded', v);
+  set seededVillageSets(List<String> v) => _prefs.setStringList('seededVillageSets', v);
 
   /// Villages the user added under offices (VillageList JSON).
   List<Map<String, Object?>> get villages {
