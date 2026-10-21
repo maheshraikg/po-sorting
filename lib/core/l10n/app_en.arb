@@ -1587,5 +1587,96 @@
   "shareTable": "Hub table",
   "shareTableEdited": "Edited by the sender – replaces yours",
   "shareTableDiffers": "Different from yours – replaces yours",
-  "shareSchemeSame": "same as yours"
+  "shareSchemeSame": "same as yours",
+  "sharePreparing": "Preparing your data file…",
+  "shareFailed": "Could not make or send the file",
+  "beatList": "Beat list",
+  "beatListSub": "Postman beats and the areas they serve – search an area to find its beat",
+  "beatsSearchHint": "Area, colony, building, PIN or beat no.",
+  "beatsAllOffices": "All offices",
+  "beatsCount": "{count} beats · {n} offices",
+  "@beatsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "beatsEmpty": "No beats yet. Import your office's beat sheet (Excel with Post office, Pincode, Beat No., Serving areas) or add beats with +.",
+  "beatsImport": "Import beat sheet",
+  "beatsExport": "Share beat list (Excel)",
+  "beatsAddStarter": "Add Dharwad HO beats",
+  "beatsRemoveOffice": "Remove all beats of {office}",
+  "@beatsRemoveOffice": {
+    "placeholders": {
+      "office": {
+        "type": "String"
+      }
+    }
+  },
+  "beatsRemoveOfficeQ": "Remove all beats of {office}?",
+  "@beatsRemoveOfficeQ": {
+    "placeholders": {
+      "office": {
+        "type": "String"
+      }
+    }
+  },
+  "beatsImported": "{count} beats added or updated",
+  "@beatsImported": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "beatsNoneInFile": "No beats found. The sheet needs columns like Post office, Pincode, Beat No. and Serving areas.",
+  "beatAdd": "Add beat",
+  "beatEdit": "Edit beat",
+  "beatNo": "Beat {beat}",
+  "@beatNo": {
+    "placeholders": {
+      "beat": {
+        "type": "String"
+      }
+    }
+  },
+  "beatNoLabel": "Beat no.",
+  "beatAreas": "Serving areas",
+  "beatAreasHint": "Separate areas with commas: Saptapur 1st cross, Jayanagar, …",
+  "beatInvalid": "Enter the office and beat no. (PIN must be 6 digits)",
+  "beatSaved": "Beat {beat} saved",
+  "@beatSaved": {
+    "placeholders": {
+      "beat": {
+        "type": "String"
+      }
+    }
+  },
+  "beatRemoved": "Beat {beat} removed",
+  "@beatRemoved": {
+    "placeholders": {
+      "beat": {
+        "type": "String"
+      }
+    }
+  },
+  "villagesImport": "Import village sheet",
+  "villagesSearch": "Search village, office or PIN",
+  "villagesMatching": "Matching villages to post offices…",
+  "villagesImported": "{count} villages added · {n} not matched to an office",
+  "@villagesImported": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "n": {
+        "type": "int"
+      }
+    }
+  },
+  "villagesNoSheet": "No villages found. The sheet needs Village, PO (post office) and Pincode columns."
 }

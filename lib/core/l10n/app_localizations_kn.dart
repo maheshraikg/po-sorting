@@ -2589,4 +2589,113 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get shareSchemeSame => 'ನಿಮ್ಮದರಂತೆಯೇ';
+
+  @override
+  String get sharePreparing => 'ನಿಮ್ಮ ಡೇಟಾ ಫೈಲ್ ಸಿದ್ಧವಾಗುತ್ತಿದೆ…';
+
+  @override
+  String get shareFailed => 'ಫೈಲ್ ಮಾಡಲು ಅಥವಾ ಕಳುಹಿಸಲು ಆಗಲಿಲ್ಲ';
+
+  @override
+  String get beatList => 'ಬೀಟ್ ಪಟ್ಟಿ';
+
+  @override
+  String get beatListSub =>
+      'ಪೋಸ್ಟ್‌ಮ್ಯಾನ್ ಬೀಟ್‌ಗಳು ಮತ್ತು ಅವುಗಳ ಪ್ರದೇಶಗಳು – ಪ್ರದೇಶ ಹುಡುಕಿ ಬೀಟ್ ತಿಳಿಯಿರಿ';
+
+  @override
+  String get beatsSearchHint => 'ಪ್ರದೇಶ, ಕಾಲನಿ, ಕಟ್ಟಡ, ಪಿನ್ ಅಥವಾ ಬೀಟ್ ಸಂಖ್ಯೆ';
+
+  @override
+  String get beatsAllOffices => 'ಎಲ್ಲಾ ಕಚೇರಿಗಳು';
+
+  @override
+  String beatsCount(int count, int n) {
+    return '$count ಬೀಟ್ · $n ಕಚೇರಿ';
+  }
+
+  @override
+  String get beatsEmpty =>
+      'ಇನ್ನೂ ಬೀಟ್‌ಗಳಿಲ್ಲ. ನಿಮ್ಮ ಕಚೇರಿಯ ಬೀಟ್ ಹಾಳೆ ಆಮದು ಮಾಡಿ (Post office, Pincode, Beat No., Serving areas ಇರುವ Excel) ಅಥವಾ + ಒತ್ತಿ ಸೇರಿಸಿ.';
+
+  @override
+  String get beatsImport => 'ಬೀಟ್ ಹಾಳೆ ಆಮದು';
+
+  @override
+  String get beatsExport => 'ಬೀಟ್ ಪಟ್ಟಿ ಹಂಚಿ (Excel)';
+
+  @override
+  String get beatsAddStarter => 'ಧಾರವಾಡ HO ಬೀಟ್ ಸೇರಿಸಿ';
+
+  @override
+  String beatsRemoveOffice(String office) {
+    return '$office ನ ಎಲ್ಲಾ ಬೀಟ್ ತೆಗೆಯಿರಿ';
+  }
+
+  @override
+  String beatsRemoveOfficeQ(String office) {
+    return '$office ನ ಎಲ್ಲಾ ಬೀಟ್ ತೆಗೆಯಬೇಕೆ?';
+  }
+
+  @override
+  String beatsImported(int count) {
+    return '$count ಬೀಟ್ ಸೇರಿಸಲಾಗಿದೆ / ನವೀಕರಿಸಲಾಗಿದೆ';
+  }
+
+  @override
+  String get beatsNoneInFile =>
+      'ಬೀಟ್ ಸಿಗಲಿಲ್ಲ. ಹಾಳೆಯಲ್ಲಿ Post office, Pincode, Beat No., Serving areas ಕಾಲಮ್ ಬೇಕು.';
+
+  @override
+  String get beatAdd => 'ಬೀಟ್ ಸೇರಿಸಿ';
+
+  @override
+  String get beatEdit => 'ಬೀಟ್ ಬದಲಿಸಿ';
+
+  @override
+  String beatNo(String beat) {
+    return 'ಬೀಟ್ $beat';
+  }
+
+  @override
+  String get beatNoLabel => 'ಬೀಟ್ ಸಂಖ್ಯೆ';
+
+  @override
+  String get beatAreas => 'ಸೇವಾ ಪ್ರದೇಶಗಳು';
+
+  @override
+  String get beatAreasHint =>
+      'ಪ್ರದೇಶಗಳನ್ನು ಅಲ್ಪವಿರಾಮದಿಂದ ಬೇರ್ಪಡಿಸಿ: Saptapur 1st cross, Jayanagar, …';
+
+  @override
+  String get beatInvalid => 'ಕಚೇರಿ ಮತ್ತು ಬೀಟ್ ಸಂಖ್ಯೆ ನಮೂದಿಸಿ (ಪಿನ್ 6 ಅಂಕಿ)';
+
+  @override
+  String beatSaved(String beat) {
+    return 'ಬೀಟ್ $beat ಉಳಿಸಲಾಗಿದೆ';
+  }
+
+  @override
+  String beatRemoved(String beat) {
+    return 'ಬೀಟ್ $beat ತೆಗೆಯಲಾಗಿದೆ';
+  }
+
+  @override
+  String get villagesImport => 'ಗ್ರಾಮ ಪಟ್ಟಿ ಆಮದು';
+
+  @override
+  String get villagesSearch => 'ಗ್ರಾಮ, ಕಚೇರಿ ಅಥವಾ ಪಿನ್ ಹುಡುಕಿ';
+
+  @override
+  String get villagesMatching =>
+      'ಗ್ರಾಮಗಳನ್ನು ಅಂಚೆ ಕಚೇರಿಗಳಿಗೆ ಹೊಂದಿಸಲಾಗುತ್ತಿದೆ…';
+
+  @override
+  String villagesImported(int count, int n) {
+    return '$count ಗ್ರಾಮ ಸೇರಿಸಲಾಗಿದೆ · $n ಕಚೇರಿಗೆ ಹೊಂದಲಿಲ್ಲ';
+  }
+
+  @override
+  String get villagesNoSheet =>
+      'ಗ್ರಾಮ ಸಿಗಲಿಲ್ಲ. ಹಾಳೆಯಲ್ಲಿ Village, PO, Pincode ಕಾಲಮ್ ಬೇಕು.';
 }

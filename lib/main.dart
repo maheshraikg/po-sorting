@@ -59,6 +59,7 @@ Future<AppServices> _openServices(Settings settings) async {
   await applyOfficeFixes(settings, s);
   await applyOfficeEditsOnStart(settings, s);
   loadVillagesOnStart(settings, s);
+  await seedVillages(settings, s, loadAssetBytes);
   // Default scheme installed before its air codes were bundled.
   if (await addDefaultAirCodes(s.schemes, loadAssetBytes)) await s.reloadActive();
   // Default scheme installed with older Non-TD data (once per data version).

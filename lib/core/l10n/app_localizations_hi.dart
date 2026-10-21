@@ -2575,4 +2575,112 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get shareSchemeSame => 'आपकी जैसी ही';
+
+  @override
+  String get sharePreparing => 'आपकी डेटा फ़ाइल तैयार हो रही है…';
+
+  @override
+  String get shareFailed => 'फ़ाइल बनाई या भेजी नहीं जा सकी';
+
+  @override
+  String get beatList => 'बीट सूची';
+
+  @override
+  String get beatListSub =>
+      'डाकिया बीट और उनके क्षेत्र – क्षेत्र खोजकर बीट जानें';
+
+  @override
+  String get beatsSearchHint => 'क्षेत्र, कॉलोनी, इमारत, पिन या बीट नं.';
+
+  @override
+  String get beatsAllOffices => 'सभी डाकघर';
+
+  @override
+  String beatsCount(int count, int n) {
+    return '$count बीट · $n डाकघर';
+  }
+
+  @override
+  String get beatsEmpty =>
+      'अभी कोई बीट नहीं। अपने कार्यालय की बीट शीट आयात करें (Post office, Pincode, Beat No., Serving areas वाली Excel) या + से जोड़ें।';
+
+  @override
+  String get beatsImport => 'बीट शीट आयात';
+
+  @override
+  String get beatsExport => 'बीट सूची साझा करें (Excel)';
+
+  @override
+  String get beatsAddStarter => 'धारवाड़ HO बीट जोड़ें';
+
+  @override
+  String beatsRemoveOffice(String office) {
+    return '$office की सभी बीट हटाएं';
+  }
+
+  @override
+  String beatsRemoveOfficeQ(String office) {
+    return '$office की सभी बीट हटाएं?';
+  }
+
+  @override
+  String beatsImported(int count) {
+    return '$count बीट जोड़ी / अपडेट की गईं';
+  }
+
+  @override
+  String get beatsNoneInFile =>
+      'कोई बीट नहीं मिली। शीट में Post office, Pincode, Beat No. और Serving areas कॉलम चाहिए।';
+
+  @override
+  String get beatAdd => 'बीट जोड़ें';
+
+  @override
+  String get beatEdit => 'बीट बदलें';
+
+  @override
+  String beatNo(String beat) {
+    return 'बीट $beat';
+  }
+
+  @override
+  String get beatNoLabel => 'बीट नं.';
+
+  @override
+  String get beatAreas => 'सेवा क्षेत्र';
+
+  @override
+  String get beatAreasHint =>
+      'क्षेत्रों को कॉमा से अलग करें: Saptapur 1st cross, Jayanagar, …';
+
+  @override
+  String get beatInvalid => 'डाकघर और बीट नं. लिखें (पिन 6 अंक)';
+
+  @override
+  String beatSaved(String beat) {
+    return 'बीट $beat सहेजी गई';
+  }
+
+  @override
+  String beatRemoved(String beat) {
+    return 'बीट $beat हटाई गई';
+  }
+
+  @override
+  String get villagesImport => 'गांव सूची आयात';
+
+  @override
+  String get villagesSearch => 'गांव, डाकघर या पिन खोजें';
+
+  @override
+  String get villagesMatching => 'गांवों को डाकघरों से मिलाया जा रहा है…';
+
+  @override
+  String villagesImported(int count, int n) {
+    return '$count गांव जोड़े · $n डाकघर से नहीं मिले';
+  }
+
+  @override
+  String get villagesNoSheet =>
+      'कोई गांव नहीं मिला। शीट में Village, PO और Pincode कॉलम चाहिए।';
 }

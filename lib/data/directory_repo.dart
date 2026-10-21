@@ -104,6 +104,21 @@ class DirectoryRepo implements DirectorySource {
     return rows.map(Office.fromRow).toList();
   }
 
+  /// Offices whose normalised name is one of [norms] (exact, fast).
+  Future<List<Office>> officesNamed(List<String> norms) async {
+    if (norms.isEmpty) return const [];
+    final out = <Office>[];
+    for (var i = 0; i < norms.length; i += 400) {
+      final part = norms.sublist(i, i + 400 > norms.length ? norms.length : i + 400);
+      final rows = await db.rawQuery(
+        'SELECT $kOfficeSelect FROM $kOfficeFrom WHERE o.office_name_norm IN (${List.filled(part.length, '?').join(',')})',
+        part,
+      );
+      out.addAll(rows.map(Office.fromRow));
+    }
+    return out;
+  }
+
   @override
   Future<PrefixSummary> prefixSummary(String prefix) async {
     final p = prefix.replaceAll(RegExp(r'\D'), '');

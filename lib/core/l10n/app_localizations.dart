@@ -4575,6 +4575,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'same as yours'**
   String get shareSchemeSame;
+
+  /// No description provided for @sharePreparing.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing your data file…'**
+  String get sharePreparing;
+
+  /// No description provided for @shareFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not make or send the file'**
+  String get shareFailed;
+
+  /// No description provided for @beatList.
+  ///
+  /// In en, this message translates to:
+  /// **'Beat list'**
+  String get beatList;
+
+  /// No description provided for @beatListSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Postman beats and the areas they serve – search an area to find its beat'**
+  String get beatListSub;
+
+  /// No description provided for @beatsSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Area, colony, building, PIN or beat no.'**
+  String get beatsSearchHint;
+
+  /// No description provided for @beatsAllOffices.
+  ///
+  /// In en, this message translates to:
+  /// **'All offices'**
+  String get beatsAllOffices;
+
+  /// No description provided for @beatsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} beats · {n} offices'**
+  String beatsCount(int count, int n);
+
+  /// No description provided for @beatsEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'No beats yet. Import your office\'s beat sheet (Excel with Post office, Pincode, Beat No., Serving areas) or add beats with +.'**
+  String get beatsEmpty;
+
+  /// No description provided for @beatsImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Import beat sheet'**
+  String get beatsImport;
+
+  /// No description provided for @beatsExport.
+  ///
+  /// In en, this message translates to:
+  /// **'Share beat list (Excel)'**
+  String get beatsExport;
+
+  /// No description provided for @beatsAddStarter.
+  ///
+  /// In en, this message translates to:
+  /// **'Add Dharwad HO beats'**
+  String get beatsAddStarter;
+
+  /// No description provided for @beatsRemoveOffice.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove all beats of {office}'**
+  String beatsRemoveOffice(String office);
+
+  /// No description provided for @beatsRemoveOfficeQ.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove all beats of {office}?'**
+  String beatsRemoveOfficeQ(String office);
+
+  /// No description provided for @beatsImported.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} beats added or updated'**
+  String beatsImported(int count);
+
+  /// No description provided for @beatsNoneInFile.
+  ///
+  /// In en, this message translates to:
+  /// **'No beats found. The sheet needs columns like Post office, Pincode, Beat No. and Serving areas.'**
+  String get beatsNoneInFile;
+
+  /// No description provided for @beatAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add beat'**
+  String get beatAdd;
+
+  /// No description provided for @beatEdit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit beat'**
+  String get beatEdit;
+
+  /// No description provided for @beatNo.
+  ///
+  /// In en, this message translates to:
+  /// **'Beat {beat}'**
+  String beatNo(String beat);
+
+  /// No description provided for @beatNoLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Beat no.'**
+  String get beatNoLabel;
+
+  /// No description provided for @beatAreas.
+  ///
+  /// In en, this message translates to:
+  /// **'Serving areas'**
+  String get beatAreas;
+
+  /// No description provided for @beatAreasHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Separate areas with commas: Saptapur 1st cross, Jayanagar, …'**
+  String get beatAreasHint;
+
+  /// No description provided for @beatInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the office and beat no. (PIN must be 6 digits)'**
+  String get beatInvalid;
+
+  /// No description provided for @beatSaved.
+  ///
+  /// In en, this message translates to:
+  /// **'Beat {beat} saved'**
+  String beatSaved(String beat);
+
+  /// No description provided for @beatRemoved.
+  ///
+  /// In en, this message translates to:
+  /// **'Beat {beat} removed'**
+  String beatRemoved(String beat);
+
+  /// No description provided for @villagesImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Import village sheet'**
+  String get villagesImport;
+
+  /// No description provided for @villagesSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search village, office or PIN'**
+  String get villagesSearch;
+
+  /// No description provided for @villagesMatching.
+  ///
+  /// In en, this message translates to:
+  /// **'Matching villages to post offices…'**
+  String get villagesMatching;
+
+  /// No description provided for @villagesImported.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} villages added · {n} not matched to an office'**
+  String villagesImported(int count, int n);
+
+  /// No description provided for @villagesNoSheet.
+  ///
+  /// In en, this message translates to:
+  /// **'No villages found. The sheet needs Village, PO (post office) and Pincode columns.'**
+  String get villagesNoSheet;
 }
 
 class _AppLocalizationsDelegate

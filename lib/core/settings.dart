@@ -166,6 +166,32 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Postman beats the user added or imported (Beat JSON).
+  List<Map<String, Object?>> get beats {
+    final raw = _prefs.getString('beats');
+    if (raw == null || raw.isEmpty) return const [];
+    try {
+      return [for (final e in jsonDecode(raw) as List) Map<String, Object?>.from(e as Map)];
+    } catch (_) {
+      return const [];
+    }
+  }
+
+  set beats(List<Map<String, Object?>> v) {
+    _prefs.setString('beats', jsonEncode(v));
+    notifyListeners();
+  }
+
+  /// The bundled starter beats were offered once (the user may delete them).
+  bool get beatsSeeded => _prefs.getBool('beatsSeeded') ?? false;
+
+  set beatsSeeded(bool v) => _prefs.setBool('beatsSeeded', v);
+
+  /// The bundled village list was added once (the user may remove it).
+  bool get villagesSeeded => _prefs.getBool('villagesSeeded') ?? false;
+
+  set villagesSeeded(bool v) => _prefs.setBool('villagesSeeded', v);
+
   /// Villages the user added under offices (VillageList JSON).
   List<Map<String, Object?>> get villages {
     final raw = _prefs.getString('villages');

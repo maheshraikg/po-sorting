@@ -2581,4 +2581,113 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get shareSchemeSame => 'same as yours';
+
+  @override
+  String get sharePreparing => 'Preparing your data file…';
+
+  @override
+  String get shareFailed => 'Could not make or send the file';
+
+  @override
+  String get beatList => 'Beat list';
+
+  @override
+  String get beatListSub =>
+      'Postman beats and the areas they serve – search an area to find its beat';
+
+  @override
+  String get beatsSearchHint => 'Area, colony, building, PIN or beat no.';
+
+  @override
+  String get beatsAllOffices => 'All offices';
+
+  @override
+  String beatsCount(int count, int n) {
+    return '$count beats · $n offices';
+  }
+
+  @override
+  String get beatsEmpty =>
+      'No beats yet. Import your office\'s beat sheet (Excel with Post office, Pincode, Beat No., Serving areas) or add beats with +.';
+
+  @override
+  String get beatsImport => 'Import beat sheet';
+
+  @override
+  String get beatsExport => 'Share beat list (Excel)';
+
+  @override
+  String get beatsAddStarter => 'Add Dharwad HO beats';
+
+  @override
+  String beatsRemoveOffice(String office) {
+    return 'Remove all beats of $office';
+  }
+
+  @override
+  String beatsRemoveOfficeQ(String office) {
+    return 'Remove all beats of $office?';
+  }
+
+  @override
+  String beatsImported(int count) {
+    return '$count beats added or updated';
+  }
+
+  @override
+  String get beatsNoneInFile =>
+      'No beats found. The sheet needs columns like Post office, Pincode, Beat No. and Serving areas.';
+
+  @override
+  String get beatAdd => 'Add beat';
+
+  @override
+  String get beatEdit => 'Edit beat';
+
+  @override
+  String beatNo(String beat) {
+    return 'Beat $beat';
+  }
+
+  @override
+  String get beatNoLabel => 'Beat no.';
+
+  @override
+  String get beatAreas => 'Serving areas';
+
+  @override
+  String get beatAreasHint =>
+      'Separate areas with commas: Saptapur 1st cross, Jayanagar, …';
+
+  @override
+  String get beatInvalid =>
+      'Enter the office and beat no. (PIN must be 6 digits)';
+
+  @override
+  String beatSaved(String beat) {
+    return 'Beat $beat saved';
+  }
+
+  @override
+  String beatRemoved(String beat) {
+    return 'Beat $beat removed';
+  }
+
+  @override
+  String get villagesImport => 'Import village sheet';
+
+  @override
+  String get villagesSearch => 'Search village, office or PIN';
+
+  @override
+  String get villagesMatching => 'Matching villages to post offices…';
+
+  @override
+  String villagesImported(int count, int n) {
+    return '$count villages added · $n not matched to an office';
+  }
+
+  @override
+  String get villagesNoSheet =>
+      'No villages found. The sheet needs Village, PO (post office) and Pincode columns.';
 }

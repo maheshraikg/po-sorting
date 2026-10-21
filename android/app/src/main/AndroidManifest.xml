@@ -68,6 +68,16 @@
         <intent>
             <action android:name="android.speech.RecognitionService" />
         </intent>
+        <!-- file_picker: "Save file" (Downloads / Drive) and opening files.
+             Without these, Android 11+ hides the system file screen. -->
+        <intent>
+            <action android:name="android.intent.action.CREATE_DOCUMENT" />
+            <data android:mimeType="*/*" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.OPEN_DOCUMENT" />
+            <data android:mimeType="*/*" />
+        </intent>
         <!-- flutter_tts: find the phone's text-to-speech engine. -->
         <intent>
             <action android:name="android.intent.action.TTS_SERVICE" />

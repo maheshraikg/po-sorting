@@ -7,6 +7,7 @@ import 'package:sorting_sahayak/data/directory_builder.dart' show OfficeData;
 import 'package:sorting_sahayak/data/import/scheme_io.dart';
 import 'package:sorting_sahayak/data/import/table_reader.dart';
 import 'package:sorting_sahayak/data/models/office.dart';
+import 'package:sorting_sahayak/data/village_import.dart';
 import 'package:sorting_sahayak/data/villages.dart';
 import 'package:sorting_sahayak/features/settings/export_all.dart';
 import 'package:sorting_sahayak/features/settings/office_editor.dart';
@@ -105,5 +106,50 @@ void main() {
     await tester.pumpAndSettle();
     expect(h.services.villages.of(574202, 'Darbe'), ['Hosur']);
     expect(find.text('1 villages saved for Darbe'), findsOneWidget);
+  });
+
+  test('village directory sheet: title row, two-row header, PO and account office', () {
+    final rows = [
+      ['ALUR Taluk', '', '', ''],
+      ['Name of the ', 'Name of the ', 'Account ', 'Pincode'],
+      ['village', 'PO', 'office', ''],
+      ['Kodimbadi', 'Darbe BO', 'Puttur', '574202.0'],
+      ['Bolwar', 'Darbey', 'Puttur', ''],
+      ['', '', '', ''],
+    ];
+    final v = readVillageSheet(rows);
+    expect(v.map((x) => x.village).toList(), ['Kodimbadi', 'Bolwar']);
+    expect((v.first.po, v.first.account, v.first.pin, v.last.pin), ('Darbe BO', 'Puttur', 574202, null));
+  });
+
+  testWidgets('village sheet rows go under the right office (spelling, missing PIN)', (tester) async {
+    final h = await _setUp(tester);
+    final rows = [
+      const VillageRow(village: 'Kodimbadi', po: 'Darbe BO', pin: 574202),
+      const VillageRow(village: 'Bolwar', po: 'Darbey', account: 'Puttur'),
+      const VillageRow(village: 'Nowhere', po: 'Xyzabc', pin: 574202),
+    ];
+    final m = (await tester.runAsync(() => matchVillages(h.services.directory, rows)))!;
+    expect(m[0].office?.officeName, 'Darbe');
+    expect(m[1].office?.officeName, 'Darbe');
+    expect(m[2].office, isNull);
+    final n = addVillageLists(h.settings, h.services, [
+      for (final x in m)
+        if (x.office != null) VillageList(pin: x.office!.pincode, office: x.office!.officeName, villages: [x.row.village]),
+    ]);
+    expect(n, 2);
+    expect(h.services.villages.of(574202, 'Darbe'), ['Kodimbadi', 'Bolwar']);
+  });
+
+  testWidgets('bundled Hassan villages are added once on first start', (tester) async {
+    final h = await _setUp(tester);
+    await tester.runAsync(() => seedVillages(h.settings, h.services, (p) async => File(p).readAsBytesSync()));
+    final n = h.settings.villages.fold<int>(0, (n, e) => n + (e['villages'] as List).length);
+    expect(n, greaterThan(2300));
+    expect(h.services.villages.of(573129, 'Bharathur'), contains('Adabyalu'));
+    // Removed by the user: not added again.
+    saveVillages(h.settings, h.services, 573129, 'Bharathur', []);
+    await tester.runAsync(() => seedVillages(h.settings, h.services, (p) async => File(p).readAsBytesSync()));
+    expect(h.services.villages.of(573129, 'Bharathur'), isEmpty);
   });
 }

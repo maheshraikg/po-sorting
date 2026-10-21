@@ -2,13 +2,18 @@
 /// a village finds its office and PIN.
 library;
 
+import 'package:flutter/foundation.dart' show Uint8List;
 import 'package:flutter/material.dart';
 
 import '../../core/app_scope.dart';
+import '../../core/files.dart';
+import '../../core/fuzzy.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../../core/settings.dart';
 import '../../core/widgets.dart';
 import '../../data/app_services.dart';
+import '../../data/import/table_reader.dart';
+import '../../data/village_import.dart';
 import '../../data/villages.dart';
 
 List<VillageList> _lists(Settings s) => [for (final j in s.villages) VillageList.fromJson(j)];
@@ -152,39 +157,189 @@ class _VillagesDialogState extends State<_VillagesDialog> {
 /// "Villages: Kodi, Hosur" under an office, or null when it has none.
 String? villagesLine(AppLocalizations l, List<String> villages) => villages.isEmpty ? null : '${l.villages}: ${villages.join(', ')}';
 
+const kStarterVillagesAsset = 'assets/villages/hassan_villages.csv';
+
+/// Adds [add] to the saved villages; returns how many villages were new.
+int addVillageLists(Settings settings, AppServices services, List<VillageList> add) {
+  var lists = _lists(settings);
+  var book = VillageBook(lists);
+  var before = lists.fold<int>(0, (n, e) => n + e.villages.length);
+  final byOffice = <String, VillageList>{};
+  for (final v in add) {
+    final k = '${v.pin}|${v.office}';
+    byOffice[k] = VillageList(pin: v.pin, office: v.office, villages: [...?byOffice[k]?.villages, ...v.villages]);
+  }
+  for (final v in byOffice.values) {
+    lists = setVillages(lists, v.pin, v.office, [...book.of(v.pin, v.office), ...v.villages]);
+  }
+  _store(settings, services, lists);
+  book = VillageBook(lists);
+  final after = lists.fold<int>(0, (n, e) => n + e.villages.length);
+  return after - before;
+}
+
+/// Rows "PIN | Office | Village" (the app's own Villages sheet / bundled list).
+List<VillageList> villageListsFromRows(List<List<String>> rows) {
+  if (rows.isEmpty) return const [];
+  final h = [for (final c in rows.first) c.trim().toLowerCase()];
+  final cPin = h.indexOf('pin'), cOffice = h.indexOf('office'), cVillage = h.indexOf('village');
+  if (cPin < 0 || cOffice < 0 || cVillage < 0) return const [];
+  return [
+    for (final r in rows.skip(1))
+      if (r.length > cVillage && int.tryParse(r[cPin].trim()) != null && r[cOffice].trim().isNotEmpty && r[cVillage].trim().isNotEmpty)
+        VillageList(pin: int.parse(r[cPin].trim()), office: r[cOffice].trim(), villages: [r[cVillage].trim()]),
+  ];
+}
+
+/// Adds the bundled village list once (first start after the update).
+Future<void> seedVillages(Settings settings, AppServices services, Future<Uint8List> Function(String) loadAsset) async {
+  if (settings.villagesSeeded) return;
+  settings.villagesSeeded = true;
+  try {
+    final t = readTable(await loadAsset(kStarterVillagesAsset), 'villages.csv');
+    addVillageLists(settings, services, villageListsFromRows(t.sheets.values.first));
+  } catch (_) {
+    // Missing asset: nothing to add.
+  }
+}
+
+/// Picks a village sheet (a village directory "Village | PO | Account office
+/// | Pincode", or the app's own Villages sheet) and adds its villages under
+/// the matching offices.
+Future<void> importVillageSheet(BuildContext context) async {
+  final l = AppLocalizations.of(context);
+  final settings = context.settings;
+  final services = context.services;
+  final messenger = ScaffoldMessenger.of(context);
+  final nav = Navigator.of(context, rootNavigator: true);
+  final f = await pickTableFile();
+  if (f == null || !context.mounted) return;
+  showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => PopScope(
+      canPop: false,
+      child: AlertDialog(
+        content: Row(
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(width: 20),
+            Expanded(child: Text(l.villagesMatching)),
+          ],
+        ),
+      ),
+    ),
+  );
+  var added = 0, missed = 0, found = false;
+  try {
+    final t = readTable(f.bytes, f.name);
+    for (final name in [if (t.sheets.containsKey('Villages')) 'Villages', ...t.sheets.keys]) {
+      final rows = t.sheets[name]!;
+      final own = villageListsFromRows(rows);
+      if (own.isNotEmpty) {
+        added = addVillageLists(settings, services, own);
+        found = true;
+        break;
+      }
+      final sheet = readVillageSheet(rows);
+      if (sheet.isEmpty) continue;
+      final m = await matchVillages(services.directory, sheet);
+      missed = m.where((x) => x.office == null).length;
+      added = addVillageLists(settings, services, [
+        for (final x in m)
+          if (x.office != null) VillageList(pin: x.office!.pincode, office: x.office!.officeName, villages: [x.row.village]),
+      ]);
+      found = true;
+      break;
+    }
+  } catch (_) {
+    found = false;
+  }
+  nav.pop();
+  messenger.showSnackBar(SnackBar(content: Text(found ? l.villagesImported(added, missed) : l.villagesNoSheet)));
+}
+
 /// Every office the user added villages to.
-class VillagesScreen extends StatelessWidget {
+class VillagesScreen extends StatefulWidget {
   const VillagesScreen({super.key});
+
+  @override
+  State<VillagesScreen> createState() => _VillagesScreenState();
+}
+
+class _VillagesScreenState extends State<VillagesScreen> {
+  String _q = '';
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
-    final lists = _lists(context.settings)..sort((a, b) => a.pin != b.pin ? a.pin.compareTo(b.pin) : a.office.compareTo(b.office));
-    final n = lists.fold<int>(0, (n, e) => n + e.villages.length);
+    final all = _lists(context.settings)..sort((a, b) => a.pin != b.pin ? a.pin.compareTo(b.pin) : a.office.compareTo(b.office));
+    final n = all.fold<int>(0, (n, e) => n + e.villages.length);
+    final q = normalizePlace(_q);
+    final lists = q.isEmpty
+        ? all
+        : [
+            for (final e in all)
+              if ('${e.pin}'.startsWith(q) || normalizePlace(e.office).contains(q) || e.villages.any((v) => normalizePlace(v).contains(q))) e,
+          ];
     return Scaffold(
-      appBar: AppBar(title: Text(l.villagesMine)),
-      body: ListView(
-        padding: const EdgeInsets.all(12),
+      appBar: AppBar(
+        title: Text(l.villagesMine),
+        actions: [
+          IconButton(
+            key: const ValueKey('villages_import'),
+            tooltip: l.villagesImport,
+            icon: const Icon(Icons.upload_file),
+            onPressed: () => importVillageSheet(context),
+          ),
+        ],
+      ),
+      body: Column(
         children: [
-          Padding(padding: const EdgeInsets.all(4), child: Text(l.villagesHint)),
-          if (lists.isEmpty)
-            EmptyState(icon: Icons.holiday_village_outlined, text: l.villagesMineNone)
-          else
-            Padding(
-              padding: const EdgeInsets.all(4),
-              child: Text(l.villagesCount(n, lists.length), style: Theme.of(context).textTheme.bodySmall),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(12, 12, 12, 0),
+            child: TextField(
+              key: const ValueKey('villages_search'),
+              decoration: InputDecoration(prefixIcon: const Icon(Icons.search), hintText: l.villagesSearch),
+              onChanged: (v) => setState(() => _q = v),
             ),
-          for (final e in lists)
-            Card(
-              key: ValueKey('villages_${e.pin}_${e.office}'),
-              child: ListTile(
-                leading: Icon(Icons.holiday_village_outlined, color: Theme.of(context).colorScheme.primary),
-                title: Text('${e.office} · ${e.pin}', style: const TextStyle(fontWeight: FontWeight.w800)),
-                subtitle: Text(e.villages.join(', ')),
-                trailing: const Icon(Icons.edit_outlined),
-                onTap: () => editVillages(context, pin: e.pin, name: e.office),
-              ),
-            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+            child: Text(all.isEmpty ? l.villagesHint : '${l.villagesCount(n, all.length)} · ${l.villagesHint}', style: Theme.of(context).textTheme.bodySmall),
+          ),
+          Expanded(
+            child: all.isEmpty
+                ? Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: EmptyState(
+                      icon: Icons.holiday_village_outlined,
+                      text: l.villagesMineNone,
+                      action: FilledButton.icon(
+                        onPressed: () => importVillageSheet(context),
+                        icon: const Icon(Icons.upload_file),
+                        label: Text(l.villagesImport),
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.all(12),
+                    itemCount: lists.length,
+                    itemBuilder: (_, i) {
+                      final e = lists[i];
+                      return Card(
+                        key: ValueKey('villages_${e.pin}_${e.office}'),
+                        child: ListTile(
+                          leading: Icon(Icons.holiday_village_outlined, color: Theme.of(context).colorScheme.primary),
+                          title: Text('${e.office} · ${e.pin}', style: const TextStyle(fontWeight: FontWeight.w800)),
+                          subtitle: Text(e.villages.join(', ')),
+                          trailing: const Icon(Icons.edit_outlined),
+                          onTap: () => editVillages(context, pin: e.pin, name: e.office),
+                        ),
+                      );
+                    },
+                  ),
+          ),
         ],
       ),
     );

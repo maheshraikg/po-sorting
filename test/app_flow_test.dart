@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sorting_sahayak/main.dart';
 
+import 'package:sorting_sahayak/features/settings/more_screen.dart';
+
 import 'helpers/app_harness.dart';
 
 void main() {
@@ -30,6 +32,12 @@ void main() {
 
     // More → Sorting schemes (pushed route).
     await tester.tap(find.text('More'));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Sorting schemes'),
+      200,
+      scrollable: find.descendant(of: find.byType(MoreScreen), matching: find.byType(Scrollable)).first,
+    );
     await tester.pumpAndSettle();
     await tester.tap(find.text('Sorting schemes'));
     await settle(tester);
@@ -75,6 +83,12 @@ void main() {
     // Learn now lives in More → flashcards (pushed route using services).
     expect(find.widgetWithText(NavigationDestination, 'Learn'), findsNothing);
     await tester.tap(find.text('More'));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(
+      find.text('Learn'),
+      -200,
+      scrollable: find.descendant(of: find.byType(MoreScreen), matching: find.byType(Scrollable)).first,
+    );
     await tester.pumpAndSettle();
     await tester.tap(find.text('Learn'));
     await tester.pumpAndSettle();

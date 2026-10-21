@@ -14,6 +14,7 @@ import '../../core/l10n/app_localizations.dart';
 import '../../core/settings.dart';
 import '../../core/theme.dart';
 import '../../data/app_services.dart';
+import '../../data/beats.dart';
 import '../../data/directory_builder.dart' show NameCorrection, OfficeData, OfficeEdit;
 import '../../data/import/scheme_import.dart';
 import '../../data/import/scheme_io.dart';
@@ -90,6 +91,7 @@ class SharedData {
     this.editedTables = const {},
     this.favourites = const [],
     this.schemeName = '',
+    this.beats = const [],
     this.modeNames = const {},
     this.schemeRules = const [],
     this.schemeAir = const [],
@@ -109,6 +111,9 @@ class SharedData {
   final List<({int pin, String office, String note})> favourites;
   final String schemeName;
 
+  /// Postman beats (Beat list).
+  final List<Beat> beats;
+
   /// The sender's own names for TD / Non-TD (taken with the scheme).
   final Map<String, String> modeNames;
   final List<List<String>> schemeRules;
@@ -120,7 +125,7 @@ class SharedData {
   bool get hasScheme => schemeRules.length > 1;
 
   /// Nothing to import apart from (maybe) hub tables; see [ShareOffer].
-  bool get isEmpty => officeCount == 0 && villageCount == 0 && favourites.isEmpty && !hasScheme;
+  bool get isEmpty => officeCount == 0 && villageCount == 0 && favourites.isEmpty && !hasScheme && beats.isEmpty;
 }
 
 /// Reads a share pack; null when [t] is not one.
@@ -239,6 +244,7 @@ SharedData? readSharedData(TableFile t) {
         if (int.tryParse(at(r, 0)) != null) (pin: int.parse(at(r, 0)), office: at(r, 1), note: at(r, 4)),
     ],
     schemeName: aboutValue('Scheme'),
+    beats: s['Beats'] == null ? const [] : readBeats(s['Beats']!),
     modeNames: {
       for (final p in aboutValue('Mode names').split(';'))
         if (p.contains('=') && p.split('=')[1].trim().isNotEmpty) p.split('=')[0].trim(): p.split('=').sublist(1).join('=').trim(),
@@ -254,6 +260,7 @@ class ShareChoice {
   ShareChoice({this.offices = true, this.villages = true, Set<HubTableKind>? tables, this.favourites = true, this.scheme = true}) : tables = tables ?? {};
 
   bool offices, villages, favourites, scheme;
+  bool beats = true;
 
   /// Hub tables to take (they replace this phone's copy).
   final Set<HubTableKind> tables;
@@ -298,7 +305,7 @@ Future<ShareOffer> shareOffer(AppServices services, SharedData d) async {
 
 /// What an import added.
 class ShareResult {
-  int offices = 0, villages = 0, tables = 0, favourites = 0;
+  int offices = 0, villages = 0, tables = 0, favourites = 0, beats = 0;
   bool scheme = false;
 }
 
@@ -343,6 +350,11 @@ Future<ShareResult> applySharedData(AppServices services, Settings settings, Sha
     settings.setTableCsv(k.prefsKey, t.toCsv());
     services.setTable(k, t);
     out.tables++;
+  }
+  if (c.beats && d.beats.isNotEmpty) {
+    final (merged, n) = mergeBeats([for (final j in settings.beats) Beat.fromJson(j)], d.beats);
+    settings.beats = [for (final b in merged) b.toJson()];
+    out.beats = n;
   }
   if (c.favourites) {
     final have = await services.user.favourites();
@@ -397,7 +409,7 @@ Future<void> importSharedData(BuildContext context) async {
   }
   final offer = d == null ? null : await shareOffer(services, d);
   if (!context.mounted) return;
-  if (d == null || (offer!.offices == 0 && d.villageCount == 0 && d.favourites.isEmpty && !d.hasScheme && offer.tables.isEmpty)) {
+  if (d == null || (offer!.offices == 0 && d.villageCount == 0 && d.favourites.isEmpty && !d.hasScheme && d.beats.isEmpty && offer.tables.isEmpty)) {
     messenger.showSnackBar(SnackBar(content: Text(d == null ? l.shareNotPack : l.shareEmpty)));
     return;
   }
@@ -407,7 +419,15 @@ Future<void> importSharedData(BuildContext context) async {
   );
   if (choice == null) return;
   final r = await applySharedData(services, settings, d, choice);
-  messenger.showSnackBar(SnackBar(content: Text(l.shareImported(r.offices, r.villages, r.tables, r.favourites) + (r.scheme ? '\n${l.shareSchemeAdded}' : ''))));
+  messenger.showSnackBar(
+    SnackBar(
+      content: Text(
+        l.shareImported(r.offices, r.villages, r.tables, r.favourites) +
+            (r.beats > 0 ? '\n${l.beatsImported(r.beats)}' : '') +
+            (r.scheme ? '\n${l.shareSchemeAdded}' : ''),
+      ),
+    ),
+  );
 }
 
 class ShareImportDialog extends StatefulWidget {
@@ -455,6 +475,8 @@ class _ShareImportDialogState extends State<ShareImportDialog> {
                 _c.tables.contains(k),
                 (v) => v ? _c.tables.add(k) : _c.tables.remove(k),
               ),
+            if (d.beats.isNotEmpty)
+              row('beats', l.beatList, l.beatsCount(d.beats.length, {for (final b in d.beats) b.office}.length), _c.beats, (v) => _c.beats = v),
             if (d.favourites.isNotEmpty) row('favourites', l.favourites, l.shareNFavourites(d.favourites.length), _c.favourites, (v) => _c.favourites = v),
             if (d.hasScheme)
               row(

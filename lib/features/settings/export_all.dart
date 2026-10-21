@@ -7,10 +7,13 @@ library;
 
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart' show compute;
+
 import '../../core/constants.dart';
 import '../../core/fuzzy.dart';
 import '../../core/settings.dart';
 import '../../data/app_services.dart';
+import '../../data/beats.dart';
 import '../../data/directory_builder.dart' show OfficeData, OfficeEdit;
 import '../../data/import/scheme_io.dart';
 import '../../data/import/table_reader.dart';
@@ -65,10 +68,9 @@ Future<List<int>> areaPins(AppServices services, Settings settings, List<OfficeE
         districts.add(o.district);
       }
     }
-    for (final n in named) {
-      for (final h in await services.directory.search(n, limit: 8)) {
-        if (normalizePlace(h.office.officeName) == n && (districts.isEmpty || districts.contains(h.office.district))) pins.add(h.office.pincode);
-      }
+    final want = named.toSet();
+    for (final o in await services.directory.officesNamed(want.toList())) {
+      if (want.contains(normalizePlace(o.officeName)) && (districts.isEmpty || districts.contains(o.district))) pins.add(o.pincode);
     }
   }
   for (final e in edits) {
@@ -153,7 +155,10 @@ Future<Uint8List> buildSharePack(AppServices services, Settings settings, {DateT
         'Offices = every office of my area now (Status: Original / Added / Changed / Removed). Office_changes = only my changes. Villages, Favourites, hub tables (NSH, RMS_L1, NPH, RMS_NSH), Scheme_* = lines and rules.',
       ],
       ['Scheme', scheme?.scheme.name ?? ''],
-      ['Mode names', [for (final e in settings.categoryNames.entries) '${e.key}=${e.value}'].join('; ')],
+      [
+        'Mode names',
+        [for (final e in settings.categoryNames.entries) '${e.key}=${e.value}'].join('; '),
+      ],
       ['Import', 'Open PO Sorting → More → Share & backup data → Import a data file, and pick this file.'],
       ['Google Sheets', 'To edit in Google Sheets and import again: File → Download → Microsoft Excel (.xlsx). Keep the sheet names.'],
     ],
@@ -184,6 +189,8 @@ Future<Uint8List> buildSharePack(AppServices services, Settings settings, {DateT
     for (final e in settings.villages.map(VillageList.fromJson))
       for (final v in e.villages) ['${e.pin}', e.office, v],
   ];
+  final beats = [for (final j in settings.beats) Beat.fromJson(j)];
+  if (beats.isNotEmpty) sheets['Beats'] = beatsTable(beats);
   final favs = await services.user.favourites();
   sheets['Favourites'] = [
     ['PIN', 'Office', 'District', 'State', 'Note'],
@@ -194,5 +201,6 @@ Future<Uint8List> buildSharePack(AppServices services, Settings settings, {DateT
     if (scheme.airResolver.rules.isNotEmpty) sheets['Scheme_AirCodes'] = airCodesTable(scheme.airResolver.rules);
     if (scheme.hubResolver.rules.isNotEmpty) sheets['Scheme_DMSL'] = dmslTable(scheme.hubResolver.rules);
   }
-  return writeXlsx(sheets);
+  // Writing the workbook takes a few seconds on a phone: off the UI thread.
+  return compute(writeXlsx, sheets);
 }
