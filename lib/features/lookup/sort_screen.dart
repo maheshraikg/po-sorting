@@ -821,7 +821,6 @@ class _PlaceCard extends StatelessWidget {
                   constraints: const BoxConstraints(maxWidth: 150),
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                   color: Color.alphaBlend(colour.withValues(alpha: 0.14), c.surfaceContainerLowest),
-                  alignment: Alignment.centerRight,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
