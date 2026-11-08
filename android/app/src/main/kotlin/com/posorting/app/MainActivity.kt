@@ -10,6 +10,8 @@ import android.graphics.Rect
 import android.graphics.YuvImage
 import android.media.ExifInterface
 import android.net.Uri
+import android.os.Build
+import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import com.googlecode.tesseract.android.TessBaseAPI
@@ -29,6 +31,15 @@ class MainActivity : FlutterActivity() {
     private val worker = Executors.newSingleThreadExecutor()
     private val main = Handler(Looper.getMainLooper())
     private var tess: TessBaseAPI? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // Edge-to-edge on every Android version, not only 15+ (Play's
+        // "edge-to-edge may not display for all users"): the app draws behind
+        // the status and navigation bars and keeps its content clear of them
+        // with SafeArea on the Flutter side.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) window.setDecorFitsSystemWindows(false)
+    }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)

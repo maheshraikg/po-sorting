@@ -232,4 +232,17 @@ void main() {
     expect(h.services.active!.rules.where((r) => r.category == 'Hubballi RMS'), hasLength(97));
     expect(h.settings.beats, hasLength(196));
   });
+
+  testWidgets('adding all office villages is quick (it froze phones in 1.0.40)', (tester) async {
+    final h = await _setUp(tester);
+    final all = <VillageList>[];
+    for (final p in kOfficePacks) {
+      all.addAll((await tester.runAsync(() => loadPack(p, (x) async => File(x).readAsBytesSync())))!.villages);
+    }
+    final sw = Stopwatch()..start();
+    final n = addVillageLists(h.settings, h.services, all);
+    expect(n, greaterThan(9000));
+    expect(addVillageLists(h.settings, h.services, all), 0); // already there
+    expect(sw.elapsedMilliseconds, lessThan(1500));
+  });
 }

@@ -157,21 +157,43 @@ class _VillagesDialogState extends State<_VillagesDialog> {
 String? villagesLine(AppLocalizations l, List<String> villages) => villages.isEmpty ? null : '${l.villages}: ${villages.join(', ')}';
 
 /// Adds [add] to the saved villages; returns how many villages were new.
+/// One pass over all villages (an office pack has thousands; rebuilding the
+/// list per office froze the app on first start).
 int addVillageLists(Settings settings, AppServices services, List<VillageList> add) {
-  var lists = _lists(settings);
-  var book = VillageBook(lists);
-  var before = lists.fold<int>(0, (n, e) => n + e.villages.length);
-  final byOffice = <String, VillageList>{};
-  for (final v in add) {
-    final k = '${v.pin}|${v.office}';
-    byOffice[k] = VillageList(pin: v.pin, office: v.office, villages: [...?byOffice[k]?.villages, ...v.villages]);
+  final byKey = <String, ({int pin, String office, List<String> villages, Set<String> norms})>{};
+  final order = <String>[];
+  void put(int pin, String office, String village) {
+    final k = '$pin|${normalizePlace(office)}';
+    final e = byKey[k] ??= () {
+      order.add(k);
+      return (pin: pin, office: office, villages: <String>[], norms: <String>{});
+    }();
+    final t = village.trim().replaceAll(RegExp(r'\s+'), ' ');
+    if (t.isNotEmpty && e.norms.add(normalizePlace(t))) e.villages.add(t);
   }
-  for (final v in byOffice.values) {
-    lists = setVillages(lists, v.pin, v.office, [...book.of(v.pin, v.office), ...v.villages]);
+
+  var before = 0;
+  for (final l in _lists(settings)) {
+    for (final v in l.villages) {
+      put(l.pin, l.office, v);
+    }
   }
-  _store(settings, services, lists);
-  book = VillageBook(lists);
-  final after = lists.fold<int>(0, (n, e) => n + e.villages.length);
+  for (final e in byKey.values) {
+    before += e.villages.length;
+  }
+  for (final l in add) {
+    for (final v in l.villages) {
+      put(l.pin, l.office, v);
+    }
+  }
+  var after = 0;
+  final lists = <VillageList>[];
+  for (final k in order) {
+    final e = byKey[k]!;
+    after += e.villages.length;
+    if (e.villages.isNotEmpty) lists.add(VillageList(pin: e.pin, office: e.office, villages: e.villages));
+  }
+  if (after != before) _store(settings, services, lists);
   return after - before;
 }
 
