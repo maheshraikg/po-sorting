@@ -204,6 +204,19 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Data version of each office pack as applied on this phone.
+  Map<String, int> get packVersions {
+    final raw = _prefs.getString('packVersions');
+    if (raw == null || raw.isEmpty) return const {};
+    try {
+      return {for (final e in (jsonDecode(raw) as Map).entries) '${e.key}': (e.value as num).toInt()};
+    } catch (_) {
+      return const {};
+    }
+  }
+
+  set packVersions(Map<String, int> v) => _prefs.setString('packVersions', jsonEncode(v));
+
   /// Office data packs switched on (null = not set up yet, see migratePacks).
   List<String>? get enabledPacks => _prefs.getStringList('enabledPacks');
 

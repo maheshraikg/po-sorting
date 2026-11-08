@@ -2736,4 +2736,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get officePackColour =>
       'The app takes the colour of the office you switched on last, and its name shows at the top.';
+
+  @override
+  String officePackLines(int count) {
+    return '$count sorting lines';
+  }
 }

@@ -61,7 +61,7 @@ void main() {
     expect(loadBeats(h.settings), isEmpty);
     await tester.runAsync(() => setPack(h.settings, h.services, kOfficePacks.first, true, (p) async => File(p).readAsBytesSync()));
     await tester.pump();
-    expect(loadBeats(h.settings), hasLength(23));
+    expect(loadBeats(h.settings), hasLength(196)); // Hubballi RMS town beats, Dharwad HO included
     await tester.enterText(find.byKey(const ValueKey('beats_search')), 'Michigan');
     await tester.pump();
     expect(find.byKey(const ValueKey('beat_580001_2')), findsOneWidget);
@@ -75,7 +75,7 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('beat_save')));
     await tester.pumpAndSettle();
     final added = loadBeats(h.settings).last;
-    expect((added.office, added.pin, added.beat), ('Dharwad HO', 580001, '24'));
+    expect((added.office, added.pin, added.beat), ('Gokul', 580027, '24')); // office prefilled from the last beat shown
     expect(added.areas, ['Navanagar', 'KHB colony']);
   });
 

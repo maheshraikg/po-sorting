@@ -2744,4 +2744,9 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get officePackColour =>
       'ನೀವು ಕೊನೆಗೆ ಆನ್ ಮಾಡಿದ ಕಚೇರಿಯ ಬಣ್ಣ ಆಪ್‌ಗೆ ಬರುತ್ತದೆ, ಅದರ ಹೆಸರು ಮೇಲೆ ಕಾಣುತ್ತದೆ.';
+
+  @override
+  String officePackLines(int count) {
+    return '$count ಸಾರ್ಟಿಂಗ್ ಲೈನ್';
+  }
 }

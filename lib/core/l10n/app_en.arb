@@ -1717,5 +1717,13 @@
       }
     }
   },
-  "officePackColour": "The app takes the colour of the office you switched on last, and its name shows at the top."
+  "officePackColour": "The app takes the colour of the office you switched on last, and its name shows at the top.",
+  "officePackLines": "{count} sorting lines",
+  "@officePackLines": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

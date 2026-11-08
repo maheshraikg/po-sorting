@@ -177,23 +177,59 @@ void main() {
     await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 500)));
     await tester.pump();
     expect(find.text('Main data (always on)'), findsOneWidget);
-    await tester.tap(find.byKey(const ValueKey('pack_dharwad')));
+    await tester.tap(find.byKey(const ValueKey('pack_hubballi')));
     for (var i = 0; i < 5; i++) {
       await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
       await tester.pump();
     }
-    expect(h.settings.enabledPacks, ['dharwad']);
-    expect(h.settings.beats, hasLength(23));
+    expect(h.settings.enabledPacks, ['hubballi']);
+    expect(h.settings.beats, hasLength(196));
     // The app takes the office's colour and shows its name.
-    expect(h.settings.colorPack, 'dharwad');
+    expect(h.settings.colorPack, 'hubballi');
     expect(officeColor(h.settings), kOfficePacks.first.color);
     expect(buildTheme(Brightness.light, office: officeColor(h.settings)).colorScheme.primary, kOfficePacks.first.color);
-    await tester.tap(find.byKey(const ValueKey('pack_dharwad')));
+    await tester.tap(find.byKey(const ValueKey('pack_hubballi')));
     for (var i = 0; i < 5; i++) {
       await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
       await tester.pump();
     }
     expect(h.settings.colorPack, isNull);
     expect(buildTheme(Brightness.light, office: officeColor(h.settings)).colorScheme.primary, kPostRed);
+  });
+
+  testWidgets('Hubballi RMS: its SO lines come as their own mode next to TD / Non-TD', (tester) async {
+    final h = await _setUp(tester);
+    Future<Uint8List> load(String p) async => File(p).readAsBytesSync();
+    final hub = kOfficePacks.firstWhere((p) => p.id == 'hubballi');
+    final mainRules = h.services.active!.rules.length;
+    await tester.runAsync(() => setPack(h.settings, h.services, hub, true, load));
+    expect(h.services.categories, contains('Hubballi RMS'));
+    expect(h.settings.category, 'Hubballi RMS');
+    final lines = h.services.active!.rules.where((r) => r.category == 'Hubballi RMS').toList();
+    expect(lines, hasLength(97));
+    expect(lines.firstWhere((r) => r.match.pin == 581104).bagCode, 'Hangal SO');
+    expect(h.services.active!.rules.length, mainRules + 97); // main data stays
+    expect(h.services.villages.of(581121, 'Bazarkunang'), isNotEmpty);
+    // Applying again (new version on start) does not double anything.
+    await tester.runAsync(() => setPack(h.settings, h.services, hub, true, load, fromUser: false));
+    expect(h.services.active!.rules.where((r) => r.category == 'Hubballi RMS'), hasLength(97));
+    // Off: lines, mode, beats and villages go; back to TD.
+    await tester.runAsync(() => setPack(h.settings, h.services, hub, false, load));
+    expect(h.services.categories, isNot(contains('Hubballi RMS')));
+    expect(h.services.active!.rules.length, mainRules);
+    expect(h.settings.category, 'TD');
+    expect(h.settings.beats, isEmpty);
+  });
+
+  testWidgets('the 1.0.42 Dharwad HO pack becomes Hubballi RMS', (tester) async {
+    final h = await _setUp(tester);
+    h.settings.enabledPacks = ['dharwad', 'hassan'];
+    h.settings.colorPack = 'dharwad';
+    migratePacks(h.settings);
+    expect(h.settings.enabledPacks, ['hubballi', 'hassan']);
+    expect(h.settings.colorPack, 'hubballi');
+    await tester.runAsync(() => refreshPacks(h.settings, h.services, (p) async => File(p).readAsBytesSync()));
+    expect(h.services.active!.rules.where((r) => r.category == 'Hubballi RMS'), hasLength(97));
+    expect(h.settings.beats, hasLength(196));
   });
 }

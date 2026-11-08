@@ -15,13 +15,27 @@ import '../../core/theme.dart';
 import '../../core/widgets.dart';
 import '../../data/app_services.dart';
 import '../../data/beats.dart';
+import '../../core/constants.dart';
+import '../../data/import/scheme_import.dart';
+import '../../data/import/scheme_io.dart';
 import '../../data/import/table_reader.dart';
+import '../../data/models/scheme.dart';
 import '../../data/villages.dart';
 import '../beats/beats_screen.dart';
 import '../settings/village_editor.dart';
 
 class OfficePack {
-  const OfficePack({required this.id, required this.name, required this.area, required this.color, this.beatsAsset, this.villagesAsset});
+  const OfficePack({
+    required this.id,
+    required this.name,
+    required this.area,
+    required this.color,
+    this.version = 1,
+    this.beatsAsset,
+    this.villagesAsset,
+    this.schemeAsset,
+    this.category,
+  });
 
   final String id;
 
@@ -33,12 +47,31 @@ class OfficePack {
 
   /// App colour while this office is chosen.
   final Color color;
+
+  /// Bumped when the pack's data changes; phones with the pack on get the
+  /// new data on their next start.
+  final int version;
   final String? beatsAsset;
   final String? villagesAsset;
+
+  /// Sorting lines (app scheme format) added to the active scheme as their
+  /// own mode [category] next to TD / Non-TD.
+  final String? schemeAsset;
+  final String? category;
 }
 
 const kOfficePacks = [
-  OfficePack(id: 'dharwad', name: 'Dharwad HO', area: 'Dharwad Division · 580001', color: Color(0xFF00695C), beatsAsset: 'assets/beats/dharwad_ho_beats.csv'),
+  OfficePack(
+    id: 'hubballi',
+    name: 'Hubballi RMS',
+    area: 'Dharwad · Hubballi · Haveri · Sirsi · Uttara Kannada',
+    color: Color(0xFF00695C),
+    version: 1,
+    schemeAsset: 'assets/packs/hubballi_rms_scheme.csv',
+    category: 'Hubballi RMS',
+    beatsAsset: 'assets/beats/hubballi_town_beats.csv',
+    villagesAsset: 'assets/villages/uttara_kannada_villages.csv',
+  ),
   OfficePack(id: 'hassan', name: 'Hassan district', area: 'Hassan Division', color: Color(0xFF283593), villagesAsset: 'assets/villages/hassan_villages.csv'),
   OfficePack(
     id: 'shimoga',
@@ -87,10 +120,13 @@ class OfficeChip extends StatelessWidget {
 }
 
 class PackData {
-  const PackData(this.beats, this.villages);
+  const PackData(this.beats, this.villages, [this.lines = const []]);
 
   final List<Beat> beats;
   final List<VillageList> villages;
+
+  /// Sorting rules of the pack's own mode.
+  final List<BagRule> lines;
 
   int get villageCount => villages.fold(0, (n, v) => n + v.villages.length);
 }
@@ -100,12 +136,25 @@ Future<PackData> loadPack(OfficePack p, Future<Uint8List> Function(String) loadA
   var villages = const <VillageList>[];
   if (p.beatsAsset != null) beats = beatsFromTable(readTable(await loadAsset(p.beatsAsset!), 'beats.csv'));
   if (p.villagesAsset != null) villages = villageListsFromRows(readTable(await loadAsset(p.villagesAsset!), 'villages.csv').sheets.values.first);
-  return PackData(beats, villages);
+  var lines = const <BagRule>[];
+  if (p.schemeAsset != null) {
+    final t = readTable(await loadAsset(p.schemeAsset!), 'lines.csv');
+    lines = [for (final r in autoImport<BagRule>(t.sheets.values.first, ImportKind.bagRules).rules) r.withCategory(p.category)];
+  }
+  return PackData(beats, villages, lines);
 }
 
 /// Switches [p] on (adds its data) or off (removes it).
-Future<void> setPack(Settings settings, AppServices services, OfficePack p, bool on, Future<Uint8List> Function(String) loadAsset) async {
+Future<void> setPack(
+  Settings settings,
+  AppServices services,
+  OfficePack p,
+  bool on,
+  Future<Uint8List> Function(String) loadAsset, {
+  bool fromUser = true,
+}) async {
   final d = await loadPack(p, loadAsset);
+  await _setLines(settings, services, p, d, on, fromUser: fromUser);
   if (on) {
     if (d.beats.isNotEmpty) storeBeats(settings, mergeBeats(loadBeats(settings), d.beats).$1);
     if (d.villages.isNotEmpty) addVillageLists(settings, services, d.villages);
@@ -113,6 +162,9 @@ Future<void> setPack(Settings settings, AppServices services, OfficePack p, bool
     if (d.beats.isNotEmpty) storeBeats(settings, loadBeats(settings)..removeWhere((b) => d.beats.any((x) => x.sameBeat(b))));
     if (d.villages.isNotEmpty) removeVillageLists(settings, services, d.villages);
   }
+  final versions = {...settings.packVersions}..[p.id] = on ? p.version : 0;
+  settings.packVersions = versions..removeWhere((_, v) => v == 0);
+  if (!fromUser) return;
   // The app takes the colour of the office switched on last.
   if (on) {
     settings.colorPack = p.id;
@@ -130,11 +182,51 @@ Future<void> setPack(Settings settings, AppServices services, OfficePack p, bool
 /// Phones that got the bundled beats / villages before packs existed keep
 /// them, shown as switched on (runs once).
 void migratePacks(Settings settings) {
-  if (settings.enabledPacks != null) return;
-  settings.enabledPacks = [
-    if (settings.beatsSeeded && settings.beats.any((b) => b['office'] == 'Dharwad HO')) 'dharwad',
-    ...settings.seededVillageSets.where((s) => kOfficePacks.any((p) => p.id == s)),
-  ];
+  if (settings.enabledPacks == null) {
+    settings.enabledPacks = [
+      if (settings.beatsSeeded && settings.beats.any((b) => b['office'] == 'Dharwad HO')) 'hubballi',
+      ...settings.seededVillageSets.where((s) => kOfficePacks.any((p) => p.id == s)),
+    ];
+    return;
+  }
+  // 1.0.42 had a "Dharwad HO" beats pack; it is now part of Hubballi RMS.
+  final ids = settings.enabledPacks!;
+  if (ids.contains('dharwad')) settings.enabledPacks = [for (final x in ids) x == 'dharwad' ? 'hubballi' : x];
+  if (settings.colorPack == 'dharwad') settings.colorPack = 'hubballi';
+}
+
+/// Packs switched on whose data changed (new version), or whose lines are
+/// missing from the active scheme (another scheme was chosen), are applied
+/// again; the user's choices stay.
+Future<void> refreshPacks(Settings settings, AppServices services, Future<Uint8List> Function(String) loadAsset) async {
+  for (final p in kOfficePacks) {
+    if (!(settings.enabledPacks ?? const <String>[]).contains(p.id)) continue;
+    final linesMissing = p.category != null && services.active != null && !services.active!.rules.any((r) => r.category == p.category);
+    if (settings.packVersions[p.id] == p.version && !linesMissing) continue;
+    try {
+      await setPack(settings, services, p, true, loadAsset, fromUser: false);
+    } catch (_) {
+      // Missing asset: keep what the phone has.
+    }
+  }
+}
+
+/// Adds the pack's lines to the active scheme as mode [OfficePack.category]
+/// (and opens that mode when the user switched the pack on), or removes them.
+Future<void> _setLines(Settings settings, AppServices services, OfficePack p, PackData d, bool on, {required bool fromUser}) async {
+  final cat = p.category;
+  final id = services.active?.scheme.id;
+  if (cat == null || id == null || d.lines.isEmpty) return;
+  if (on) {
+    await services.schemes.addCategory(cat);
+    await services.schemes.replaceCategoryRules(id, cat, d.lines, completeBags(d.lines, const [], kBagPalette.map(colourToHex).toList()));
+  } else {
+    await services.schemes.replaceCategoryRules(id, cat, const [], const []);
+    await services.schemes.deleteCategory(cat);
+  }
+  await services.reloadActive();
+  if (on && fromUser) settings.category = cat;
+  if (!on && settings.category == cat) settings.category = kCatTD;
 }
 
 class OfficePacksScreen extends StatefulWidget {
@@ -208,6 +300,7 @@ class _OfficePacksScreenState extends State<OfficePacksScreen> {
                   [
                     p.area,
                     if (_sizes[p.id] case final d?) ...[
+                      if (d.lines.isNotEmpty) l.officePackLines(d.lines.length),
                       if (d.beats.isNotEmpty) l.officePackBeats(d.beats.length),
                       if (d.villages.isNotEmpty) l.officePackVillages(d.villageCount),
                     ],

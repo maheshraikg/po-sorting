@@ -4815,6 +4815,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The app takes the colour of the office you switched on last, and its name shows at the top.'**
   String get officePackColour;
+
+  /// No description provided for @officePackLines.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} sorting lines'**
+  String officePackLines(int count);
 }
 
 class _AppLocalizationsDelegate

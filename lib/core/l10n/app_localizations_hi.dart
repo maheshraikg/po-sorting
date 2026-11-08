@@ -2729,4 +2729,9 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get officePackColour =>
       'आपने जो कार्यालय आख़िर में चालू किया, ऐप उसका रंग लेता है और उसका नाम ऊपर दिखता है।';
+
+  @override
+  String officePackLines(int count) {
+    return '$count सॉर्टिंग लाइनें';
+  }
 }
