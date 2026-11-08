@@ -19,7 +19,11 @@ String ruleTypeLabel(AppLocalizations l, RuleType t) => switch (t) {
 /// The user's own names for modes ("TD" → "Local"), from settings.
 Map<String, String> categoryNames = const {};
 
-String categoryLabel(AppLocalizations l, String c) => categoryNames[c]?.isNotEmpty == true ? categoryNames[c]! : _builtInLabel(l, c);
+/// Short tab names for office-pack modes (the mode tab is narrow).
+const Map<String, String> kPackModeLabels = {'Hubballi RMS': 'HB RMS'};
+
+String categoryLabel(AppLocalizations l, String c) =>
+    categoryNames[c]?.isNotEmpty == true ? categoryNames[c]! : kPackModeLabels[c] ?? _builtInLabel(l, c);
 
 String _builtInLabel(AppLocalizations l, String c) => switch (c) {
   kCatTD => l.catTD,

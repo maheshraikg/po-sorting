@@ -8,6 +8,8 @@ import 'package:sorting_sahayak/data/import/scheme_io.dart';
 import 'package:sorting_sahayak/data/import/table_reader.dart';
 import 'package:sorting_sahayak/data/models/office.dart';
 import 'package:sorting_sahayak/core/theme.dart';
+import 'package:sorting_sahayak/core/l10n/app_localizations.dart';
+import 'package:sorting_sahayak/core/labels.dart';
 import 'package:sorting_sahayak/data/village_import.dart';
 import 'package:sorting_sahayak/features/packs/office_packs.dart';
 import 'package:sorting_sahayak/data/villages.dart';
@@ -262,5 +264,11 @@ void main() {
     await tester.runAsync(() => setPack(h.settings, h.services, hassan, false, load));
     h.settings.category = 'Non-TD';
     expect(officeColor(h.settings), isNull);
+  });
+
+  test('the Hubballi RMS mode tab reads HB RMS', () async {
+    final l = await AppLocalizations.delegate.load(const Locale('en'));
+    expect(categoryLabel(l, 'Hubballi RMS'), 'HB RMS');
+    expect(categoryLabel(l, 'TD'), 'TD');
   });
 }
