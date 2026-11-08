@@ -195,6 +195,14 @@ class Settings extends ChangeNotifier {
 
   set seededVillageSets(List<String> v) => _prefs.setStringList('seededVillageSets', v);
 
+  /// Office data packs switched on (null = not set up yet, see migratePacks).
+  List<String>? get enabledPacks => _prefs.getStringList('enabledPacks');
+
+  set enabledPacks(List<String>? v) {
+    v == null ? _prefs.remove('enabledPacks') : _prefs.setStringList('enabledPacks', v);
+    notifyListeners();
+  }
+
   /// Villages the user added under offices (VillageList JSON).
   List<Map<String, Object?>> get villages {
     final raw = _prefs.getString('villages');

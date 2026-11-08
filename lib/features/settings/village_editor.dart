@@ -2,7 +2,6 @@
 /// a village finds its office and PIN.
 library;
 
-import 'package:flutter/foundation.dart' show Uint8List;
 import 'package:flutter/material.dart';
 
 import '../../core/app_scope.dart';
@@ -157,13 +156,6 @@ class _VillagesDialogState extends State<_VillagesDialog> {
 /// "Villages: Kodi, Hosur" under an office, or null when it has none.
 String? villagesLine(AppLocalizations l, List<String> villages) => villages.isEmpty ? null : '${l.villages}: ${villages.join(', ')}';
 
-/// Bundled village directories (district → asset), added once each.
-const kStarterVillageAssets = {
-  'hassan': 'assets/villages/hassan_villages.csv',
-  'shimoga': 'assets/villages/shimoga_villages.csv',
-  'chikmagalur': 'assets/villages/chikmagalur_villages.csv',
-};
-
 /// Adds [add] to the saved villages; returns how many villages were new.
 int addVillageLists(Settings settings, AppServices services, List<VillageList> add) {
   var lists = _lists(settings);
@@ -196,21 +188,31 @@ List<VillageList> villageListsFromRows(List<List<String>> rows) {
   ];
 }
 
-/// Adds each bundled village list once (first start after the update).
-Future<void> seedVillages(Settings settings, AppServices services, Future<Uint8List> Function(String) loadAsset) async {
-  final done = settings.seededVillageSets;
-  final add = <VillageList>[];
-  for (final e in kStarterVillageAssets.entries) {
-    if (done.contains(e.key)) continue;
-    try {
-      final t = readTable(await loadAsset(e.value), 'villages.csv');
-      add.addAll(villageListsFromRows(t.sheets.values.first));
-    } catch (_) {
-      // Missing asset: nothing to add.
-    }
+/// Removes the villages of [remove] (an office pack switched off); the
+/// user's own villages under the same offices stay.
+void removeVillageLists(Settings settings, AppServices services, List<VillageList> remove) {
+  final drop = <String, Set<String>>{};
+  for (final v in remove) {
+    (drop['${v.pin}|${normalizePlace(v.office)}'] ??= {}).addAll(v.villages.map(normalizePlace));
   }
-  if (add.isNotEmpty) addVillageLists(settings, services, add);
-  settings.seededVillageSets = [...done, ...kStarterVillageAssets.keys.where((k) => !done.contains(k))];
+  _store(
+    settings,
+    services,
+    [
+      for (final l in _lists(settings))
+        if (drop['${l.pin}|${normalizePlace(l.office)}'] case final d?)
+          VillageList(
+            pin: l.pin,
+            office: l.office,
+            villages: [
+              for (final v in l.villages)
+                if (!d.contains(normalizePlace(v))) v,
+            ],
+          )
+        else
+          l,
+    ]..removeWhere((l) => l.villages.isEmpty),
+  );
 }
 
 /// Picks a village sheet (a village directory "Village | PO | Account office

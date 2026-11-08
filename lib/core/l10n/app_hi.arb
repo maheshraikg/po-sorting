@@ -753,7 +753,7 @@
   "beatsSearchHint": "क्षेत्र, कॉलोनी, इमारत, पिन या बीट नं.",
   "beatsAllOffices": "सभी डाकघर",
   "beatsCount": "{count} बीट · {n} डाकघर",
-  "beatsEmpty": "अभी कोई बीट नहीं। अपने कार्यालय की बीट शीट आयात करें (Post office, Pincode, Beat No., Serving areas वाली Excel) या + से जोड़ें।",
+  "beatsEmpty": "अभी कोई बीट नहीं। और → कार्यालय डेटा में कार्यालय चालू करें, अपनी बीट शीट आयात करें या + से जोड़ें।",
   "beatsImport": "बीट शीट आयात",
   "beatsExport": "बीट सूची साझा करें (Excel)",
   "beatsAddStarter": "धारवाड़ HO बीट जोड़ें",
@@ -774,5 +774,15 @@
   "villagesSearch": "गांव, डाकघर या पिन खोजें",
   "villagesMatching": "गांवों को डाकघरों से मिलाया जा रहा है…",
   "villagesImported": "{count} गांव जोड़े · {n} डाकघर से नहीं मिले",
-  "villagesNoSheet": "कोई गांव नहीं मिला। शीट में Village, PO और Pincode कॉलम चाहिए।"
+  "villagesNoSheet": "कोई गांव नहीं मिला। शीट में Village, PO और Pincode कॉलम चाहिए।",
+  "officePacks": "कार्यालय डेटा",
+  "officePacksSub": "किसी और कार्यालय की बीट या गांव मुख्य डेटा में जोड़ें",
+  "officePackMain": "मुख्य डेटा (हमेशा चालू)",
+  "officePackMainSub": "मंगलुरु सॉर्टिंग लाइनें, अखिल भारत पिन निर्देशिका, NSH / NPH हब",
+  "officePacksIntro": "अपना कार्यालय चालू करें – उसका डेटा मुख्य डेटा के साथ दिखेगा। बंद करने पर हट जाएगा। केवल यह फ़ोन बदलता है।",
+  "officePacksMore": "अपना कार्यालय यहां चाहिए? उसकी बीट या गांव सूची ऐप टीम को भेजें।",
+  "officePackOn": "{name} जोड़ा गया",
+  "officePackOff": "{name} हटाया गया",
+  "officePackBeats": "{count} बीट",
+  "officePackVillages": "{count} गांव"
 }

@@ -2608,7 +2608,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get beatsEmpty =>
-      'No beats yet. Import your office\'s beat sheet (Excel with Post office, Pincode, Beat No., Serving areas) or add beats with +.';
+      'No beats yet. Switch on an office in More → Office data, import your office\'s beat sheet (Excel with Post office, Pincode, Beat No., Serving areas) or add beats with +.';
 
   @override
   String get beatsImport => 'Import beat sheet';
@@ -2690,4 +2690,46 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get villagesNoSheet =>
       'No villages found. The sheet needs Village, PO (post office) and Pincode columns.';
+
+  @override
+  String get officePacks => 'Office data';
+
+  @override
+  String get officePacksSub =>
+      'Add another office\'s beats or villages to the main data';
+
+  @override
+  String get officePackMain => 'Main data (always on)';
+
+  @override
+  String get officePackMainSub =>
+      'Mangaluru sorting lines, all-India PIN directory, NSH / NPH hubs';
+
+  @override
+  String get officePacksIntro =>
+      'Switch on your office to see its data together with the main data. Switch off to remove it. Only this phone changes.';
+
+  @override
+  String get officePacksMore =>
+      'Want your office here? Send its beat list or village list to the app team.';
+
+  @override
+  String officePackOn(String name) {
+    return '$name added';
+  }
+
+  @override
+  String officePackOff(String name) {
+    return '$name removed';
+  }
+
+  @override
+  String officePackBeats(int count) {
+    return '$count beats';
+  }
+
+  @override
+  String officePackVillages(int count) {
+    return '$count villages';
+  }
 }

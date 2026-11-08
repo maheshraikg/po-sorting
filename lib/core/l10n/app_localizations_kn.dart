@@ -2616,7 +2616,7 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get beatsEmpty =>
-      'ಇನ್ನೂ ಬೀಟ್‌ಗಳಿಲ್ಲ. ನಿಮ್ಮ ಕಚೇರಿಯ ಬೀಟ್ ಹಾಳೆ ಆಮದು ಮಾಡಿ (Post office, Pincode, Beat No., Serving areas ಇರುವ Excel) ಅಥವಾ + ಒತ್ತಿ ಸೇರಿಸಿ.';
+      'ಇನ್ನೂ ಬೀಟ್‌ಗಳಿಲ್ಲ. ಇನ್ನಷ್ಟು → ಕಚೇರಿ ಡೇಟಾ ದಲ್ಲಿ ಕಚೇರಿ ಆನ್ ಮಾಡಿ, ನಿಮ್ಮ ಕಚೇರಿಯ ಬೀಟ್ ಹಾಳೆ ಆಮದು ಮಾಡಿ ಅಥವಾ + ಒತ್ತಿ ಸೇರಿಸಿ.';
 
   @override
   String get beatsImport => 'ಬೀಟ್ ಹಾಳೆ ಆಮದು';
@@ -2698,4 +2698,46 @@ class AppLocalizationsKn extends AppLocalizations {
   @override
   String get villagesNoSheet =>
       'ಗ್ರಾಮ ಸಿಗಲಿಲ್ಲ. ಹಾಳೆಯಲ್ಲಿ Village, PO, Pincode ಕಾಲಮ್ ಬೇಕು.';
+
+  @override
+  String get officePacks => 'ಕಚೇರಿ ಡೇಟಾ';
+
+  @override
+  String get officePacksSub =>
+      'ಇನ್ನೊಂದು ಕಚೇರಿಯ ಬೀಟ್ ಅಥವಾ ಗ್ರಾಮಗಳನ್ನು ಮುಖ್ಯ ಡೇಟಾಗೆ ಸೇರಿಸಿ';
+
+  @override
+  String get officePackMain => 'ಮುಖ್ಯ ಡೇಟಾ (ಯಾವಾಗಲೂ ಇರುತ್ತದೆ)';
+
+  @override
+  String get officePackMainSub =>
+      'ಮಂಗಳೂರು ಸಾರ್ಟಿಂಗ್ ಲೈನ್‌ಗಳು, ಅಖಿಲ ಭಾರತ ಪಿನ್ ಡೈರೆಕ್ಟರಿ, NSH / NPH ಹಬ್‌ಗಳು';
+
+  @override
+  String get officePacksIntro =>
+      'ನಿಮ್ಮ ಕಚೇರಿಯನ್ನು ಆನ್ ಮಾಡಿ – ಅದರ ಡೇಟಾ ಮುಖ್ಯ ಡೇಟಾ ಜೊತೆಗೆ ಕಾಣುತ್ತದೆ. ಆಫ್ ಮಾಡಿದರೆ ತೆಗೆಯಲಾಗುತ್ತದೆ. ಈ ಫೋನ್ ಮಾತ್ರ ಬದಲಾಗುತ್ತದೆ.';
+
+  @override
+  String get officePacksMore =>
+      'ನಿಮ್ಮ ಕಚೇರಿ ಇಲ್ಲಿ ಬೇಕೆ? ಅದರ ಬೀಟ್ ಅಥವಾ ಗ್ರಾಮ ಪಟ್ಟಿಯನ್ನು ಆಪ್ ತಂಡಕ್ಕೆ ಕಳುಹಿಸಿ.';
+
+  @override
+  String officePackOn(String name) {
+    return '$name ಸೇರಿಸಲಾಗಿದೆ';
+  }
+
+  @override
+  String officePackOff(String name) {
+    return '$name ತೆಗೆಯಲಾಗಿದೆ';
+  }
+
+  @override
+  String officePackBeats(int count) {
+    return '$count ಬೀಟ್';
+  }
+
+  @override
+  String officePackVillages(int count) {
+    return '$count ಗ್ರಾಮ';
+  }
 }

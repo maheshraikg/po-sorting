@@ -2602,7 +2602,7 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get beatsEmpty =>
-      'अभी कोई बीट नहीं। अपने कार्यालय की बीट शीट आयात करें (Post office, Pincode, Beat No., Serving areas वाली Excel) या + से जोड़ें।';
+      'अभी कोई बीट नहीं। और → कार्यालय डेटा में कार्यालय चालू करें, अपनी बीट शीट आयात करें या + से जोड़ें।';
 
   @override
   String get beatsImport => 'बीट शीट आयात';
@@ -2683,4 +2683,46 @@ class AppLocalizationsHi extends AppLocalizations {
   @override
   String get villagesNoSheet =>
       'कोई गांव नहीं मिला। शीट में Village, PO और Pincode कॉलम चाहिए।';
+
+  @override
+  String get officePacks => 'कार्यालय डेटा';
+
+  @override
+  String get officePacksSub =>
+      'किसी और कार्यालय की बीट या गांव मुख्य डेटा में जोड़ें';
+
+  @override
+  String get officePackMain => 'मुख्य डेटा (हमेशा चालू)';
+
+  @override
+  String get officePackMainSub =>
+      'मंगलुरु सॉर्टिंग लाइनें, अखिल भारत पिन निर्देशिका, NSH / NPH हब';
+
+  @override
+  String get officePacksIntro =>
+      'अपना कार्यालय चालू करें – उसका डेटा मुख्य डेटा के साथ दिखेगा। बंद करने पर हट जाएगा। केवल यह फ़ोन बदलता है।';
+
+  @override
+  String get officePacksMore =>
+      'अपना कार्यालय यहां चाहिए? उसकी बीट या गांव सूची ऐप टीम को भेजें।';
+
+  @override
+  String officePackOn(String name) {
+    return '$name जोड़ा गया';
+  }
+
+  @override
+  String officePackOff(String name) {
+    return '$name हटाया गया';
+  }
+
+  @override
+  String officePackBeats(int count) {
+    return '$count बीट';
+  }
+
+  @override
+  String officePackVillages(int count) {
+    return '$count गांव';
+  }
 }

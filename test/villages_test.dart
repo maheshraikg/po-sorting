@@ -8,6 +8,7 @@ import 'package:sorting_sahayak/data/import/scheme_io.dart';
 import 'package:sorting_sahayak/data/import/table_reader.dart';
 import 'package:sorting_sahayak/data/models/office.dart';
 import 'package:sorting_sahayak/data/village_import.dart';
+import 'package:sorting_sahayak/features/packs/office_packs.dart';
 import 'package:sorting_sahayak/data/villages.dart';
 import 'package:sorting_sahayak/features/settings/export_all.dart';
 import 'package:sorting_sahayak/features/settings/office_editor.dart';
@@ -141,15 +142,46 @@ void main() {
     expect(h.services.villages.of(574202, 'Darbe'), ['Kodimbadi', 'Bolwar']);
   });
 
-  testWidgets('bundled Hassan villages are added once on first start', (tester) async {
+  testWidgets('office packs: villages added on, removed off; own villages stay', (tester) async {
     final h = await _setUp(tester);
-    await tester.runAsync(() => seedVillages(h.settings, h.services, (p) async => File(p).readAsBytesSync()));
+    Future<Uint8List> load(String p) async => File(p).readAsBytesSync();
+    final hassan = kOfficePacks.firstWhere((p) => p.id == 'hassan');
+    saveVillages(h.settings, h.services, 573129, 'Bharathur', ['My own village']);
+    await tester.runAsync(() => setPack(h.settings, h.services, hassan, true, load));
+    expect(h.settings.enabledPacks, ['hassan']);
+    expect(h.services.villages.of(573129, 'Bharathur'), containsAll(['My own village', 'Adabyalu']));
     final n = h.settings.villages.fold<int>(0, (n, e) => n + (e['villages'] as List).length);
-    expect(n, greaterThan(8000));
-    expect(h.services.villages.of(573129, 'Bharathur'), contains('Adabyalu'));
-    // Removed by the user: not added again.
-    saveVillages(h.settings, h.services, 573129, 'Bharathur', []);
-    await tester.runAsync(() => seedVillages(h.settings, h.services, (p) async => File(p).readAsBytesSync()));
-    expect(h.services.villages.of(573129, 'Bharathur'), isEmpty);
+    expect(n, greaterThan(2300));
+    await tester.runAsync(() => setPack(h.settings, h.services, hassan, false, load));
+    expect(h.settings.enabledPacks, isEmpty);
+    expect(h.services.villages.of(573129, 'Bharathur'), ['My own village']);
+  });
+
+  testWidgets('phones that already had the bundled data keep it switched on', (tester) async {
+    final h = await _setUp(tester);
+    h.settings.seededVillageSets = ['hassan', 'shimoga'];
+    migratePacks(h.settings);
+    expect(h.settings.enabledPacks, ['hassan', 'shimoga']);
+    h.settings.seededVillageSets = [];
+    migratePacks(h.settings); // runs once
+    expect(h.settings.enabledPacks, ['hassan', 'shimoga']);
+  });
+
+  testWidgets('Office data screen: switch a pack on', (tester) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.5;
+    addTearDown(tester.view.reset);
+    final h = await _setUp(tester);
+    await tester.pumpWidget(h.wrap(OfficePacksScreen(loadAsset: (p) async => File(p).readAsBytesSync())));
+    await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 500)));
+    await tester.pump();
+    expect(find.text('Main data (always on)'), findsOneWidget);
+    await tester.tap(find.byKey(const ValueKey('pack_dharwad')));
+    for (var i = 0; i < 5; i++) {
+      await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
+      await tester.pump();
+    }
+    expect(h.settings.enabledPacks, ['dharwad']);
+    expect(h.settings.beats, hasLength(23));
   });
 }

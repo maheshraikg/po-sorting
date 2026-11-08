@@ -5,6 +5,7 @@ import '../../core/theme.dart';
 import '../../core/widgets.dart';
 import '../../core/l10n/app_localizations.dart';
 import '../beats/beats_screen.dart';
+import '../packs/office_packs.dart';
 import '../learn/learn_screen.dart';
 import '../learn/pin_quiz_screen.dart';
 import '../schemes/schemes_screen.dart';
@@ -41,6 +42,7 @@ class MoreScreen extends StatelessWidget {
           item(Icons.edit_note, l.editData, l.editDataSub, const EditDataScreen()),
           item(Icons.cloud_sync_outlined, l.shareData, l.shareDataSub, const ShareDataScreen()),
           item(Icons.route_outlined, l.beatList, l.beatListSub, const BeatsScreen()),
+          item(Icons.business_outlined, l.officePacks, l.officePacksSub, const OfficePacksScreen()),
           item(Icons.school_outlined, l.navLearn, l.learnSub, const LearnScreen()),
           item(Icons.pin_outlined, l.pinQuiz, l.pinQuizSub, const PinQuizScreen()),
           item(Icons.rule_folder_outlined, l.schemes, l.schemesSub, const SchemesScreen()),

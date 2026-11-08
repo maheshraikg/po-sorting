@@ -4621,7 +4621,7 @@ abstract class AppLocalizations {
   /// No description provided for @beatsEmpty.
   ///
   /// In en, this message translates to:
-  /// **'No beats yet. Import your office\'s beat sheet (Excel with Post office, Pincode, Beat No., Serving areas) or add beats with +.'**
+  /// **'No beats yet. Switch on an office in More → Office data, import your office\'s beat sheet (Excel with Post office, Pincode, Beat No., Serving areas) or add beats with +.'**
   String get beatsEmpty;
 
   /// No description provided for @beatsImport.
@@ -4749,6 +4749,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No villages found. The sheet needs Village, PO (post office) and Pincode columns.'**
   String get villagesNoSheet;
+
+  /// No description provided for @officePacks.
+  ///
+  /// In en, this message translates to:
+  /// **'Office data'**
+  String get officePacks;
+
+  /// No description provided for @officePacksSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Add another office\'s beats or villages to the main data'**
+  String get officePacksSub;
+
+  /// No description provided for @officePackMain.
+  ///
+  /// In en, this message translates to:
+  /// **'Main data (always on)'**
+  String get officePackMain;
+
+  /// No description provided for @officePackMainSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Mangaluru sorting lines, all-India PIN directory, NSH / NPH hubs'**
+  String get officePackMainSub;
+
+  /// No description provided for @officePacksIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch on your office to see its data together with the main data. Switch off to remove it. Only this phone changes.'**
+  String get officePacksIntro;
+
+  /// No description provided for @officePacksMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Want your office here? Send its beat list or village list to the app team.'**
+  String get officePacksMore;
+
+  /// No description provided for @officePackOn.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} added'**
+  String officePackOn(String name);
+
+  /// No description provided for @officePackOff.
+  ///
+  /// In en, this message translates to:
+  /// **'{name} removed'**
+  String officePackOff(String name);
+
+  /// No description provided for @officePackBeats.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} beats'**
+  String officePackBeats(int count);
+
+  /// No description provided for @officePackVillages.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} villages'**
+  String officePackVillages(int count);
 }
 
 class _AppLocalizationsDelegate

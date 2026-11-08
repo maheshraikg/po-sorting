@@ -14,8 +14,7 @@ import '../../core/theme.dart';
 import '../../core/widgets.dart';
 import '../../data/beats.dart';
 import '../../data/import/table_reader.dart';
-
-const kStarterBeatsAsset = 'assets/beats/dharwad_ho_beats.csv';
+import '../packs/office_packs.dart';
 
 List<Beat> loadBeats(Settings s) => [for (final j in s.beats) Beat.fromJson(j)];
 
@@ -33,7 +32,7 @@ List<Beat> beatsFromTable(TableFile t) {
 class BeatsScreen extends StatefulWidget {
   const BeatsScreen({super.key, this.loadAsset = loadAssetBytes});
 
-  /// Loads the bundled starter beats (tests pass a file reader).
+  /// Loads bundled office packs (tests pass a file reader).
   final Future<Uint8List> Function(String path) loadAsset;
 
   @override
@@ -43,30 +42,6 @@ class BeatsScreen extends StatefulWidget {
 class _BeatsScreenState extends State<BeatsScreen> {
   String _q = '';
   String? _office;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final s = context.settings;
-    if (!s.beatsSeeded) {
-      s.beatsSeeded = true;
-      if (s.beats.isEmpty) _addStarter(silent: true);
-    }
-  }
-
-  Future<void> _addStarter({bool silent = false}) async {
-    final s = context.settings;
-    final l = AppLocalizations.of(context);
-    final messenger = ScaffoldMessenger.of(context);
-    try {
-      final b = beatsFromTable(readTable(await widget.loadAsset(kStarterBeatsAsset), 'beats.csv'));
-      final (merged, n) = mergeBeats(loadBeats(s), b);
-      storeBeats(s, merged);
-      if (!silent) messenger.showSnackBar(SnackBar(content: Text(l.beatsImported(n))));
-    } catch (_) {
-      // Asset missing: start empty.
-    }
-  }
 
   Future<void> _import() async {
     final l = AppLocalizations.of(context);
@@ -160,7 +135,7 @@ class _BeatsScreenState extends State<BeatsScreen> {
             onSelected: (v) => switch (v) {
               'import' => _import(),
               'export' => _export(),
-              'starter' => _addStarter(),
+              'packs' => Navigator.push(context, MaterialPageRoute(builder: (_) => OfficePacksScreen(loadAsset: widget.loadAsset))),
               _ => _removeOffice(v.substring(7)),
             },
             itemBuilder: (_) => [
@@ -173,8 +148,8 @@ class _BeatsScreenState extends State<BeatsScreen> {
                 child: ListTile(leading: const Icon(Icons.ios_share), title: Text(l.beatsExport)),
               ),
               PopupMenuItem(
-                value: 'starter',
-                child: ListTile(leading: const Icon(Icons.playlist_add), title: Text(l.beatsAddStarter)),
+                value: 'packs',
+                child: ListTile(leading: const Icon(Icons.business_outlined), title: Text(l.officePacks)),
               ),
               if (_office != null)
                 PopupMenuItem(

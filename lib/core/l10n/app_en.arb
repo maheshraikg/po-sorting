@@ -1605,7 +1605,7 @@
       }
     }
   },
-  "beatsEmpty": "No beats yet. Import your office's beat sheet (Excel with Post office, Pincode, Beat No., Serving areas) or add beats with +.",
+  "beatsEmpty": "No beats yet. Switch on an office in More → Office data, import your office's beat sheet (Excel with Post office, Pincode, Beat No., Serving areas) or add beats with +.",
   "beatsImport": "Import beat sheet",
   "beatsExport": "Share beat list (Excel)",
   "beatsAddStarter": "Add Dharwad HO beats",
@@ -1678,5 +1678,43 @@
       }
     }
   },
-  "villagesNoSheet": "No villages found. The sheet needs Village, PO (post office) and Pincode columns."
+  "villagesNoSheet": "No villages found. The sheet needs Village, PO (post office) and Pincode columns.",
+  "officePacks": "Office data",
+  "officePacksSub": "Add another office's beats or villages to the main data",
+  "officePackMain": "Main data (always on)",
+  "officePackMainSub": "Mangaluru sorting lines, all-India PIN directory, NSH / NPH hubs",
+  "officePacksIntro": "Switch on your office to see its data together with the main data. Switch off to remove it. Only this phone changes.",
+  "officePacksMore": "Want your office here? Send its beat list or village list to the app team.",
+  "officePackOn": "{name} added",
+  "@officePackOn": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "officePackOff": "{name} removed",
+  "@officePackOff": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "officePackBeats": "{count} beats",
+  "@officePackBeats": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "officePackVillages": "{count} villages",
+  "@officePackVillages": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

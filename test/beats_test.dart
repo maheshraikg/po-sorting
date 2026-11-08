@@ -6,12 +6,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:sorting_sahayak/data/beats.dart';
 import 'package:sorting_sahayak/data/import/table_reader.dart';
 import 'package:sorting_sahayak/features/beats/beats_screen.dart';
+import 'package:sorting_sahayak/features/packs/office_packs.dart';
 import 'package:sorting_sahayak/features/settings/export_all.dart';
 import 'package:sorting_sahayak/features/settings/import_shared.dart';
 
 import 'helpers/app_harness.dart';
 
-List<Beat> _starter() => beatsFromTable(readTable(File(kStarterBeatsAsset).readAsBytesSync(), 'b.csv'));
+List<Beat> _starter() => beatsFromTable(readTable(File('assets/beats/dharwad_ho_beats.csv').readAsBytesSync(), 'b.csv'));
 
 void main() {
   test('Dharwad HO beat sheet: 23 beats with their areas', () {
@@ -50,13 +51,16 @@ void main() {
     expect(merged[1].areas, ['Vidyanagar', 'Keshwapur', 'Desai cross']);
   });
 
-  testWidgets('Beat list: starter beats load, search, add a beat', (tester) async {
+  testWidgets('Beat list: empty until an office is switched on; search, add a beat', (tester) async {
     tester.view.physicalSize = const Size(1080, 2400);
     tester.view.devicePixelRatio = 2.5;
     addTearDown(tester.view.reset);
     final h = await Harness.create(tester);
     await tester.pumpWidget(h.wrap(BeatsScreen(loadAsset: (p) async => File(p).readAsBytesSync())));
     await settle(tester, rounds: 6);
+    expect(loadBeats(h.settings), isEmpty);
+    await tester.runAsync(() => setPack(h.settings, h.services, kOfficePacks.first, true, (p) async => File(p).readAsBytesSync()));
+    await tester.pump();
     expect(loadBeats(h.settings), hasLength(23));
     await tester.enterText(find.byKey(const ValueKey('beats_search')), 'Michigan');
     await tester.pump();

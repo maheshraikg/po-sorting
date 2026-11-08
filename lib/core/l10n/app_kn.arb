@@ -753,7 +753,7 @@
   "beatsSearchHint": "ಪ್ರದೇಶ, ಕಾಲನಿ, ಕಟ್ಟಡ, ಪಿನ್ ಅಥವಾ ಬೀಟ್ ಸಂಖ್ಯೆ",
   "beatsAllOffices": "ಎಲ್ಲಾ ಕಚೇರಿಗಳು",
   "beatsCount": "{count} ಬೀಟ್ · {n} ಕಚೇರಿ",
-  "beatsEmpty": "ಇನ್ನೂ ಬೀಟ್‌ಗಳಿಲ್ಲ. ನಿಮ್ಮ ಕಚೇರಿಯ ಬೀಟ್ ಹಾಳೆ ಆಮದು ಮಾಡಿ (Post office, Pincode, Beat No., Serving areas ಇರುವ Excel) ಅಥವಾ + ಒತ್ತಿ ಸೇರಿಸಿ.",
+  "beatsEmpty": "ಇನ್ನೂ ಬೀಟ್‌ಗಳಿಲ್ಲ. ಇನ್ನಷ್ಟು → ಕಚೇರಿ ಡೇಟಾ ದಲ್ಲಿ ಕಚೇರಿ ಆನ್ ಮಾಡಿ, ನಿಮ್ಮ ಕಚೇರಿಯ ಬೀಟ್ ಹಾಳೆ ಆಮದು ಮಾಡಿ ಅಥವಾ + ಒತ್ತಿ ಸೇರಿಸಿ.",
   "beatsImport": "ಬೀಟ್ ಹಾಳೆ ಆಮದು",
   "beatsExport": "ಬೀಟ್ ಪಟ್ಟಿ ಹಂಚಿ (Excel)",
   "beatsAddStarter": "ಧಾರವಾಡ HO ಬೀಟ್ ಸೇರಿಸಿ",
@@ -774,5 +774,15 @@
   "villagesSearch": "ಗ್ರಾಮ, ಕಚೇರಿ ಅಥವಾ ಪಿನ್ ಹುಡುಕಿ",
   "villagesMatching": "ಗ್ರಾಮಗಳನ್ನು ಅಂಚೆ ಕಚೇರಿಗಳಿಗೆ ಹೊಂದಿಸಲಾಗುತ್ತಿದೆ…",
   "villagesImported": "{count} ಗ್ರಾಮ ಸೇರಿಸಲಾಗಿದೆ · {n} ಕಚೇರಿಗೆ ಹೊಂದಲಿಲ್ಲ",
-  "villagesNoSheet": "ಗ್ರಾಮ ಸಿಗಲಿಲ್ಲ. ಹಾಳೆಯಲ್ಲಿ Village, PO, Pincode ಕಾಲಮ್ ಬೇಕು."
+  "villagesNoSheet": "ಗ್ರಾಮ ಸಿಗಲಿಲ್ಲ. ಹಾಳೆಯಲ್ಲಿ Village, PO, Pincode ಕಾಲಮ್ ಬೇಕು.",
+  "officePacks": "ಕಚೇರಿ ಡೇಟಾ",
+  "officePacksSub": "ಇನ್ನೊಂದು ಕಚೇರಿಯ ಬೀಟ್ ಅಥವಾ ಗ್ರಾಮಗಳನ್ನು ಮುಖ್ಯ ಡೇಟಾಗೆ ಸೇರಿಸಿ",
+  "officePackMain": "ಮುಖ್ಯ ಡೇಟಾ (ಯಾವಾಗಲೂ ಇರುತ್ತದೆ)",
+  "officePackMainSub": "ಮಂಗಳೂರು ಸಾರ್ಟಿಂಗ್ ಲೈನ್‌ಗಳು, ಅಖಿಲ ಭಾರತ ಪಿನ್ ಡೈರೆಕ್ಟರಿ, NSH / NPH ಹಬ್‌ಗಳು",
+  "officePacksIntro": "ನಿಮ್ಮ ಕಚೇರಿಯನ್ನು ಆನ್ ಮಾಡಿ – ಅದರ ಡೇಟಾ ಮುಖ್ಯ ಡೇಟಾ ಜೊತೆಗೆ ಕಾಣುತ್ತದೆ. ಆಫ್ ಮಾಡಿದರೆ ತೆಗೆಯಲಾಗುತ್ತದೆ. ಈ ಫೋನ್ ಮಾತ್ರ ಬದಲಾಗುತ್ತದೆ.",
+  "officePacksMore": "ನಿಮ್ಮ ಕಚೇರಿ ಇಲ್ಲಿ ಬೇಕೆ? ಅದರ ಬೀಟ್ ಅಥವಾ ಗ್ರಾಮ ಪಟ್ಟಿಯನ್ನು ಆಪ್ ತಂಡಕ್ಕೆ ಕಳುಹಿಸಿ.",
+  "officePackOn": "{name} ಸೇರಿಸಲಾಗಿದೆ",
+  "officePackOff": "{name} ತೆಗೆಯಲಾಗಿದೆ",
+  "officePackBeats": "{count} ಬೀಟ್",
+  "officePackVillages": "{count} ಗ್ರಾಮ"
 }
