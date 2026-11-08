@@ -484,6 +484,16 @@ class PinBeatsCard extends StatelessWidget {
                 ),
               ],
             ),
+            // The office the beats belong to, always shown.
+            if (offices.length == 1)
+              Padding(
+                padding: const EdgeInsets.only(left: 32, top: 2),
+                child: Text(
+                  offices.first,
+                  key: const ValueKey('pin_beats_office'),
+                  style: t.titleMedium?.copyWith(fontWeight: FontWeight.w800, color: brandColor(context)),
+                ),
+              ),
             const SizedBox(height: 8),
             for (final b in beats)
               Padding(

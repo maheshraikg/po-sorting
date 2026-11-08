@@ -115,6 +115,8 @@ void main() {
     );
     await tester.pump();
     expect(find.text('Beats at 580001: 23'), findsOneWidget);
+    expect(find.byKey(const ValueKey('pin_beats_office')), findsOneWidget);
+    expect(find.text('Dharwad HO'), findsOneWidget);
     expect(find.textContaining('Michigan compound, Adishakti colony'), findsOneWidget);
     expect(find.byKey(const ValueKey('beat_hits')), findsOneWidget);
     await tester.tap(find.descendant(of: find.byKey(const ValueKey('beat_hits')), matching: find.text('Michigan compound')));
