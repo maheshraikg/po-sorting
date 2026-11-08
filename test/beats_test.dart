@@ -93,4 +93,31 @@ void main() {
     expect(r.beats, 23);
     expect(loadBeats(b.settings), hasLength(23));
   });
+
+  testWidgets('Sort: a PIN shows its beats with all areas; an area name finds its beat', (tester) async {
+    tester.view.physicalSize = const Size(1080, 2400);
+    tester.view.devicePixelRatio = 2.5;
+    addTearDown(tester.view.reset);
+    final h = await Harness.create(tester);
+    storeBeats(h.settings, beatsFromTable(readTable(File('assets/beats/hubballi_town_beats.csv').readAsBytesSync(), 'b.csv')));
+    String? opened;
+    await tester.pumpWidget(
+      h.wrap(
+        Scaffold(
+          body: ListView(
+            children: [
+              BeatHitsList(query: 'Michigan', onPin: (p) => opened = p),
+              const PinBeatsCard(pin: 580001),
+            ],
+          ),
+        ),
+      ),
+    );
+    await tester.pump();
+    expect(find.text('Beats at 580001: 23'), findsOneWidget);
+    expect(find.textContaining('Michigan compound, Adishakti colony'), findsOneWidget);
+    expect(find.byKey(const ValueKey('beat_hits')), findsOneWidget);
+    await tester.tap(find.descendant(of: find.byKey(const ValueKey('beat_hits')), matching: find.text('Michigan compound')));
+    expect(opened, '580001');
+  });
 }

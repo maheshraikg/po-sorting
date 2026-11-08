@@ -23,6 +23,7 @@ import '../../data/models/scheme.dart';
 import '../../data/villages.dart';
 import '../beats/beats_screen.dart';
 import '../settings/village_editor.dart';
+import 'pack_learn.dart';
 
 class OfficePack {
   const OfficePack({
@@ -292,22 +293,44 @@ class _OfficePacksScreenState extends State<OfficePacksScreen> {
           ),
           for (final p in kOfficePacks)
             Card(
-              child: SwitchListTile(
-                key: ValueKey('pack_${p.id}'),
-                secondary: IconBadge(p.beatsAsset != null ? Icons.route_outlined : Icons.holiday_village_outlined, p.color),
-                title: Text(p.name, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
-                subtitle: Text(
-                  [
-                    p.area,
-                    if (_sizes[p.id] case final d?) ...[
-                      if (d.lines.isNotEmpty) l.officePackLines(d.lines.length),
-                      if (d.beats.isNotEmpty) l.officePackBeats(d.beats.length),
-                      if (d.villages.isNotEmpty) l.officePackVillages(d.villageCount),
-                    ],
-                  ].join(' · '),
-                ),
-                value: on.contains(p.id),
-                onChanged: _busy != null ? null : (v) => _toggle(p, v),
+              child: Column(
+                children: [
+                  SwitchListTile(
+                    key: ValueKey('pack_${p.id}'),
+                    secondary: IconBadge(p.beatsAsset != null ? Icons.route_outlined : Icons.holiday_village_outlined, p.color),
+                    title: Text(p.name, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
+                    subtitle: Text(
+                      [
+                        p.area,
+                        if (_sizes[p.id] case final d?) ...[
+                          if (d.lines.isNotEmpty) l.officePackLines(d.lines.length),
+                          if (d.beats.isNotEmpty) l.officePackBeats(d.beats.length),
+                          if (d.villages.isNotEmpty) l.officePackVillages(d.villageCount),
+                        ],
+                      ].join(' · '),
+                    ),
+                    value: on.contains(p.id),
+                    onChanged: _busy != null ? null : (v) => _toggle(p, v),
+                  ),
+                  if (on.contains(p.id) && p.category != null)
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(8, 0, 12, 8),
+                        child: FilledButton.tonalIcon(
+                          key: ValueKey('pack_learn_${p.id}'),
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => PackLearnScreen(pack: p, loadAsset: widget.loadAsset),
+                            ),
+                          ),
+                          icon: const Icon(Icons.school_outlined),
+                          label: Text(l.packLearnTitle(p.name)),
+                        ),
+                      ),
+                    ),
+                ],
               ),
             ),
           if (_busy != null) const Padding(padding: EdgeInsets.all(12), child: LinearProgressIndicator()),

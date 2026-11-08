@@ -1725,5 +1725,47 @@
         "type": "int"
       }
     }
-  }
+  },
+  "packLearnTitle": "Learn {name}",
+  "@packLearnTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "packLearnTileSub": "Bags, offices, PINs, beats and villages of this office – for new sorting assistants",
+  "packLearnIntro": "Start with the bag list, then practise with the quizzes. Wrong answers come back in My mistakes.",
+  "packLearnOffices": "{count} offices",
+  "@packLearnOffices": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "packLearnStudy": "Bags and their offices",
+  "packLearnStudySub": "Read every bag with its PIN and offices",
+  "packLearnPinBag": "PIN → bag",
+  "packLearnPinBagSub": "Which bag does this PIN go in?",
+  "packLearnOfficeBag": "Office → bag",
+  "packLearnOfficeBagSub": "Which bag for letters to this BO / SO?",
+  "packLearnOfficePin": "Office → PIN",
+  "packLearnOfficePinSub": "What is the PIN of this office?",
+  "packLearnAreaBeat": "Area → beat",
+  "packLearnAreaBeatSub": "Which beat serves this area?",
+  "packLearnVillageBo": "Village → BO",
+  "packLearnVillageBoSub": "Which BO serves this village?",
+  "beatsAtPin": "Beats at {pin}: {count}",
+  "@beatsAtPin": {
+    "placeholders": {
+      "pin": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "beatsFound": "Beats"
 }

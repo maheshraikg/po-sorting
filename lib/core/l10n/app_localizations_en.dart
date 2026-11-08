@@ -2741,4 +2741,66 @@ class AppLocalizationsEn extends AppLocalizations {
   String officePackLines(int count) {
     return '$count sorting lines';
   }
+
+  @override
+  String packLearnTitle(String name) {
+    return 'Learn $name';
+  }
+
+  @override
+  String get packLearnTileSub =>
+      'Bags, offices, PINs, beats and villages of this office – for new sorting assistants';
+
+  @override
+  String get packLearnIntro =>
+      'Start with the bag list, then practise with the quizzes. Wrong answers come back in My mistakes.';
+
+  @override
+  String packLearnOffices(int count) {
+    return '$count offices';
+  }
+
+  @override
+  String get packLearnStudy => 'Bags and their offices';
+
+  @override
+  String get packLearnStudySub => 'Read every bag with its PIN and offices';
+
+  @override
+  String get packLearnPinBag => 'PIN → bag';
+
+  @override
+  String get packLearnPinBagSub => 'Which bag does this PIN go in?';
+
+  @override
+  String get packLearnOfficeBag => 'Office → bag';
+
+  @override
+  String get packLearnOfficeBagSub => 'Which bag for letters to this BO / SO?';
+
+  @override
+  String get packLearnOfficePin => 'Office → PIN';
+
+  @override
+  String get packLearnOfficePinSub => 'What is the PIN of this office?';
+
+  @override
+  String get packLearnAreaBeat => 'Area → beat';
+
+  @override
+  String get packLearnAreaBeatSub => 'Which beat serves this area?';
+
+  @override
+  String get packLearnVillageBo => 'Village → BO';
+
+  @override
+  String get packLearnVillageBoSub => 'Which BO serves this village?';
+
+  @override
+  String beatsAtPin(String pin, int count) {
+    return 'Beats at $pin: $count';
+  }
+
+  @override
+  String get beatsFound => 'Beats';
 }

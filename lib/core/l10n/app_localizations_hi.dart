@@ -2734,4 +2734,66 @@ class AppLocalizationsHi extends AppLocalizations {
   String officePackLines(int count) {
     return '$count सॉर्टिंग लाइनें';
   }
+
+  @override
+  String packLearnTitle(String name) {
+    return '$name सीखें';
+  }
+
+  @override
+  String get packLearnTileSub =>
+      'इस कार्यालय के बैग, डाकघर, पिन, बीट और गांव – नए सॉर्टिंग सहायकों के लिए';
+
+  @override
+  String get packLearnIntro =>
+      'पहले बैग सूची पढ़ें, फिर क्विज़ करें। गलत उत्तर मेरी गलतियाँ में फिर आते हैं।';
+
+  @override
+  String packLearnOffices(int count) {
+    return '$count डाकघर';
+  }
+
+  @override
+  String get packLearnStudy => 'बैग और उनके डाकघर';
+
+  @override
+  String get packLearnStudySub => 'हर बैग उसके पिन और डाकघरों के साथ पढ़ें';
+
+  @override
+  String get packLearnPinBag => 'पिन → बैग';
+
+  @override
+  String get packLearnPinBagSub => 'यह पिन किस बैग में?';
+
+  @override
+  String get packLearnOfficeBag => 'डाकघर → बैग';
+
+  @override
+  String get packLearnOfficeBagSub => 'इस BO / SO के पत्र किस बैग में?';
+
+  @override
+  String get packLearnOfficePin => 'डाकघर → पिन';
+
+  @override
+  String get packLearnOfficePinSub => 'इस डाकघर का पिन क्या है?';
+
+  @override
+  String get packLearnAreaBeat => 'क्षेत्र → बीट';
+
+  @override
+  String get packLearnAreaBeatSub => 'यह क्षेत्र किस बीट में?';
+
+  @override
+  String get packLearnVillageBo => 'गांव → BO';
+
+  @override
+  String get packLearnVillageBoSub => 'यह गांव किस BO के अंतर्गत?';
+
+  @override
+  String beatsAtPin(String pin, int count) {
+    return '$pin की बीट: $count';
+  }
+
+  @override
+  String get beatsFound => 'बीट';
 }

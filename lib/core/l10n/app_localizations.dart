@@ -4821,6 +4821,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} sorting lines'**
   String officePackLines(int count);
+
+  /// No description provided for @packLearnTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn {name}'**
+  String packLearnTitle(String name);
+
+  /// No description provided for @packLearnTileSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Bags, offices, PINs, beats and villages of this office – for new sorting assistants'**
+  String get packLearnTileSub;
+
+  /// No description provided for @packLearnIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with the bag list, then practise with the quizzes. Wrong answers come back in My mistakes.'**
+  String get packLearnIntro;
+
+  /// No description provided for @packLearnOffices.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} offices'**
+  String packLearnOffices(int count);
+
+  /// No description provided for @packLearnStudy.
+  ///
+  /// In en, this message translates to:
+  /// **'Bags and their offices'**
+  String get packLearnStudy;
+
+  /// No description provided for @packLearnStudySub.
+  ///
+  /// In en, this message translates to:
+  /// **'Read every bag with its PIN and offices'**
+  String get packLearnStudySub;
+
+  /// No description provided for @packLearnPinBag.
+  ///
+  /// In en, this message translates to:
+  /// **'PIN → bag'**
+  String get packLearnPinBag;
+
+  /// No description provided for @packLearnPinBagSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Which bag does this PIN go in?'**
+  String get packLearnPinBagSub;
+
+  /// No description provided for @packLearnOfficeBag.
+  ///
+  /// In en, this message translates to:
+  /// **'Office → bag'**
+  String get packLearnOfficeBag;
+
+  /// No description provided for @packLearnOfficeBagSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Which bag for letters to this BO / SO?'**
+  String get packLearnOfficeBagSub;
+
+  /// No description provided for @packLearnOfficePin.
+  ///
+  /// In en, this message translates to:
+  /// **'Office → PIN'**
+  String get packLearnOfficePin;
+
+  /// No description provided for @packLearnOfficePinSub.
+  ///
+  /// In en, this message translates to:
+  /// **'What is the PIN of this office?'**
+  String get packLearnOfficePinSub;
+
+  /// No description provided for @packLearnAreaBeat.
+  ///
+  /// In en, this message translates to:
+  /// **'Area → beat'**
+  String get packLearnAreaBeat;
+
+  /// No description provided for @packLearnAreaBeatSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Which beat serves this area?'**
+  String get packLearnAreaBeatSub;
+
+  /// No description provided for @packLearnVillageBo.
+  ///
+  /// In en, this message translates to:
+  /// **'Village → BO'**
+  String get packLearnVillageBo;
+
+  /// No description provided for @packLearnVillageBoSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Which BO serves this village?'**
+  String get packLearnVillageBoSub;
+
+  /// No description provided for @beatsAtPin.
+  ///
+  /// In en, this message translates to:
+  /// **'Beats at {pin}: {count}'**
+  String beatsAtPin(String pin, int count);
+
+  /// No description provided for @beatsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Beats'**
+  String get beatsFound;
 }
 
 class _AppLocalizationsDelegate

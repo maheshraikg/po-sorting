@@ -451,3 +451,127 @@ class _BeatDialogState extends State<_BeatDialog> {
     );
   }
 }
+
+/// Beats of [pin] under the Sort result: every beat with its full areas.
+class PinBeatsCard extends StatelessWidget {
+  const PinBeatsCard({super.key, required this.pin});
+
+  final int pin;
+
+  @override
+  Widget build(BuildContext context) {
+    final beats = loadBeats(context.settings).where((b) => b.pin == pin).toList()
+      ..sort((a, b) => (int.tryParse(a.beat) ?? 1 << 20).compareTo(int.tryParse(b.beat) ?? 1 << 20));
+    if (beats.isEmpty) return const SizedBox.shrink();
+    final l = AppLocalizations.of(context);
+    final t = Theme.of(context).textTheme;
+    final cs = Theme.of(context).colorScheme;
+    final offices = {for (final b in beats) b.office};
+    return Card(
+      key: ValueKey('pin_beats_$pin'),
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.route_outlined, color: brandColor(context)),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(l.beatsAtPin('$pin', beats.length), style: t.titleMedium?.copyWith(fontWeight: FontWeight.w900)),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            for (final b in beats)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 64,
+                      padding: const EdgeInsets.symmetric(vertical: 6),
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(color: brandColor(context), borderRadius: BorderRadius.circular(10)),
+                      child: Text(
+                        l.beatNo(b.beat),
+                        style: t.labelLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w900),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            if (offices.length > 1)
+                              TextSpan(
+                                text: '${b.office}\n',
+                                style: const TextStyle(fontWeight: FontWeight.w800),
+                              ),
+                            TextSpan(text: b.areas.join(', ')),
+                          ],
+                        ),
+                        style: t.bodyMedium?.copyWith(color: cs.onSurface),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Beats whose areas match the typed words (Sort screen, ABC mode); tap to
+/// open the beat's PIN.
+class BeatHitsList extends StatelessWidget {
+  const BeatHitsList({super.key, required this.query, required this.onPin});
+
+  final String query;
+  final ValueChanged<String> onPin;
+
+  @override
+  Widget build(BuildContext context) {
+    final q = query.trim();
+    if (q.length < 3) return const SizedBox.shrink();
+    final hits = searchBeats(loadBeats(context.settings), q).where((h) => h.areas.isNotEmpty && h.beat.pin > 0).take(5).toList();
+    if (hits.isEmpty) return const SizedBox.shrink();
+    final l = AppLocalizations.of(context);
+    final t = Theme.of(context).textTheme;
+    return Column(
+      key: const ValueKey('beat_hits'),
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(4, 0, 4, 6),
+          child: Text(l.beatsFound, style: t.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
+        ),
+        for (final h in hits)
+          Card(
+            margin: const EdgeInsets.only(bottom: 8),
+            child: ListTile(
+              onTap: () => onPin('${h.beat.pin}'),
+              leading: Container(
+                width: 64,
+                padding: const EdgeInsets.symmetric(vertical: 6),
+                alignment: Alignment.center,
+                decoration: BoxDecoration(color: brandColor(context), borderRadius: BorderRadius.circular(10)),
+                child: Text(
+                  l.beatNo(h.beat.beat),
+                  style: t.labelLarge?.copyWith(color: Colors.white, fontWeight: FontWeight.w900),
+                ),
+              ),
+              title: Text(h.areas.join(', '), style: const TextStyle(fontWeight: FontWeight.w800)),
+              subtitle: Text('${h.beat.office} · ${h.beat.pin}'),
+            ),
+          ),
+        const SizedBox(height: 8),
+      ],
+    );
+  }
+}

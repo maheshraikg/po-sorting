@@ -21,6 +21,7 @@ import '../../data/models/scheme.dart';
 import '../../data/directory_builder.dart' show OfficeData;
 import '../../data/nsh.dart';
 import '../../data/sort_engine.dart';
+import '../beats/beats_screen.dart';
 import '../schemes/import_wizard.dart';
 import '../settings/office_editor.dart';
 import '../settings/village_editor.dart';
@@ -236,6 +237,12 @@ class SortResultView extends StatelessWidget {
       }
       if (r.offices.isNotEmpty) {
         children.add(_OfficeList(key: ValueKey('offices_${r.digits}'), offices: r.offices, pin: int.tryParse(r.digits)));
+        children.add(gap);
+      }
+      // The postman beats of this PIN (Beat list / office data).
+      final pin = int.tryParse(r.digits);
+      if (pin != null && loadBeats(context.settings).any((b) => b.pin == pin)) {
+        children.add(PinBeatsCard(pin: pin));
         children.add(gap);
       }
     }

@@ -29,7 +29,7 @@ class MoreScreen extends StatelessWidget {
     final l = AppLocalizations.of(context);
     var n = 0;
     Widget item(IconData i, String t, String s, Widget page) => ListTile(
-      leading: IconBadge(i, kAccentCycle[n++ % kAccentCycle.length], size: 42),
+      leading: IconBadge(i, accentAt(context, n++), size: 42),
       title: Text(t, style: const TextStyle(fontWeight: FontWeight.w700)),
       subtitle: Text(s),
       trailing: const Icon(Icons.chevron_right),

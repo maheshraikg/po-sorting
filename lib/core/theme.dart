@@ -53,6 +53,15 @@ class HeaderColors extends ThemeExtension<HeaderColors> {
   HeaderColors lerp(HeaderColors? other, double t) => other == null ? this : HeaderColors(Color.lerp(top, other.top, t)!, Color.lerp(bottom, other.bottom, t)!);
 }
 
+/// The app's main colour: post-box red, or the chosen office's colour.
+Color brandColor(BuildContext context) => Theme.of(context).extension<HeaderColors>()?.bottom ?? kPostRed;
+
+/// [kAccentCycle] colour [i], with the main colour in place of red.
+Color accentAt(BuildContext context, int i) {
+  final c = kAccentCycle[i % kAccentCycle.length];
+  return c == kPostRed ? brandColor(context) : c;
+}
+
 /// Text colour on white chips inside the header (red, or the office colour).
 Color headerAccent(BuildContext context) => Theme.of(context).extension<HeaderColors>()?.bottom ?? kPostRed;
 

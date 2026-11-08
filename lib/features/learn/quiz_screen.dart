@@ -18,7 +18,14 @@ import 'learn_screen.dart' show learnSectionLabel;
 import 'progress.dart';
 
 class QuizScreen extends StatefulWidget {
-  const QuizScreen({super.key, required this.mode, this.section = LearnSection.all, this.lineCode, this.ask = LearnAsk.sort, this.questions});
+  const QuizScreen({super.key, required this.mode, this.section = LearnSection.all, this.lineCode, this.ask = LearnAsk.sort, this.questions, this.kind, this.title});
+
+  /// Quiz-history kind for ready-made [questions] that are not mistake
+  /// practice (an office pack's quiz): 20 of them are asked each round.
+  final String? kind;
+
+  /// App bar title for such a quiz.
+  final String? title;
 
   /// Ready-made questions (practice from past mistakes); a right answer
   /// there clears that mistake.
@@ -55,11 +62,11 @@ class _QuizScreenState extends State<QuizScreen> {
   List<QuizRecord> _history = [];
   bool _done = false;
 
-  String get _kind => widget.questions != null
+  String get _kind => widget.kind ?? (widget.questions != null
       ? QuizScreen.mistakesKind
       : widget.lineCode != null
       ? 'line-${widget.lineCode}'
-      : QuizScreen.kindFor(widget.mode, widget.section, widget.ask);
+      : QuizScreen.kindFor(widget.mode, widget.section, widget.ask));
 
   @override
   void didChangeDependencies() {
@@ -82,7 +89,7 @@ class _QuizScreenState extends State<QuizScreen> {
     }
     final List<QuizQuestion> qs;
     if (widget.questions != null) {
-      qs = [...widget.questions!]..shuffle();
+      qs = ([...widget.questions!]..shuffle()).take(widget.kind != null ? 20 : widget.questions!.length).toList();
     } else {
       final regions = await s.pinRegions();
       final engine = await LearnEngine.load(s.directory, scheme, regions: regions, section: widget.section, ask: widget.ask);
@@ -117,7 +124,7 @@ class _QuizScreenState extends State<QuizScreen> {
     if (right) {
       context.settings.addLearnXp(kXpCorrect);
       AppFeedback.success(context.settings);
-      if (widget.questions != null) await s.user.clearMistake(q.card.prompt, q.card.answer);
+      if (widget.questions != null && widget.kind == null) await s.user.clearMistake(q.card.prompt, q.card.answer);
     } else {
       AppFeedback.warning(context.settings);
       await s.user.addMistake(s.active?.scheme.id, _kind, q.card.prompt, q.card.isPin ? q.card.prefix : null, q.card.answer, o);
@@ -150,7 +157,7 @@ class _QuizScreenState extends State<QuizScreen> {
     final l = AppLocalizations.of(context);
     final qs = _qs;
     final baseTitle = widget.mode == FlashMode.air ? l.airQuiz : l.timedQuiz;
-    final title = widget.lineCode ?? (widget.section == LearnSection.all ? baseTitle : learnSectionLabel(l, widget.section));
+    final title = widget.title ?? widget.lineCode ?? (widget.section == LearnSection.all ? baseTitle : learnSectionLabel(l, widget.section));
     if (qs == null) return Scaffold(appBar: AppBar(title: Text(title)), body: const Center(child: CircularProgressIndicator()));
     if (qs.isEmpty) return Scaffold(appBar: AppBar(title: Text(title)), body: EmptyState(icon: Icons.quiz_outlined, text: l.noCards));
     final t = Theme.of(context).textTheme;

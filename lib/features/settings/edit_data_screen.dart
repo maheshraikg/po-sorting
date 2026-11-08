@@ -29,7 +29,7 @@ class EditDataScreen extends StatelessWidget {
     Widget tile(String key, IconData icon, String title, String sub, Widget? page) => Card(
       child: ListTile(
         key: ValueKey('edit_$key'),
-        leading: IconBadge(icon, kAccentCycle[n++ % kAccentCycle.length]),
+        leading: IconBadge(icon, accentAt(context, n++)),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 18)),
         subtitle: Text(sub),
         trailing: const Icon(Icons.chevron_right),

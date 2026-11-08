@@ -9,6 +9,8 @@ import '../../core/theme.dart';
 import '../../core/widgets.dart';
 import '../../data/import/scheme_io.dart';
 import '../../core/files.dart';
+import '../packs/office_packs.dart';
+import '../packs/pack_learn.dart';
 import 'flashcards_screen.dart';
 import 'learn_engine.dart';
 import 'line_study_screen.dart';
@@ -116,11 +118,25 @@ class _LearnScreenState extends State<LearnScreen> {
               ),
             )
           else
-            ListTile(
-              title: Text(scheme.scheme.name),
-              subtitle: Text(l.learnFromScheme),
-              trailing: scheme.scheme.isSample ? const SampleChip() : null,
-            ),
+            ListTile(title: Text(scheme.scheme.name), subtitle: Text(l.learnFromScheme), trailing: scheme.scheme.isSample ? const SampleChip() : null),
+          // Learn the office data the user switched on (e.g. Hubballi RMS).
+          for (final p in kOfficePacks)
+            if ((context.settings.enabledPacks ?? const <String>[]).contains(p.id) && p.category != null)
+              Card(
+                color: p.color,
+                child: ListTile(
+                  key: ValueKey('learn_pack_${p.id}'),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  leading: const Icon(Icons.school, color: Colors.white, size: 32),
+                  title: Text(
+                    l.packLearnTitle(p.name),
+                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900, fontSize: 18),
+                  ),
+                  subtitle: Text(l.packLearnTileSub, style: const TextStyle(color: Colors.white)),
+                  trailing: const Icon(Icons.chevron_right, color: Colors.white),
+                  onTap: () => open(PackLearnScreen(pack: p)),
+                ),
+              ),
           const _ProgressCard(),
           Card(
             key: const ValueKey('learn_pin_quiz'),
@@ -173,7 +189,11 @@ class _LearnScreenState extends State<LearnScreen> {
                   key: const ValueKey('learn_ask'),
                   showSelectedIcon: false,
                   segments: [
-                    for (final a in asks) ButtonSegment(value: a, label: Text(_askLabel(l, a), textAlign: TextAlign.center)),
+                    for (final a in asks)
+                      ButtonSegment(
+                        value: a,
+                        label: Text(_askLabel(l, a), textAlign: TextAlign.center),
+                      ),
                   ],
                   style: SegmentedButton.styleFrom(
                     selectedBackgroundColor: Theme.of(context).colorScheme.secondaryContainer,
@@ -190,15 +210,38 @@ class _LearnScreenState extends State<LearnScreen> {
               ),
             ],
           ],
-          tile(Icons.auto_stories_outlined, l.pinBook, l.pinBookSub,
-              scheme == null || section == LearnSection.nonTd ? null : () => open(PinBookScreen(section: section)), kAccentTeal),
-          tile(Icons.style_outlined, l.flashcards, l.flashcardsSub, scheme == null ? null : () => open(FlashcardsScreen(mode: FlashMode.bag, section: section, ask: ask)), kAccentPurple),
-          tile(Icons.timer_outlined, l.timedQuiz, l.timedQuizSub, scheme == null ? null : () => open(QuizScreen(mode: FlashMode.bag, section: section, ask: ask)), kSkyDeep),
+          tile(
+            Icons.auto_stories_outlined,
+            l.pinBook,
+            l.pinBookSub,
+            scheme == null || section == LearnSection.nonTd ? null : () => open(PinBookScreen(section: section)),
+            kAccentTeal,
+          ),
+          tile(
+            Icons.style_outlined,
+            l.flashcards,
+            l.flashcardsSub,
+            scheme == null ? null : () => open(FlashcardsScreen(mode: FlashMode.bag, section: section, ask: ask)),
+            kAccentPurple,
+          ),
+          tile(
+            Icons.timer_outlined,
+            l.timedQuiz,
+            l.timedQuizSub,
+            scheme == null ? null : () => open(QuizScreen(mode: FlashMode.bag, section: section, ask: ask)),
+            kSkyDeep,
+          ),
           tile(Icons.bolt, l.speedSort, l.speedSortSub, scheme == null ? null : () => open(SpeedSortScreen(section: section, ask: ask)), kAccentOrange),
-          tile(Icons.format_list_numbered, l.learnByLine, l.learnByLineSub, scheme == null ? null : () => open(const LinePickerScreen()), kPostRed),
+          tile(Icons.format_list_numbered, l.learnByLine, l.learnByLineSub, scheme == null ? null : () => open(const LinePickerScreen()), brandColor(context)),
           tile(Icons.flight_takeoff, l.airFlashcards, l.airFlashcardsSub, hasAir ? () => open(const FlashcardsScreen(mode: FlashMode.air)) : null, kSky),
           tile(Icons.quiz_outlined, l.airQuiz, l.airQuizSub, hasAir ? () => open(const QuizScreen(mode: FlashMode.air)) : null, kAccentIndigo),
-          tile(Icons.hub_outlined, l.hubFlashcards, l.hubFlashcardsSub, scheme != null && !scheme.hubResolver.isEmpty ? () => open(const FlashcardsScreen(mode: FlashMode.hub)) : null, kAccentBrown),
+          tile(
+            Icons.hub_outlined,
+            l.hubFlashcards,
+            l.hubFlashcardsSub,
+            scheme != null && !scheme.hubResolver.isEmpty ? () => open(const FlashcardsScreen(mode: FlashMode.hub)) : null,
+            kAccentBrown,
+          ),
           tile(Icons.trending_down, l.weakAreas, l.weakAreasSub, () => open(const WeakAreasScreen()), kAccentPink),
           tile(Icons.menu_book_outlined, l.pinBasics, l.pinBasicsSub, () => open(const PinBasicsScreen()), kPostGreen),
         ],
@@ -237,62 +280,66 @@ class _ProgressCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [cs.primaryContainer, cs.secondaryContainer],
-          ),
+          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: [cs.primaryContainer, cs.secondaryContainer]),
         ),
         child: Padding(
-        padding: const EdgeInsets.all(14),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(
-                  radius: 24,
-                  backgroundColor: cs.primary,
-                  foregroundColor: cs.onPrimary,
-                  child: Text('${lv.level}', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900)),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.all(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    radius: 24,
+                    backgroundColor: cs.primary,
+                    foregroundColor: cs.onPrimary,
+                    child: Text('${lv.level}', style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900)),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${l.levelN(lv.level)} · ${levelTitle(l, lv.rank)}',
+                          style: t.titleMedium?.copyWith(fontWeight: FontWeight.w900, color: cs.onPrimaryContainer),
+                        ),
+                        Text(lv.next == null ? l.xpTotal(xp) : l.xpToNext(lv.next! - xp), style: t.bodySmall?.copyWith(color: cs.onPrimaryContainer)),
+                      ],
+                    ),
+                  ),
+                  Column(
                     children: [
-                      Text('${l.levelN(lv.level)} · ${levelTitle(l, lv.rank)}', style: t.titleMedium?.copyWith(fontWeight: FontWeight.w900, color: cs.onPrimaryContainer)),
-                      Text(lv.next == null ? l.xpTotal(xp) : l.xpToNext(lv.next! - xp), style: t.bodySmall?.copyWith(color: cs.onPrimaryContainer)),
+                      Icon(Icons.local_fire_department, color: streak > 0 ? Colors.deepOrange : cs.outline, size: 30),
+                      Text(
+                        l.streakDays(streak),
+                        style: t.labelSmall?.copyWith(fontWeight: FontWeight.w800, color: cs.onPrimaryContainer),
+                      ),
                     ],
                   ),
-                ),
-                Column(
-                  children: [
-                    Icon(Icons.local_fire_department, color: streak > 0 ? Colors.deepOrange : cs.outline, size: 30),
-                    Text(l.streakDays(streak), style: t.labelSmall?.copyWith(fontWeight: FontWeight.w800, color: cs.onPrimaryContainer)),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            LinearProgressIndicator(
-              value: lv.progress(xp),
-              minHeight: 10,
-              borderRadius: BorderRadius.circular(5),
-              color: accentFor(context, kPostGreen),
-              backgroundColor: cs.surface.withValues(alpha: 0.7),
-            ),
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Icon(goalDone ? Icons.check_circle : Icons.flag_outlined, size: 18, color: goalDone ? okColor(context) : cs.onPrimaryContainer),
-                const SizedBox(width: 6),
-                Expanded(child: Text(goalDone ? l.dailyGoalDone : l.dailyGoal(today, kDailyGoalXp), style: t.bodyMedium?.copyWith(color: cs.onPrimaryContainer))),
-              ],
-            ),
-          ],
+                ],
+              ),
+              const SizedBox(height: 10),
+              LinearProgressIndicator(
+                value: lv.progress(xp),
+                minHeight: 10,
+                borderRadius: BorderRadius.circular(5),
+                color: accentFor(context, kPostGreen),
+                backgroundColor: cs.surface.withValues(alpha: 0.7),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Icon(goalDone ? Icons.check_circle : Icons.flag_outlined, size: 18, color: goalDone ? okColor(context) : cs.onPrimaryContainer),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(goalDone ? l.dailyGoalDone : l.dailyGoal(today, kDailyGoalXp), style: t.bodyMedium?.copyWith(color: cs.onPrimaryContainer)),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
       ),
     );
   }

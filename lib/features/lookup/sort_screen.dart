@@ -20,6 +20,7 @@ import '../../data/models/office.dart';
 import '../../data/models/scheme.dart';
 import '../../data/scheme_repo.dart';
 import '../../data/sort_engine.dart';
+import '../beats/beats_screen.dart';
 import '../packs/office_packs.dart';
 import '../scan/scan_screen.dart';
 import '../schemes/scheme_editor.dart';
@@ -360,6 +361,8 @@ class SortScreenState extends State<SortScreen> {
                       if (r != null && r.digits == _digits && r.complete) ...[
                         SortResultView(result: r, fillHeight: fill),
                       ] else ...[
+                        // A street / colony from the Beat list comes before loose office matches.
+                        if (_digits.isEmpty) BeatHitsList(query: _query, onPin: setPin),
                         if (_places.isNotEmpty && _digits.isEmpty) ...[
                           Padding(
                             padding: const EdgeInsets.fromLTRB(4, 0, 4, 6),
