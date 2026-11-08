@@ -289,7 +289,7 @@ class SortScreenState extends State<SortScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(l.appTitle),
-              if (officePackById(settings.colorPack) case final p?) ...[const SizedBox(width: 8), OfficeChip(pack: p)],
+              if (activeOffice(settings) case final p?) ...[const SizedBox(width: 8), OfficeChip(pack: p)],
               if (scheme?.scheme.isSample ?? false) ...[const SizedBox(width: 8), const SampleChip()],
             ],
           ),
@@ -877,10 +877,14 @@ class _ModeSwitch extends StatelessWidget {
               height: 44,
               padding: const EdgeInsets.symmetric(horizontal: 18),
               alignment: Alignment.center,
-              child: Text(
-                categoryLabel(l, m),
-                maxLines: 1,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: on ? headerAccent(context) : Colors.white.withValues(alpha: 0.8)),
+              // Long names ("Hubballi RMS") shrink to fit instead of being cut.
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  categoryLabel(l, m),
+                  maxLines: 1,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: on ? headerAccent(context) : Colors.white.withValues(alpha: 0.8)),
+                ),
               ),
             ),
           ),

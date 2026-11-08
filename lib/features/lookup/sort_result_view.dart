@@ -222,6 +222,13 @@ class SortResultView extends StatelessWidget {
         addCard(1.0, (h) => RmsL1Card(l1: l1, minHeight: h));
       }
       flushCards();
+      // The postman beats of this PIN (Beat list / office data), right under
+      // the bag so they are seen without scrolling.
+      final beatPin = r.complete ? int.tryParse(r.digits) : null;
+      if (beatPin != null && loadBeats(context.settings).any((b) => b.pin == beatPin)) {
+        children.add(PinBeatsCard(pin: beatPin));
+        children.add(gap);
+      }
       if (scheme != null && r.otherBag != null) {
         children.add(WarningBanner(text: l.otherModeHint(categoryLabel(l, r.otherCategory!), r.otherBag!.label), icon: Icons.swap_horiz));
         children.add(gap);
@@ -239,12 +246,7 @@ class SortResultView extends StatelessWidget {
         children.add(_OfficeList(key: ValueKey('offices_${r.digits}'), offices: r.offices, pin: int.tryParse(r.digits)));
         children.add(gap);
       }
-      // The postman beats of this PIN (Beat list / office data).
-      final pin = int.tryParse(r.digits);
-      if (pin != null && loadBeats(context.settings).any((b) => b.pin == pin)) {
-        children.add(PinBeatsCard(pin: pin));
-        children.add(gap);
-      }
+
     }
     if (showBreakdown && r.breakdown != null) children.add(PinBreakdownView(breakdown: r.breakdown!));
     return Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: children);

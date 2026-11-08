@@ -92,8 +92,21 @@ const kOfficePacks = [
 
 OfficePack? officePackById(String? id) => kOfficePacks.where((p) => p.id == id).firstOrNull;
 
-/// The app colour for the chosen office (null = normal red).
-Color? officeColor(Settings s) => officePackById(s.colorPack)?.color;
+/// The office the app is in now: the pack whose mode (e.g. Hubballi RMS)
+/// is selected, or else a switched-on pack without its own mode (village
+/// lists) that the user switched on last. Null in the main data's TD /
+/// Non-TD modes.
+OfficePack? activeOffice(Settings s) {
+  final on = s.enabledPacks ?? const <String>[];
+  for (final p in kOfficePacks) {
+    if (p.category != null && p.category == s.category && on.contains(p.id)) return p;
+  }
+  final last = officePackById(s.colorPack);
+  return last != null && last.category == null && on.contains(last.id) ? last : null;
+}
+
+/// The app colour for the office the user is in (null = normal red).
+Color? officeColor(Settings s) => activeOffice(s)?.color;
 
 /// "📍 Dharwad HO" next to the app title while an office is chosen.
 class OfficeChip extends StatelessWidget {

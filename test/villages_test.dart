@@ -245,4 +245,22 @@ void main() {
     expect(addVillageLists(h.settings, h.services, all), 0); // already there
     expect(sw.elapsedMilliseconds, lessThan(1500));
   });
+
+  testWidgets('colour and office name follow the mode you are in', (tester) async {
+    final h = await _setUp(tester);
+    Future<Uint8List> load(String p) async => File(p).readAsBytesSync();
+    final hub = kOfficePacks.firstWhere((p) => p.id == 'hubballi');
+    final hassan = kOfficePacks.firstWhere((p) => p.id == 'hassan');
+    await tester.runAsync(() => setPack(h.settings, h.services, hub, true, load));
+    expect(activeOffice(h.settings), hub); // opened in the Hubballi RMS mode
+    await tester.runAsync(() => setPack(h.settings, h.services, hassan, true, load));
+    expect(activeOffice(h.settings), hub); // still in the Hubballi mode
+    h.settings.category = 'TD';
+    expect(activeOffice(h.settings), hassan); // main data + Hassan villages
+    h.settings.category = 'Hubballi RMS';
+    expect(officeColor(h.settings), hub.color);
+    await tester.runAsync(() => setPack(h.settings, h.services, hassan, false, load));
+    h.settings.category = 'Non-TD';
+    expect(officeColor(h.settings), isNull);
+  });
 }
