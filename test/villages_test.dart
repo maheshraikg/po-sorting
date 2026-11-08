@@ -7,6 +7,7 @@ import 'package:sorting_sahayak/data/directory_builder.dart' show OfficeData;
 import 'package:sorting_sahayak/data/import/scheme_io.dart';
 import 'package:sorting_sahayak/data/import/table_reader.dart';
 import 'package:sorting_sahayak/data/models/office.dart';
+import 'package:sorting_sahayak/core/theme.dart';
 import 'package:sorting_sahayak/data/village_import.dart';
 import 'package:sorting_sahayak/features/packs/office_packs.dart';
 import 'package:sorting_sahayak/data/villages.dart';
@@ -183,5 +184,16 @@ void main() {
     }
     expect(h.settings.enabledPacks, ['dharwad']);
     expect(h.settings.beats, hasLength(23));
+    // The app takes the office's colour and shows its name.
+    expect(h.settings.colorPack, 'dharwad');
+    expect(officeColor(h.settings), kOfficePacks.first.color);
+    expect(buildTheme(Brightness.light, office: officeColor(h.settings)).colorScheme.primary, kOfficePacks.first.color);
+    await tester.tap(find.byKey(const ValueKey('pack_dharwad')));
+    for (var i = 0; i < 5; i++) {
+      await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 200)));
+      await tester.pump();
+    }
+    expect(h.settings.colorPack, isNull);
+    expect(buildTheme(Brightness.light, office: officeColor(h.settings)).colorScheme.primary, kPostRed);
   });
 }

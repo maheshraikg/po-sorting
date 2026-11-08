@@ -102,8 +102,9 @@ class _SortingSahayakAppState extends State<SortingSahayakApp> {
       builder: (context, _) => MaterialApp(
         debugShowCheckedModeBanner: false,
         onGenerateTitle: (c) => AppLocalizations.of(c).appTitle,
-        theme: buildTheme(Brightness.light),
-        darkTheme: buildTheme(Brightness.dark),
+        // An office switched on in Office data gives the app its colour.
+        theme: buildTheme(Brightness.light, office: officeColor(widget.settings)),
+        darkTheme: buildTheme(Brightness.dark, office: officeColor(widget.settings)),
         themeMode: widget.settings.themeMode,
         locale: widget.settings.locale,
         supportedLocales: AppLocalizations.supportedLocales,

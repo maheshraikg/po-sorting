@@ -4809,6 +4809,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count} villages'**
   String officePackVillages(int count);
+
+  /// No description provided for @officePackColour.
+  ///
+  /// In en, this message translates to:
+  /// **'The app takes the colour of the office you switched on last, and its name shows at the top.'**
+  String get officePackColour;
 }
 
 class _AppLocalizationsDelegate

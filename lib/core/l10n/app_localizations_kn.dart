@@ -2740,4 +2740,8 @@ class AppLocalizationsKn extends AppLocalizations {
   String officePackVillages(int count) {
     return '$count ಗ್ರಾಮ';
   }
+
+  @override
+  String get officePackColour =>
+      'ನೀವು ಕೊನೆಗೆ ಆನ್ ಮಾಡಿದ ಕಚೇರಿಯ ಬಣ್ಣ ಆಪ್‌ಗೆ ಬರುತ್ತದೆ, ಅದರ ಹೆಸರು ಮೇಲೆ ಕಾಣುತ್ತದೆ.';
 }

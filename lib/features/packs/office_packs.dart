@@ -21,7 +21,7 @@ import '../beats/beats_screen.dart';
 import '../settings/village_editor.dart';
 
 class OfficePack {
-  const OfficePack({required this.id, required this.name, required this.area, this.beatsAsset, this.villagesAsset});
+  const OfficePack({required this.id, required this.name, required this.area, required this.color, this.beatsAsset, this.villagesAsset});
 
   final String id;
 
@@ -30,16 +30,61 @@ class OfficePack {
 
   /// Where the data is from, shown under the name.
   final String area;
+
+  /// App colour while this office is chosen.
+  final Color color;
   final String? beatsAsset;
   final String? villagesAsset;
 }
 
 const kOfficePacks = [
-  OfficePack(id: 'dharwad', name: 'Dharwad HO', area: 'Dharwad Division · 580001', beatsAsset: 'assets/beats/dharwad_ho_beats.csv'),
-  OfficePack(id: 'hassan', name: 'Hassan district', area: 'Hassan Division', villagesAsset: 'assets/villages/hassan_villages.csv'),
-  OfficePack(id: 'shimoga', name: 'Shivamogga district', area: 'Shivamogga Division', villagesAsset: 'assets/villages/shimoga_villages.csv'),
-  OfficePack(id: 'chikmagalur', name: 'Chikkamagaluru district', area: 'Chikkamagaluru Division', villagesAsset: 'assets/villages/chikmagalur_villages.csv'),
+  OfficePack(id: 'dharwad', name: 'Dharwad HO', area: 'Dharwad Division · 580001', color: Color(0xFF00695C), beatsAsset: 'assets/beats/dharwad_ho_beats.csv'),
+  OfficePack(id: 'hassan', name: 'Hassan district', area: 'Hassan Division', color: Color(0xFF283593), villagesAsset: 'assets/villages/hassan_villages.csv'),
+  OfficePack(
+    id: 'shimoga',
+    name: 'Shivamogga district',
+    area: 'Shivamogga Division',
+    color: Color(0xFF2E7D32),
+    villagesAsset: 'assets/villages/shimoga_villages.csv',
+  ),
+  OfficePack(
+    id: 'chikmagalur',
+    name: 'Chikkamagaluru district',
+    area: 'Chikkamagaluru Division',
+    color: Color(0xFF6A1B9A),
+    villagesAsset: 'assets/villages/chikmagalur_villages.csv',
+  ),
 ];
+
+OfficePack? officePackById(String? id) => kOfficePacks.where((p) => p.id == id).firstOrNull;
+
+/// The app colour for the chosen office (null = normal red).
+Color? officeColor(Settings s) => officePackById(s.colorPack)?.color;
+
+/// "📍 Dharwad HO" next to the app title while an office is chosen.
+class OfficeChip extends StatelessWidget {
+  const OfficeChip({super.key, required this.pack});
+
+  final OfficePack pack;
+
+  @override
+  Widget build(BuildContext context) => Container(
+    key: const ValueKey('office_chip'),
+    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(20)),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(Icons.place, size: 16, color: pack.color),
+        const SizedBox(width: 4),
+        Text(
+          pack.name,
+          style: TextStyle(color: pack.color, fontSize: 14, fontWeight: FontWeight.w900),
+        ),
+      ],
+    ),
+  );
+}
 
 class PackData {
   const PackData(this.beats, this.villages);
@@ -67,6 +112,12 @@ Future<void> setPack(Settings settings, AppServices services, OfficePack p, bool
   } else {
     if (d.beats.isNotEmpty) storeBeats(settings, loadBeats(settings)..removeWhere((b) => d.beats.any((x) => x.sameBeat(b))));
     if (d.villages.isNotEmpty) removeVillageLists(settings, services, d.villages);
+  }
+  // The app takes the colour of the office switched on last.
+  if (on) {
+    settings.colorPack = p.id;
+  } else if (settings.colorPack == p.id) {
+    settings.colorPack = null;
   }
   final ids = {...settings.enabledPacks ?? const <String>[]};
   on ? ids.add(p.id) : ids.remove(p.id);
@@ -145,13 +196,13 @@ class _OfficePacksScreenState extends State<OfficePacksScreen> {
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(4, 12, 4, 8),
-            child: Text(l.officePacksIntro, style: t.bodyMedium),
+            child: Text('${l.officePacksIntro} ${l.officePackColour}', style: t.bodyMedium),
           ),
-          for (final (i, p) in kOfficePacks.indexed)
+          for (final p in kOfficePacks)
             Card(
               child: SwitchListTile(
                 key: ValueKey('pack_${p.id}'),
-                secondary: IconBadge(p.beatsAsset != null ? Icons.route_outlined : Icons.holiday_village_outlined, kAccentCycle[(i + 1) % kAccentCycle.length]),
+                secondary: IconBadge(p.beatsAsset != null ? Icons.route_outlined : Icons.holiday_village_outlined, p.color),
                 title: Text(p.name, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
                 subtitle: Text(
                   [

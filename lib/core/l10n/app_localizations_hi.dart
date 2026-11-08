@@ -2725,4 +2725,8 @@ class AppLocalizationsHi extends AppLocalizations {
   String officePackVillages(int count) {
     return '$count गांव';
   }
+
+  @override
+  String get officePackColour =>
+      'आपने जो कार्यालय आख़िर में चालू किया, ऐप उसका रंग लेता है और उसका नाम ऊपर दिखता है।';
 }

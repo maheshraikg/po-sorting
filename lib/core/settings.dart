@@ -195,6 +195,15 @@ class Settings extends ChangeNotifier {
 
   set seededVillageSets(List<String> v) => _prefs.setStringList('seededVillageSets', v);
 
+  /// The office pack whose colour the app uses (the one the user switched
+  /// on last), or null for the normal red.
+  String? get colorPack => _prefs.getString('colorPack');
+
+  set colorPack(String? v) {
+    v == null ? _prefs.remove('colorPack') : _prefs.setString('colorPack', v);
+    notifyListeners();
+  }
+
   /// Office data packs switched on (null = not set up yet, see migratePacks).
   List<String>? get enabledPacks => _prefs.getStringList('enabledPacks');
 

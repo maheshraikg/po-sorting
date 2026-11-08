@@ -20,6 +20,7 @@ import '../../data/models/office.dart';
 import '../../data/models/scheme.dart';
 import '../../data/scheme_repo.dart';
 import '../../data/sort_engine.dart';
+import '../packs/office_packs.dart';
 import '../scan/scan_screen.dart';
 import '../schemes/scheme_editor.dart';
 import 'air_badge.dart';
@@ -287,6 +288,7 @@ class SortScreenState extends State<SortScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(l.appTitle),
+              if (officePackById(settings.colorPack) case final p?) ...[const SizedBox(width: 8), OfficeChip(pack: p)],
               if (scheme?.scheme.isSample ?? false) ...[const SizedBox(width: 8), const SampleChip()],
             ],
           ),
@@ -875,7 +877,7 @@ class _ModeSwitch extends StatelessWidget {
               child: Text(
                 categoryLabel(l, m),
                 maxLines: 1,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: on ? kPostRed : Colors.white.withValues(alpha: 0.8)),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w900, color: on ? headerAccent(context) : Colors.white.withValues(alpha: 0.8)),
               ),
             ),
           ),

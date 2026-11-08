@@ -1716,5 +1716,6 @@
         "type": "int"
       }
     }
-  }
+  },
+  "officePackColour": "The app takes the colour of the office you switched on last, and its name shows at the top."
 }

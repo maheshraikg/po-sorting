@@ -2732,4 +2732,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String officePackVillages(int count) {
     return '$count villages';
   }
+
+  @override
+  String get officePackColour =>
+      'The app takes the colour of the office you switched on last, and its name shows at the top.';
 }

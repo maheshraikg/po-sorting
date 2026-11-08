@@ -784,5 +784,6 @@
   "officePackOn": "{name} ಸೇರಿಸಲಾಗಿದೆ",
   "officePackOff": "{name} ತೆಗೆಯಲಾಗಿದೆ",
   "officePackBeats": "{count} ಬೀಟ್",
-  "officePackVillages": "{count} ಗ್ರಾಮ"
+  "officePackVillages": "{count} ಗ್ರಾಮ",
+  "officePackColour": "ನೀವು ಕೊನೆಗೆ ಆನ್ ಮಾಡಿದ ಕಚೇರಿಯ ಬಣ್ಣ ಆಪ್‌ಗೆ ಬರುತ್ತದೆ, ಅದರ ಹೆಸರು ಮೇಲೆ ಕಾಣುತ್ತದೆ."
 }

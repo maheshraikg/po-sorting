@@ -784,5 +784,6 @@
   "officePackOn": "{name} जोड़ा गया",
   "officePackOff": "{name} हटाया गया",
   "officePackBeats": "{count} बीट",
-  "officePackVillages": "{count} गांव"
+  "officePackVillages": "{count} गांव",
+  "officePackColour": "आपने जो कार्यालय आख़िर में चालू किया, ऐप उसका रंग लेता है और उसका नाम ऊपर दिखता है।"
 }

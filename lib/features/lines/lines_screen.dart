@@ -128,7 +128,7 @@ class _LinesScreenState extends State<LinesScreen> {
                       backgroundColor: Colors.white.withValues(alpha: 0.12),
                       foregroundColor: Colors.white,
                       selectedBackgroundColor: Colors.white,
-                      selectedForegroundColor: kPostRed,
+                      selectedForegroundColor: headerAccent(context),
                       textStyle: t.titleMedium?.copyWith(fontSize: 17, fontWeight: FontWeight.w900),
                       minimumSize: const Size.fromHeight(48),
                     ),

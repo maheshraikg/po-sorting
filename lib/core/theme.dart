@@ -24,21 +24,45 @@ const Color kAccentAmber = Color(0xFFD97706);
 
 /// Accents in a fixed order, for lists of tiles.
 const List<Color> kAccentCycle = [
-  kPostRed, kAccentAmber, kPostGreen, kSkyDeep, kAccentPurple, kAccentTeal, kAccentOrange, kAccentIndigo, kAccentPink, kAccentBrown,
+  kPostRed,
+  kAccentAmber,
+  kPostGreen,
+  kSkyDeep,
+  kAccentPurple,
+  kAccentTeal,
+  kAccentOrange,
+  kAccentIndigo,
+  kAccentPink,
+  kAccentBrown,
 ];
 
 /// [c] lightened for dark mode so it stays readable on dark surfaces.
-Color accentFor(BuildContext context, Color c) =>
-    Theme.of(context).brightness == Brightness.dark ? Color.lerp(c, Colors.white, 0.45)! : c;
+Color accentFor(BuildContext context, Color c) => Theme.of(context).brightness == Brightness.dark ? Color.lerp(c, Colors.white, 0.45)! : c;
+
+/// Header colours of the theme (red, or the chosen office's colour).
+class HeaderColors extends ThemeExtension<HeaderColors> {
+  const HeaderColors(this.top, this.bottom);
+
+  final Color top;
+  final Color bottom;
+
+  @override
+  HeaderColors copyWith({Color? top, Color? bottom}) => HeaderColors(top ?? this.top, bottom ?? this.bottom);
+
+  @override
+  HeaderColors lerp(HeaderColors? other, double t) => other == null ? this : HeaderColors(Color.lerp(top, other.top, t)!, Color.lerp(bottom, other.bottom, t)!);
+}
+
+/// Text colour on white chips inside the header (red, or the office colour).
+Color headerAccent(BuildContext context) => Theme.of(context).extension<HeaderColors>()?.bottom ?? kPostRed;
 
 /// Vertical gradient under the app bar (seamless with its colour).
 LinearGradient headerGradient(BuildContext context) {
-  final dark = Theme.of(context).brightness == Brightness.dark;
-  return LinearGradient(
-    begin: Alignment.topCenter,
-    end: Alignment.bottomCenter,
-    colors: dark ? const [Color(0xFF4A0E0B), Color(0xFF6B1712)] : const [kHeaderTop, kHeaderBottom],
-  );
+  final theme = Theme.of(context);
+  final dark = theme.brightness == Brightness.dark;
+  final h =
+      theme.extension<HeaderColors>() ?? (dark ? const HeaderColors(Color(0xFF4A0E0B), Color(0xFF6B1712)) : const HeaderColors(kHeaderTop, kHeaderBottom));
+  return LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [h.top, h.bottom]);
 }
 
 // Kept for older call sites.
@@ -49,18 +73,23 @@ const Color kAirYellow = Color(0xFFFFD600);
 const Color kSurfaceBlue = Color(0xFF1565C0);
 
 /// Warning / success colours with good contrast in both themes.
-Color warningColor(BuildContext context) =>
-    Theme.of(context).brightness == Brightness.dark ? const Color(0xFFFBBF24) : const Color(0xFFB45309);
-Color okColor(BuildContext context) =>
-    Theme.of(context).brightness == Brightness.dark ? const Color(0xFF4ADE80) : const Color(0xFF15803D);
+Color warningColor(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? const Color(0xFFFBBF24) : const Color(0xFFB45309);
+Color okColor(BuildContext context) => Theme.of(context).brightness == Brightness.dark ? const Color(0xFF4ADE80) : const Color(0xFF15803D);
 
-ThemeData buildTheme(Brightness brightness) {
+/// The app theme: post-box red, or [office]'s colour when the user has
+/// switched an office pack on (so they can see which office they are in).
+ThemeData buildTheme(Brightness brightness, {Color? office}) {
   final dark = brightness == Brightness.dark;
-  final scheme = ColorScheme.fromSeed(seedColor: kPostRed, brightness: brightness).copyWith(
-    primary: dark ? const Color(0xFFFFB4AB) : kPostRed,
-    onPrimary: dark ? const Color(0xFF690005) : Colors.white,
-    primaryContainer: dark ? const Color(0xFF7A1A14) : const Color(0xFFFDE2DF),
-    onPrimaryContainer: dark ? const Color(0xFFFFDAD5) : kPostRedDeep,
+  final c = office;
+  Color mix(Color a, Color b, double t) => Color.lerp(a, b, t)!;
+  final header = c == null
+      ? (dark ? const HeaderColors(Color(0xFF4A0E0B), Color(0xFF6B1712)) : const HeaderColors(kHeaderTop, kHeaderBottom))
+      : (dark ? HeaderColors(mix(c, Colors.black, 0.62), mix(c, Colors.black, 0.45)) : HeaderColors(mix(c, Colors.black, 0.18), c));
+  final scheme = ColorScheme.fromSeed(seedColor: c ?? kPostRed, brightness: brightness).copyWith(
+    primary: c == null ? (dark ? const Color(0xFFFFB4AB) : kPostRed) : (dark ? mix(c, Colors.white, 0.55) : c),
+    onPrimary: c == null ? (dark ? const Color(0xFF690005) : Colors.white) : (dark ? mix(c, Colors.black, 0.7) : Colors.white),
+    primaryContainer: c == null ? (dark ? const Color(0xFF7A1A14) : const Color(0xFFFDE2DF)) : (dark ? mix(c, Colors.black, 0.5) : mix(c, Colors.white, 0.85)),
+    onPrimaryContainer: c == null ? (dark ? const Color(0xFFFFDAD5) : kPostRedDeep) : (dark ? mix(c, Colors.white, 0.82) : mix(c, Colors.black, 0.62)),
     secondary: dark ? const Color(0xFFFFD54F) : kMailYellow,
     onSecondary: dark ? const Color(0xFF3A2A00) : const Color(0xFF2B1D00),
     secondaryContainer: dark ? const Color(0xFF5A4300) : const Color(0xFFFFEFC2),
@@ -99,11 +128,12 @@ ThemeData buildTheme(Brightness brightness) {
   final radius = BorderRadius.circular(16);
   return base.copyWith(
     textTheme: text,
+    extensions: [header],
     appBarTheme: AppBarTheme(
       centerTitle: false,
       elevation: 0,
       scrolledUnderElevation: 2,
-      backgroundColor: dark ? const Color(0xFF4A0E0B) : kHeaderTop,
+      backgroundColor: header.top,
       foregroundColor: Colors.white,
       surfaceTintColor: Colors.transparent,
       titleTextStyle: text.titleLarge?.copyWith(color: Colors.white, fontSize: 21, fontWeight: FontWeight.w800),
@@ -114,7 +144,10 @@ ThemeData buildTheme(Brightness brightness) {
       color: scheme.surfaceContainerLowest,
       elevation: 0,
       surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(borderRadius: radius, side: BorderSide(color: scheme.outlineVariant)),
+      shape: RoundedRectangleBorder(
+        borderRadius: radius,
+        side: BorderSide(color: scheme.outlineVariant),
+      ),
       margin: const EdgeInsets.symmetric(vertical: 4),
     ),
     navigationBarTheme: NavigationBarThemeData(
@@ -148,16 +181,22 @@ ThemeData buildTheme(Brightness brightness) {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
     ),
-    floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: scheme.secondary,
-      foregroundColor: scheme.onSecondary,
-    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(backgroundColor: scheme.secondary, foregroundColor: scheme.onSecondary),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: scheme.surfaceContainerLowest,
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: scheme.outlineVariant)),
-      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: scheme.outlineVariant)),
-      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: scheme.primary, width: 2)),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: scheme.outlineVariant),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: scheme.outlineVariant),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: scheme.primary, width: 2),
+      ),
     ),
     chipTheme: base.chipTheme.copyWith(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -196,8 +235,7 @@ Color? parseColour(String? input) {
   return null;
 }
 
-String colourToHex(Color c) =>
-    '#${(c.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
+String colourToHex(Color c) => '#${(c.toARGB32() & 0xFFFFFF).toRadixString(16).padLeft(6, '0').toUpperCase()}';
 
 /// Palette offered in the bag editor and used for auto-assigned bag colours.
 const List<Color> kBagPalette = [
