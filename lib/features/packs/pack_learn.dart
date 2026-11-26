@@ -51,6 +51,20 @@ class PackLesson {
 
   int get officeCount => bags.fold(0, (n, b) => n + b.offices.length);
 
+  /// The lists (lines) of the pack in order: Dharwad TD, Haveri, Sirsi, …
+  List<String> get groups => [
+    ...{for (final b in bags) b.group},
+  ];
+
+  /// One line only: PIN → bag and office → bag for the bags of [group].
+  List<QuizQuestion> lineQuiz(String group, [Random? random]) {
+    final one = PackLesson([
+      for (final b in bags)
+        if (b.group == group) b,
+    ], data);
+    return [...one.pinToBag(random), ...one.officeToBag(random)];
+  }
+
   /// [answer] plus up to 3 other answers, nearby ones (same list / district)
   /// first so the choice is not given away.
   static List<String> _options(String answer, List<String> near, List<String> all, Random rnd) {
@@ -70,7 +84,13 @@ class PackLesson {
     return [
       for (final b in bags)
         QuizQuestion(
-          LearnCard(key: 'packbag:${b.pin}', prompt: '${b.pin}', answer: b.code, answerDetail: b.group, prefix: '${b.pin}'.substring(0, 3)),
+          LearnCard(
+            key: 'packbag:${b.pin}',
+            prompt: '${b.pin}',
+            answer: b.code,
+            answerDetail: b.group,
+            prefix: '${b.pin}'.substring(0, 3),
+          ),
           _options(
             b.code,
             [
@@ -148,7 +168,13 @@ class PackLesson {
       for (final b in data.beats)
         for (final a in ([...b.areas]..shuffle(rnd)).take(3))
           QuizQuestion(
-            LearnCard(key: 'packbeat:${b.pin}:${b.beat}:$a', prompt: a, answer: label(b), answerDetail: '${b.pin}', isPin: false),
+            LearnCard(
+              key: 'packbeat:${b.pin}:${b.beat}:$a',
+              prompt: a,
+              answer: label(b),
+              answerDetail: '${b.pin}',
+              isPin: false,
+            ),
             _options(
               label(b),
               [
@@ -212,7 +238,8 @@ class _PackLearnScreenState extends State<PackLearnScreen> {
   void _quiz(String kind, String title, List<QuizQuestion> qs) => Navigator.push(
     context,
     MaterialPageRoute(
-      builder: (_) => QuizScreen(mode: FlashMode.bag, questions: qs, kind: 'pack-${widget.pack.id}-$kind', title: title),
+      builder: (_) =>
+          QuizScreen(mode: FlashMode.bag, questions: qs, kind: 'pack-${widget.pack.id}-$kind', title: title),
     ),
   );
 
@@ -222,16 +249,17 @@ class _PackLearnScreenState extends State<PackLearnScreen> {
     final t = Theme.of(context).textTheme;
     final p = widget.pack;
     final x = _lesson;
-    Widget tile(String key, IconData icon, int i, String title, String sub, List<QuizQuestion> Function() build) => Card(
-      child: ListTile(
-        key: ValueKey('packlearn_$key'),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-        leading: IconBadge(icon, accentAt(context, i), size: 46),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
-        subtitle: Text(sub),
-        trailing: FilledButton.tonal(onPressed: () => _quiz(key, title, build()), child: Text(l.pinQuizStart)),
-      ),
-    );
+    Widget tile(String key, IconData icon, int i, String title, String sub, List<QuizQuestion> Function() build) =>
+        Card(
+          child: ListTile(
+            key: ValueKey('packlearn_$key'),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+            leading: IconBadge(icon, accentAt(context, i), size: 46),
+            title: Text(title, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
+            subtitle: Text(sub),
+            trailing: FilledButton.tonal(onPressed: () => _quiz(key, title, build()), child: Text(l.pinQuizStart)),
+          ),
+        );
     return Scaffold(
       appBar: AppBar(title: Text(l.packLearnTitle(p.name))),
       body: x == null
@@ -284,14 +312,73 @@ class _PackLearnScreenState extends State<PackLearnScreen> {
                     ),
                   ),
                 ),
+                if (x.groups.length > 1)
+                  Card(
+                    key: const ValueKey('packlearn_lines'),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              IconBadge(Icons.format_list_numbered, accentAt(context, 6), size: 46),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      l.packLearnByLine,
+                                      style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17),
+                                    ),
+                                    Text(l.packLearnByLineSub),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Wrap(
+                            spacing: 8,
+                            runSpacing: 8,
+                            children: [
+                              for (final g in x.groups)
+                                ActionChip(
+                                  key: ValueKey('packlearn_line_$g'),
+                                  avatar: const Icon(Icons.quiz_outlined, size: 18),
+                                  label: Text('$g · ${x.bags.where((b) => b.group == g).length}'),
+                                  onPressed: () => _quiz('line-$g', l.packLearnLineQuiz(g), x.lineQuiz(g)),
+                                ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 if (x.bags.isNotEmpty) ...[
                   tile('bag', Icons.pin_outlined, 1, l.packLearnPinBag, l.packLearnPinBagSub, x.pinToBag),
-                  tile('office', Icons.markunread_mailbox_outlined, 2, l.packLearnOfficeBag, l.packLearnOfficeBagSub, x.officeToBag),
+                  tile(
+                    'office',
+                    Icons.markunread_mailbox_outlined,
+                    2,
+                    l.packLearnOfficeBag,
+                    l.packLearnOfficeBagSub,
+                    x.officeToBag,
+                  ),
                   tile('pin', Icons.dialpad, 3, l.packLearnOfficePin, l.packLearnOfficePinSub, x.officeToPin),
                 ],
-                if (x.data.beats.isNotEmpty) tile('beat', Icons.route_outlined, 4, l.packLearnAreaBeat, l.packLearnAreaBeatSub, x.areaToBeat),
+                if (x.data.beats.isNotEmpty)
+                  tile('beat', Icons.route_outlined, 4, l.packLearnAreaBeat, l.packLearnAreaBeatSub, x.areaToBeat),
                 if (x.data.villages.isNotEmpty)
-                  tile('village', Icons.holiday_village_outlined, 5, l.packLearnVillageBo, l.packLearnVillageBoSub, x.villageToBo),
+                  tile(
+                    'village',
+                    Icons.holiday_village_outlined,
+                    5,
+                    l.packLearnVillageBo,
+                    l.packLearnVillageBoSub,
+                    x.villageToBo,
+                  ),
               ],
             ),
     );
@@ -320,7 +407,11 @@ class _PackStudyScreenState extends State<PackStudyScreen> {
     final q = _q.trim().toLowerCase();
     final bags = [
       for (final b in widget.lesson.bags)
-        if (q.isEmpty || '${b.pin}'.startsWith(q) || b.code.toLowerCase().contains(q) || b.offices.any((o) => o.officeName.toLowerCase().contains(q))) b,
+        if (q.isEmpty ||
+            '${b.pin}'.startsWith(q) ||
+            b.code.toLowerCase().contains(q) ||
+            b.offices.any((o) => o.officeName.toLowerCase().contains(q)))
+          b,
     ];
     String? group;
     return Scaffold(
@@ -362,10 +453,17 @@ class _PackStudyScreenState extends State<PackStudyScreen> {
                             children: [
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                                decoration: BoxDecoration(color: widget.pack.color, borderRadius: BorderRadius.circular(10)),
+                                decoration: BoxDecoration(
+                                  color: widget.pack.color,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                                 child: Text(
                                   '${b.pin}',
-                                  style: t.titleMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w900, letterSpacing: 1.5),
+                                  style: t.titleMedium?.copyWith(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 1.5,
+                                  ),
                                 ),
                               ),
                               const SizedBox(width: 12),
@@ -383,10 +481,16 @@ class _PackStudyScreenState extends State<PackStudyScreen> {
                                 for (final o in b.offices)
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                                    decoration: BoxDecoration(color: cs.secondaryContainer, borderRadius: BorderRadius.circular(8)),
+                                    decoration: BoxDecoration(
+                                      color: cs.secondaryContainer,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
                                     child: Text(
                                       '${o.officeName} ${o.officeType}'.trim(),
-                                      style: t.bodyMedium?.copyWith(color: cs.onSecondaryContainer, fontWeight: FontWeight.w600),
+                                      style: t.bodyMedium?.copyWith(
+                                        color: cs.onSecondaryContainer,
+                                        fontWeight: FontWeight.w600,
+                                      ),
                                     ),
                                   ),
                               ],

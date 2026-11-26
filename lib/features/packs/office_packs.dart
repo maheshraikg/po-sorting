@@ -65,15 +65,21 @@ const kOfficePacks = [
   OfficePack(
     id: 'hubballi',
     name: 'Hubballi RMS',
-    area: 'Dharwad · Hubballi · Haveri · Sirsi · Uttara Kannada',
+    area: 'Dharwad · Hubballi · Haveri · Gadag · Sirsi · Karwar · Koppal',
     color: Color(0xFF00695C),
-    version: 1,
+    version: 2, // 2: Gadag, Karwar and Koppal lines added
     schemeAsset: 'assets/packs/hubballi_rms_scheme.csv',
     category: 'Hubballi RMS',
     beatsAsset: 'assets/beats/hubballi_town_beats.csv',
     villagesAsset: 'assets/villages/uttara_kannada_villages.csv',
   ),
-  OfficePack(id: 'hassan', name: 'Hassan district', area: 'Hassan Division', color: Color(0xFF283593), villagesAsset: 'assets/villages/hassan_villages.csv'),
+  OfficePack(
+    id: 'hassan',
+    name: 'Hassan district',
+    area: 'Hassan Division',
+    color: Color(0xFF283593),
+    villagesAsset: 'assets/villages/hassan_villages.csv',
+  ),
   OfficePack(
     id: 'shimoga',
     name: 'Shivamogga district',
@@ -149,11 +155,15 @@ Future<PackData> loadPack(OfficePack p, Future<Uint8List> Function(String) loadA
   var beats = const <Beat>[];
   var villages = const <VillageList>[];
   if (p.beatsAsset != null) beats = beatsFromTable(readTable(await loadAsset(p.beatsAsset!), 'beats.csv'));
-  if (p.villagesAsset != null) villages = villageListsFromRows(readTable(await loadAsset(p.villagesAsset!), 'villages.csv').sheets.values.first);
+  if (p.villagesAsset != null) {
+    villages = villageListsFromRows(readTable(await loadAsset(p.villagesAsset!), 'villages.csv').sheets.values.first);
+  }
   var lines = const <BagRule>[];
   if (p.schemeAsset != null) {
     final t = readTable(await loadAsset(p.schemeAsset!), 'lines.csv');
-    lines = [for (final r in autoImport<BagRule>(t.sheets.values.first, ImportKind.bagRules).rules) r.withCategory(p.category)];
+    lines = [
+      for (final r in autoImport<BagRule>(t.sheets.values.first, ImportKind.bagRules).rules) r.withCategory(p.category),
+    ];
   }
   return PackData(beats, villages, lines);
 }
@@ -173,7 +183,9 @@ Future<void> setPack(
     if (d.beats.isNotEmpty) storeBeats(settings, mergeBeats(loadBeats(settings), d.beats).$1);
     if (d.villages.isNotEmpty) addVillageLists(settings, services, d.villages);
   } else {
-    if (d.beats.isNotEmpty) storeBeats(settings, loadBeats(settings)..removeWhere((b) => d.beats.any((x) => x.sameBeat(b))));
+    if (d.beats.isNotEmpty) {
+      storeBeats(settings, loadBeats(settings)..removeWhere((b) => d.beats.any((x) => x.sameBeat(b))));
+    }
     if (d.villages.isNotEmpty) removeVillageLists(settings, services, d.villages);
   }
   final versions = {...settings.packVersions}..[p.id] = on ? p.version : 0;
@@ -215,7 +227,8 @@ void migratePacks(Settings settings) {
 Future<void> refreshPacks(Settings settings, AppServices services, Future<Uint8List> Function(String) loadAsset) async {
   for (final p in kOfficePacks) {
     if (!(settings.enabledPacks ?? const <String>[]).contains(p.id)) continue;
-    final linesMissing = p.category != null && services.active != null && !services.active!.rules.any((r) => r.category == p.category);
+    final linesMissing =
+        p.category != null && services.active != null && !services.active!.rules.any((r) => r.category == p.category);
     if (settings.packVersions[p.id] == p.version && !linesMissing) continue;
     try {
       await setPack(settings, services, p, true, loadAsset, fromUser: false);
@@ -227,13 +240,25 @@ Future<void> refreshPacks(Settings settings, AppServices services, Future<Uint8L
 
 /// Adds the pack's lines to the active scheme as mode [OfficePack.category]
 /// (and opens that mode when the user switched the pack on), or removes them.
-Future<void> _setLines(Settings settings, AppServices services, OfficePack p, PackData d, bool on, {required bool fromUser}) async {
+Future<void> _setLines(
+  Settings settings,
+  AppServices services,
+  OfficePack p,
+  PackData d,
+  bool on, {
+  required bool fromUser,
+}) async {
   final cat = p.category;
   final id = services.active?.scheme.id;
   if (cat == null || id == null || d.lines.isEmpty) return;
   if (on) {
     await services.schemes.addCategory(cat);
-    await services.schemes.replaceCategoryRules(id, cat, d.lines, completeBags(d.lines, const [], kBagPalette.map(colourToHex).toList()));
+    await services.schemes.replaceCategoryRules(
+      id,
+      cat,
+      d.lines,
+      completeBags(d.lines, const [], kBagPalette.map(colourToHex).toList()),
+    );
   } else {
     await services.schemes.replaceCategoryRules(id, cat, const [], const []);
     await services.schemes.deleteCategory(cat);
@@ -310,7 +335,10 @@ class _OfficePacksScreenState extends State<OfficePacksScreen> {
                 children: [
                   SwitchListTile(
                     key: ValueKey('pack_${p.id}'),
-                    secondary: IconBadge(p.beatsAsset != null ? Icons.route_outlined : Icons.holiday_village_outlined, p.color),
+                    secondary: IconBadge(
+                      p.beatsAsset != null ? Icons.route_outlined : Icons.holiday_village_outlined,
+                      p.color,
+                    ),
                     title: Text(p.name, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
                     subtitle: Text(
                       [

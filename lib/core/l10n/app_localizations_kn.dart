@@ -2812,4 +2812,16 @@ class AppLocalizationsKn extends AppLocalizations {
 
   @override
   String get beatsFound => 'ಬೀಟ್‌ಗಳು';
+
+  @override
+  String get packLearnByLine => 'ಲೈನ್ ಪ್ರಕಾರ ಕ್ವಿಜ್';
+
+  @override
+  String get packLearnByLineSub =>
+      'ಒಂದು ಲೈನ್ ಆಯ್ಕೆಮಾಡಿ, ಅದರ ಚೀಲಗಳನ್ನು ಮಾತ್ರ ಅಭ್ಯಾಸ ಮಾಡಿ (ಪಿನ್ → ಚೀಲ, ಕಚೇರಿ → ಚೀಲ)';
+
+  @override
+  String packLearnLineQuiz(String line) {
+    return '$line · ಲೈನ್ ಕ್ವಿಜ್';
+  }
 }

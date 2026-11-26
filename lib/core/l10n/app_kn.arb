@@ -804,5 +804,8 @@
   "packLearnVillageBo": "ಗ್ರಾಮ → BO",
   "packLearnVillageBoSub": "ಈ ಗ್ರಾಮ ಯಾವ BO ಅಡಿಯಲ್ಲಿ?",
   "beatsAtPin": "{pin} ನ ಬೀಟ್‌ಗಳು: {count}",
-  "beatsFound": "ಬೀಟ್‌ಗಳು"
+  "beatsFound": "ಬೀಟ್‌ಗಳು",
+  "packLearnByLine": "ಲೈನ್ ಪ್ರಕಾರ ಕ್ವಿಜ್",
+  "packLearnByLineSub": "ಒಂದು ಲೈನ್ ಆಯ್ಕೆಮಾಡಿ, ಅದರ ಚೀಲಗಳನ್ನು ಮಾತ್ರ ಅಭ್ಯಾಸ ಮಾಡಿ (ಪಿನ್ → ಚೀಲ, ಕಚೇರಿ → ಚೀಲ)",
+  "packLearnLineQuiz": "{line} · ಲೈನ್ ಕ್ವಿಜ್"
 }

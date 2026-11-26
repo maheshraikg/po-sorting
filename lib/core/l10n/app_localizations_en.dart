@@ -2803,4 +2803,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get beatsFound => 'Beats';
+
+  @override
+  String get packLearnByLine => 'Quiz by line';
+
+  @override
+  String get packLearnByLineSub =>
+      'Pick a line and practise only its bags (PIN → bag, office → bag)';
+
+  @override
+  String packLearnLineQuiz(String line) {
+    return '$line · line quiz';
+  }
 }

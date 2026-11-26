@@ -1767,5 +1767,15 @@
       }
     }
   },
-  "beatsFound": "Beats"
+  "beatsFound": "Beats",
+  "packLearnByLine": "Quiz by line",
+  "packLearnByLineSub": "Pick a line and practise only its bags (PIN → bag, office → bag)",
+  "packLearnLineQuiz": "{line} · line quiz",
+  "@packLearnLineQuiz": {
+    "placeholders": {
+      "line": {
+        "type": "String"
+      }
+    }
+  }
 }

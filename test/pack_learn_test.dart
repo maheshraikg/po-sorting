@@ -28,10 +28,20 @@ void main() {
   testWidgets('Hubballi RMS lessons: PIN → bag, area → beat, village → BO', (tester) async {
     final h = await _setUp(tester);
     final x = (await tester.runAsync(() => PackLesson.load(_hub, h.services.directory, _load)))!;
-    expect(x.bags, hasLength(97));
+    expect(x.bags, hasLength(190));
     final rnd = Random(1);
     final pinBag = x.pinToBag(rnd);
-    expect(pinBag, hasLength(97));
+    expect(pinBag, hasLength(190));
+    expect(x.groups, containsAll(['Gadag', 'Haveri', 'Karwar', 'Koppal']));
+    final gadag = x.lineQuiz('Gadag', rnd);
+    expect(gadag.where((q) => RegExp(r'^\d{6}$').hasMatch(q.card.prompt)), hasLength(22)); // 22 Gadag PINs
+    expect(gadag.every((q) => q.options.contains(q.card.answer)), isTrue);
+    expect(gadag.firstWhere((q) => q.card.prompt == '582116').card.answer, 'Lakshmeshwar SO');
+    final gadagCodes = {
+      for (final b in x.bags)
+        if (b.group == 'Gadag') b.code,
+    };
+    expect(gadag.every((q) => gadagCodes.contains(q.card.answer)), isTrue); // only Gadag bags
     final hangal = pinBag.firstWhere((q) => q.card.prompt == '581104');
     expect(hangal.card.answer, 'Hangal SO');
     expect(hangal.options, contains('Hangal SO'));
@@ -63,6 +73,14 @@ void main() {
       await tester.pump();
     }
     expect(find.text('Learn Hubballi RMS'), findsOneWidget);
+    expect(find.byKey(const ValueKey('packlearn_line_Gadag')), findsOneWidget);
+    await tester.ensureVisible(find.byKey(const ValueKey('packlearn_line_Gadag')));
+    await tester.tap(find.byKey(const ValueKey('packlearn_line_Gadag')));
+    await settle(tester, rounds: 6);
+    expect(find.byType(QuizScreen), findsOneWidget);
+    expect(find.text('Gadag · line quiz'), findsWidgets);
+    await tester.pageBack();
+    await settle(tester, rounds: 6);
     await tester.tap(find.descendant(of: find.byKey(const ValueKey('packlearn_bag')), matching: find.text('Quiz')));
     await settle(tester, rounds: 6);
     expect(find.byType(QuizScreen), findsOneWidget);

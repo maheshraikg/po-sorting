@@ -804,5 +804,8 @@
   "packLearnVillageBo": "गांव → BO",
   "packLearnVillageBoSub": "यह गांव किस BO के अंतर्गत?",
   "beatsAtPin": "{pin} की बीट: {count}",
-  "beatsFound": "बीट"
+  "beatsFound": "बीट",
+  "packLearnByLine": "लाइन के अनुसार क्विज़",
+  "packLearnByLineSub": "एक लाइन चुनें और सिर्फ़ उसके बैग का अभ्यास करें (पिन → बैग, डाकघर → बैग)",
+  "packLearnLineQuiz": "{line} · लाइन क्विज़"
 }

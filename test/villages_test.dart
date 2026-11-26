@@ -208,13 +208,13 @@ void main() {
     expect(h.services.categories, contains('Hubballi RMS'));
     expect(h.settings.category, 'Hubballi RMS');
     final lines = h.services.active!.rules.where((r) => r.category == 'Hubballi RMS').toList();
-    expect(lines, hasLength(97));
+    expect(lines, hasLength(190));
     expect(lines.firstWhere((r) => r.match.pin == 581104).bagCode, 'Hangal SO');
-    expect(h.services.active!.rules.length, mainRules + 97); // main data stays
+    expect(h.services.active!.rules.length, mainRules + 190); // main data stays
     expect(h.services.villages.of(581121, 'Bazarkunang'), isNotEmpty);
     // Applying again (new version on start) does not double anything.
     await tester.runAsync(() => setPack(h.settings, h.services, hub, true, load, fromUser: false));
-    expect(h.services.active!.rules.where((r) => r.category == 'Hubballi RMS'), hasLength(97));
+    expect(h.services.active!.rules.where((r) => r.category == 'Hubballi RMS'), hasLength(190));
     // Off: lines, mode, beats and villages go; back to TD.
     await tester.runAsync(() => setPack(h.settings, h.services, hub, false, load));
     expect(h.services.categories, isNot(contains('Hubballi RMS')));
@@ -231,7 +231,7 @@ void main() {
     expect(h.settings.enabledPacks, ['hubballi', 'hassan']);
     expect(h.settings.colorPack, 'hubballi');
     await tester.runAsync(() => refreshPacks(h.settings, h.services, (p) async => File(p).readAsBytesSync()));
-    expect(h.services.active!.rules.where((r) => r.category == 'Hubballi RMS'), hasLength(97));
+    expect(h.services.active!.rules.where((r) => r.category == 'Hubballi RMS'), hasLength(190));
     expect(h.settings.beats, hasLength(196));
   });
 

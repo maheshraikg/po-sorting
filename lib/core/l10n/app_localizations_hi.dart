@@ -2796,4 +2796,16 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get beatsFound => 'बीट';
+
+  @override
+  String get packLearnByLine => 'लाइन के अनुसार क्विज़';
+
+  @override
+  String get packLearnByLineSub =>
+      'एक लाइन चुनें और सिर्फ़ उसके बैग का अभ्यास करें (पिन → बैग, डाकघर → बैग)';
+
+  @override
+  String packLearnLineQuiz(String line) {
+    return '$line · लाइन क्विज़';
+  }
 }

@@ -4929,6 +4929,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Beats'**
   String get beatsFound;
+
+  /// No description provided for @packLearnByLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Quiz by line'**
+  String get packLearnByLine;
+
+  /// No description provided for @packLearnByLineSub.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a line and practise only its bags (PIN → bag, office → bag)'**
+  String get packLearnByLineSub;
+
+  /// No description provided for @packLearnLineQuiz.
+  ///
+  /// In en, this message translates to:
+  /// **'{line} · line quiz'**
+  String packLearnLineQuiz(String line);
 }
 
 class _AppLocalizationsDelegate
