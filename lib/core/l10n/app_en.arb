@@ -1777,5 +1777,7 @@
         "type": "String"
       }
     }
-  }
+  },
+  "packLearnOfficeLine": "Office → line",
+  "packLearnOfficeLineSub": "See an office name, pick which line it belongs to"
 }

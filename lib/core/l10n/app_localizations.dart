@@ -4947,6 +4947,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{line} · line quiz'**
   String packLearnLineQuiz(String line);
+
+  /// No description provided for @packLearnOfficeLine.
+  ///
+  /// In en, this message translates to:
+  /// **'Office → line'**
+  String get packLearnOfficeLine;
+
+  /// No description provided for @packLearnOfficeLineSub.
+  ///
+  /// In en, this message translates to:
+  /// **'See an office name, pick which line it belongs to'**
+  String get packLearnOfficeLineSub;
 }
 
 class _AppLocalizationsDelegate

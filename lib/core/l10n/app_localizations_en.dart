@@ -2815,4 +2815,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String packLearnLineQuiz(String line) {
     return '$line · line quiz';
   }
+
+  @override
+  String get packLearnOfficeLine => 'Office → line';
+
+  @override
+  String get packLearnOfficeLineSub =>
+      'See an office name, pick which line it belongs to';
 }

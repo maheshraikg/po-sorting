@@ -2808,4 +2808,11 @@ class AppLocalizationsHi extends AppLocalizations {
   String packLearnLineQuiz(String line) {
     return '$line · लाइन क्विज़';
   }
+
+  @override
+  String get packLearnOfficeLine => 'डाकघर → लाइन';
+
+  @override
+  String get packLearnOfficeLineSub =>
+      'डाकघर का नाम देखें, चुनें कि वह किस लाइन का है';
 }

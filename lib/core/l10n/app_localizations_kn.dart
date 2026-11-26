@@ -2824,4 +2824,11 @@ class AppLocalizationsKn extends AppLocalizations {
   String packLearnLineQuiz(String line) {
     return '$line · ಲೈನ್ ಕ್ವಿಜ್';
   }
+
+  @override
+  String get packLearnOfficeLine => 'ಕಚೇರಿ → ಲೈನ್';
+
+  @override
+  String get packLearnOfficeLineSub =>
+      'ಕಚೇರಿ ಹೆಸರು ನೋಡಿ, ಅದು ಯಾವ ಲೈನ್‌ಗೆ ಸೇರಿದೆ ಎಂದು ಆಯ್ಕೆಮಾಡಿ';
 }

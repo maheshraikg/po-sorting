@@ -46,6 +46,12 @@ void main() {
     expect(hangal.card.answer, 'Hangal SO');
     expect(hangal.options, contains('Hangal SO'));
     expect(hangal.options.toSet(), hasLength(4));
+    final toLine = x.officeToLine(rnd);
+    expect(toLine.length, greaterThanOrEqualTo(190));
+    expect(toLine.firstWhere((q) => q.card.prompt == 'Lakshmeshwar SO').card.answer, 'Gadag');
+    expect(toLine.firstWhere((q) => q.card.prompt == 'Hangal SO').card.answer, 'Haveri');
+    expect(toLine.every((q) => q.options.contains(q.card.answer) && q.options.toSet().length == 4), isTrue);
+    expect(toLine.map((q) => q.card.prompt.toLowerCase()).toSet(), hasLength(toLine.length));
     final beats = x.areaToBeat(rnd);
     expect(beats.length, greaterThan(300));
     expect(beats.where((q) => q.card.answer == 'Dharwad HO · Beat 2'), isNotEmpty);
@@ -81,6 +87,16 @@ void main() {
     expect(find.text('Gadag · line quiz'), findsWidgets);
     await tester.pageBack();
     await settle(tester, rounds: 6);
+    await tester.scrollUntilVisible(find.byKey(const ValueKey('packlearn_officeline')), 200);
+    await tester.tap(
+      find.descendant(of: find.byKey(const ValueKey('packlearn_officeline')), matching: find.text('Quiz')),
+    );
+    await settle(tester, rounds: 6);
+    expect(find.byType(QuizScreen), findsOneWidget);
+    expect(find.text('Office → line'), findsWidgets);
+    await tester.pageBack();
+    await settle(tester, rounds: 6);
+    await tester.scrollUntilVisible(find.byKey(const ValueKey('packlearn_bag')), -200);
     await tester.tap(find.descendant(of: find.byKey(const ValueKey('packlearn_bag')), matching: find.text('Quiz')));
     await settle(tester, rounds: 6);
     expect(find.byType(QuizScreen), findsOneWidget);

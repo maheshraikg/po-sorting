@@ -807,5 +807,7 @@
   "beatsFound": "ಬೀಟ್‌ಗಳು",
   "packLearnByLine": "ಲೈನ್ ಪ್ರಕಾರ ಕ್ವಿಜ್",
   "packLearnByLineSub": "ಒಂದು ಲೈನ್ ಆಯ್ಕೆಮಾಡಿ, ಅದರ ಚೀಲಗಳನ್ನು ಮಾತ್ರ ಅಭ್ಯಾಸ ಮಾಡಿ (ಪಿನ್ → ಚೀಲ, ಕಚೇರಿ → ಚೀಲ)",
-  "packLearnLineQuiz": "{line} · ಲೈನ್ ಕ್ವಿಜ್"
+  "packLearnLineQuiz": "{line} · ಲೈನ್ ಕ್ವಿಜ್",
+  "packLearnOfficeLine": "ಕಚೇರಿ → ಲೈನ್",
+  "packLearnOfficeLineSub": "ಕಚೇರಿ ಹೆಸರು ನೋಡಿ, ಅದು ಯಾವ ಲೈನ್‌ಗೆ ಸೇರಿದೆ ಎಂದು ಆಯ್ಕೆಮಾಡಿ"
 }

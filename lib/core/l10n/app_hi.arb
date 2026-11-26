@@ -807,5 +807,7 @@
   "beatsFound": "बीट",
   "packLearnByLine": "लाइन के अनुसार क्विज़",
   "packLearnByLineSub": "एक लाइन चुनें और सिर्फ़ उसके बैग का अभ्यास करें (पिन → बैग, डाकघर → बैग)",
-  "packLearnLineQuiz": "{line} · लाइन क्विज़"
+  "packLearnLineQuiz": "{line} · लाइन क्विज़",
+  "packLearnOfficeLine": "डाकघर → लाइन",
+  "packLearnOfficeLineSub": "डाकघर का नाम देखें, चुनें कि वह किस लाइन का है"
 }

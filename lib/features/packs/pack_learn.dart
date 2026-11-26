@@ -131,6 +131,33 @@ class PackLesson {
     ];
   }
 
+  /// Office name → which line (Dharwad TD, Haveri, Gadag, …) it belongs to.
+  /// Every line bag office plus the offices at its PIN, each name once.
+  List<QuizQuestion> officeToLine([Random? random]) {
+    final rnd = random ?? Random();
+    final lines = groups;
+    final seen = <String>{};
+    final out = <QuizQuestion>[];
+    for (final b in bags) {
+      for (final name in [b.code, for (final o in b.offices) '${o.officeName} ${o.officeType}'.trim()]) {
+        if (!seen.add(name.toLowerCase())) continue;
+        out.add(
+          QuizQuestion(
+            LearnCard(
+              key: 'packline:${b.pin}:$name',
+              prompt: name,
+              answer: b.group,
+              answerDetail: '${b.pin} · ${b.code}',
+              isPin: false,
+            ),
+            _options(b.group, lines, lines, rnd),
+          ),
+        );
+      }
+    }
+    return out;
+  }
+
   List<QuizQuestion> officeToPin([Random? random]) {
     final rnd = random ?? Random();
     final all = [for (final b in bags) '${b.pin}'];
@@ -367,6 +394,15 @@ class _PackLearnScreenState extends State<PackLearnScreen> {
                     x.officeToBag,
                   ),
                   tile('pin', Icons.dialpad, 3, l.packLearnOfficePin, l.packLearnOfficePinSub, x.officeToPin),
+                  if (x.groups.length > 1)
+                    tile(
+                      'officeline',
+                      Icons.alt_route,
+                      7,
+                      l.packLearnOfficeLine,
+                      l.packLearnOfficeLineSub,
+                      x.officeToLine,
+                    ),
                 ],
                 if (x.data.beats.isNotEmpty)
                   tile('beat', Icons.route_outlined, 4, l.packLearnAreaBeat, l.packLearnAreaBeatSub, x.areaToBeat),
